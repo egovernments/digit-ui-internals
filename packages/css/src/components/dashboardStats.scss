@@ -1,0 +1,12 @@
+.stats-container {
+  @apply bg-grey-light text-secondary;
+  border-bottom: 1px solid #d6d5d4;
+  .counts-container {
+    @apply flex p-sm;
+  }
+}
+
+.counts {
+  @apply flex flex-col;
+  margin-left: 54px;
+}

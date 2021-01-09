@@ -1,22 +1,45 @@
 import { Card } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
+import ActionCard from "../../../../core/src/components/dashboardCards/ActionCard";
+import ActionLinks from "../../../../core/src/components/dashboardCards/ActionLinks";
 
 const ComplaintsLink = ({ isMobile, data }) => {
   const allLinks = [
-    { text: "New Complaint", link: "/digit-ui/employee/pgr/complaint/create" },
+    { text: "New Complaint", link: "/digit-ui/employee/pgr/complaint/create", accessTo: "CSR" },
     { text: "Reports", link: "/employee" },
+    { text: "Dashboard", link: "/employee" },
   ];
 
   const [links, setLinks] = useState(allLinks);
 
+  const { roles } = Digit.UserService.getUser().info;
+
+  const hasAccess = (accessTo) => {
+    return roles.filter((role) => role.code === accessTo).length;
+  };
+
   useEffect(() => {
-    if (isMobile) {
-      const mobileLinks = links.filter((link) => {
-        return link.text !== "Dashboard";
-      });
-      setLinks(mobileLinks);
-    }
+    let linksToShow = [];
+    allLinks.forEach((link) => {
+      if (link.accessTo) {
+        if (hasAccess(link.accessTo)) {
+          linksToShow.push(link);
+        }
+      } else {
+        linksToShow.push(link);
+      }
+    });
+    setLinks(linksToShow);
   }, []);
+
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     const mobileLinks = links.filter((link) => {
+  //       return link.text !== "Dashboard";
+  //     });
+  //     setLinks(mobileLinks);
+  //   }
+  // }, []);
 
   const GetLogo = () => (
     <div className="header">
@@ -31,18 +54,9 @@ const ComplaintsLink = ({ isMobile, data }) => {
   );
 
   return (
-    <Card style={{ paddingRight: 0, marginTop: 0 }} className="employeeCard filter">
-      <div className="complaint-links-container">
-        {GetLogo()}
-        <div className="body">
-          {links.map(({ link, text }, index) => (
-            <span className="link" key={index}>
-              <a href={link}>{text}</a>
-            </span>
-          ))}
-        </div>
-      </div>
-    </Card>
+    <React.Fragment>
+      <ActionCard type="inbox" header="Complaints" links={allLinks} />
+    </React.Fragment>
   );
 };
 

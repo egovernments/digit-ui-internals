@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { initLibraries } from "@egovernments/digit-ui-libraries";
+import { PGRModule, PGRLinks, PGRReducers } from "@egovernments/digit-ui-module-pgr";
+import { FSMModule, FSMLinks } from "@egovernments/digit-ui-module-fsm";
 import { DigitUI } from "@egovernments/digit-ui-module-core";
 // import { PGRModule, PGRLinks } from "@egovernments/digit-ui-module-pgr";
 // import { Body, TopBar } from "@egovernments/digit-ui-react-components";
@@ -12,20 +14,31 @@ import EMPLOYEE from "./userInfo/employee.json";
 import LME from "./userInfo/lme.json";
 import GRO from "./userInfo/gro.json";
 
-import pgrCustomizations from "./pgr";
+import Registry from "./ComponentRegistry";
+
+import { pgrCustomizations, pgrComponents } from "./pgr";
+
+initLibraries();
 
 const userInfo = { CITIZEN, EMPLOYEE, LME, GRO };
-initLibraries();
+
+const enabledModules = ["PGR", "FSM"];
+const registry = new Registry({
+  ...pgrComponents,
+  PGRLinks,
+  PGRModule,
+  FSMModule,
+  FSMLinks,
+});
+const moduleReducers = (initData) => ({
+  pgr: PGRReducers(initData),
+});
 
 window.Digit.Customizations = { PGR: pgrCustomizations };
 
-const userType = sessionStorage.getItem("custom_user") || "EMPLOYEE";
+const userType = window.sessionStorage.getItem("userType") || process.env.REACT_APP_USER_TYPE || "CITIZEN";
 
 const token = process.env[`REACT_APP_${userType}_TOKEN`];
-
-console.log(token);
-
-// COMMENT ABOVE BEFORE COMMIT OR PUSH OR DEPLOY
 
 const citizenInfo = window.localStorage.getItem("Citizen.user-info") || userInfo[userType];
 const citizenTenantId = window.localStorage.getItem("Citizen.tenant-id") || "pb";
@@ -58,4 +71,7 @@ window.mdmsInitPost = (data) => {
   });
 };
 
-ReactDOM.render(<DigitUI stateCode="pb" />, document.getElementById("root"));
+ReactDOM.render(
+  <DigitUI stateCode="pb" registry={registry} enabledModules={enabledModules} moduleReducers={moduleReducers} />,
+  document.getElementById("root")
+);

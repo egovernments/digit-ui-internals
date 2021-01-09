@@ -7,6 +7,7 @@ import ComplaintTable from "./inbox/ComplaintTable";
 import Filter from "./inbox/Filter";
 import SearchComplaint from "./inbox/search";
 import { useHistory } from "react-router-dom";
+import ActionLinks from "../../../core/src/components/dashboardCards/ActionLinks";
 
 const DesktopInbox = (props) => {
   const { t } = useTranslation();
@@ -39,7 +40,7 @@ const DesktopInbox = (props) => {
                 </Link>
               </span>
               {/* <a onClick={() => goTo(row.row.original["serviceRequestId"])}>{row.row.original["serviceRequestId"]}</a> */}
-              <br />
+              {/* <br /> */}
               <span style={{ marginTop: "4px", color: "#505A5F" }}>{t(`SERVICEDEFS.${row.row.original["complaintSubType"].toUpperCase()}`)}</span>
             </div>
           );
@@ -80,7 +81,7 @@ const DesktopInbox = (props) => {
       <div className="filters-container">
         <ComplaintsLink />
         <div>
-          <Filter onFilterChange={props.onFilterChange} type="desktop" />
+          <Filter complaints={props.data} onFilterChange={props.onFilterChange} type="desktop" />
         </div>
       </div>
       <div>
@@ -93,8 +94,8 @@ const DesktopInbox = (props) => {
               return {
                 style: {
                   minWidth: cellInfo.column.Header === t("CS_COMMON_COMPLAINT_NO") ? "240px" : "",
-                  padding: "20px 18px",
-                  fontSize: "16px",
+                  padding: "20px 15px",
+                  // fontSize: "16px",
                   // borderTop: "1px solid grey",
                   // textAlign: "left",
                   // verticalAlign: "middle",

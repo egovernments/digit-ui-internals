@@ -19,10 +19,13 @@
     padding: 10px;
     @apply flex items-start flex-col;
     margin-left: 46px;
+  }
 
-    .link {
-      @apply p-sm text-link-normal;
-    }
+  .link {
+    @apply text-link-normal flex;
+  }
+  .link a:not(:first-child) {
+    @apply pt-sm;
   }
 }
 
@@ -95,11 +98,17 @@
       padding: 10px;
       @apply flex items-start flex-col;
       margin-left: 46px;
-
-      .link {
-        @apply p-sm text-link-normal;
-      }
     }
+
+    .inboxAction {
+      @apply flex items-center pb-sm;
+    }
+  }
+
+  .link {
+    @apply text-link-normal flex;
+    display: flex;
+    flex-direction: column;
   }
 
   .inbox-container {

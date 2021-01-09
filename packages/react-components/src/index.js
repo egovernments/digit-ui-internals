@@ -52,8 +52,9 @@ import HomeLink from "./atoms/HomeLink";
 import SectionalDropdown from "./atoms/SectionalDropdown";
 import LabelFieldPair from "./atoms/LabelFieldPair";
 import ApplyFilterBar from "./atoms/ApplyFilterBar";
-import RemoveableTag from "./molecules/RemoveableTag";
+import RoundedLabel from "./atoms/RoundedLabel";
 
+import RemoveableTag from "./molecules/RemoveableTag";
 import TypeSelectCard from "./molecules/TypeSelectCard";
 import LocationSearchCard from "./molecules/LocationSearchCard";
 import TextInputCard from "./molecules/TextInputCard";
@@ -66,6 +67,7 @@ import SearchAction from "./molecules/SearchAction";
 import FilterAction from "./molecules/FilterAction";
 import { FormComposer } from "./hoc/FormComposer";
 import { PrivateRoute } from "./atoms/PrivateRoute";
+import Forward from "./atoms/Forward";
 
 export {
   // Atoms
@@ -132,6 +134,8 @@ export {
   PrivateRoute,
   SectionalDropdown,
   LabelFieldPair,
+  RoundedLabel,
+  Forward,
   // Molecule
   InputCard,
   FormStep,
