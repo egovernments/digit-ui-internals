@@ -1,12 +1,13 @@
 import React, { useMemo, useEffect } from "react";
 import { Route, BrowserRouter as Router, Switch, useRouteMatch, useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SelectRating from "./pages/citizen/Rating/SelectRating";
 
 import { BackButton, Header, HomeLink, Loader, PrivateRoute } from "@egovernments/digit-ui-react-components";
+import { useTranslation } from "react-i18next";
 import { getI18n } from "react-i18next";
-import FileComplaint from "./pages/citizen/FileComplaint/index";
 
+import SelectRating from "./pages/citizen/Rating/SelectRating";
+import FileComplaint from "./pages/citizen/FileComplaint/index";
 import { NewApplication } from "./pages/employee/NewApplication";
 import { MyApplications } from "./pages/citizen/MyApplications";
 import ApplicationDetails from "./pages/citizen/ApplicationDetails";
@@ -17,10 +18,8 @@ import Response from "./pages/Response";
 import EditApplication from "./pages/employee/EditApplication";
 import Inbox from "./pages/employee/Inbox";
 import FstpOperatorDetails from "./pages/employee/FstpOperatorDetails";
-
-import { useTranslation } from "react-i18next";
-import SearchApplication from "./pages/employee/SearchApplication";
 import FstpInbox from "./pages/employee/FstpInbox";
+import SearchApplication from "./pages/employee/SearchApplication";
 
 const EmployeeApp = ({ path, url, userType }) => {
   const location = useLocation();
@@ -44,7 +43,6 @@ const EmployeeApp = ({ path, url, userType }) => {
         <PrivateRoute path={`${path}/collect-payment`} component={() => <CollectPayment parentRoute={path} />} />
         <PrivateRoute path={`${path}/application-audit/:id`} component={() => <ApplicationAudit parentRoute={path} />} />
         <PrivateRoute path={`${path}/search`} component={() => <SearchApplication />} />
-        <PrivateRoute path={`${path}/mark-for-disposal`} component={() => <MarkForDisposal parentRoute={path} />} />
       </div>
     </Switch>
   );
