@@ -8,7 +8,7 @@ const FSMLink = ({ isMobile, data }) => {
   const { t } = useTranslation();
   const user = Digit.UserService.getUser();
   const roleCodes = user?.info?.roles?.map((role) => role?.code);
-
+  const DSO = roleCodes.find((e) => e === "FSM_DSO");
   const allLinks = [
     {
       text: t("ES_TITLE_NEW_DESULDGING_APPLICATION"),
@@ -17,7 +17,7 @@ const FSMLink = ({ isMobile, data }) => {
     },
     // { text: t("ES_TITLE_REPORTS"), link: "/employee" },
     {
-      text: t("ES_TITILE_SEARCH_APPLICATION"),
+      text: t("ES_TITLE_SEARCH_APPLICATION"),
       link: "/digit-ui/employee/fsm/search",
       accessTo: ["FSM_CREATOR_EMP", "FSM_DSO", "FSM_EDITOR_EMP", "FSM_ADMIN", "FSM_COLLECTOR"],
     },

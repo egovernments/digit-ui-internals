@@ -106,4 +106,14 @@ export const UserService = {
       data: data.pageSize ? { tenantId, ...data } : { tenantId, ...data, pageSize: "100" },
     });
   },
+  accessControl: (tenantId, roleCodes) =>
+    Request({
+      url: Urls.accessControl,
+      auth: true,
+      userService: true,
+      timeStamp: true,
+      params: { tenantId },
+      method: "POST",
+      data: { roleCodes, tenantId, actionMaster: "actions-test", enabled: true },
+    }),
 };

@@ -234,6 +234,22 @@ const getSlumLocalityCriteria = (tenantId, moduleCode, type) => ({
   },
 });
 
+const getRoleActionMetaCriteria = (tenantId, moduleCode) => ({
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "RoleActionMetadata",
+          },
+        ],
+      },
+    ],
+  },
+});
+
 const getBillingServiceForBusinessServiceCriteria = () => ({
   moduleDetails: [
     {
@@ -397,4 +413,7 @@ export const MdmsService = {
   },
   getSlumLocalityMapping: (tenantId, moduleCode, type) =>
     MdmsService.getDataByCriteria(tenantId, getSlumLocalityCriteria(tenantId, moduleCode, type), moduleCode),
+
+  getRoleActionMetadata: (tenantId, moduleCode) =>
+    MdmsService.getDataByCriteria(tenantId, getRoleActionMetaCriteria(tenantId, moduleCode), moduleCode),
 };

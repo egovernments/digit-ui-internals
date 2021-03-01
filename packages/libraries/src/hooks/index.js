@@ -39,6 +39,7 @@ import useApplicationAudit from "./fsm/useApplicationAudit";
 import useSearchForAuditData from "./fsm/useSearchForAudit";
 import useConfig from "./fsm/useConfig";
 import useVendorDetail from "./fsm/useVendorDetail";
+import useAccessControl from "./useAccessControl";
 
 const pgr = {
   useComplaintDetails,
@@ -93,6 +94,7 @@ const Hooks = {
   useClickOutside,
   useCoreData,
   useUserSearch,
+  useAccessControl,
   pgr,
   fsm,
   pt,

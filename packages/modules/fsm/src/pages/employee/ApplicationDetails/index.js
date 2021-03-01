@@ -22,9 +22,10 @@ import ActionModal from "./Modal";
 
 import { useQueryClient } from "react-query";
 
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
 
 const ApplicationDetails = (props) => {
+  console.log("find location here", useRouteMatch());
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const state = tenantId.split(".")[0];
   const { t } = useTranslation();

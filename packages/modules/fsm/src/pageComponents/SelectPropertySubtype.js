@@ -58,7 +58,7 @@ const SelectPropertySubtype = ({ config, onSelect, t, userType, formData }) => {
     return <Dropdown option={subtypeOptions} optionKey="i18nKey" id="propertySubType" selected={subtype} select={selectedSubType} t={t} />;
   } else {
     return (
-      <FormStep config={config} onSelect={goNext} isDisabled={!propertyType} t={t}>
+      <FormStep config={config} onSelect={goNext} isDisabled={!subtype} t={t}>
         <CardLabel>{`${t("CS_FILE_APPLICATION_PROPERTY_LABEL")} *`}</CardLabel>
         <RadioOrSelect options={subtypeOptions} selectedOption={subtype} optionKey="i18nKey" onSelect={selectedValue} t={t} />
       </FormStep>

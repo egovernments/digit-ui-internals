@@ -24,7 +24,17 @@ const userServiceData = () => ({ userInfo: Digit.UserService.getUser().info });
 
 window.Digit = window.Digit || {};
 window.Digit = { ...window.Digit, RequestCache: window.Digit.RequestCache || {} };
-export const Request = async ({ method = "POST", url, data = {}, headers = {}, useCache = false, params = {}, auth, userService }) => {
+export const Request = async ({
+  method = "POST",
+  url,
+  data = {},
+  headers = {},
+  useCache = false,
+  params = {},
+  auth,
+  userService,
+  timeStamp = false,
+}) => {
   // console.log("params:", params);
   // console.log("in request", method);
   // console.log("url:", url);
@@ -32,6 +42,9 @@ export const Request = async ({ method = "POST", url, data = {}, headers = {}, u
     data.RequestInfo = {
       apiId: "Rainmaker",
     };
+    if (timeStamp) {
+      data.RequestInfo = { ts: Date.now() };
+    }
     if (auth) {
       data.RequestInfo = { ...data.RequestInfo, ...requestInfo() };
     }
