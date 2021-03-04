@@ -11,7 +11,6 @@ import TextInput from "../atoms/TextInput";
 
 const InputCard = ({ t, children, texts = {}, submit = false, inputs = [], inputRef, onNext, onSkip, isDisable }) => {
   // TODO: inputs handle
-  console.log("FIND ME", isDisable);
   return (
     <Card>
       {texts.headerCaption && <CardCaption>{t(texts.headerCaption)}</CardCaption>}

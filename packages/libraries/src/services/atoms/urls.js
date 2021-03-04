@@ -23,6 +23,7 @@ const Urls = {
   UserProfileUpdate: "/user/profile/_update",
   EmployeeSearch: "/egov-hrms/employees/_search",
   UserSearch: "/user/_search",
+  AccessAction: "/access/v1/actions/mdms/_get",
 
   fsm: {
     search: "/fsm/v1/_search",
