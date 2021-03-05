@@ -130,7 +130,7 @@ const ApplicationDetails = () => {
           caption={getPitDimensionCaption(application?.pitDetail?.diameter, application?.pitDetail?.length, t)}
         />
         <KeyNote keyValue={t("ES_APPLICATION_DETAILS_ASSIGNED_DSO")} note={dsoData?.displayName || "NA"} />
-        <KeyNote keyValue={t("ES_APPLICATION_DETAILS_VEHICLE_MAKE")} note={application?.vehicleType || "NA"} />
+        <KeyNote keyValue={t("ES_APPLICATION_DETAILS_VEHICLE_MAKE")} note={t(`COMMON_MASTER_VEHICLE_${application?.vehicleType}`) || "NA"} />
         <KeyNote
           keyValue={t("ES_APPLICATION_DETAILS_VEHICLE_NO")}
           note={dsoData?.vehicles.find((vehicle) => vehicle.id === application?.vehicleId)?.registrationNumber || "NA"}
