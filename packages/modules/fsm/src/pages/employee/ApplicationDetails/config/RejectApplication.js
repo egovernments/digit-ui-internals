@@ -13,6 +13,7 @@ export const configRejectApplication = ({ t, rejectMenu, rejectionReason, select
         body: [
           {
             label: t("ES_FSM_ACTION_DECLINE_REASON"),
+            isMandatory: true,
             type: "dropdown",
             populators: <Dropdown t={t} option={rejectMenu} id="reason" optionKey="code" selected={rejectionReason} select={selectReason} />,
           },
