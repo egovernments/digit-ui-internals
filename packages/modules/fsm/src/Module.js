@@ -47,16 +47,17 @@ const EmployeeApp = ({ path, url, userType }) => {
   useEffect(() => {
     const isApplicationDetails = location?.pathname?.includes("application-details");
     const isInbox = location?.pathname?.includes("inbox");
+    const isFsm = location?.pathname?.includes("fsm");
     const crumbArray = [
       {
         path: DSO ? "/digit-ui/citizen/fsm/dso-dashboard" : "/digit-ui/employee",
         content: t("ES_COMMON_HOME"),
-        show: location?.pathname?.includes("fsm"),
+        show: isFsm,
       },
       {
         path: "/digit-ui/employee/fsm/inbox",
         content: isInbox || isApplicationDetails ? t("ES_TITLE_INBOX") : "FSM",
-        show: location?.pathname?.includes("fsm"),
+        show: isFsm,
       },
     ];
     if (isApplicationDetails) {
