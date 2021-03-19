@@ -41,6 +41,7 @@ const TextField = (props) => {
       onFocus={broadcastToOpen}
       onBlur={broadcastToClose}
       readOnly={props.disable}
+      autoFocus={props.autoFocus}
     />
   );
 };
@@ -154,6 +155,7 @@ const Dropdown = (props) => {
             dropdownDisplay={dropdownOn}
             disable={props.disable}
             freeze={props.freeze ? true : false}
+            autoFocus={props.autoFocus}
             // setOutsideClicked={setOutsideClicked}
           />
           <ArrowDown onClick={dropdownSwitch} className="cp" disable={props.disable} />

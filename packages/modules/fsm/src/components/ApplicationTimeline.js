@@ -62,7 +62,7 @@ export const ApplicationTimeline = (props) => {
       );
     } else if (checkpoint.status === "DSO_INPROGRESS") {
       const caption = {
-        name: props.application?.dsoDetails?.displayName,
+        name: `${props.application?.dsoDetails?.displayName} (${t("ES_FSM_DSO")})`,
         mobileNumber: props.application?.dsoDetails?.mobileNumber,
         date: `${t("CS_FSM_EXPECTED_DATE")} ${Digit.DateUtils.ConvertTimestampToDate(props.application?.possibleServiceDate)}`,
       };

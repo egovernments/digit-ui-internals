@@ -19,7 +19,16 @@ const SelectChannel = ({ t, config, onSelect, formData = {}, userType }) => {
   }
 
   return channelMenu ? (
-    <Dropdown option={channelMenu} optionKey="i18nKey" id="channel" selected={channel} select={selectChannel} t={t} disable={editScreen} />
+    <Dropdown
+      option={channelMenu}
+      optionKey="i18nKey"
+      id="channel"
+      selected={channel}
+      select={selectChannel}
+      t={t}
+      disable={editScreen}
+      autoFocus={!editScreen}
+    />
   ) : (
     <Loader />
   );

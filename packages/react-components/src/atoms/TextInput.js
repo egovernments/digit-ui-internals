@@ -46,6 +46,7 @@ const TextInput = (props) => {
             readOnly={props.disable}
             title={props.title}
             step={props.step}
+            autoFocus={props.autoFocus}
           />
         ) : (
           <input
@@ -75,6 +76,7 @@ const TextInput = (props) => {
             readOnly={props.disable}
             title={props.title}
             step={props.step}
+            autoFocus={props.autoFocus}
           />
         )}
         {props.type === "date" && <DatePicker {...props} date={date} setDate={setDate} data={data} />}

@@ -176,8 +176,8 @@ const ApplicationDetails = (props) => {
       return <TLCaption data={caption} />;
     } else if (checkpoint.status === "DSO_INPROGRESS") {
       const caption = {
-        name: applicationData?.dsoDetails?.displayName,
-        mobileNumber: applicationData?.dsoDetails?.mobileNumber,
+        name: `${checkpoint?.assigner?.name} (${t("ES_FSM_DSO")})`,
+        mobileNumber: checkpoint?.assigner?.mobileNumber,
         date: `${t("CS_FSM_EXPECTED_DATE")} ${Digit.DateUtils.ConvertTimestampToDate(applicationData?.possibleServiceDate)}`,
       };
       return <TLCaption data={caption} />;

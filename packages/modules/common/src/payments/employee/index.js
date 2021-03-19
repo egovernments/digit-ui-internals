@@ -7,12 +7,15 @@ import { SuccessfulPayment, FailedPayment } from "./response";
 // import { subFormRegistry } from "../../hoc/subFormClass";
 import { testForm } from "../../hoc/testForm-config";
 import { subFormRegistry } from "@egovernments/digit-ui-libraries";
+import { useTranslation } from "react-i18next";
 
 subFormRegistry.addSubForm("testForm", testForm);
 
 const EmployeePayment = ({ stateCode, cityCode, moduleCode }) => {
   const userType = "employee";
   const { path: currentPath } = useRouteMatch();
+
+  const { t } = useTranslation();
 
   const [link, setLink] = useState(null);
 
@@ -21,7 +24,7 @@ const EmployeePayment = ({ stateCode, cityCode, moduleCode }) => {
   return (
     <React.Fragment>
       <p className="breadcrumb">
-        <Link to={`/digit-ui/employee`}>HOME</Link>/{link}
+        <Link to={`/digit-ui/employee`}>{t("ES_COMMON_HOME")}</Link>/{link}
       </p>
       <Switch>
         <Route path={`${currentPath}/collect/:businessService/:consumerCode`}>
