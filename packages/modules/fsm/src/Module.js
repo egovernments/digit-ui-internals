@@ -38,38 +38,51 @@ import FSMCard from "./components/FsmCard";
 import { Redirect } from "react-router-dom";
 import RateView from "./pages/citizen/Rating/RateView";
 
-const EmployeeApp = ({ path, url, userType }) => {
+const FsmBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
-  const location = useLocation();
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]);
-  const [crumbs, setCrumbs] = useState([]);
+  const isApplicationDetails = location?.pathname?.includes("application-details");
+  const isInbox = location?.pathname?.includes("inbox");
+  const isFsm = location?.pathname?.includes("fsm");
+  const isSearch = location?.pathname?.includes("search");
+  const [search, setSearch] = useState(false);
 
   useEffect(() => {
-    const isApplicationDetails = location?.pathname?.includes("application-details");
-    const isInbox = location?.pathname?.includes("inbox");
-    const isFsm = location?.pathname?.includes("fsm");
-    const crumbArray = [
-      {
-        path: DSO ? "/digit-ui/citizen/fsm/dso-dashboard" : "/digit-ui/employee",
-        content: t("ES_COMMON_HOME"),
-        show: isFsm,
-      },
-      {
-        path: "/digit-ui/employee/fsm/inbox",
-        content: isInbox || isApplicationDetails ? t("ES_TITLE_INBOX") : "FSM",
-        show: isFsm,
-      },
-    ];
-    if (isApplicationDetails) {
-      crumbArray.push({ content: t("ES_TITLE_APPLICATION_DETAILS"), show: isApplicationDetails });
+    if (!search) {
+      setSearch(isSearch);
+    } else if (isInbox && search) {
+      setSearch(false);
     }
-    setCrumbs(crumbArray);
-  }, [location.pathname]);
+  }, [location]);
 
+  const crumbs = [
+    {
+      path: DSO ? "/digit-ui/citizen/fsm/dso-dashboard" : "/digit-ui/employee",
+      content: t("ES_COMMON_HOME"),
+      show: isFsm,
+    },
+    {
+      path: "/digit-ui/employee/fsm/inbox",
+      content: isInbox || isApplicationDetails || search ? t("ES_TITLE_INBOX") : "FSM",
+      show: isFsm,
+    },
+    {
+      path: "/digit-ui/employee/fsm/search",
+      content: t("ES_TITILE_SEARCH_APPLICATION"),
+      show: search,
+    },
+    { content: t("ES_TITLE_APPLICATION_DETAILS"), show: isApplicationDetails },
+  ];
+
+  return <BreadCrumb crumbs={crumbs} />;
+};
+
+const EmployeeApp = ({ path, url, userType }) => {
+  const location = useLocation();
   return (
     <Switch>
       <div className="ground-container">
-        <BreadCrumb crumbs={crumbs} />
+        <FsmBreadCrumb location={location} />
         <PrivateRoute exact path={`${path}/`} component={() => <FSMLinks matchPath={path} userType={userType} />} />
         <PrivateRoute path={`${path}/inbox`} component={() => <Inbox parentRoute={path} isInbox={true} />} />
         <PrivateRoute path={`${path}/fstp-inbox`} component={() => <FstpInbox parentRoute={path} />} />
