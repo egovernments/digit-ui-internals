@@ -185,7 +185,12 @@ export const Search = {
       },
     ];
 
-    if (userType !== "CITIZEN") return employeeResponse;
+    if (userType !== "CITIZEN")
+      return {
+        tenantId: response.tenantId,
+        applicationDetails: employeeResponse,
+        additionalDetails: response?.additionalDetails,
+      };
 
     const citizenResp = employeeResponse.reduce((arr, curr) => {
       return arr.concat(curr.values);

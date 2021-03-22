@@ -26,7 +26,7 @@ export const SuccessfulPayment = (props) => {
     return <Loader />;
   }
 
-  if (isError || !payments || !payments.Payments || payments.Payments.length === 0) {
+  if (isError || !payments || !payments.Payments || payments.Payments.length === 0 || data.txnStatus === "FAILURE") {
     return (
       <Card>
         <Banner message={t("CITIZEN_FAILURE_COMMON_PAYMENT_MESSAGE")} info="" successful={false} />

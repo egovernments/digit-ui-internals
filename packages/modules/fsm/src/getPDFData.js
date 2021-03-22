@@ -28,7 +28,9 @@ const getTotalAmount = (totalAmount) => {
 };
 
 const getPDFData = (application, tenantInfo, t) => {
-  const amountPerTrip = application?.amountPerTrip || JSON.parse(application?.address?.additionalDetails)?.tripAmount;
+  const { address, additionalDetails } = application;
+
+  const amountPerTrip = application?.amountPerTrip || additionalDetails?.tripAmount || JSON.parse(address?.additionalDetails)?.tripAmount;
   const totalAmount = application?.totalAmount || amountPerTrip * application?.noOfTrips;
 
   return {

@@ -219,6 +219,12 @@ input[type="number"] {
 .my-bills {
   @apply flex flex-col;
   min-height: 85vh;
+
+  &-wrapper {
+    flex: 1;
+    max-height: 75vh;
+    overflow: scroll;
+  }
 }
 
 .bill-summary {

@@ -11,7 +11,7 @@ const TLCaption = ({ data }) => {
       <p>{data.name}</p>
       {data.mobileNumber && <TelePhone mobile={data.mobileNumber} />}
       {data.source && <p>{t("ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_" + data.source.toUpperCase())}</p>}
-      {data.comment && <Reason>{data.comment}</Reason>}
+      {data.comment && <Reason otherComment={data?.otherComment} headComment={data?.comment}></Reason>}
     </div>
   );
 };

@@ -17,6 +17,7 @@ export const configReassignDSO = ({
   reassignReason,
   selectReassignReason,
   action,
+  showReassignReason,
 }) => ({
   label: {
     heading: `ES_FSM_ACTION_TITLE_${action}`,
@@ -26,21 +27,25 @@ export const configReassignDSO = ({
   form: [
     {
       body: [
-        {
-          label: t("ES_FSM_ACTION_REASSIGN_REASON"),
-          type: "dropdown",
-          isMandatory: true,
-          populators: (
-            <Dropdown
-              option={reassignReasonMenu}
-              optionKey="i18nKey"
-              id="reassign-reason"
-              selected={reassignReason}
-              select={selectReassignReason}
-              t={t}
-            />
-          ),
-        },
+        ...(showReassignReason
+          ? [
+              {
+                label: t("ES_FSM_ACTION_REASSIGN_REASON"),
+                type: "dropdown",
+                isMandatory: true,
+                populators: (
+                  <Dropdown
+                    option={reassignReasonMenu}
+                    optionKey="i18nKey"
+                    id="reassign-reason"
+                    selected={reassignReason}
+                    select={selectReassignReason}
+                    t={t}
+                  />
+                ),
+              },
+            ]
+          : []),
         {
           label: t("ES_FSM_ACTION_VEHICLE_TYPE"),
           isMandatory: vehicle ? false : true,

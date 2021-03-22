@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "react-query";
 
 export const useFetchCitizenBillsForBuissnessService = ({ businessService, ...filters }) => {
   const queryClient = useQueryClient();
-  const { mobileNumber, tenantId } = Digit.UserService.getUser().info;
+  const { mobileNumber, tenantId } = Digit.UserService.getUser()?.info || {};
   const { isLoading, error, isError, data } = useQuery(["citizenBillsForBuisnessService", businessService], () =>
     // Digit.PaymentService.fetchBill(tenantId, { mobileNumber, businessService, ...filters })
     Digit.PaymentService.fetchBill(tenantId, { mobileNumber, businessService, ...filters })
@@ -41,7 +41,7 @@ export const usePaymentUpdate = ({ egId }, businessService) => {
     const payments = await Digit.PaymentService.getReciept(transaction.Transaction[0].tenantId, businessService, {
       consumerCodes: transaction.Transaction[0].consumerCode,
     });
-    return { payments, applicationNo: transaction.consumerCode };
+    return { payments, applicationNo: transaction.Transaction[0].consumerCode, txnStatus: transaction.Transaction[0].txnStatus };
   };
 
   return useQuery(["paymentUpdate", egId], () => getPaymentData(egId));

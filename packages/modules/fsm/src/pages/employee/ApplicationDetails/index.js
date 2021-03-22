@@ -16,6 +16,8 @@ import {
   Menu,
   LinkButton,
   Toast,
+  Rating,
+  ActionLinks,
 } from "@egovernments/digit-ui-react-components";
 
 import ActionModal from "./Modal";
@@ -23,7 +25,7 @@ import TLCaption from "../../../components/TLCaption";
 
 import { useQueryClient } from "react-query";
 
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { actions } from "react-table";
 
 const ApplicationDetails = (props) => {
@@ -171,7 +173,8 @@ const ApplicationDetails = (props) => {
       const caption = {
         date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails.createdTime),
         name: checkpoint?.assigner?.name,
-        comment: t(checkpoint?.comment),
+        comment: checkpoint?.comment ? t(`ES_ACTION_REASON_${checkpoint?.comment}`) : null,
+        otherComment: applicationDetails?.additionalDetails?.comments?.DSO_REJECT,
       };
       return <TLCaption data={caption} />;
     } else if (checkpoint.status === "DSO_INPROGRESS") {
@@ -211,7 +214,7 @@ const ApplicationDetails = (props) => {
                 }}
               />
             )} */}
-            {applicationDetails.map((detail, index) => (
+            {applicationDetails?.applicationDetails.map((detail, index) => (
               <React.Fragment key={index}>
                 {index === 0 ? (
                   <CardSubHeader style={{ marginBottom: "16px" }}>{t(detail.title)}</CardSubHeader>
@@ -271,7 +274,7 @@ const ApplicationDetails = (props) => {
               </Fragment>
             )}
           </Card>
-          {console.log("above show modal", showModal)}
+          {/* {console.log("above show modal", showModal)} */}
           {showModal ? (
             <ActionModal
               t={t}
@@ -281,6 +284,7 @@ const ApplicationDetails = (props) => {
               id={applicationNumber}
               closeModal={closeModal}
               submitAction={submitAction}
+              actionData={workflowDetails?.data?.timeline}
             />
           ) : null}
           {showToast && (

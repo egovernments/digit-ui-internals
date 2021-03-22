@@ -1,5 +1,10 @@
 import React from "react";
 
-const Reason = ({ children }) => <p style={{ backgroundColor: "#EEEEEE", padding: "8px", color: "#0B0C0C" }}>{children}</p>;
+const Reason = ({ headComment, otherComment }) => (
+  <div className="checkpoint-comments-wrap">
+    <h4>{headComment}</h4>
+    <p>{otherComment}</p>
+  </div>
+);
 
 export default Reason;

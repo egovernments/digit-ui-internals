@@ -23,7 +23,7 @@ const CloseBtn = (props) => {
   );
 };
 
-const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction }) => {
+const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData }) => {
   const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId);
   const { isLoading, isSuccess, isError, data: applicationData, error } = Digit.Hooks.fsm.useSearch(
     tenantId,
@@ -67,7 +67,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction 
     "CancelReason",
   ]);
 
-  console.log("find mdms data here", Reason);
+  // console.log("find mdms data here", Reason);
 
   const [reassignReason, selectReassignReason] = useState(null);
   const [rejectionReason, setRejectionReason] = useState(null);
@@ -100,7 +100,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction 
   }, [isSuccess, isDsoSuccess]);
 
   useEffect(() => {
-    setFormValve(reassignReason ? true : false);
+    reassignReason || (actionData && actionData[0] && actionData[0].comment?.length > 0) ? setFormValve(true) : setFormValve(false);
   }, [reassignReason]);
 
   useEffect(() => {
@@ -145,12 +145,16 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction 
     if (data.date) applicationData.possibleServiceDate = new Date(`${data.date}`).getTime();
     if (data.desluged) applicationData.completedOn = new Date(data.desluged).getTime();
     if (data.wasteCollected) applicationData.wasteCollected = data.wasteCollected;
-
+    if (data.comments)
+      applicationData.additionalDetails.comments = {
+        ...applicationData.additionalDetails.comments,
+        [action]: data.comments,
+      };
     if (reassignReason) workflow.comments = reassignReason.code;
     if (rejectionReason) workflow.comments = rejectionReason.code;
     if (declineReason) workflow.comments = declineReason.code;
     if (cancelReason) workflow.comments = cancelReason.code;
-
+    // console.log("find fsm update object here",{ fsm: applicationData, workflow });
     submitAction({ fsm: applicationData, workflow });
   }
 
@@ -198,7 +202,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction 
       case "REASSIGN":
       case "REASSING":
       case "FSM_REASSING":
-        setFormValve(dso && vehicle && reassignReason ? true : false);
+        dso && vehicle && (reassignReason || (actionData && actionData[0] && actionData[0].comment?.length > 0))
+          ? setFormValve(true)
+          : setFormValve(false);
         // console.log("find reasiign reason data here",Reason?.ReassignReason)
         return setConfig(
           configReassignDSO({
@@ -213,6 +219,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction 
             reassignReason,
             selectReassignReason,
             action,
+            showReassignReason: actionData && actionData[0] && actionData[0].comment?.length > 0 ? false : true,
           })
         );
       case "COMPLETE":

@@ -12,8 +12,8 @@ const PropertySearchResults = ({ template, header, actionButtonLabel }) => {
   if (propertyIds) filters.propertyIds = propertyIds;
   if (oldPropertyIds) filters.oldPropertyIds = oldPropertyIds;
 
-  const tenantId = Digit.ULBService.getCurrentTenantId();
-  const result = Digit.Hooks.pt.usePropertySearch({ tenantId, filters });
+  // const tenantId = Digit.ULBService.getCurrentTenantId();
+  const result = Digit.Hooks.pt.usePropertySearch({ filters });
   const consumerCode = result?.data?.Properties?.map((a) => a.propertyId).join(",");
   const paymentDetails = Digit.Hooks.useFetchPayment({ tenantId, consumerCode, businessService: "PT" }, { enabled: consumerCode ? true : false });
 
