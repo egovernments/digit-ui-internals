@@ -180,6 +180,7 @@ export const CollectPayment = (props) => {
             },
             error: "a valid name required",
             defaultValue: bill?.payerName || formState?.payerName || "",
+            className: "payment-form-text-input-correction",
           },
         },
         {
@@ -193,6 +194,7 @@ export const CollectPayment = (props) => {
               pattern: /^[6-9]\d{9}$/,
             },
             error: "a valid mobile no. required",
+            className: "payment-form-text-input-correction",
             defaultValue: bill?.mobileNumber || formState?.payerMobile || "",
           },
         },

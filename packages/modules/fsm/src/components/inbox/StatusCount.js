@@ -5,11 +5,12 @@ import { CheckBox } from "@egovernments/digit-ui-react-components";
 const StatusCount = ({ status, fsmfilters, onAssignmentChange }) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const DSO = Digit.UserService.hasAccess(["FSM_DSO"]);
   const { data } = Digit.Hooks.fsm.useInbox(
     tenantId,
     { applicationStatus: [status],
       total: true,
-      uuid: { code: "ASSIGNED_TO_ME", name: t("ES_INBOX_ASSIGNED_TO_ME") },
+      uuid: DSO ? { code: "ASSIGNED_TO_ME", name: t("ES_INBOX_ASSIGNED_TO_ME") } : { code: "ASSIGNED_TO_ALL", name: t("ES_INBOX_ASSIGNED_TO_ALL") },
       sortBy: "createdTime",
       sortOrder: "DESC"
     },

@@ -43,7 +43,7 @@ const useInbox = (tenantId, filters, filterFsmFn, workFlowConfig = {}) => {
 
   const { data: processInstances, isLoading: workflowLoading, isFetching: wfFetching, isSuccess: wfSuccess } = workFlowInstances;
   let applicationNos = !wfFetching && wfSuccess ? { applicationNos: processInstances.map((e) => e.businessId).join() } : {};
-  applicationNos = applicationNos?.applicationNos === "" ? { applicationNos: "null" } : applicationNos;
+  applicationNos = applicationNos?.applicationNos === "" ? { applicationNos: "xyz" } : applicationNos;
 
   if (!filterFsmFn)
     filterFsmFn = (data) => {

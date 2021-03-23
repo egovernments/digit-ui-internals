@@ -11,7 +11,7 @@ const BillSumary = ({ billAccountDetails }) => {
           return (
             <div key={index} className="bill-account-details">
               <div className="label">{t(amountDetails.taxHeadCode)}</div>
-              <div className="value">{amountDetails.amount?.toFixed(2)}</div>
+              <div className="value">₹ {amountDetails.amount?.toFixed(2)}</div>
             </div>
           );
         })}

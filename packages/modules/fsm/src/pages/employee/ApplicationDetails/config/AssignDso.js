@@ -104,7 +104,7 @@ export const configAssignDso = ({ t, dsoData, dso, selectDSO, vehicleMenu, vehic
               validation: {
                 required: true,
               },
-              // customProps: { min: Digit.Utils.date.getDate() },
+              customProps: { min: Digit.Utils.date.getDate() },
               defaultValue: Digit.Utils.date.getDate(),
               component: (props, customProps) => <DatePicker onChange={props.onChange} date={props.value} {...customProps} />,
             },
