@@ -37,26 +37,27 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
     })();
   }, [file]);
 
-  function goNext() {
+  const handleSubmit = () => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
-    if(fileDetails) fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
+    if (fileDetails) fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     let ownerDetails = formData.owners && formData.owners[index];
-    if(ownerDetails && ownerDetails.documents) {
-      ownerDetails.documents["specialProofIdentity"] = fileDetails;
+    if (ownerDetails && ownerDetails.documents) {
+      ownerDetails.documents["proofIdentity"] = {...fileDetails};
     } else {
       ownerDetails["documents"] = [];
-      ownerDetails.documents["specialProofIdentity"] = fileDetails;
+      ownerDetails.documents["proofIdentity"] = {...fileDetails};
     }
     onSelect(config.key, ownerDetails, "", index);
-  }
+    // onSelect(config.key, { specialProofIdentity: fileDetails }, "", index);
+  };
 
   function onAdd () {
     let newIndex = parseInt(index) + 1;
     onSelect("owner-details", {}, false, newIndex, true);
   }
   return (
-    <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!uploadedFile} onAdd={onAdd} isMultipleAllow={(formData?.ownershipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS")}>
+    <FormStep t={t} config={config} onSelect={handleSubmit} onSkip={onSkip} isDisabled={!uploadedFile} onAdd={onAdd} isMultipleAllow={(formData?.ownershipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS")}>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <UploadFile

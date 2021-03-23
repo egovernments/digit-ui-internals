@@ -13,10 +13,10 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
     if (fileDetails) fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     let ownerDetails = formData.owners && formData.owners[index];
     if (ownerDetails && ownerDetails.documents) {
-      ownerDetails.documents["specialProofIdentity"] = fileDetails;
+      ownerDetails.documents["specialProofIdentity"] = {...fileDetails};
     } else {
       ownerDetails["documents"] = [];
-      ownerDetails.documents["specialProofIdentity"] = fileDetails;
+      ownerDetails.documents["specialProofIdentity"] = {...fileDetails};
     }
     onSelect(config.key, ownerDetails, "", index);
     // onSelect(config.key, { specialProofIdentity: fileDetails }, "", index);

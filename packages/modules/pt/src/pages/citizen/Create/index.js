@@ -54,7 +54,7 @@ const CreateProperty = ({ parentRoute }) => {
     if (key === "owners") {
       let owners = params.owners || [];
       owners[index] = data;
-      setParams({ ...params, ...{ [key]: owners } });
+      setParams({ ...params, ...{ [key]: [...owners] } });
     } else {
       setParams({ ...params, ...{ [key]: { ...params[key], ...data } } });
     }
