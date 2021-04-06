@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e0f7b91a-c6c1-4257-bc9f-e01ee340c7d1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/packages/modules/pt/src/pageComponents/Area.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modules/pt/src/pageComponents/Area.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1oHbA1QI48wV2ndsXs1DNgSpnQA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/frontend" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0f7b91a-c6c1-4257-bc9f-e01ee340c7d1" name="Default Changelist" comment="" />
+      <created>1612946315997</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612946315997</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="502" y="155" width="424" height="491" key="FileChooserDialogImpl" timestamp="1614490633573">
+      <screen x="72" y="27" width="1294" height="741" />
+    </state>
+    <state x="502" y="155" width="424" height="491" key="FileChooserDialogImpl/72.27.1294.741@72.27.1294.741" timestamp="1614490633573" />
+    <state x="192" y="90" width="1035" height="629" key="MergeDialog" timestamp="1617623984808">
+      <screen x="72" y="27" width="1294" height="741" />
+    </state>
+    <state x="192" y="90" width="1035" height="629" key="MergeDialog/72.27.1294.741@72.27.1294.741" timestamp="1617623984808" />
+    <state x="350" y="158" width="728" height="485" key="MultipleFileMergeDialog" timestamp="1617623984811">
+      <screen x="72" y="27" width="1294" height="741" />
+    </state>
+    <state x="350" y="158" width="728" height="485" key="MultipleFileMergeDialog/72.27.1294.741@72.27.1294.741" timestamp="1617623984811" />
+    <state x="382" y="89" key="search.everywhere.popup" timestamp="1614084769659">
+      <screen x="72" y="27" width="1294" height="741" />
+    </state>
+    <state x="382" y="89" key="search.everywhere.popup/72.27.1294.741@72.27.1294.741" timestamp="1614084769659" />
+  </component>
+</project>

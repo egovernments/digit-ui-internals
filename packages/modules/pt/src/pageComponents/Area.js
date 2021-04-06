@@ -31,7 +31,7 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
       } else if (formData?.noOfFloors?.i18nKey === "Ground +2" && index < 2 && index > -1) {
         let newIndex2 = parseInt(index) + 1;
         onSelect("floordetails", {}, false, newIndex2, true);
-      } else if (formData?.noOofBasements?.i18nKey === "1 Basement" || (formData?.noOofBasements?.i18nKey === "2 Basement" && index > -1)) {
+      } else if ((formData?.noOofBasements?.i18nKey === "1 Basement" || formData?.noOofBasements?.i18nKey === "2 Basement") && index > -1) {
         onSelect("floordetails", {}, false, "-1", true);
       } else if (formData?.noOofBasements?.i18nKey === "2 Basement" && index != -2) {
         onSelect("floordetails", {}, false, "-2", true);
