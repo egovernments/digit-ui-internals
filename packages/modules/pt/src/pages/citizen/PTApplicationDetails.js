@@ -6,6 +6,7 @@ import PTWFApplicationTimeline from "../../pageComponents/PTWFApplicationTimelin
 import { getFixedFilename } from "../../utils";
 import getPTAcknowledgementData from "../../getPTAcknowledgementData";
 import { LinkButton } from "@egovernments/digit-ui-react-components";
+import { propertyCardBodyStyle } from "../../utils";
 const PTApplicationDetails = () => {
   const { t } = useTranslation();
   const { acknowledgementIds } = useParams();
@@ -36,7 +37,10 @@ const PTApplicationDetails = () => {
   return (
     <React.Fragment>
       <Header>{t("PT_MUTATION_APPLICATION_DETAILS")}</Header>
-      <LinkButton label={t("CS_COMMON_DOWNLOAD")} className="check-page-link-button pt-application-download-btn" onClick={handleDownloadPdf} />
+      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 10em)" }}>
+      <div style={{display: "flex", width: "100%", padding: "0 8.5px"}}>
+        <LinkButton label={t("CS_COMMON_DOWNLOAD")} className="check-page-link-button pt-application-download-btn" onClick={handleDownloadPdf} />
+      </div>
       <Card>
         <StatusTable>
           <Row label={t("PT_APPLICATION_NUMBER_LABEL")} text={application?.acknowldgementNumber} />
@@ -128,6 +132,7 @@ const PTApplicationDetails = () => {
         </div>
         <PTWFApplicationTimeline application={application} id={acknowledgementIds} />
       </Card>
+      </div>
     </React.Fragment>
   );
 };

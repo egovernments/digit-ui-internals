@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import { getFixedFilename } from "../../../utils";
+import { propertyCardBodyStyle } from "../../../utils";
 
 const PropertyInformation = () => {
   const { t } = useTranslation();
@@ -34,6 +35,7 @@ const PropertyInformation = () => {
   return (
     <React.Fragment>
       <Header>{t("PT_PROPERTY_INFORMATION")}</Header>
+      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 10em)" }}>
       <Card>
         <StatusTable>
           <Row label={t("PT_PROPERTY_PTUID")} text={`${property.propertyId || "NA"}`} />
@@ -132,6 +134,7 @@ const PropertyInformation = () => {
           )}
         </div>
       </Card>
+      </div>
     </React.Fragment>
   );
 };
