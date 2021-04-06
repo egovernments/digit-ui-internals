@@ -21,6 +21,11 @@ export const cardBodyStyle = {
   overflowY: "auto",
 };
 
+export const propertyCardBodyStyle = {
+  maxHeight: "calc(100vh - 10em)",
+  overflowY: "auto",
+};
+
 /*   method to convert collected details to proeprty create object */
 export const convertToProperty = (data = {}) => {
   console.log('jag', data)

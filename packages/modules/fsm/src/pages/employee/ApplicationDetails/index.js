@@ -158,8 +158,8 @@ const ApplicationDetails = (props) => {
       const caption = {
         date: checkpoint?.auditDetails?.created,
         name: checkpoint?.assigner,
-        mobileNumber: applicationData.citizen.mobileNumber,
-        source: applicationData.source || "",
+        mobileNumber: applicationData?.citizen.mobileNumber,
+        source: applicationData?.source || "",
       };
       return <TLCaption data={caption} />;
     } else if (

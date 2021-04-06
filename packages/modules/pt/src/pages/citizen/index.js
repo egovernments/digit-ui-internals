@@ -19,7 +19,7 @@ const App = () => {
       <Switch>
         <AppContainer>
           {!shouldHideBackButton(hideBackButtonConfig) ? (
-            <BackButton style={{ position: "fixed", top: "55px", background: "#f47738" }}>Back</BackButton>
+            <BackButton style={{ position: "fixed", top: "55px" }}>Back</BackButton>
           ) : (
             ""
           )}

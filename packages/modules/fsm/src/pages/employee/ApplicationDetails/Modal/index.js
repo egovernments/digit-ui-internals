@@ -108,7 +108,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   }, [isSuccess, isDsoSuccess]);
 
   useEffect(() => {
-    reassignReason || (actionData && actionData[0] && actionData[0].comment?.length > 0) ? setFormValve(true) : setFormValve(false);
+    reassignReason || (actionData && actionData[0] && actionData[0].comment?.length > 0 && actionData[0]?.status === "DSO_REJECTED")
+      ? setFormValve(true)
+      : setFormValve(false);
   }, [reassignReason]);
 
   useEffect(() => {
@@ -208,7 +210,9 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       case "REASSIGN":
       case "REASSING":
       case "FSM_REASSING":
-        dso && vehicle && (reassignReason || (actionData && actionData[0] && actionData[0].comment?.length > 0))
+        dso &&
+        vehicle &&
+        (reassignReason || (actionData && actionData[0] && actionData[0].comment?.length > 0 && actionData[0]?.status === "DSO_REJECTED"))
           ? setFormValve(true)
           : setFormValve(false);
         // console.log("find reasiign reason data here",Reason?.ReassignReason)
@@ -225,7 +229,8 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             reassignReason,
             selectReassignReason,
             action,
-            showReassignReason: actionData && actionData[0] && actionData[0].comment?.length > 0 ? false : true,
+            showReassignReason:
+              actionData && actionData[0] && actionData[0].comment?.length > 0 && actionData[0]?.status === "DSO_REJECTED" ? false : true,
           })
         );
       case "COMPLETE":
