@@ -97,7 +97,7 @@ const PropertyInformation = () => {
                     {owners.length != 1 && <span>{t("PT_OWNER_SUB_HEADER")} - {index + 1} </span>}
                   </CardSubHeader>
                   <StatusTable>
-                    <Row label={t("PT_COMMON_APPLICANT_NAME_LABEL")} text={`${owner?.name || "NA"}`} actionButton={<ActionButton jumpTo="" />} />
+                    <Row label={t("PT_COMMON_APPLICANT_NAME_LABEL")} text={`${owners?.name || "NA"}`} actionButton={<ActionButton jumpTo={`/digit-ui/citizen/pt/property/owner-history/${property.tenantId}/${property.propertyId}`} />} />
                     <Row label={t("PT_FORM3_GUARDIAN_NAME")} text={`${owner?.fatherOrHusbandName || "NA"}`} />
                     <Row label={t("PT_COMMON_GENDER_LABEL")} text={`${owner?.gender ? owner?.gender.toLowerCase() : "NA"}`} />
                     <Row

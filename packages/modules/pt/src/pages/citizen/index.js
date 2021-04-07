@@ -9,6 +9,7 @@ import PTApplicationDetails from "./PTApplicationDetails";
 import SearchPropertyComponent from "./SearchProperty";
 import SearchResultsComponent from "./SearchResults";
 import { shouldHideBackButton } from "../../utils";
+import propertyOwnerHistory from "./MyProperties/propertyOwnerHistory";
 
 const hideBackButtonConfig = [{ screenPath: "property/new-application/acknowledgement" }];
 
@@ -30,6 +31,7 @@ const App = () => {
           <PrivateRoute path={`${path}/property/my-applications`} component={PTMyApplications}></PrivateRoute>
           <PrivateRoute path={`${path}/property/my-properties`} component={MyProperties}></PrivateRoute>
           <PrivateRoute path={`${path}/property/properties/:propertyIds`} component={PropertyInformation}></PrivateRoute>
+          <PrivateRoute path={`${path}/property/owner-history/:tenantId/:propertyIds`} component={propertyOwnerHistory}></PrivateRoute>
           {/* <Redirect to={`/`}></Redirect> */}
         </AppContainer>
       </Switch>
