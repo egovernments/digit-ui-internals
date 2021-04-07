@@ -82,7 +82,13 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
       )}
       <StatusTable>
         {mutation.isSuccess && (
-          <Row rowContainerStyle={rowContainerStyle} last label={t("PT_COMMON_TABLE_COL_PT_ID")} text={mutation?.data?.Properties[0]?.propertyId} />
+          <Row
+            rowContainerStyle={rowContainerStyle}
+            last
+            label={t("PT_COMMON_TABLE_COL_PT_ID")}
+            text={mutation?.data?.Properties[0]?.propertyId}
+            textStyle={{ whiteSpace: "pre", width: "60%" }}
+          />
         )}
       </StatusTable>
       <Link to={`/digit-ui/citizen`}>
