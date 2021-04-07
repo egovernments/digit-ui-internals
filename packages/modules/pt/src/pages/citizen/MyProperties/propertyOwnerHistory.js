@@ -58,6 +58,11 @@ const propertyOwnerHistory = () => {
     }
 
     if (properties && Array.isArray(properties) && properties.length > 0) {
+        let ownerProperty = properties[0];
+        properties = properties.filter(data => data.status == "ACTIVE");
+        if( properties.length === 0) {
+            properties.push(ownerProperty);
+        }
         properties = getUniqueList(properties);
         properties && properties.length > 0 && properties.map((indProperty) => {
             let lastModifiedDate = indProperty.auditDetails.lastModifiedTime;
@@ -76,7 +81,7 @@ const propertyOwnerHistory = () => {
         <React.Fragment>
             <Card>
                 <Header>{t("PT_OWNER_HISTORY")}</Header>
-                <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 10em)" }}>
+                <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 13em)" }}>
                     {Object.keys(ownershipInfo).map((key) => {
                         const date = convertEpochToDate(Number(key));
                         return (
