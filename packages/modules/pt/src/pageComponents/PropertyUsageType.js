@@ -54,7 +54,12 @@ const PropertyUsageType = ({ t, config, onSelect, userType, formData }) => {
   }
 
   function goNext() {
-    onSelect(config.key, usageCategoryMajor);
+    if (usageCategoryMajor.i18nKey === "PROPERTYTAX_BILLING_SLAB_OTHERS") {
+      usageCategoryMajor.i18nKey = "PROPERTYTAX_BILLING_SLAB_NONRESIDENTIAL";
+      onSelect(config.key, usageCategoryMajor);
+    } else {
+      onSelect(config.key, usageCategoryMajor);
+    }
     // onSelect(config.key,ResidentialType, false, index);
   }
   return (

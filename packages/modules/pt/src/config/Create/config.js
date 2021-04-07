@@ -23,7 +23,11 @@ export const newConfig = [
         key: "isResdential",
         withoutLabel: true,
         hideInEmployee: true,
-        nextStep: "property-usage-type",
+        //nextStep: "property-usage-type",
+        nextStep: {
+          PT_COMMON_YES: "property-type",
+          PT_COMMON_NO: "property-usage-type",
+        },
       },
       {
         type: "component",
@@ -146,8 +150,11 @@ export const newConfig = [
         //nextStep: "provide-sub-usage-type",
         nextStep: {
           "Yes, It is fully Self Occupied": "provide-sub-usage-type",
+          "Yes, It is fully Self Occupied1": "is-any-part-of-this-floor-unoccupied",
           "Partially rented out": "provide-sub-usage-type-of-rented-area",
+          "Partially rented out1": "rental-details",
           "Fully rented out": "provide-sub-usage-type-of-rented-area",
+          "Fully rented out1": "rental-details",
         },
         hideInEmployee: true,
       },
@@ -164,7 +171,7 @@ export const newConfig = [
         },
         key: "units",
         withoutLabel: true,
-        nextStep: "provide-sub-usage-type-of-rented-area",
+        nextStep: "is-any-part-of-this-floor-unoccupied",
         hideInEmployee: true,
       },
       {
@@ -212,7 +219,11 @@ export const newConfig = [
         },
         key: "IsAnyPartOfThisFloorUnOccupied",
         withoutLabel: true,
-        nextStep: "un-occupied-area",
+        //nextStep: "un-occupied-area",
+        nextStep: {
+          No: "area",
+          Yes: "un-occupied-area",
+        },
         hideInEmployee: true,
       },
       {

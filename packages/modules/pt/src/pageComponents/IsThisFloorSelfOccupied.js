@@ -26,7 +26,12 @@ const IsThisFloorSelfOccupied = ({ t, config, onSelect, userType, formData }) =>
   function goNext() {
     //let index = window.location.href.charAt(window.location.href.length - 1);
     let index = window.location.href.split("/").pop();
-    sessionStorage.setItem("IsThisFloorSelfOccupied", selfOccupied.i18nKey);
+    if (formData?.isResdential?.i18nKey === "PT_COMMON_YES" || formData?.usageCategoryMajor?.i18nKey == "PROPERTYTAX_BILLING_SLAB_NONRESIDENTIAL") {
+      let temp = selfOccupied.i18nKey + "1";
+      sessionStorage.setItem("IsThisFloorSelfOccupied", temp);
+    } else {
+      sessionStorage.setItem("IsThisFloorSelfOccupied", selfOccupied.i18nKey);
+    }
     onSelect(config.key, selfOccupied, false, index);
   }
   return (
