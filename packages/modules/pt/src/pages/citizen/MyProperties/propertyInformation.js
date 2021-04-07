@@ -2,6 +2,7 @@ import { Card, CardSubHeader, Header, LinkButton, Loader, Row, StatusTable } fro
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
+import PropertyDocument from "../../../pageComponents/PropertyDocument";
 import { getFixedFilename } from "../../../utils";
 import { propertyCardBodyStyle } from "../../../utils";
 
@@ -116,17 +117,7 @@ const PropertyInformation = () => {
         <div>
           {Array.isArray(docs) ? (
             docs.length > 0 &&
-            docs.map((docs, index) => (
-              <div key="index">
-                <span>
-                  {t("PT_COMMON_DOCS")} - {index + 1}
-                </span>
-                <StatusTable>
-                  <Row label={t("PT_OWNERSHIP_DOCUMENT_TYPE")} text={`${t(docs?.documentType || "NA")}`} />
-                  <Row label={t("PT_OWNERSHIP_DOCUMENT_ID")} text={`${t((docs?.documentUid && getFixedFilename(docs.documentUid, 17)) || "NA")}`} />
-                </StatusTable>
-              </div>
-            ))
+            <PropertyDocument  documents={docs}></PropertyDocument>
           ) : (
             <StatusTable>
               <Row text="PT_NO_DOCUMENTS_MSG" />

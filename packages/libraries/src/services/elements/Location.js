@@ -6,7 +6,7 @@ export const LocationService = {
     return ServiceRequest({
       serviceName: "getLocalities",
       url: Urls.location.localities,
-      params: { tenantId: tenantId.toLowerCase() },
+      params: { tenantId: tenantId },
       useCache: true,
     });
   },
@@ -15,7 +15,7 @@ export const LocationService = {
     const response = await ServiceRequest({
       serviceName: "getRevenueLocalities",
       url: Urls.location.revenue_localities,
-      params: { tenantId: tenantId.toLowerCase() },
+      params: { tenantId: tenantId },
       useCache: true,
     });
     // console.log("ok im at revenue localities ___",response)

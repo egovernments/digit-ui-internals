@@ -104,6 +104,12 @@
   color: #f47738 !important;
 }
 
+.pt-application-download-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0px 8px;
+}
+
 .application-table-container {
   @apply mt-lg ml-lg flex-1;
 }
@@ -397,8 +403,3 @@ input[type="number"] {
   width: 100% !important;
 }
 
-.pt-application-download-btn{
-  display: flex;
-  justify-content: flex-end;
-
-}

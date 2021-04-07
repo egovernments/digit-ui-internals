@@ -28,7 +28,7 @@ export const propertyCardBodyStyle = {
 
 /*   method to convert collected details to proeprty create object */
 export const convertToProperty = (data = {}) => {
-  console.log('jag', data)
+  console.log("jag", data);
   const { address, owners } = data;
   const loc = address?.locality.code;
   const formdata = {
@@ -41,7 +41,8 @@ export const convertToProperty = (data = {}) => {
         doorNo: address?.doorNo,
         buildingName: "NA",
         locality: {
-          code: loc && loc.split("_").length == 4 ? loc.split("_")[3] : "NA",
+          //code: loc && loc.split("_").length == 4 ? loc.split("_")[3] : "NA",
+          code: address?.locality?.code || "NA",
           area: address?.locality?.name,
         },
       },
@@ -127,19 +128,40 @@ export const convertToProperty = (data = {}) => {
   return formdata;
 };
 
-
 /*   method to check not null  if not returns false*/
 export const checkForNotNull = (value = "") => {
-  return value && value != null && value != undefined && value != '' ? true : false;
-}
+  return value && value != null && value != undefined && value != "" ? true : false;
+};
 
 /*   method to check value  if not returns NA*/
 export const checkForNA = (value = "") => {
-  return checkForNotNull(value) ? value : 'PT_NA';
-}
+  return checkForNotNull(value) ? value : "PT_NA";
+};
 
 /*   method to check value  if not returns NA*/
 export const isPropertyVacant = (value = "") => {
-  return checkForNotNull(value) && value.includes('VACANT') ? true : false;
+  return checkForNotNull(value) && value.includes("VACANT") ? true : false;
+};
+
+/*   method to get required format from fielstore url*/
+export const pdfDownloadLink = (documents = {}, fileStoreId = '', format = "") => {
+  /* Need to enhance this util to return required format*/
+
+  let downloadLink = documents[fileStoreId] || '';
+  let differentFormats = downloadLink?.split(',') || [];
+  let fileURL = '';
+  differentFormats.length > 0  && differentFormats.map(link => {
+    if (!link.includes('large') && !link.includes('medium') && !link.includes('small')) {
+      fileURL = link;
+    }
+  })
+  return fileURL;
+};
+
+/*   method to get filename  from fielstore url*/
+export const pdfDocumentName = (documentLink = "",index=0) => {
+ let documentName=decodeURIComponent(documentLink.split("?")[0].split("/").pop().slice(13)) || `Document - ${index + 1}`;
+ return documentName;
 }
+
 

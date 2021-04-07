@@ -31,14 +31,14 @@ export const PaymentLinks = ({ matchPath }) => {
   return (
     <React.Fragment>
       {/* TODO: change */}
-      {/* <div>
+      <div>
         <Header>{t("CS_HOME_QUICK_PAY")}</Header>
         <div className="d-grid">
           <HomeLink to={`/digit-ui/citizen/payment/my-bills/PT`}>{t("CS_HOME_PT")}</HomeLink>
-          <HomeLink to={`${matchPath}/tl-renewal`}>{t("CS_HOME_TRADE_LICENCE_RENEWAL")}</HomeLink>
-          <HomeLink to={`${matchPath}/water-bill`}>{t("CS_HOME_WATER_BILL")}</HomeLink>
+          {/* <HomeLink to={`${matchPath}/tl-renewal`}>{t("CS_HOME_TRADE_LICENCE_RENEWAL")}</HomeLink>
+          <HomeLink to={`${matchPath}/water-bill`}>{t("CS_HOME_WATER_BILL")}</HomeLink> */}
         </div>
-      </div> */}
+      </div>
     </React.Fragment>
   );
 };
