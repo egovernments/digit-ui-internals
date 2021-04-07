@@ -32,6 +32,7 @@ import PropertyInformation from "./pages/citizen/MyProperties/propertyInformatio
 import PTWFCaption from "./pageComponents/PTWFCaption";
 import PTWFReason from "./pageComponents/PTWFReason";
 import propertyOwnerHistory from "./pages/citizen/MyProperties/propertyOwnerHistory";
+import TransferDetails from "./pages/citizen/MyProperties/propertyOwnerHistory";
 
 const componentsToRegister = {
   PropertyTax,
@@ -63,7 +64,8 @@ const componentsToRegister = {
   PropertyFloorDetails,
   PropertyBasementDetails,
   PropertyInformation,
-  propertyOwnerHistory
+  propertyOwnerHistory,
+  TransferDetails
 };
 
 const addComponentsToRegistry = () => {
