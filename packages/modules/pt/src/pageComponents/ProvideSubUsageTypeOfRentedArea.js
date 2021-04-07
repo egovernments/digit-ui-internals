@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormStep, CardLabel, RadioButtons } from "@egovernments/digit-ui-react-components";
+import { FormStep, CardLabel, RadioButtons, RadioOrSelect } from "@egovernments/digit-ui-react-components";
 import { cardBodyStyle } from "../utils";
 
 const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formData }) => {
@@ -92,20 +92,6 @@ const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formDa
     }
   });
 
-  /* const data = [
-    {
-      i18nKey: "Retail",
-    },
-    {
-      i18nKey: "Medical",
-    },
-    {
-      i18nKey: "Stationary",
-    },
-    {
-      i18nKey: "Other",
-    },
-  ]; */
   const onSkip = () => onSelect();
 
   function selectSelfOccupied(value) {
@@ -126,14 +112,16 @@ const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formDa
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!SubUsageTypeOfRentedArea}>
       <CardLabel>{t("Types of Floor Usage")}</CardLabel>
       <div style={{ ...cardBodyStyle, maxHeight: "calc(100vh - 26em)" }}>
-        <RadioButtons
-          t={t}
-          optionsKey="i18nKey"
-          isMandatory={config.isMandatory}
-          options={getSubUsagedata(subusageoption) || []}
-          selectedOption={SubUsageTypeOfRentedArea}
-          onSelect={selectSelfOccupied}
-        />
+        {getSubUsagedata(subusageoption) && (
+          <RadioOrSelect
+            t={t}
+            optionKey="i18nKey"
+            isMandatory={config.isMandatory}
+            options={getSubUsagedata(subusageoption) || []}
+            selectedOption={SubUsageTypeOfRentedArea}
+            onSelect={selectSelfOccupied}
+          />
+        )}
       </div>
     </FormStep>
   );

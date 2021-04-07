@@ -76,20 +76,6 @@ const ProvideSubUsageType = ({ t, config, onSelect, userType, formData }) => {
     }
   });
 
-  /*  data = [
-    {
-      i18nKey: "Retail",
-    },
-    {
-      i18nKey: "Medical",
-    },
-    {
-      i18nKey: "Stationary",
-    },
-    {
-      i18nKey: "Other",
-    },
-  ];  */
   const onSkip = () => onSelect();
 
   function selectSelfOccupied(value) {
@@ -111,15 +97,16 @@ const ProvideSubUsageType = ({ t, config, onSelect, userType, formData }) => {
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!SubUsageType}>
       <CardLabel>{t("Types of Floor Usage")}</CardLabel>
       <div style={cardBodyStyle}>
-        <RadioButtons
-          t={t}
-          optionsKey="i18nKey"
-          isMandatory={config.isMandatory}
-          //options={data}
-          options={getSubUsagedata(subusageoption) || {}}
-          selectedOption={SubUsageType}
-          onSelect={selectSelfOccupied}
-        />
+        {getSubUsagedata(subusageoption) && (
+          <RadioOrSelect
+            isMandatory={config.isMandatory}
+            selectedOption={SubUsageType}
+            options={getSubUsagedata(subusageoption) || {}}
+            t={t}
+            optionKey="i18nKey"
+            onSelect={selectSelfOccupied}
+          />
+        )}
       </div>
     </FormStep>
   );

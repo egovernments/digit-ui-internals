@@ -367,6 +367,19 @@ const getPTPropertyTypeList = (tenantId, moduleCode, type) => ({
   },
 });
 
+const getPTFloorList = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "Floor" }],
+      },
+    ],
+  },
+});
+
 const getReasonCriteria = (tenantId, moduleCode, type, payload) => ({
   type,
   details: {
@@ -543,6 +556,15 @@ const getPTPropertyType = (MdmsRes) =>
       i18nKey: `COMMON_PROPTYPE_${PTPropertyTypelist.code.replaceAll(".", "_")}`,
     };
   });
+
+const getFloorList = (MdmsRes) =>
+  MdmsRes["PropertyTax"].Floor.filter((PTFloor) => PTFloor.active).map((PTFloorlist) => {
+    return {
+      ...PTFloorlist,
+      i18nKey: `PROPERTYTAX_FLOOR_${PTFloorlist.code}`,
+    };
+  });
+
 const GetReasonType = (MdmsRes, type, moduleCode) =>
   Object.assign(
     {},
@@ -606,6 +628,8 @@ const transformResponse = (type, MdmsRes, moduleCode) => {
       return getUsageCategory(MdmsRes);
     case "PTPropertyType":
       return getPTPropertyType(MdmsRes);
+    case "Floor":
+      return getFloorList(MdmsRes);
     case "Reason":
       return GetReasonType(MdmsRes, type, moduleCode);
     case "RoleStatusMapping":
@@ -714,6 +738,9 @@ export const MdmsService = {
   },
   getPTPropertyType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getPTPropertyTypeList(tenantId, moduleCode), moduleCode);
+  },
+  getFloorList: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPTFloorList(tenantId, moduleCode, type), moduleCode);
   },
   getRentalDetails: (tenantId, moduleCode) => {
     return MdmsService.getDataByCriteria(tenantId, getRentalDetailsCategoryCriteria(tenantId, moduleCode), moduleCode);
