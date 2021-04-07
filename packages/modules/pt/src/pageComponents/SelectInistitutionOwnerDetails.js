@@ -101,7 +101,6 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
           {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
-            type: "tel",
             title: t("PT_NAME_ERROR_MESSAGE"),
           })}
         />
@@ -126,7 +125,6 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
           {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
-            type: "tel",
             title: t("PT_NAME_ERROR_MESSAGE"),
           })}
         />
@@ -141,7 +139,6 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
           {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
-            type: "tel",
             title: t("PT_DESIGNATION_ERROR_MESSAGE"),
           })}
         />
@@ -169,7 +166,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
           name="altContactNumber"
           onChange={setAltContactNo}
           value={altContactNumber}
-          type={"tel"}
+          type={"number"}
           {...(validation = {
             isRequired: true,
             pattern: "^[0-9]{10,11}$",
@@ -184,11 +181,11 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
           t={t}
           name="email"
           onChange={setEmail}
+          type="email"
           value={emailId}
           {...(validation = {
             isRequired: true,
-            pattern: `^(?=^.{1,64}$)((([^<>()\[\]\\.,;:\s$*@'"]+(\.[^<>()\[\]\\.,;:\s@'"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))`,
-            type: "number",
+            type: "email",
             title: t("PT_EMAIL_ID_ERROR_MESSAGE"),
           })}
         />

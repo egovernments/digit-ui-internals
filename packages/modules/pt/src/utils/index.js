@@ -26,11 +26,54 @@ export const propertyCardBodyStyle = {
   overflowY: "auto",
 };
 
+export const getIntistitutionDetails = (data) => {
+  const { address, owners } = data;
+  let institution = {}, owner = [];
+  if (owners && owners.length > 0) {
+    if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
+      institution.designation = owners[0]?.designation;
+      institution.name = owners[0]?.inistitutionName;
+      institution.nameOfAuthorizedPerson = owners[0]?.name;
+      institution.tenantId = address?.city?.code;
+      institution.type = owners[0]?.inistitutetype?.value;
+      owner.push({
+        altContactNumber: owners[0]?.altContactNumber,
+        correspondenceAddress: owners[0]?.permanentAddress,
+        designation: owners[0]?.designation,
+        emailId: owners[0]?.emailId,
+        isCorrespondenceAddress: owners[0]?.isCorrespondenceAddress,
+        mobileNumber: owners[0]?.mobileNumber,
+        name: owners[0]?.name,
+        ownerType: ownr?.ownerType?.code || "NONE"
+      })
+      data.institution = institution;
+      data.owners = owner;
+    } else {
+      owners.map(ownr => {
+        owner.push({
+          emailId: ownr?.emailId,
+          fatherOrHusbandName: ownr?.fatherOrHusbandName,
+          gender: ownr?.gender?.value,
+          isCorrespondenceAddress: ownr?.isCorrespondenceAddress,
+          mobileNumber: ownr?.mobileNumber,
+          name: ownr?.name,
+          ownerType: ownr?.ownerType?.code || "NONE",
+          permanentAddress: ownr?.permanentAddress,
+          relationship: ownr?.relationship?.code
+        })
+      })
+      data.owners = owner;
+    }
+  }
+  return data;
+}
+
 /*   method to convert collected details to proeprty create object */
 export const convertToProperty = (data = {}) => {
   console.log("jag", data);
   const { address, owners } = data;
   const loc = address?.locality.code;
+  data = getIntistitutionDetails(data);
   const formdata = {
     Property: {
       tenantId: address?.city?.code || "pb.amritsar",
@@ -62,31 +105,9 @@ export const convertToProperty = (data = {}) => {
       landArea: "2000",
       propertyType: "BUILTUP.SHAREDPROPERTY",
       noOfFloors: 1,
-      ownershipCategory: "INDIVIDUAL.SINGLEOWNER",
-      owners: (owners &&
-        owners.map((owners, index) => ({
-          name: owners?.name || "Ajit",
-          mobileNumber: owners?.mobileNumber || "9965664222",
-          fatherOrHusbandName: owners?.fatherOrHusbandName,
-          emailId: null,
-          permanentAddress: owners?.permanentAddress,
-          relationship: owners?.relationship?.code,
-          ownerType: owners?.ownerType?.code || "NONE",
-          gender: owners?.gender?.value,
-          isCorrespondenceAddress: null,
-        }))) || [
-        {
-          name: "Jagan",
-          mobileNumber: "9965664222",
-          fatherOrHusbandName: "E",
-          emailId: null,
-          permanentAddress: "1111, 1111, Back Side 33 KVA Grid Patiala Road - Area1, Amritsar, ",
-          relationship: "FATHER",
-          ownerType: "FREEDOMFIGHTER",
-          gender: "MALE",
-          isCorrespondenceAddress: null,
-        },
-      ],
+      ownershipCategory: data?.ownershipCategory?.value,
+      owners: data.owners,
+      institution: data.institution || null,
       additionalDetails: {
         inflammable: false,
         heightAbove36Feet: false,
