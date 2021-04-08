@@ -45,7 +45,7 @@ const CreateProperty = ({ parentRoute }) => {
       } else if (nextStep[sessionStorage.getItem("IsThisFloorSelfOccupied")]) {
         nextStep = `${nextStep[sessionStorage.getItem("IsThisFloorSelfOccupied")]}/${index}`;
       } else {
-        nextStep = `${nextStep[sessionStorage.getItem("noOofBasements")]}/${index}`;
+        nextStep = `${nextStep[sessionStorage.getItem("propertyArea")]}/${index}`;
         //nextStep = `${"floordetails"}/${index}`;
       }
     }

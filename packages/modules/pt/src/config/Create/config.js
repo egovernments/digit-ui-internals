@@ -93,14 +93,14 @@ export const newConfig = [
           cardText: "PT_PROPERTY_DETAILS_NO_OF_FLOORS_TEXT",
           submitBarLabel: "PT_COMMONS_NEXT",
         },
-        nextStep: "number-of-basements@0",
+        nextStep: "number-of-basements",
         key: "noOfFloors",
         withoutLabel: true,
         hideInEmployee: true,
       },
       {
         type: "component",
-        route: "number-of-basements@0",
+        route: "number-of-basements",
         isMandatory: true,
         component: "PropertyBasementDetails",
         texts: {
@@ -109,18 +109,19 @@ export const newConfig = [
           cardText: "",
           submitBarLabel: "PT_COMMONS_NEXT",
         },
-        nextStep: {
+        /* nextStep: {
           "No Basement": "floordetails",
           "1 Basement": "floordetails",
           "2 Basement": "floordetails",
-        },
+        }, */
+        nextStep: "floordetails@0",
         key: "noOofBasements",
         withoutLabel: true,
         hideInEmployee: true,
       },
       {
         type: "component",
-        route: "floordetails",
+        route: "floordetails@0",
         isMandatory: true,
         component: "GroundFloorDetails",
         texts: {
@@ -129,8 +130,9 @@ export const newConfig = [
           cardText: "PT_PROPERTY_DETAILS_FLOOR_DETAILS_TEXT",
           submitBarLabel: "Next",
         },
-        nextStep: "is-this-floor-self-occupied",
-        key: "units",
+        nextStep: { multiple: "is-this-floor-self-occupied" },
+
+        key: "propertyArea",
         withoutLabel: true,
         hideInEmployee: true,
       },
