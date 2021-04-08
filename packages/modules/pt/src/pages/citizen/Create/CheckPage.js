@@ -74,16 +74,71 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                     {t("PT_OWNER_SUB_HEADER")} - {index + 1}
                   </CardSubHeader>
                 )}
+                {(ownershipCategory?.value == "INSTITUTIONALPRIVATE" || ownershipCategory?.value == "INSTITUTIONALGOVERNMENT")? 
+                <div>
                 <StatusTable>
                   <Row
-                    label={t("PT_COMMON_APPLICANT_NAME_LABEL")}
-                    text={`${t(checkForNA(owner?.name))}`}
-                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`} />}
+                    label={t("PT_COMMON_INSTITUTION_NAME")}
+                    text={`${t(checkForNA(owner?.inistitutionName))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
                   />
                   <Row
-                    label={t("PT_COMMON_GENDER_LABEL")}
+                    label={t("PT_TYPE_OF_INSTITUTION")}
+                    text={`${t(checkForNA(owner?.inistitutetype?.code))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={t("PT_OWNER_NAME")}
+                    text={`${t(checkForNA(owner?.name))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_COMMON_AUTHORISED_PERSON_DESIGNATION")}`}
+                    text={`${t(checkForNA(owner?.designation))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_FORM3_MOBILE_NUMBER")}`}
+                    text={`${t(checkForNA(owner?.mobileNumber))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_OWNERSHIP_INFO_TEL_PHONE_NO")}`}
+                    text={`${t(checkForNA(owner?.altContactNumber))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_FORM3_EMAIL_ID")}`}
+                    text={`${t(checkForNA(owner?.emailId))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/inistitution-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_OWNERSHIP_INFO_CORR_ADDR")}`}
+                    text={`${t(checkForNA(owner?.permanentAddress))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/institutional-owner-address/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_COMMON_SAME_AS_PROPERTY_ADDRESS")}`}
+                    text={`${t(checkForNA(owner?.isCorrespondenceAddress))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/institutional-owner-address/"}${index}`} />}
+                  />
+                </StatusTable>
+                </div>:<div>
+                <StatusTable>
+                  <Row
+                    label={t("PT_OWNER_NAME")}
+                    text={`${t(checkForNA(owner?.name))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`}/>}
+                  />
+                  <Row
+                    label={t("PT_FORM3_GENDER")}
                     text={`${t(checkForNA(owner?.gender?.code))}`}
-                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`} />}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`}/>}
+                  />
+                  <Row
+                    label={`${t("PT_FORM3_MOBILE_NUMBER")}`}
+                    text={`${t(checkForNA(owner?.mobileNumber))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`}/>}
                   />
                   <Row
                     label={t("PT_FORM3_GUARDIAN_NAME")}
@@ -91,11 +146,27 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                     actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`} />}
                   />
                   <Row
-                    label={`${t("COMMON_OWNER")} ${t("PT_ADDRESS_LABEL")}`}
+                    label={t("PT_FORM3_RELATIONSHIP")}
+                    text={`${t(checkForNA(owner?.relationship?.code))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-details/"}${index}`} />}
+                  />
+                  <Row
+                    label={t("PT_SPECIAL_OWNER_CATEGORY")}
+                    text={`${t(checkForNA(owner?.ownerType?.code))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/special-owner-category/"}${index}`} />}
+                  />
+                  <Row
+                    label={`${t("PT_OWNERS_ADDRESS")}`}
                     text={`${t(checkForNA(owner?.permanentAddress))}`}
                     actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-address/"}${index}`} />}
                   />
+                  <Row
+                    label={`${t("PT_COMMON_SAME_AS_PROPERTY_ADDRESS")}`}
+                    text={`${t(checkForNA(owner?.isCorrespondenceAddress))}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-address/"}${index}`} />}
+                  />
                 </StatusTable>
+                </div>}
               </div>
             ))}
         </div>

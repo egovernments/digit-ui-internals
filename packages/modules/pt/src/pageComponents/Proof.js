@@ -11,6 +11,7 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   const handleSubmit = () => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
+    if (fileDetails) fileDetails.documentType = "ADDRESSPROOF";
     if (fileDetails) fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     let address = formData;
     if (address && address.documents) {

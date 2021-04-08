@@ -73,7 +73,7 @@ export const propertyCardBodyStyle = {
   overflowY: "auto",
 };
 
-export const getIntistitutionDetails = (data) => {
+export const getIntistitutionOwnerDetails = (data) => {
   const { address, owners } = data;
   let institution = {}, owner = [];
   if (owners && owners.length > 0) {
@@ -91,12 +91,19 @@ export const getIntistitutionDetails = (data) => {
         isCorrespondenceAddress: owners[0]?.isCorrespondenceAddress,
         mobileNumber: owners[0]?.mobileNumber,
         name: owners[0]?.name,
-        ownerType: ownr?.ownerType?.code || "NONE"
+        ownerType: owners[0]?.ownerType?.code || "NONE"
       })
       data.institution = institution;
       data.owners = owner;
     } else {
       owners.map(ownr => {
+        let document = [];
+        if (ownr?.ownerType?.code != "NONE") {
+          document.push({
+            fileStoreId: ownr.documents["specialProofIdentity"].fileStoreId || "",
+            documentType: ownr.documents["specialProofIdentity"].documentType || ""
+          });
+        }
         owner.push({
           emailId: ownr?.emailId,
           fatherOrHusbandName: ownr?.fatherOrHusbandName,
@@ -106,7 +113,8 @@ export const getIntistitutionDetails = (data) => {
           name: ownr?.name,
           ownerType: ownr?.ownerType?.code || "NONE",
           permanentAddress: ownr?.permanentAddress,
-          relationship: ownr?.relationship?.code
+          relationship: ownr?.relationship?.code,
+          documents: document
         })
       })
       data.owners = owner;
@@ -115,12 +123,28 @@ export const getIntistitutionDetails = (data) => {
   return data;
 }
 
+export const getDocumentDetails = (data) => {
+  const { address, owners } = data;
+  let documents = [];
+  documents.push({
+    fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
+    documentType: address?.documents["ProofOfAddress"]?.documentType || ""
+  });
+  documents.push({
+    fileStoreId: owners[owners.length - 1]?.documents["proofIdentity"]?.fileStoreId || "",
+    documentType: owners[owners.length - 1]?.documents["proofIdentity"]?.documentType || ""
+  });
+  data.documents = documents
+  return data;
+}
+
 /*   method to convert collected details to proeprty create object */
 export const convertToProperty = (data = {}) => {
   console.log("jag", data);
   const { address, owners } = data;
   const loc = address?.locality.code;
-  data = getIntistitutionDetails(data);
+  data = getDocumentDetails(data);
+  data = getIntistitutionOwnerDetails(data);
   const formdata = {
     Property: {
       tenantId: address?.city?.code || "pb.amritsar",
@@ -161,33 +185,7 @@ export const convertToProperty = (data = {}) => {
       },
       source: "MUNICIPAL_RECORDS",
       channel: "CFC_COUNTER",
-      documents: [
-        {
-          documentType: "OWNER.ADDRESSPROOF.WATERBILL",
-          fileStoreId: "19caf3fe-a98b-4207-94cd-d2092f9f78a2",
-          documentUid: "file1.jpg",
-        },
-        {
-          documentType: "OWNER.IDENTITYPROOF.PAN",
-          fileStoreId: "985f53c5-f09f-4d17-8fa7-5593cf1de47a",
-          documentUid: "file.jpg",
-        },
-        {
-          documentType: "OWNER.REGISTRATIONPROOF.GIFTDEED",
-          fileStoreId: "6aaf6f3e-21fb-4e4f-8c5b-2d98eeff2709",
-          documentUid: "doc.pdf",
-        },
-        {
-          documentType: "OWNER.USAGEPROOF.ELECTRICITYBILL",
-          fileStoreId: "858cc6b5-969c-479d-a89a-91d7319e5b07",
-          documentUid: "doc.pdf",
-        },
-        {
-          documentType: "OWNER.CONSTRUCTIONPROOF.BPACERTIFICATE",
-          fileStoreId: "044616b2-7556-4903-9908-941f03ac6a70",
-          documentUid: "doc.pdf",
-        },
-      ],
+      documents: data.documents || [],
       superBuiltUpArea: 16.67,
       usageCategory: "RESIDENTIAL",
       creationReason: "CREATE",

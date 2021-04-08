@@ -42,6 +42,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
     let fileDetails = file;
     if (fileDetails) {
       fileDetails = { ...fileDetails };
+      fileDetails.documentType = "IDENTITYPROOF";
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
     let ownerDetails = formData.owners && formData.owners[index];
