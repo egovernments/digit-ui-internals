@@ -3,11 +3,11 @@ import { FormStep, CardLabel, TextInput } from "@egovernments/digit-ui-react-com
 
 const GroundFloorDetails = ({ t, config, onSelect, value, userType, formData }) => {
   //let index = window.location.href.charAt(window.location.href.length - 1);
-  let index = window.location.href.split("/").pop();
+  //let index = window.location.href.split("/").pop();
   let validation = {};
   const onSkip = () => onSelect();
-  const [plotSize, setplotSize] = useState(formData.units && formData.units[index] && formData.units[index].plotSize);
-  const [builtUpArea, setbuiltUpArea] = useState(formData.units && formData.units[index] && formData.units[index].builtUpArea);
+  const [plotSize, setplotSize] = useState(formData.plotSize);
+  const [builtUpArea, setbuiltUpArea] = useState(formData.builtUpArea);
 
   function setPropertyplotSize(e) {
     setplotSize(e.target.value);
@@ -36,9 +36,11 @@ const GroundFloorDetails = ({ t, config, onSelect, value, userType, formData }) 
     },
   ];
   const goNext = () => {
+    let index = window.location.href.charAt(window.location.href.length - 1);
     let unit = formData.units && formData.units[index];
-    let floordet = { ...unit, plotSize, builtUpArea };
-    onSelect(config.key, floordet, false, index);
+    let floordet = { plotSize, builtUpArea };
+    sessionStorage.setItem("propertyArea", "multiple");
+    onSelect(config.key, floordet, "", index);
   };
   //const onSkip = () => onSelect();
 

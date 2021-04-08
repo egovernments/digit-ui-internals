@@ -103,7 +103,7 @@ const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formDa
       let unit = formData.units && formData.units[index];
       let floordet = { ...unit, SubUsageTypeOfRentedArea };
       //let index = window.location.href.charAt(window.location.href.length - 1);
-      onSelect(config.key, floordet, "", index);
+      onSelect(config.key, floordet, false, index);
     } else {
       onSelect("Subusagetypeofrentedarea", { SubUsageTypeOfRentedArea });
     }

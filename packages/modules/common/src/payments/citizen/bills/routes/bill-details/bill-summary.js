@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const BillSumary = ({ billAccountDetails, total, businessService }) => {
+const BillSumary = ({ billAccountDetails, total, businessService, arrears }) => {
   const { t } = useTranslation();
 
   return (
@@ -17,6 +17,13 @@ const BillSumary = ({ billAccountDetails, total, businessService }) => {
               </div>
             );
           })}
+
+        {arrears && (
+          <div className="bill-account-details">
+            <div className="label">{t("COMMON_ARREARS")}</div>
+            <div className="value">₹ {arrears}</div>
+          </div>
+        )}
 
         <hr className="underline" />
         <div className="amount-details">

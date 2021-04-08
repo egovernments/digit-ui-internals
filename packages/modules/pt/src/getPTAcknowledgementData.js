@@ -1,4 +1,12 @@
-import { getFixedFilename, getPropertyTypeLocale, getPropertyOwnerTypeLocale,getPropertyUsageTypeLocale,getPropertySubUsageTypeLocale ,getPropertyOccupancyTypeLocale, getMohallaLocale} from "./utils";
+import {
+  getFixedFilename,
+  getPropertyTypeLocale,
+  getPropertyOwnerTypeLocale,
+  getPropertyUsageTypeLocale,
+  getPropertySubUsageTypeLocale,
+  getPropertyOccupancyTypeLocale,
+  getMohallaLocale,
+} from "./utils";
 
 const capitalize = (text) => text.substr(0, 1).toUpperCase() + text.substr(1);
 const ulbCamel = (ulb) => ulb.toLowerCase().split(" ").map(capitalize).join(" ");
@@ -116,7 +124,7 @@ const getPTAcknowledgementData = (application, tenantInfo, t) => {
           { title: t("PT_PROPERTY_ADDRESS_CITY"), value: application?.address?.city || "N/A" },
           {
             title: t("PT_PROPERTY_ADDRESS_MOHALLA"),
-            value: t(`${getMohallaLocale(application?.address?.locality?.code,application?.tenantId)}`) || "N/A",
+            value: t(`${getMohallaLocale(application?.address?.locality?.code, application?.tenantId)}`) || "N/A",
           },
           { title: t("PT_PROPERTY_ADDRESS_STREET_NAME"), value: application?.address?.street || "N/A" },
           { title: t("PT_PROPERTY_ADDRESS_HOUSE_NO"), value: application?.address?.doorNo || "N/A" },
@@ -128,11 +136,11 @@ const getPTAcknowledgementData = (application, tenantInfo, t) => {
         values:
           application.documents.length > 0
             ? application.documents.map((document) => {
-              return {
-                title: t(document?.documentType || "N/A"),
-                value: (document?.documentUid && getFixedFilename(document.documentUid)) || "N/A",
-              };
-            })
+                return {
+                  title: t(document?.documentType || "N/A"),
+                  value: (document?.documentUid && getFixedFilename(document.documentUid)) || "N/A",
+                };
+              })
             : "NA",
       },
     ],

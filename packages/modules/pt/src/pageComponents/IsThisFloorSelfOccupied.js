@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { FormStep, RadioOrSelect, RadioButtons } from "@egovernments/digit-ui-react-components";
 
 const IsThisFloorSelfOccupied = ({ t, config, onSelect, userType, formData }) => {
+  let index = window.location.href.split("/").pop();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
-  const [selfOccupied, setSelfOccupied] = useState(formData?.IsThisFloorSelfOccupied);
-
+  //const [selfOccupied, setSelfOccupied] = useState(formData?.IsThisFloorSelfOccupied);
+  let selfOccupied, setSelfOccupied;
+  if (!isNaN(index)) {
+    [selfOccupied, setSelfOccupied] = useState(formData.units && formData.units[index] && formData.units[index].selfOccupied);
+  } else {
+    [selfOccupied, setSelfOccupied] = useState(formData?.selfOccupied);
+  }
   const data = [
     {
       i18nKey: "Yes, It is fully Self Occupied",
@@ -32,7 +38,16 @@ const IsThisFloorSelfOccupied = ({ t, config, onSelect, userType, formData }) =>
     } else {
       sessionStorage.setItem("IsThisFloorSelfOccupied", selfOccupied.i18nKey);
     }
-    onSelect(config.key, selfOccupied, false, index);
+    //onSelect(config.key, selfOccupied, false, index);
+    if (!isNaN(index)) {
+      //sessionStorage.setItem("IsAnyPartOfThisFloorUnOccupied", IsAnyPartOfThisFloorUnOccupied.i18nKey);
+      let unit = formData.units && formData.units[index];
+      let floordet = { ...unit, selfOccupied };
+      onSelect(config.key, floordet, false, index);
+    } else {
+      //sessionStorage.setItem("IsAnyPartOfThisFloorUnOccupied", IsAnyPartOfThisFloorUnOccupied.i18nKey);
+      onSelect("selfOccupied", selfOccupied);
+    }
   }
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!selfOccupied}>

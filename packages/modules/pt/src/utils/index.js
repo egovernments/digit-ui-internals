@@ -3,53 +3,45 @@ export const checkForNotNull = (value = "") => {
   return value && value != null && value != undefined && value != "" ? true : false;
 };
 
-
 export const convertDotValues = (value = "") => {
-  return checkForNotNull(value) && (value.replaceAll && value.replaceAll('.', '_') || value.replace && value.replace('.', '_')) || 'NA';
-}
-
-
+  return (checkForNotNull(value) && ((value.replaceAll && value.replaceAll(".", "_")) || (value.replace && value.replace(".", "_")))) || "NA";
+};
 
 export const convertToLocale = (value = "", key = "") => {
   let convertedValue = convertDotValues(value);
-  if (convertedValue == 'NA') {
-    return 'PT_NA';
+  if (convertedValue == "NA") {
+    return "PT_NA";
   }
   return `${key}_${convertedValue}`;
-}
-
+};
 
 export const getPropertyTypeLocale = (value = "") => {
-  return convertToLocale(value, 'COMMON_PROPTYPE');
-}
-
+  return convertToLocale(value, "COMMON_PROPTYPE");
+};
 
 export const getPropertyUsageTypeLocale = (value = "") => {
-  return convertToLocale(value, 'COMMON_PROPUSGTYPE');
-}
-
+  return convertToLocale(value, "COMMON_PROPUSGTYPE");
+};
 
 export const getPropertySubUsageTypeLocale = (value = "") => {
-  return convertToLocale(value, 'COMMON_PROPSUBUSGTYPE');
-}
+  return convertToLocale(value, "COMMON_PROPSUBUSGTYPE");
+};
 export const getPropertyOccupancyTypeLocale = (value = "") => {
-  return convertToLocale(value, 'PROPERTYTAX_OCCUPANCYTYPE');
-}
-
+  return convertToLocale(value, "PROPERTYTAX_OCCUPANCYTYPE");
+};
 
 export const getMohallaLocale = (value = "", tenantId = "") => {
   let convertedValue = convertDotValues(tenantId);
-  if (convertedValue == 'NA' || !checkForNotNull(value)) {
-    return 'PT_NA';
+  if (convertedValue == "NA" || !checkForNotNull(value)) {
+    return "PT_NA";
   }
   convertedValue = convertedValue.toUpperCase();
   return convertToLocale(value, `${convertedValue}_REVENUE`);
-}
+};
 
 export const getPropertyOwnerTypeLocale = (value = "") => {
-  return convertToLocale(value, 'PROPERTYTAX_OWNERTYPE');
-}
-
+  return convertToLocale(value, "PROPERTYTAX_OWNERTYPE");
+};
 
 export const getFixedFilename = (filename = "", size = 5) => {
   if (filename.length <= size) {
@@ -94,7 +86,8 @@ export const setAddressDetails = (data) => {
 
 export const setOwnerDetails = (data) => {
   const { address, owners } = data;
-  let institution = {}, owner = [];
+  let institution = {},
+    owner = [];
   if (owners && owners.length > 0) {
     if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
       institution.designation = owners[0]?.designation;
@@ -110,17 +103,17 @@ export const setOwnerDetails = (data) => {
         isCorrespondenceAddress: owners[0]?.isCorrespondenceAddress,
         mobileNumber: owners[0]?.mobileNumber,
         name: owners[0]?.name,
-        ownerType: owners[0]?.ownerType?.code || "NONE"
-      })
+        ownerType: owners[0]?.ownerType?.code || "NONE",
+      });
       data.institution = institution;
       data.owners = owner;
     } else {
-      owners.map(ownr => {
+      owners.map((ownr) => {
         let document = [];
         if (ownr?.ownerType?.code != "NONE") {
           document.push({
             fileStoreId: ownr.documents["specialProofIdentity"].fileStoreId || "",
-            documentType: ownr.documents["specialProofIdentity"].documentType || ""
+            documentType: ownr.documents["specialProofIdentity"].documentType || "",
           });
         }
         owner.push({
@@ -133,29 +126,29 @@ export const setOwnerDetails = (data) => {
           ownerType: ownr?.ownerType?.code || "NONE",
           permanentAddress: ownr?.permanentAddress,
           relationship: ownr?.relationship?.code,
-          documents: document
-        })
-      })
+          documents: document,
+        });
+      });
       data.owners = owner;
     }
   }
   return data;
-}
+};
 
 export const setDocumentDetails = (data) => {
   const { address, owners } = data;
   let documents = [];
   documents.push({
     fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
-    documentType: address?.documents["ProofOfAddress"]?.documentType || ""
+    documentType: address?.documents["ProofOfAddress"]?.documentType || "",
   });
   owners && documents.push({
     fileStoreId: owners[owners.length - 1]?.documents["proofIdentity"]?.fileStoreId || "",
-    documentType: owners[owners.length - 1]?.documents["proofIdentity"]?.documentType || ""
+    documentType: owners[owners.length - 1]?.documents["proofIdentity"]?.documentType || "",
   });
-  data.documents = documents
+  data.documents = documents;
   return data;
-}
+};
 
 const getUsageType = (data) => {
   if (data?.isResdential?.code == "RESIDENTIAL") {
@@ -283,7 +276,6 @@ export const convertToProperty = (data = {}) => {
   return formdata;
 };
 
-
 /*   method to check value  if not returns NA*/
 export const checkForNA = (value = "") => {
   return checkForNotNull(value) ? value : "PT_NA";
@@ -294,6 +286,30 @@ export const isPropertyVacant = (value = "") => {
   return checkForNotNull(value) && value.includes("VACANT") ? true : false;
 };
 
+/*   method to check value equal to flat / part of building if not returns NA  */
+export const isPropertyFlatorPartofBuilding = (value = "") => {
+  return checkForNotNull(value) && value.includes("SHAREDPROPERTY") ? true : false;
+};
+
+export const isPropertyIndependent = (value = "") => {
+  return checkForNotNull(value) && value.includes("INDEPENDENT") ? true : false;
+};
+
+export const isthere1Basement = (value = "") => {
+  return checkForNotNull(value) && value.includes("1") ? true : false;
+};
+
+export const isthere2Basement = (value = "") => {
+  return checkForNotNull(value) && value.includes("2") ? true : false;
+};
+
+export const isPropertyselfoccupied = (value = "") => {
+  return checkForNotNull(value) && value.includes("Self") ? true : false;
+};
+
+export const ispropertyunoccupied = (value = "") => {
+  return checkForNotNull(value) && value.includes("Yes") ? true : false;
+};
 /*   method to get required format from fielstore url*/
 export const pdfDownloadLink = (documents = {}, fileStoreId = "", format = "") => {
   /* Need to enhance this util to return required format*/
