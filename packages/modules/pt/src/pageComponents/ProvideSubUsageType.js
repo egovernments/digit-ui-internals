@@ -87,7 +87,7 @@ const ProvideSubUsageType = ({ t, config, onSelect, userType, formData }) => {
     if (!isNaN(index)) {
       let unit = formData.units && formData.units[index];
       let floordet = { ...unit, SubUsageType };
-      onSelect(config.key, floordet, " ", index);
+      onSelect(config.key, floordet, false, index);
     } else {
       [];
       onSelect("subusagetype", { SubUsageType });

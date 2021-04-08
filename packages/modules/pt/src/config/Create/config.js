@@ -145,7 +145,7 @@ export const newConfig = [
           cardText: "PT_ASSESSMENT_FLOW_FLOOR_OCC_TEXT",
           submitBarLabel: "PT_COMMON_NEXT",
         },
-        key: "IsThisFloorSelfOccupied",
+        key: "units",
         withoutLabel: true,
         //nextStep: "provide-sub-usage-type",
         nextStep: {
@@ -217,7 +217,7 @@ export const newConfig = [
           cardText: "PT_ASSESSMENT_FLOW_ISUNOCCUPIED_TEXT",
           submitBarLabel: "PT_COMMON_NEXT",
         },
-        key: "IsAnyPartOfThisFloorUnOccupied",
+        key: "units",
         withoutLabel: true,
         //nextStep: "un-occupied-area",
         nextStep: {
