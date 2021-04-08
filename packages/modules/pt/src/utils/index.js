@@ -143,6 +143,30 @@ export const isPropertyVacant = (value = "") => {
   return checkForNotNull(value) && value.includes("VACANT") ? true : false;
 };
 
+/*   method to check value equal to flat / part of building if not returns NA  */
+export const isPropertyFlatorPartofBuilding = (value = "") => {
+  return checkForNotNull(value) && value.includes("SHAREDPROPERTY") ? true : false;
+};
+
+export const isPropertyIndependent = (value = "") => {
+  return checkForNotNull(value) && value.includes("INDEPENDENT") ? true : false;
+};
+
+export const isthere1Basement = (value = "") => {
+  return checkForNotNull(value) && value.includes("1") ? true : false;
+};
+
+export const isthere2Basement = (value = "") => {
+  return checkForNotNull(value) && value.includes("2") ? true : false;
+};
+
+export const isPropertyselfoccupied = (value = "") => {
+  return checkForNotNull(value) && value.includes("Self") ? true : false;
+};
+
+export const ispropertyunoccupied = (value = "") => {
+  return checkForNotNull(value) && value.includes("Yes") ? true : false;
+};
 /*   method to get required format from fielstore url*/
 export const pdfDownloadLink = (documents = {}, fileStoreId = "", format = "") => {
   /* Need to enhance this util to return required format*/
