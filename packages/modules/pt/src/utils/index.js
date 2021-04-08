@@ -42,7 +42,7 @@ export const getMohallaLocale = (value = "", tenantId = "") => {
   if (convertedValue == 'NA' || !checkForNotNull(value)) {
     return 'PT_NA';
   }
-  convertedValue=convertedValue.toUpperCase();
+  convertedValue = convertedValue.toUpperCase();
   return convertToLocale(value, `${convertedValue}_REVENUE`);
 }
 
@@ -73,7 +73,26 @@ export const propertyCardBodyStyle = {
   overflowY: "auto",
 };
 
-export const getIntistitutionOwnerDetails = (data) => {
+export const setAddressDetails = (data) => {
+  let { address } = data;
+
+  let propAddress = {
+    pincode: address?.pincode,
+    landmark: address?.landmark,
+    city: address?.city?.name,
+    doorNo: address?.doorNo,
+    street: address?.street,
+    locality: {
+      code: address?.locality?.code || "NA",
+      area: address?.locality?.name,
+    },
+  };
+  data.tenantId = address?.city?.code || "pb.amritsar";
+  data.address = propAddress;
+  return data;
+}
+
+export const setOwnerDetails = (data) => {
   const { address, owners } = data;
   let institution = {}, owner = [];
   if (owners && owners.length > 0) {
@@ -123,14 +142,14 @@ export const getIntistitutionOwnerDetails = (data) => {
   return data;
 }
 
-export const getDocumentDetails = (data) => {
+export const setDocumentDetails = (data) => {
   const { address, owners } = data;
   let documents = [];
   documents.push({
     fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
     documentType: address?.documents["ProofOfAddress"]?.documentType || ""
   });
-  documents.push({
+  owners && documents.push({
     fileStoreId: owners[owners.length - 1]?.documents["proofIdentity"]?.fileStoreId || "",
     documentType: owners[owners.length - 1]?.documents["proofIdentity"]?.documentType || ""
   });
@@ -138,29 +157,28 @@ export const getDocumentDetails = (data) => {
   return data;
 }
 
-/*   method to convert collected details to proeprty create object */
-export const convertToProperty = (data = {}) => {
-  console.log("jag", data);
-  const { address, owners } = data;
-  const loc = address?.locality.code;
-  data = getDocumentDetails(data);
-  data = getIntistitutionOwnerDetails(data);
-  const formdata = {
-    Property: {
-      tenantId: address?.city?.code || "pb.amritsar",
-      address: {
-        pincode: address?.pincode,
-        landmark: address?.landmark,
-        city: address?.city?.name,
-        doorNo: address?.doorNo,
-        buildingName: "NA",
-        locality: {
-          //code: loc && loc.split("_").length == 4 ? loc.split("_")[3] : "NA",
-          code: address?.locality?.code || "NA",
-          area: address?.locality?.name,
-        },
-      },
-      usageCategoryMinor: null,
+const getUsageType = (data) => {
+  if (data?.isResdential?.code == "RESIDENTIAL") {
+    return data?.isResdential?.code;
+  } else {
+    return data?.usageCategoryMajor?.code;
+  }
+}
+
+export const setPropertyDetails = (data) => {
+
+  let propertyDetails = {}
+  if (data?.PropertyType?.code?.includes('VACANT')) {
+    propertyDetails = {
+      units: [],
+      landArea: data?.landarea?.floorarea,
+      propertyType: data?.PropertyType?.code,
+      noOfFloors: 0,
+      usageCategory: getUsageType(data),
+    }
+  } else if (data?.PropertyType?.code?.includes('SHAREDPROPERTY')) {
+    /*  update this case tulika*/
+    propertyDetails = {
       units: [
         {
           occupancyType: "SELFOCCUPIED",
@@ -168,29 +186,100 @@ export const convertToProperty = (data = {}) => {
           constructionDetail: {
             builtUpArea: 16.67,
           },
-          tenantId: address?.city?.code,
+          tenantId: data.tenantId,
           usageCategory: "RESIDENTIAL",
         },
       ],
-      usageCategoryMajor: "RESIDENTIAL",
       landArea: "2000",
-      propertyType: "BUILTUP.SHAREDPROPERTY",
+      propertyType: data?.PropertyType?.code,
       noOfFloors: 1,
+      superBuiltUpArea: 16.67,
+      usageCategory: getUsageType(data),
+    }
+
+  } else if (data?.PropertyType?.code?.includes('INDEPENDENTPROPERTY')) {
+    /*  update this case tulika*/
+    propertyDetails = {
+      units: [
+        {
+          occupancyType: "SELFOCCUPIED",
+          floorNo: "0",
+          constructionDetail: {
+            builtUpArea: 16.67,
+          },
+          tenantId: data.tenantId,
+          usageCategory: "RESIDENTIAL",
+        },
+      ],
+      landArea: "2000",
+      propertyType: data?.PropertyType?.code,
+      noOfFloors: 1,
+      superBuiltUpArea: 16.67,
+      usageCategory: getUsageType(data),
+    }
+
+  } else {
+
+    propertyDetails = {
+      units: [
+        {
+          occupancyType: "SELFOCCUPIED",
+          floorNo: "0",
+          constructionDetail: {
+            builtUpArea: 16.67,
+          },
+          tenantId: data.tenantId,
+          usageCategory: "RESIDENTIAL",
+        },
+      ],
+      landArea: "2000",
+      propertyType: data?.PropertyType?.code,
+      noOfFloors: 1,
+      superBuiltUpArea: 16.67,
+      usageCategory: getUsageType(data),
+    }
+
+  }
+
+  data.propertyDetails = propertyDetails;
+  return data;
+}
+
+/*   method to convert collected details to proeprty create object */
+export const convertToProperty = (data = {}) => {
+  console.info("propertyFormData", data);
+
+
+  data = setDocumentDetails(data);
+  data = setOwnerDetails(data);
+  data = setAddressDetails(data);
+  data = setPropertyDetails(data);
+
+
+  const formdata = {
+    Property: {
+      tenantId: data.tenantId,
+      address: data.address,
+
       ownershipCategory: data?.ownershipCategory?.value,
       owners: data.owners,
       institution: data.institution || null,
+
+      documents: data.documents || [],
+      ...data.propertyDetails,
+
       additionalDetails: {
         inflammable: false,
         heightAbove36Feet: false,
       },
-      source: "MUNICIPAL_RECORDS",
-      channel: "CFC_COUNTER",
-      documents: data.documents || [],
-      superBuiltUpArea: 16.67,
-      usageCategory: "RESIDENTIAL",
+
       creationReason: "CREATE",
+      source: "MUNICIPAL_RECORDS",
+      channel: "CFC_COUNTER"
+
     },
   };
+  console.info("propertyCreated", formdata)
   return formdata;
 };
 
