@@ -22,7 +22,7 @@ const PropertyUsageType = ({ t, config, onSelect, userType, formData }) => {
         usagecat[i].code.split(".")[0] == "NONRESIDENTIAL" &&
         usagecat[i].code.split(".").length == 2
       ) {
-        menu.push({ i18nKey: "PROPERTYTAX_BILLING_SLAB_" + usagecat[i].code.split(".")[1] });
+        menu.push({ i18nKey: "PROPERTYTAX_BILLING_SLAB_" + usagecat[i].code.split(".")[1] ,code:usagecat[i].code});
       }
     }
     return menu;

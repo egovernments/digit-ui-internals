@@ -76,6 +76,14 @@ const ProvideSubUsageType = ({ t, config, onSelect, userType, formData }) => {
     }
   });
 
+  const getCode = () => {
+    for (i = 0; i < subusageoption.length; i++) {
+      if (subusageoption[i]?.code.split(".").pop() === SubUsageType.i18nKey.split("_").pop()) {
+        return subusageoption[i]?.code;
+      }
+    }
+  };
+
   const onSkip = () => onSelect();
 
   function selectSelfOccupied(value) {
@@ -84,13 +92,14 @@ const ProvideSubUsageType = ({ t, config, onSelect, userType, formData }) => {
 
   function goNext() {
     //let index = window.location.href.charAt(window.location.href.length - 1);
+    let subuagecode = getCode();
     if (!isNaN(index)) {
       let unit = formData.units && formData.units[index];
-      let floordet = { ...unit, SubUsageType };
+      let floordet = { ...unit, SubUsageType, subuagecode };
       onSelect(config.key, floordet, false, index);
     } else {
       [];
-      onSelect("subusagetype", { SubUsageType });
+      onSelect("subusagetype", { SubUsageType, subuagecode });
     }
   }
   return (

@@ -13,6 +13,7 @@ const FSMCard = () => {
   const { t } = useTranslation();
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]) || false;
   const COLLECTOR = Digit.UserService.hasAccess("FSM_COLLECTOR") || false;
+  const FSM_ADMIN = Digit.UserService.hasAccess("FSM_ADMIN") || false;
   const FSM_EDITOR = Digit.UserService.hasAccess("FSM_EDITOR_EMP") || false;
   const FSM_CREATOR = Digit.UserService.hasAccess("FSM_CREATOR_EMP") || false;
   const isFSTPOperator = Digit.UserService.hasAccess("FSM_EMP_FSTPO") || false;
@@ -58,7 +59,7 @@ const FSMCard = () => {
   };
 
   const getUUIDFilter = () => {
-    if (FSM_EDITOR || FSM_CREATOR || COLLECTOR) return { uuid: { code: "ASSIGNED_TO_ALL", name: t("ES_INBOX_ASSIGNED_TO_ALL") } };
+    if (FSM_EDITOR || FSM_CREATOR || COLLECTOR || FSM_ADMIN) return { uuid: { code: "ASSIGNED_TO_ALL", name: t("ES_INBOX_ASSIGNED_TO_ALL") } };
     else return { uuid: { code: "ASSIGNED_TO_ME", name: t("ES_INBOX_ASSIGNED_TO_ME") } };
   };
 

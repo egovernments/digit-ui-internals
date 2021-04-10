@@ -9,7 +9,30 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
   const [vehicle, setVehicle] = useState(formData?.tripData?.vehicleType);
   const [billError, setError] = useState(false);
 
-  const { isLoading: isVehicleMenuLoading, data: vehicleMenu } = Digit.Hooks.fsm.useMDMS(state, "Vehicle", "VehicleType", { staleTime: Infinity });
+  const { isLoading: isVehicleMenuLoading, data: vehicleData } = Digit.Hooks.fsm.useMDMS(state, "Vehicle", "VehicleType", { staleTime: Infinity });
+
+  const { data: dsoData, isLoading: isDsoLoading, isSuccess: isDsoSuccess, error: dsoError } = Digit.Hooks.fsm.useDsoSearch(tenantId);
+
+  const [vehicleMenu, setVehicleMenu] = useState([]);
+
+  useEffect(() => {
+    if (dsoData && vehicleData) {
+      const allVehicles = dsoData.reduce((acc, curr) => {
+        return [...acc, ...curr.vehicles.map((dsoVehicle) => dsoVehicle.type)];
+      }, []);
+
+      const __vehicleMenu = allVehicles
+        .map((vehicle) => vehicleData.filter((data) => data.code === vehicle)[0])
+        .filter((item, pos, self) => self.indexOf(item) == pos)
+        .filter((i) => i);
+
+      // console.log("find vehicle menu here", allVehicles, __vehicleMenu)
+
+      setVehicleMenu(__vehicleMenu);
+    }
+  }, [dsoData, vehicleData]);
+
+  // console.log("find vendro data here", dsoData, vehicleData)
 
   const inputs = [
     {
@@ -102,7 +125,7 @@ const SelectTripData = ({ t, config, onSelect, formData = {}, userType }) => {
     // console.log("find form data here helllo", formData);
   }, [formData?.propertyType, formData?.subtype, formData?.address, formData?.tripData?.vehicleType?.code]);
 
-  return isVehicleMenuLoading ? (
+  return isVehicleMenuLoading && isDsoLoading ? (
     <Loader />
   ) : (
     <div>

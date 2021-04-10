@@ -26,7 +26,7 @@ const RentalDetails = ({ t, config, onSelect, value, userType, formData }) => {
   }
 
   useEffect(() => {
-    if (userType !== "employee" && formData?.IsThisFloorSelfOccupied?.i18nKey === "Yes, It is fully Self Occupied") {
+    if (userType !== "employee" && formData?.IsThisFloorSelfOccupied?.i18nKey === "PT_YES_IT_IS_SELFOCCUPIED") {
       //selectPropertyPurpose({i18nKey : "RESIDENTAL"})
       /* let index = window.location.href.charAt(window.location.href.length - 1);
       let unit = formData.units && formData.units[index];

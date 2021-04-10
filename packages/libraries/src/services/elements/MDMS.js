@@ -58,6 +58,21 @@ const getCriteria = (tenantId, moduleDetails) => {
   };
 };
 
+const getGeneralCriteria = (tenantId, moduleCode, type) => ({
+  details: {
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: type,
+          },
+        ],
+      },
+    ],
+  },
+});
+
 const getModuleServiceDefsCriteria = (tenantId, moduleCode) => ({
   type: "serviceDefs",
   details: {
@@ -481,7 +496,7 @@ const GetVehicleType = (MdmsRes) =>
       };
     });
 
-const GetSlumLocalityMapping = (MdmsRes) =>
+const GetSlumLocalityMapping = (MdmsRes, tenantId) =>
   MdmsRes["FSM"].Slum.filter((type) => type.active).reduce((prev, curr) => {
     // console.log("find prev",prev, curr)
     return prev[curr.locality]
@@ -491,7 +506,7 @@ const GetSlumLocalityMapping = (MdmsRes) =>
             ...prev[curr.locality],
             {
               ...curr,
-              i18nKey: `${curr.locality}_${curr.code}`,
+              i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${curr.locality}_${curr.code}`,
             },
           ],
         }
@@ -500,7 +515,7 @@ const GetSlumLocalityMapping = (MdmsRes) =>
           [curr.locality]: [
             {
               ...curr,
-              i18nKey: `${curr.locality}_${curr.code}`,
+              i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${curr.locality}_${curr.code}`,
             },
           ],
         };
@@ -594,7 +609,7 @@ const GetPreFields = (MdmsRes) => MdmsRes["FSM"].PreFieldsConfig;
 
 const GetPostFields = (MdmsRes) => MdmsRes["FSM"].PostFieldsConfig;
 
-const transformResponse = (type, MdmsRes, moduleCode) => {
+const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
   switch (type) {
     case "citymodule":
       return GetCitiesWithi18nKeys(MdmsRes, moduleCode);
@@ -615,7 +630,7 @@ const transformResponse = (type, MdmsRes, moduleCode) => {
     case "VehicleType":
       return GetVehicleType(MdmsRes);
     case "Slum":
-      return GetSlumLocalityMapping(MdmsRes);
+      return GetSlumLocalityMapping(MdmsRes, tenantId);
     case "OwnerShipCategory":
       return GetPropertyOwnerShipCategory(MdmsRes);
     case "OwnerType":
@@ -667,7 +682,7 @@ export const MdmsService = {
   getDataByCriteria: async (tenantId, mdmsDetails, moduleCode) => {
     console.log("mdms request details ---->", mdmsDetails, moduleCode);
     const { MdmsRes } = await MdmsService.call(tenantId, mdmsDetails.details);
-    return transformResponse(mdmsDetails.type, MdmsRes, moduleCode.toUpperCase());
+    return transformResponse(mdmsDetails.type, MdmsRes, moduleCode.toUpperCase(), tenantId);
   },
   getServiceDefs: (tenantId, moduleCode) => {
     return MdmsService.getDataByCriteria(tenantId, getModuleServiceDefsCriteria(tenantId, moduleCode), moduleCode);
@@ -744,5 +759,8 @@ export const MdmsService = {
   },
   getRentalDetails: (tenantId, moduleCode) => {
     return MdmsService.getDataByCriteria(tenantId, getRentalDetailsCategoryCriteria(tenantId, moduleCode), moduleCode);
+  },
+  getPaymentGateway: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getGeneralCriteria(tenantId, moduleCode, type), moduleCode);
   },
 };

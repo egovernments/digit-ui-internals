@@ -23,7 +23,7 @@ const SelectSlumName = ({ config, onSelect, t, userType, formData }) => {
   }, [formData?.address?.slum, slumMenu]);
 
   useEffect(() => {
-    const locality = formData?.address?.locality?.code.split("_")[3];
+    const locality = formData?.address?.locality?.code;
     // console.log("find locality code here", locality)
     if (userType === "employee" && !slumDataLoading && slumData) {
       // console.log("find slum data here", slumData[locality], formData)

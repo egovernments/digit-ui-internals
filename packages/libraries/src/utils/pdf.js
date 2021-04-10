@@ -24,7 +24,7 @@ const jsPdfGenerator = async ({ tenantId, logo, name, email, phoneNumber, headin
     email.length <= 15
       ? 190
       : email.length <= 20
-      ? 170
+      ? 150
       : email.length <= 25
       ? 130
       : email.length <= 30
@@ -68,7 +68,7 @@ const jsPdfGenerator = async ({ tenantId, logo, name, email, phoneNumber, headin
           text: phoneNumber,
           color: "#6f777c",
           fontSize: 11,
-          margin: [-70, 45, 0, 25],
+          margin: [-65, 45, 0, 25],
         },
       ],
     },

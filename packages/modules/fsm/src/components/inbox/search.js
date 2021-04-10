@@ -14,6 +14,7 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
   });
   const mobileView = innerWidth <= 640;
   const FSTP = Digit.UserService.hasAccess("FSM_EMP_FSTPO") || false;
+  const watchSearch = watch(["applicationNos", "mobileNumber"]);
 
   const onSubmitInput = (data) => {
     console.log("data", data);
@@ -55,6 +56,11 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
     setMobileNo(e.target.value);
   }
 
+  const searchValidation = (data) => {
+    // console.log("find input", watchSearch, data);
+    return watchSearch.applicationNos || watchSearch.mobileNumber ? true : false;
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmitInput)}>
       <React.Fragment>
@@ -73,7 +79,15 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
                 <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
                   <Label>{input.label}</Label>
                   {input.type !== "date" ? (
-                    <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
+                    <TextInput
+                      {...input}
+                      inputRef={register}
+                      {...register(input.name, {
+                        validate: searchValidation,
+                      })}
+                      watch={watch}
+                      shouldUpdate={true}
+                    />
                   ) : (
                     <Controller
                       render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}

@@ -47,7 +47,9 @@ const useInbox = (tenantId, filters, filterFsmFn, workFlowConfig = {}) => {
 
   if (!filterFsmFn)
     filterFsmFn = (data) => {
-      const fsm = data.fsm.map((e) => ({ ...e, totalCount: data.totalCount }));
+      const fsm = data.fsm
+        .filter((application) => processInstances.find((wfApp) => wfApp.businessId === application.applicationNo))
+        .map((e) => ({ ...e, totalCount: data.totalCount }));
       return combineResponses(fsm, processInstances);
     };
 

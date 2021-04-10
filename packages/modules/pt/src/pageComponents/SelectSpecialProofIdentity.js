@@ -61,6 +61,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <UploadFile
+        extraStyleName={"propertyCreate"}
         accept=".jpg"
         onUpload={selectfile}
         onDelete={() => {

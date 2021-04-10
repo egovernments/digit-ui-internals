@@ -23,8 +23,18 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
       let unit = formData.units && formData.units[index];
       //units["RentalArea"] = RentArea;
       //units["AnnualRent"] = AnnualRent;
+      if (
+        (formData?.isResdential?.i18nKey === "PT_COMMON_YES" || formData?.usageCategoryMajor?.i18nKey == "PROPERTYTAX_BILLING_SLAB_NONRESIDENTIAL") &&
+        formData?.PropertyType?.i18nKey !== "COMMON_PROPTYPE_VACANT"
+      ) {
+        sessionStorage.setItem("area", "yes");
+      } else {
+        sessionStorage.setItem("area", "no");
+      }
+
       let floordet = { ...unit, floorarea };
       onSelect(config.key, floordet, false, index);
+      /*   onSelect(config.key, floordet, false, index);
       if (formData?.noOfFloors?.i18nKey === "Ground +1" && index < 1 && index > -1) {
         let newIndex1 = parseInt(index) + 1;
         onSelect("is-this-floor-self-occupied", {}, false, newIndex1, true);
@@ -35,8 +45,19 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
         onSelect("is-this-floor-self-occupied", {}, false, "-1", true);
       } else if (formData?.noOofBasements?.i18nKey === "2 Basement" && index != -2) {
         onSelect("is-this-floor-self-occupied", {}, false, "-2", true);
-      }
+      } */
     } else {
+      if (
+        (formData?.isResdential?.i18nKey === "PT_COMMON_YES" || formData?.usageCategoryMajor?.i18nKey == "PROPERTYTAX_BILLING_SLAB_NONRESIDENTIAL") &&
+        formData?.PropertyType?.i18nKey !== "COMMON_PROPTYPE_VACANT"
+      ) {
+        sessionStorage.setItem("area", "yes");
+      } else if (formData?.PropertyType?.code === "VACANT") {
+        sessionStorage.setItem("area", "vacant");
+      } else {
+        sessionStorage.setItem("area", "no");
+      }
+
       onSelect("landarea", { floorarea });
     }
   };

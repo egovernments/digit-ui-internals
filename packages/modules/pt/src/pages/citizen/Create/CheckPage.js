@@ -13,6 +13,7 @@ import {
   isPropertyselfoccupied,
   ispropertyunoccupied,
   isPropertyIndependent,
+  isPropertyPartiallyrented,
 } from "../../../utils";
 
 const ActionButton = ({ jumpTo }) => {
@@ -50,6 +51,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
     IsAnyPartOfThisFloorUnOccupied,
     propertyArea,
     selfOccupied,
+    floordetails,
     owners,
   } = value;
   let flatplotsize;
@@ -67,7 +69,6 @@ const CheckPage = ({ onSubmit, value = {} }) => {
   if (isPropertyIndependent(PropertyType?.i18nKey)) {
     flatplotsize = parseInt(propertyArea?.builtUpArea) + parseInt(propertyArea?.plotSize);
   }
-  console.log(flatplotsize);
   return (
     <Card>
       <CardHeader>{t("CS_CHECK_CHECK_YOUR_ANSWERS")}</CardHeader>
@@ -245,15 +246,15 @@ const CheckPage = ({ onSubmit, value = {} }) => {
           {isPropertyFlatorPartofBuilding(PropertyType?.i18nKey) && (
             <Row
               label={t("PT_ASSESMENT1_PLOT_SIZE")}
-              text={`${t(checkForNA(flatplotsize))} ${(flatplotsize && "sq.ft") || ""}`}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area" />}
+              text={`${t(checkForNA(floordetails?.plotSize))} ${(floordetails?.plotSize && "sq.ft") || ""}`}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/floordetails" />}
             />
           )}
           {isPropertyIndependent(PropertyType?.i18nKey) && (
             <Row
               label={t("PT_ASSESMENT1_PLOT_SIZE")}
-              text={`${t(checkForNA(flatplotsize))} ${(flatplotsize && "sq.ft") || ""}`}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area" />}
+              text={`${t(checkForNA(units[0]?.plotSize))} ${(units[0]?.plotSize && "sq.ft") || ""}`}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/floordetails/0" />}
             />
           )}
         </StatusTable>
@@ -276,8 +277,8 @@ const CheckPage = ({ onSubmit, value = {} }) => {
             <Row
               label={t("PT_BUILT_UP_AREA_LABEL")}
               //text={`${t(checkForNA(units[0]?.builtUpArea))} ${(units[0]?.builtUpArea && "sq.ft") || ""}`}
-              text={`${t(checkForNA(landarea?.floorarea))} ${(landarea?.floorarea && "sq.ft") || ""}`}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area" />}
+              text={`${t(checkForNA(floordetails?.builtUpArea))} ${(floordetails?.builtUpArea && "sq.ft") || ""}`}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/floordetails" />}
             />
             {!isPropertyselfoccupied(selfOccupied?.i18nKey) && (
               <Row
@@ -293,11 +294,20 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                 actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/rental-details" />}
               />
             )}
-            <Row
-              label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
-              text={`${t(checkForNA(UnOccupiedArea?.UnOccupiedArea))} ${(UnOccupiedArea?.UnOccupiedArea && "sq.ft") || ""}`}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/un-occupied-area" />}
-            />
+            {isPropertyPartiallyrented(selfOccupied?.i18nKey) && (
+              <Row
+                label={`${t("PROPERTYTAX_OCCUPANCYTYPE_SELFOCCUPIED")} ${t("PT_ASSESSMENT_FLOW_AREA_HEADER")}`}
+                text={`${t(checkForNA(landarea?.floorarea))} ${(landarea?.floorarea && "sq.ft") || ""}`}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area" />}
+              />
+            )}
+            {ispropertyunoccupied(IsAnyPartOfThisFloorUnOccupied?.i18nKey) && (
+              <Row
+                label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
+                text={`${t(checkForNA(UnOccupiedArea?.UnOccupiedArea))} ${(UnOccupiedArea?.UnOccupiedArea && "sq.ft") || ""}`}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/un-occupied-area" />}
+              />
+            )}
           </StatusTable>
         )}
         <div>
@@ -320,8 +330,8 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                   <Row
                     label={t("PT_BUILT_UP_AREA_LABEL")}
                     //text={`${t(checkForNA(units[0]?.builtUpArea))} ${(units[0]?.builtUpArea && "sq.ft") || ""}`}
-                    text={`${t(checkForNA(units[index]?.floorarea))} ${(units[index]?.floorarea && "sq.ft") || ""}`}
-                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/area/"}${index}`} />}
+                    text={`${t(checkForNA(units[index]?.builtUpArea))} ${(units[index]?.builtUpArea && "sq.ft") || ""}`}
+                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/floordetails/"}${index}`} />}
                   />
                   {!isPropertyselfoccupied(units[index]?.selfOccupied?.i18nKey) && (
                     <Row
@@ -337,17 +347,26 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                       actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/rental-details/"}${index}`} />}
                     />
                   )}
-                  <Row
-                    label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
-                    text={`${t(checkForNA(units[index]?.UnOccupiedArea))} ${(units[index]?.UnOccupiedArea && "sq.ft") || ""}`}
-                    actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/un-occupied-area/"}${index}`} />}
-                  />
+                  {isPropertyPartiallyrented(units[index]?.selfOccupied?.i18nKey) && (
+                    <Row
+                      label={`${t("PROPERTYTAX_OCCUPANCYTYPE_SELFOCCUPIED")} ${t("PT_ASSESSMENT_FLOW_AREA_HEADER")}`}
+                      text={`${t(checkForNA(units[index]?.floorarea))} ${(units[index]?.floorarea && "sq.ft") || ""}`}
+                      actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/area/"}${index}`} />}
+                    />
+                  )}
+                  {ispropertyunoccupied(units[index]?.IsAnyPartOfThisFloorUnOccupied?.i18nKey) && (
+                    <Row
+                      label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
+                      text={`${t(checkForNA(units[index]?.UnOccupiedArea))} ${(units[index]?.UnOccupiedArea && "sq.ft") || ""}`}
+                      actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/un-occupied-area/"}${index}`} />}
+                    />
+                  )}
                 </StatusTable>
               </div>
             ))}
         </div>
         <div>
-          {isthere1Basement(noOofBasements?.i18nKey) && (
+          {(isthere1Basement(noOofBasements?.i18nKey) || isthere2Basement(noOofBasements?.i18nKey)) && (
             <div>
               <CardSubHeader>
                 {t("PROPERTYTAX_FLOOR__1")} {t("PT_DETAILS_HEADER")}
@@ -362,8 +381,8 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                 <Row
                   label={t("PT_BUILT_UP_AREA_LABEL")}
                   //text={`${t(checkForNA(units[0]?.builtUpArea))} ${(units[0]?.builtUpArea && "sq.ft") || ""}`}
-                  text={`${t(checkForNA(units["-1"]?.floorarea))} ${(units["-1"]?.floorarea && "sq.ft") || ""}`}
-                  actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area/-1" />}
+                  text={`${t(checkForNA(units["-1"]?.builtUpArea))} ${(units["-1"]?.builtUpArea && "sq.ft") || ""}`}
+                  actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/floordetails/-1" />}
                 />
                 {!isPropertyselfoccupied(units["-1"]?.selfOccupied?.i18nKey) && (
                   <Row
@@ -379,11 +398,20 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                     actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/rental-details/-1" />}
                   />
                 )}
-                <Row
-                  label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
-                  text={`${t(checkForNA(units["-1"]?.UnOccupiedArea))} ${(units["-1"]?.UnOccupiedArea && "sq.ft") || ""}`}
-                  actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/un-occupied-area/-1" />}
-                />
+                {isPropertyPartiallyrented(units["-1"]?.selfOccupied?.i18nKey) && (
+                  <Row
+                    label={`${t("PROPERTYTAX_OCCUPANCYTYPE_SELFOCCUPIED")} ${t("PT_ASSESSMENT_FLOW_AREA_HEADER")}`}
+                    text={`${t(checkForNA(units["-1"]?.floorarea))} ${(units["-1"]?.floorarea && "sq.ft") || ""}`}
+                    actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area/-1" />}
+                  />
+                )}
+                {ispropertyunoccupied(units["-1"]?.IsAnyPartOfThisFloorUnOccupied?.i18nKey) && (
+                  <Row
+                    label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
+                    text={`${t(checkForNA(units["-1"]?.UnOccupiedArea))} ${(units["-1"]?.UnOccupiedArea && "sq.ft") || ""}`}
+                    actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/un-occupied-area/-1" />}
+                  />
+                )}
               </StatusTable>
             </div>
           )}
@@ -404,8 +432,8 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                 <Row
                   label={t("PT_BUILT_UP_AREA_LABEL")}
                   //text={`${t(checkForNA(units[0]?.builtUpArea))} ${(units[0]?.builtUpArea && "sq.ft") || ""}`}
-                  text={`${t(checkForNA(units["-2"]?.floorarea))} ${(units["-2"]?.floorarea && "sq.ft") || ""}`}
-                  actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area/-2" />}
+                  text={`${t(checkForNA(units["-2"]?.builtUpArea))} ${(units["-2"]?.builtUpArea && "sq.ft") || ""}`}
+                  actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/floordetails/-2" />}
                 />
                 {!isPropertyselfoccupied(units["-2"]?.selfOccupied?.i18nKey) && (
                   <Row
@@ -421,11 +449,20 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                     actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/rental-details/-2" />}
                   />
                 )}
-                <Row
-                  label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
-                  text={`${t(checkForNA(units["-2"]?.UnOccupiedArea))} ${(units["-2"]?.UnOccupiedArea && "sq.ft") || ""}`}
-                  actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/un-occupied-area/-2" />}
-                />
+                {isPropertyPartiallyrented(units["-2"]?.selfOccupied?.i18nKey) && (
+                  <Row
+                    label={`${t("PROPERTYTAX_OCCUPANCYTYPE_SELFOCCUPIED")} ${t("PT_ASSESSMENT_FLOW_AREA_HEADER")}`}
+                    text={`${t(checkForNA(units["-2"]?.floorarea))} ${(units["-2"]?.floorarea && "sq.ft") || ""}`}
+                    actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/area/-2" />}
+                  />
+                )}
+                {ispropertyunoccupied(units["-2"]?.IsAnyPartOfThisFloorUnOccupied?.i18nKey) && (
+                  <Row
+                    label={t("PT_PROPERTY_UNOCCUPIED_AREA_LABEL")}
+                    text={`${t(checkForNA(units["-2"]?.UnOccupiedArea))} ${(units["-2"]?.UnOccupiedArea && "sq.ft") || ""}`}
+                    actionButton={<ActionButton jumpTo="/digit-ui/citizen/pt/property/new-application/un-occupied-area/-2" />}
+                  />
+                )}
               </StatusTable>
             </div>
           )}

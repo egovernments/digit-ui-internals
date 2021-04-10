@@ -37,7 +37,7 @@ const PTApplicationDetails = () => {
   return (
     <React.Fragment>
       <Header>{t("PT_MUTATION_APPLICATION_DETAILS")}</Header>
-      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 10em)" }}>
+      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 12em)" }}>
         <div>
           <LinkButton label={t("CS_COMMON_DOWNLOAD")} className="check-page-link-button pt-application-download-btn" onClick={handleDownloadPdf} />
         </div>
