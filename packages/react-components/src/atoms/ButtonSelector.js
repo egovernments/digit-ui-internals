@@ -18,6 +18,7 @@ const ButtonSelector = (props) => {
       form={props.formId}
       onClick={props.onSubmit}
       disabled={props.isDisabled}
+      style={props.style ? props.style : null}
     >
       <h2>{props.label}</h2>
     </button>
