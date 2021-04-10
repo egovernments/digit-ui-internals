@@ -78,7 +78,7 @@ const PTWFApplicationTimeline = (props) => {
     switch (nextAction?.action) {
       case "PAY":
         return (
-          <div style={{ marginTop: "24px" }}>
+          <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%"  }}>
             <Link
               to={{ pathname: `/digit-ui/citizen/payment/collect/FSM.TRIP_CHARGES/${props.id}`, state: { tenantId: props.application.tenantId } }}
             >
