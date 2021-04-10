@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { pdfDocumentName, pdfDownloadLink } from "../utils";
+import { Card, CardSubHeader, Header, LinkButton, Loader, Row, StatusTable } from "@egovernments/digit-ui-react-components";
 
 const PDFSvg = ({ width = 20, height = 20, style }) => (
   <svg style={style} xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 20 20" fill="gray">
@@ -8,24 +9,23 @@ const PDFSvg = ({ width = 20, height = 20, style }) => (
   </svg>
 );
 
-function PropertyDocument({ documents = [] }) {
+function PropertyDocument({ property={} }) {
   const { t } = useTranslation();
-  const filesArray = documents?.map((value) => value?.fileStoreId);
-  const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [pdfFiles, setPdfFiles] = useState({});
+  const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertyDocumentSearch({
+    property
+  });
+  const documents=property?.documents||[];
 
-  useEffect(() => {
-    Digit.UploadServices.Filefetch(filesArray, tenantId.split(".")[0]).then((res) => {
-      setPdfFiles(res?.data);
-    });
-  }, []);
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div style={{ marginTop: "19px" }}>
       <React.Fragment>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {documents?.map((document, index) => {
-            let documentLink = pdfDownloadLink(pdfFiles, document?.fileStoreId);
+            let documentLink = pdfDownloadLink(data.pdfFiles, document?.fileStoreId);
             return (
               <a target="_" href={documentLink} style={{ minWidth: "160px" }} key={index}>
                 <PDFSvg width={85} height={100} style={{ background: "#f6f6f6", padding: "8px" }} />
