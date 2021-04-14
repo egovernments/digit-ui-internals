@@ -14,6 +14,10 @@ const PTCard = () => {
   // TODO: should be fetch
   const total = 1;
 
+  if (!Digit.Utils.ptAccess()) {
+    return null;
+  }
+
   return (
     <div className="employeeCard card-home">
       <div className="complaint-links-container">

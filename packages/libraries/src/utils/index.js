@@ -35,17 +35,17 @@ const routeSubscription = (pathname) => {
 
 const pgrAccess = () => {
   const userInfo = Digit.UserService.getUser();
-  const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
+  const userRoles = userInfo?.info?.roles?.map((roleData) => roleData.code);
   const pgrRoles = ["PGR_LME", "PGR-ADMIN", "CSR", "CEMP", "FEMP", "DGRO", "ULB Operator", "GRO", "GO", "RO", "GA"];
 
-  const PGR_ACCESS = userRoles.filter((role) => pgrRoles.includes(role));
+  const PGR_ACCESS = userRoles?.filter((role) => pgrRoles.includes(role)) || [];
 
   return PGR_ACCESS.length > 0;
 };
 
 const fsmAccess = () => {
   const userInfo = Digit.UserService.getUser();
-  const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
+  const userRoles = userInfo?.info?.roles?.map((roleData) => roleData.code);
   const fsmRoles = [
     "FSM_CREATOR_EMP",
     "FSM_EDITOR_EMP",
@@ -59,9 +59,21 @@ const fsmAccess = () => {
     "FSM_COLLECTOR",
   ];
 
-  const FSM_ACCESS = userRoles.filter((role) => fsmRoles.includes(role));
+  const FSM_ACCESS = userRoles?.filter((role) => fsmRoles.includes(role)) || [];
 
   return FSM_ACCESS.length > 0;
+};
+
+const ptAccess = () => {
+  // TODO: userInfo is coming undefined
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo?.info?.roles?.map((roleData) => roleData.code);
+  // TODO: add all the PT roles
+  const ptRoles = ["PT_CEMP"];
+
+  const PT_ACCESS = userRoles?.filter((role) => ptRoles.includes(role)) || [];
+
+  return PT_ACCESS.length > 0;
 };
 
 export default {
@@ -75,4 +87,5 @@ export default {
   routeSubscription,
   pgrAccess,
   fsmAccess,
+  ptAccess,
 };
