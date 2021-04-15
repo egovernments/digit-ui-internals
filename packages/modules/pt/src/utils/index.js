@@ -449,7 +449,7 @@ export const convertToProperty = (data = {}) => {
 
       creationReason: "CREATE",
       source: "MUNICIPAL_RECORDS",
-      channel: "CFC_COUNTER",
+      channel: "CITIZEN",
     },
   };
   console.info("propertyCreated", formdata);
