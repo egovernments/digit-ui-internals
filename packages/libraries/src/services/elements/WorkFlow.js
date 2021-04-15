@@ -35,6 +35,13 @@ export const WorkflowService = {
         action: id.action,
         state: businessServiceResponse?.find((state) => state.uuid === id.nextState),
       }));
+      
+      /* To check state is updatable and provide edit option*/
+      const currentState = businessServiceResponse?.find((state) => state.uuid === processInstances[0]?.state.uuid)
+      if (currentState && currentState?.isStateUpdatable) {
+        nextActions.push({ action: "EDIT", state: currentState })
+      }
+
       const actionRolePair = nextActions?.map((action) => ({
         action: action.action,
         roles: action.state?.actions?.map((action) => action.roles).join(","),

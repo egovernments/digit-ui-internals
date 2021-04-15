@@ -14,46 +14,10 @@ const PTWFApplicationTimeline = (props) => {
   });
 
   const getTimelineCaptions = (checkpoint) => {
-    if (checkpoint.status === "CREATED") {
+    if (checkpoint.state === "OPEN") {
       const caption = {
-        date: Digit.DateUtils.ConvertTimestampToDate(props.application?.auditDetails.createdTime),
+        date: Digit.DateUtils.ConvertTimestampToDate(props.application?.auditDetails?.createdTime),
         source: props.application?.channel || "",
-      };
-      return <PTWFCaption data={caption} />;
-    } else if (
-      checkpoint.status === "PENDING_APPL_FEE_PAYMENT" ||
-      checkpoint.status === "ASSING_DSO" ||
-      checkpoint.status === "PENDING_DSO_APPROVAL"
-    ) {
-      const caption = {
-        date: Digit.DateUtils.ConvertTimestampToDate(props.application?.auditDetails.createdTime),
-        name: checkpoint.assigner.name,
-      };
-      return <PTWFCaption data={caption} />;
-    } else if (checkpoint.status === "DSO_REJECTED" || (checkpoint.status === checkpoint.status) === "CANCELED" || checkpoint.status === "REJECTED") {
-      const caption = {
-        date: Digit.DateUtils.ConvertTimestampToDate(props.application?.auditDetails.createdTime),
-        name: checkpoint?.assigner?.name,
-        comment: t(checkpoint?.comment),
-      };
-      return <PTWFCaption data={caption} />;
-    } else if (checkpoint.status === "CITIZEN_FEEDBACK_PENDING") {
-      return (
-        <>
-          {data?.nextActions.length > 0 && (
-            <div>
-              <Link to={`/digit-ui/citizen/fsm/rate/${props.id}`}>
-                <ActionLinks>{t("CS_FSM_RATE")}</ActionLinks>
-              </Link>
-            </div>
-          )}
-        </>
-      );
-    } else if (checkpoint.status === "DSO_INPROGRESS") {
-      const caption = {
-        name: `${props.application?.dsoDetails?.displayName} (${t("ES_FSM_DSO")})`,
-        mobileNumber: props.application?.dsoDetails?.mobileNumber,
-        date: `${t("CS_FSM_EXPECTED_DATE")} ${Digit.DateUtils.ConvertTimestampToDate(props.application?.possibleServiceDate)}`,
       };
       return <PTWFCaption data={caption} />;
     } else if (checkpoint.status === "ACTIVE") {
@@ -64,7 +28,17 @@ const PTWFApplicationTimeline = (props) => {
           </Link>
         </div>
       );
-    } else {
+    }
+    // else if (checkpoint.state === "CORRECTIONPENDING") {
+    //   return (
+    //     <div>
+    //       <Link to={`/digit-ui/citizen/pt/property/properties/${props?.application?.propertyId}`}>
+    //         <ActionLinks>{t("EDIT_PROPERTY")}</ActionLinks>
+    //       </Link>
+    //     </div>
+    //   );
+    // }
+    else {
       const caption = {
         date: Digit.DateUtils.ConvertTimestampToDate(props.application?.auditDetails.lastModified),
         name: checkpoint?.assigner?.name,
@@ -74,15 +48,31 @@ const PTWFApplicationTimeline = (props) => {
     }
   };
 
-  const showNextActions = (nextAction) => {
+  const showNextActions = (nextActions) => {
+    let nextAction = nextActions[0];
+    const next = nextActions.map(action => action.action);
+    if (next.includes('PAY') || next.includes('EDIT')) {
+      let currentIndex = next.indexOf('EDIT') || next.indexOf('PAY');
+      nextAction = nextActions[currentIndex];
+    }
     switch (nextAction?.action) {
       case "PAY":
         return (
           <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
             <Link
-              to={{ pathname: `/digit-ui/citizen/payment/collect/FSM.TRIP_CHARGES/${props.id}`, state: { tenantId: props.application.tenantId } }}
+              to={{ pathname: `/digit-ui/citizen/payment/collect/${businessService}/${props.id}`, state: { tenantId: props.application.tenantId } }}
             >
               <SubmitBar label={t("CS_APPLICATION_DETAILS_MAKE_PAYMENT")} />
+            </Link>
+          </div>
+        );
+      case "EDIT":
+        return (
+          <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
+            <Link
+              to={{ pathname: `/digit-ui/citizen/pt/property/edit-application/info/${props.id}`, state: { tenantId: props.application.tenantId } }}
+            >
+              <SubmitBar label={t("CS_APPLICATION_DETAILS_EDIT")} />
             </Link>
           </div>
         );
@@ -135,7 +125,7 @@ const PTWFApplicationTimeline = (props) => {
           )}
         </Fragment>
       )}
-      {data && showNextActions(data?.nextActions[0])}
+      {data && showNextActions(data?.nextActions)}
     </React.Fragment>
   );
 };
