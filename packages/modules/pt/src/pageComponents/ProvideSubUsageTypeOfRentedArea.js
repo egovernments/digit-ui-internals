@@ -120,7 +120,7 @@ const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formDa
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!SubUsageTypeOfRentedArea}>
       <CardLabel>{t("PT_SUB_USAGE_TYPE_LABEL")}</CardLabel>
-      <div style={{ ...cardBodyStyle, maxHeight: "calc(100vh - 26em)" }}>
+      <div style={{ ...cardBodyStyle, maxHeight: "calc(100vh - 26em)" }} className={"form-pt-dropdown-only"}>
         {getSubUsagedata(subusageoption) && (
           <RadioOrSelect
             t={t}
