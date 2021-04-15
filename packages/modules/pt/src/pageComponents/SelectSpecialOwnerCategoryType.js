@@ -30,6 +30,8 @@ const SelectSpecialOwnerCategoryType = ({ t, config, onSelect, userType, formDat
           options={Menu || []}
           selectedOption={ownerType}
           onSelect={setTypeOfOwner}
+          labelKey = "PROPERTYTAX_OWNERTYPE"
+          isDependent = {true}
         />
       </div>
     </FormStep>

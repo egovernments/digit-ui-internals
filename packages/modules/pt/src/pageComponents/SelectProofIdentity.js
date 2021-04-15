@@ -41,16 +41,15 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
     if (fileDetails) {
-      fileDetails = { ...fileDetails };
       fileDetails.documentType = "IDENTITYPROOF";
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
     let ownerDetails = formData.owners && formData.owners[index];
     if (ownerDetails && ownerDetails.documents) {
-      ownerDetails.documents["proofIdentity"] = { ...fileDetails };
+      ownerDetails.documents["proofIdentity"] = fileDetails;
     } else {
       ownerDetails["documents"] = [];
-      ownerDetails.documents["proofIdentity"] = { ...fileDetails };
+      ownerDetails.documents["proofIdentity"] = fileDetails;
     }
     onSelect(config.key, ownerDetails, "", index);
     // onSelect(config.key, { specialProofIdentity: fileDetails }, "", index);

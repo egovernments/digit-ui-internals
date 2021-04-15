@@ -40,6 +40,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => 
     return {
       label: name,
       value: code,
+      code: code
     };
   }
 
@@ -92,6 +93,8 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => 
           optionsKey="i18nKey"
           onSelect={selectedValue}
           value={ownershipCategory}
+          labelKey = "PT_OWNERSHIP"
+          isDependent = {true}
         />
       </div>
     </FormStep>

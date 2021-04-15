@@ -10,6 +10,7 @@ import SearchPropertyComponent from "./SearchProperty";
 import SearchResultsComponent from "./SearchResults";
 import { shouldHideBackButton } from "../../utils";
 import propertyOwnerHistory from "./MyProperties/propertyOwnerHistory";
+import EditProperty from "./EditProperty";
 
 const hideBackButtonConfig = [{ screenPath: "property/new-application/acknowledgement" }];
 
@@ -21,6 +22,7 @@ const App = () => {
         <AppContainer>
           {!shouldHideBackButton(hideBackButtonConfig) ? <BackButton style={{ position: "fixed", top: "55px" }}>Back</BackButton> : ""}
           <PrivateRoute path={`${path}/property/new-application`} component={CreateProperty} />
+          <PrivateRoute path={`${path}/property/edit-application`} component={EditProperty} />
           <PrivateRoute path={`${path}/property/search`} component={SearchPropertyComponent} />
           <PrivateRoute path={`${path}/property/search-results`} component={SearchResultsComponent} />
           <PrivateRoute path={`${path}/property/application/:acknowledgementIds`} component={PTApplicationDetails}></PrivateRoute>

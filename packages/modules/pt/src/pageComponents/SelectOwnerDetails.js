@@ -38,9 +38,9 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   const onSkip = () => onSelect();
 
   const options = [
-    { value: "Female", code: "PT_FORM3_FEMALE", value: "FEMALE" },
-    { value: "Male", code: "PT_FORM3_MALE", value: "MALE" },
-    { value: "Transgender", code: "PT_COMMON_GENDER_TRANSGENDER", value: "TRANSGENDER" },
+    { value: "Female", code: "PT_FORM3_FEMALE", value: "FEMALE", code: "FEMALE" },
+    { value: "Male", code: "PT_FORM3_MALE", value: "MALE", code: "MALE" },
+    { value: "Transgender", code: "PT_COMMON_GENDER_TRANSGENDER", value: "TRANSGENDER", code: "TRANSGENDER" },
   ];
 
   const GuardianOptions = [
@@ -74,7 +74,17 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
           })}
         />
         <CardLabel>{`${t("PT_FORM3_GENDER")}*`}</CardLabel>
-        <RadioButtons t={t} options={options} optionsKey="code" name="gender" value={gender} selectedOption={gender} onSelect={setGenderName} />
+        <RadioButtons 
+          t={t} 
+          options={options} 
+          optionsKey="code" 
+          name="gender" 
+          value={gender} 
+          selectedOption={gender} 
+          onSelect={setGenderName} 
+          isDependent = {true}
+          labelKey = "PT_COMMON_GENDER"
+          />
         <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}*`}</CardLabel>
         <TextInput
           type={"text"}
@@ -116,6 +126,8 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
           value={relationship}
           selectedOption={relationship}
           onSelect={setGuardianName}
+          isDependent = {true}
+          labelKey = "PT_RELATION"
         />
       </div>
     </FormStep>

@@ -84,6 +84,17 @@ const PTWFApplicationTimeline = (props) => {
             </Link>
           </div>
         );
+      case "REJECT":
+        sessionStorage.setItem("isEditApplication", true);
+        return (
+          <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
+            <Link
+              to={{ pathname: `/digit-ui/citizen/pt/property/edit-application/edit=true/${props.id}`, state: { tenantId: props.application.tenantId } }}
+            >
+              <SubmitBar label={t("CS_APPLICATION_DETAILS_EDIT_APP")} />
+            </Link>
+          </div>
+        );
     }
   };
 

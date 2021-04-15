@@ -113,7 +113,13 @@ export const setOwnerDetails = (data) => {
         if (ownr?.ownerType?.code != "NONE") {
           document.push({
             fileStoreId: ownr.documents["specialProofIdentity"].fileStoreId || "",
-            documentType: ownr.documents["specialProofIdentity"].documentType || "",
+            documentType: ownr.documents["specialProofIdentity"].documentType || ""
+          });
+        }
+        if(ownr?.documents["proofIdentity"]?.fileStoreId) {
+          document.push({
+            fileStoreId: ownr.documents["proofIdentity"].fileStoreId || "",
+            documentType: ownr.documents["proofIdentity"].documentType || ""
           });
         }
         owner.push({
@@ -142,11 +148,21 @@ export const setDocumentDetails = (data) => {
     fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
     documentType: address?.documents["ProofOfAddress"]?.documentType || "",
   });
-  owners &&
-    documents.push({
-      fileStoreId: owners[owners.length - 1]?.documents["proofIdentity"]?.fileStoreId || "",
-      documentType: owners[owners.length - 1]?.documents["proofIdentity"]?.documentType || "",
-    });
+  owners && owners.length > 0 && 
+  owners.map(owner => {
+    if(owner.documents && owner.documents["proofIdentity"]) {
+      documents.push({
+        fileStoreId: owner.documents["proofIdentity"].fileStoreId || "",
+        documentType: owner.documents["proofIdentity"].documentType || ""
+      });
+    }
+    if(owner.documents && owner.documents["specialProofIdentity"]) {
+      documents.push({
+        fileStoreId: owner.documents["specialProofIdentity"].fileStoreId || "",
+        documentType: owner.documents["specialProofIdentity"].documentType || "",
+      })
+    }
+  })
   data.documents = documents;
   return data;
 };
@@ -424,7 +440,8 @@ export const setPropertyDetails = (data) => {
 /*   method to convert collected details to proeprty create object */
 export const convertToProperty = (data = {}) => {
   console.info("propertyFormData", data);
-
+  let isResdential = data.isResdential;
+  let propertyType = data.PropertyType;
   data = setDocumentDetails(data);
   data = setOwnerDetails(data);
   data = setAddressDetails(data);
@@ -445,6 +462,8 @@ export const convertToProperty = (data = {}) => {
       additionalDetails: {
         inflammable: false,
         heightAbove36Feet: false,
+        isResdential: isResdential,
+        propertyType: propertyType
       },
 
       creationReason: "CREATE",

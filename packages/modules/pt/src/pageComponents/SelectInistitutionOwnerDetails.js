@@ -48,7 +48,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
   const getDropdwonForInstitution = () => {
     let SubOwnerShipCategory = {};
     let PropertyTaxPayload = JSON.parse(sessionStorage.getItem("getSubPropertyOwnerShipCategory"));
-    let SubOwnerShipCategoryOb = PropertyTaxPayload.PropertyTax.SubOwnerShipCategory;
+    let SubOwnerShipCategoryOb = PropertyTaxPayload?.PropertyTax?.SubOwnerShipCategory;
     SubOwnerShipCategoryOb &&
       SubOwnerShipCategoryOb.length > 0 &&
       SubOwnerShipCategoryOb.map((category) => {

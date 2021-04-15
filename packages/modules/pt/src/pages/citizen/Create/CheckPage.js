@@ -159,6 +159,11 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                           <ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/institutional-owner-address/"}${index}`} />
                         }
                       />
+                      <Row
+                        label={t("PT_PROOF_IDENTITY_HEADER")}
+                        text={`${(owner?.documents["proofIdentity"]?.name && getFixedFilename(owner.documents["proofIdentity"].name)) || "na"}`}
+                        actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/institutional-proof-of-identity/"}${index}`} />}
+                      />
                     </StatusTable>
                   </div>
                 ) : (
@@ -203,6 +208,17 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                         label={`${t("PT_COMMON_SAME_AS_PROPERTY_ADDRESS")}`}
                         text={`${t(checkForNA(owner?.isCorrespondenceAddress))}`}
                         actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/owner-address/"}${index}`} />}
+                      />
+                      {(owner?.ownerType?.code !== "NONE") ?
+                       <Row
+                        label={t("PT_SPECIAL_OWNER_CATEGORY_PROOF_HEADER")}
+                        text={`${(owner?.documents["specialProofIdentity"]?.name && getFixedFilename(owner.documents["specialProofIdentity"].name)) || "na"}`}
+                        actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/special-owner-category-proof/"}${index}`} />}
+                      />: ""}
+                      <Row
+                        label={t("PT_PROOF_IDENTITY_HEADER")}
+                        text={`${(owner?.documents["proofIdentity"]?.name && getFixedFilename(owner.documents["proofIdentity"].name)) || "na"}`}
+                        actionButton={<ActionButton jumpTo={`${"/digit-ui/citizen/pt/property/new-application/proof-of-identity/"}${index}`} />}
                       />
                     </StatusTable>
                   </div>
