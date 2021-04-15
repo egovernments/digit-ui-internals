@@ -24,7 +24,7 @@ const PropertyInformation = () => {
   }
   let flrno,
     i = 0;
-  flrno = property?.units[0].floorNo;
+  flrno = units && units[0]?.floorNo;
   const ActionButton = ({ jumpTo }) => {
     const { t } = useTranslation();
     const history = useHistory();
@@ -95,8 +95,8 @@ const PropertyInformation = () => {
                           text={
                             `${t(
                               (property.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPSUBUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPSUBUSGTYPE_") +
-                                (property?.usageCategory?.split(".")[1] ? property?.usageCategory?.split(".")[1] : property.usageCategory) +
-                                (property.usageCategory !== "RESIDENTIAL" ? "_" + unit?.usageCategory.split(".").pop() : "")
+                              (property?.usageCategory?.split(".")[1] ? property?.usageCategory?.split(".")[1] : property.usageCategory) +
+                              (property.usageCategory !== "RESIDENTIAL" ? "_" + unit?.usageCategory.split(".").pop() : "")
                             )}` || "NA"
                           }
                         />
@@ -145,7 +145,7 @@ const PropertyInformation = () => {
           <CardSubHeader>{t("PT_COMMON_DOCS")}</CardSubHeader>
           <div>
             {Array.isArray(docs) ? (
-              docs.length > 0 && <PropertyDocument documents={docs}></PropertyDocument>
+              docs.length > 0 && <PropertyDocument property={property}></PropertyDocument>
             ) : (
               <StatusTable>
                 <Row text="PT_NO_DOCUMENTS_MSG" />

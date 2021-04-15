@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { Loader } from "@egovernments/digit-ui-react-components";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { pdfDocumentName, pdfDownloadLink } from "../utils";
-import { Card, CardSubHeader, Header, LinkButton, Loader, Row, StatusTable } from "@egovernments/digit-ui-react-components";
 
 const PDFSvg = ({ width = 20, height = 20, style }) => (
   <svg style={style} xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 20 20" fill="gray">
