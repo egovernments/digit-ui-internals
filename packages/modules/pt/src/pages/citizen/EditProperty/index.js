@@ -67,7 +67,6 @@ const getPropertyEditDetails = (data = {}) => {
   return data;
 }
 const EditProperty = ({ parentRoute }) => {
-  debugger;
   const queryClient = useQueryClient();
   const match = useRouteMatch();
   const { t } = useTranslation();
@@ -182,7 +181,6 @@ const EditProperty = ({ parentRoute }) => {
   };
 
   function handleSelect(key, data, skipStep, index, isAddMultiple = false) {
-    debugger;
     if (key === "owners") {
       let owners = params.owners || [];
       owners[index] = data;
