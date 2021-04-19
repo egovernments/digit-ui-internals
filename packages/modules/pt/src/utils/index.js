@@ -95,6 +95,13 @@ export const setOwnerDetails = (data) => {
       institution.nameOfAuthorizedPerson = owners[0]?.name;
       institution.tenantId = address?.city?.code;
       institution.type = owners[0]?.inistitutetype?.value;
+      let document = [];
+      if(owners[0]?.documents["proofIdentity"]?.fileStoreId) {
+        document.push({
+          fileStoreId: owners[0].documents["proofIdentity"].fileStoreId || "",
+          documentType: owners[0].documents["proofIdentity"].documentType || ""
+        });
+      }
       owner.push({
         altContactNumber: owners[0]?.altContactNumber,
         correspondenceAddress: owners[0]?.permanentAddress,
@@ -104,6 +111,7 @@ export const setOwnerDetails = (data) => {
         mobileNumber: owners[0]?.mobileNumber,
         name: owners[0]?.name,
         ownerType: owners[0]?.ownerType?.code || "NONE",
+        documents: document
       });
       data.institution = institution;
       data.owners = owner;
@@ -491,6 +499,128 @@ export const convertToProperty = (data = {}) => {
       creationReason: "CREATE",
       source: "MUNICIPAL_RECORDS",
       channel: "CITIZEN",
+    },
+  };
+  console.info("propertyCreated", formdata);
+  return formdata;
+};
+
+export const setUpdateOwnerDetails = (data = []) => {
+  const { institution, owners } = data;
+  if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
+    if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
+      institution.designation = owners[0]?.designation;
+      institution.name = owners[0]?.inistitutionName;
+      institution.nameOfAuthorizedPerson = owners[0]?.name;
+      institution.tenantId = data?.address?.city?.code;
+      institution.type = owners[0]?.inistitutetype?.value;
+      let document = [];
+      if(owners[0]?.documents["proofIdentity"]?.fileStoreId && owners[0].documents["proofIdentity"].id) {
+        document.push({
+          fileStoreId: owners[0].documents["proofIdentity"].fileStoreId || "",
+          documentType: owners[0].documents["proofIdentity"].documentType || "",
+          id: owners[0].documents["proofIdentity"].id || "",
+          status: owners[0].documents["proofIdentity"].status || "",
+        });
+      } else {
+        document.push({
+          fileStoreId: owners[0].documents["proofIdentity"].fileStoreId || "",
+          documentType: owners[0].documents["proofIdentity"].documentType || ""
+        });
+      }
+      data.owners.forEach(owner => {
+        owner.altContactNumber =  owners[0]?.altContactNumber;
+        owner.correspondenceAddress =  owners[0]?.permanentAddress;
+        owner.designation =  owners[0]?.designation;
+        owner.emailId =  owners[0]?.emailId;
+        owner.isCorrespondenceAddress =  owners[0]?.isCorrespondenceAddress;
+        owner.mobileNumber =  owners[0]?.mobileNumber;
+        owner.name =  owners[0]?.name;
+        owner.ownerType =  owners[0]?.ownerType?.code || "NONE";
+        owner.documents = document;
+      })
+      data.institution = institution;
+    }
+  } else {
+    data.owners.forEach(owner => {
+      let document = [];
+      if (owner?.ownerType?.code != "NONE") {
+        if (owner.documents["specialProofIdentity"].id) {
+          document.push({
+            fileStoreId: owner.documents["specialProofIdentity"].fileStoreId || "",
+            documentType: owner.documents["specialProofIdentity"].documentType || "",
+            id: owner.documents["specialProofIdentity"].id || "",
+            status: owner.documents["specialProofIdentity"].status || "",
+          });
+        } else {
+          document.push({
+            fileStoreId: owner.documents["specialProofIdentity"].fileStoreId || "",
+            documentType: owner.documents["specialProofIdentity"].documentType || ""
+          });
+        }
+
+      }
+      if (owner?.documents["proofIdentity"]?.fileStoreId) {
+        if (owner.documents["proofIdentity"].id) {
+          document.push({
+            fileStoreId: owner.documents["proofIdentity"].fileStoreId || "",
+            documentType: owner.documents["proofIdentity"].documentType || "",
+            id: owner.documents["proofIdentity"].id || "",
+            status: owner.documents["proofIdentity"].status || "",
+          });
+        } else {
+          document.push({
+            fileStoreId: owner.documents["proofIdentity"].fileStoreId || "",
+            documentType: owner.documents["proofIdentity"].documentType || ""
+          });
+        }
+      }
+      owner.gender = owner?.gender?.code;
+      owner.ownerType = owner?.ownerType?.code;
+      owner.relationship = owner?.relationship?.code;
+    })
+  }
+  return data;
+}
+export const convertToUpdateProperty = (data = {}) => { 
+  console.info("propertyFormData", data);
+  let isResdential = data.isResdential;
+  let propertyType = data.PropertyType;
+  data = setAddressDetails(data);
+  data = setUpdateOwnerDetails(data);
+
+  const formdata = {
+    Property: {
+      id: data.id,
+      accountId: data.accountId,
+      acknowldgementNumber: data.acknowldgementNumber,
+      propertyId: data.propertyId,
+      status: data.status || "INWORKFLOW",
+      tenantId: data.tenantId,
+      address: data.address,
+
+      ownershipCategory: data?.ownershipCategory?.value,
+      owners: data.owners,
+      institution: data.institution || null,
+
+      documents: data.documents || [],
+      ...data.propertyDetails,
+
+      additionalDetails: {
+        inflammable: false,
+        heightAbove36Feet: false,
+        isResdential: isResdential,
+        propertyType: propertyType
+      },
+
+      creationReason: "CREATE",
+      source: "MUNICIPAL_RECORDS",
+      channel: "CITIZEN",
+      workflow: {
+        action: "REOPEN",
+        businessService: "PT.CREATE",
+        moduleName: "PT"
+      }
     },
   };
   console.info("propertyCreated", formdata);

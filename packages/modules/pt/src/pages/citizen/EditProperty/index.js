@@ -57,7 +57,13 @@ const getPropertyEditDetails = (data = {}) => {
     data.address.geoLocation = {};
   }
   data.address.pincode = data?.address?.pincode;
-  let addressDocs = data.documents.filter((doc) => doc.documentType == "ADDRESSPROOF");
+  let addressDocs = data.documents.filter(doc => doc.documentType == "ADDRESSPROOF");
+  if(data?.address?.documents) {
+    data.address.documents["ProofOfAddress"] = addressDocs[0];
+  }else {
+    data.address.documents = [];
+    data.address.documents["ProofOfAddress"] = addressDocs[0];
+  }
   data.documents["ProofOfAddress"] = addressDocs[0];
 
   // asessment details
