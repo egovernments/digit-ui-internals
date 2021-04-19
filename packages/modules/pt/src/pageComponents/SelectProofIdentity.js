@@ -73,7 +73,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <UploadFile
         extraStyleName={"propertyCreate"}
-        accept=".jpg"
+        accept=".jpg,.png,.pdf"
         onUpload={selectfile}
         onDelete={() => {
           setUploadedFile(null);

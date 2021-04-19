@@ -8,6 +8,12 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   const [file, setFile] = useState(formData?.documents?.ProofOfAddress);
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const stateId = tenantId.split(".")[0];
+
+  const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
+  const docs = Documentsob?.PropertyTax?.Documents;
+
   const handleSubmit = () => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
@@ -58,7 +64,7 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <UploadFile
         extraStyleName={"propertyCreate"}
-        accept=".jpg"
+        accept=".jpg,.png,.pdf"
         onUpload={selectfile}
         onDelete={() => {
           setUploadedFile(null);
