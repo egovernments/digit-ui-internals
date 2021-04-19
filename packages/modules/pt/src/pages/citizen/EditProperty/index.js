@@ -12,14 +12,16 @@ const getPropertyEditDetails = (data = {}) => {
   // converting owners details
   if (data?.ownershipCategory === "INSTITUTIONALPRIVATE" || data?.ownershipCategory === "INSTITUTIONALGOVERNMENT") {
     let document = [];
-    if (data?.owners[0]?.documents?.documentType == "IDENTITYPROOF") {
+    if (data?.owners[0]?.documents[0]?.documentType == "IDENTITYPROOF") {
       document["proofIdentity"] = data?.owners[0]?.documents[0];
     }
-    (data.owners[0].designation = data?.institution?.designation),
-      (data.owners[0].inistitutionName = data?.institution?.name),
-      (data.owners[0].name = data?.institution?.nameOfAuthorizedPerson),
-      (data.owners[0].inistitutetype = { value: data?.institution.type, code: data?.institution.type }),
-      (data.owners[0].documents = document);
+    data.owners[0].designation = data?.institution?.designation,
+    data.owners[0].inistitutionName = data?.institution?.name,
+    data.owners[0].name = data?.institution?.nameOfAuthorizedPerson,
+    data.owners[0].inistitutetype = { value: data?.institution.type, code: data?.institution.type },
+    data.owners[0].documents = document;
+    data.owners[0].permanentAddress = data?.owners[0]?.correspondenceAddress;
+    data.owners[0].isCorrespondenceAddress = data?.owners[0]?.isCorrespondenceAddress;
   } else {
     data.owners.map((owner) => {
       let document = [];
@@ -67,7 +69,7 @@ const getPropertyEditDetails = (data = {}) => {
   data.documents["ProofOfAddress"] = addressDocs[0];
 
   // asessment details
-  if (data?.additionalDetails?.PropertyType?.code === "VACANT") {
+  if (data?.additionalDetails?.propertyType?.code === "VACANT") {
     data.PropertyType = data?.additionalDetails?.propertyType;
     data.isResdential = data?.additionalDetails?.isResdential;
     data.landarea = { floorarea: data?.landArea };

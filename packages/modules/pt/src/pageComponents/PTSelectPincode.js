@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, register, errors, props }) => {
   const tenants = Digit.Hooks.pt.useTenants();
   const [pincode, setPincode] = useState(() => formData?.address?.pincode || "");
-
+  const isEditProperty = formData?.isEditProperty || false;
   const { pathname } = useLocation();
   const presentInModifyApplication = pathname.includes("modify");
 
@@ -80,7 +80,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
       onChange={onChange}
       onSkip={onSkip}
       forcedError={t(pincodeServicability)}
-      isDisabled={!pincode}
+      isDisabled={!pincode || isEditProperty}
     ></FormStep>
   );
 };

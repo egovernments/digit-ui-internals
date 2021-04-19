@@ -5,7 +5,7 @@ import { cardBodyStyle } from "../utils";
 const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
   const allCities = Digit.Hooks.pt.useTenants();
   let tenantId = Digit.ULBService.getCurrentTenantId();
-
+  const isEditProperty = formData?.isEditProperty || false;
   const { pincode, city } = formData?.address || "";
   const cities =
     userType === "employee"
@@ -94,7 +94,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
             className="form-field"
             isMandatory
             selected={cities?.length === 1 ? cities[0] : selectedCity}
-            disable={cities?.length === 1}
+            disable={isEditProperty ? isEditProperty : cities?.length === 1}
             option={cities}
             select={selectCity}
             optionKey="code"
@@ -114,6 +114,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
             select={selectLocality}
             optionKey="i18nkey"
             t={t}
+            disable={isEditProperty ? isEditProperty : false}
           />
         </LabelFieldPair>
       </div>

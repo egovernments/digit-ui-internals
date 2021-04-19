@@ -7,6 +7,7 @@ const PTSelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
   const [geoLocation, setGeoLocation] = useState(formData?.address?.geoLocation || {});
   const tenants = Digit.Hooks.pt.useTenants();
   const [pincodeServicability, setPincodeServicability] = useState(null);
+  const isEditProperty = formData?.isEditProperty || false;
 
   const onSkip = () => onSelect();
   const onChange = (code, location) => {
@@ -33,7 +34,7 @@ const PTSelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
       position={geoLocation}
       onSave={() => onSelect(config.key, { geoLocation, pincode }, false)}
       onChange={(code, location) => onChange(code, location)}
-      disabled={pincode === ""}
+      disabled={pincode === "" || isEditProperty}
       forcedError={t(pincodeServicability)}
       cardBodyStyle={cardBodyStyle}
     />
