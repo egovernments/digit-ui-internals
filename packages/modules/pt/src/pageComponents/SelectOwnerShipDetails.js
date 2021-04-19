@@ -5,6 +5,7 @@ import { cardBodyStyle } from "../utils";
 const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
+  const isUpdateProperty = formData?.isUpdateProperty || false;
   const [ownershipCategory, setOwnershipCategory] = useState(formData?.ownershipCategory);
   const { data: SubOwnerShipCategoryOb, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "SubOwnerShipCategory");
   const { data: OwnerShipCategoryOb } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "OwnerShipCategory");
@@ -95,6 +96,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => 
           value={ownershipCategory}
           labelKey = "PT_OWNERSHIP"
           isDependent = {true}
+          disabled = {isUpdateProperty}
         />
       </div>
     </FormStep>

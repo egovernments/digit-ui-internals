@@ -121,10 +121,12 @@ const EditProperty = ({ parentRoute }) => {
   const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_PROPERTY", {});
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const acknowledgementIds = window.location.href.split("/").pop();
+  const propertyIds = window.location.href.split("/").pop();
   let application = {};
+  const typeOfProperty = window.location.href.includes("update=true");
   const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch({
     tenantId,
-    filters: { acknowledgementIds },
+    filters: typeOfProperty ? { propertyIds } : { acknowledgementIds },
   });
   sessionStorage.setItem("isEditApplication", false);
 
@@ -132,6 +134,8 @@ const EditProperty = ({ parentRoute }) => {
     application = data?.Properties[0];
     if (data && application) {
       application = data?.Properties[0];
+      if(typeOfProperty) { application.isUpdateProperty = true; application.isEditProperty = false;}
+      else { application.isUpdateProperty = false; application.isEditProperty = true; }
       let propertyEditDetails = getPropertyEditDetails(application);
       setParams({ ...params, ...propertyEditDetails });
     }

@@ -1,9 +1,10 @@
-import { Card, CardSubHeader, Header, LinkButton, Loader, Row, StatusTable } from "@egovernments/digit-ui-react-components";
+import { Card, CardSubHeader, Header, LinkButton, Loader, Row, StatusTable, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import PropertyDocument from "../../../pageComponents/PropertyDocument";
 import { propertyCardBodyStyle } from "../../../utils";
+import { Link } from "react-router-dom";
 
 const PropertyInformation = () => {
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ const PropertyInformation = () => {
   return (
     <React.Fragment>
       <Header>{t("PT_PROPERTY_INFORMATION")}</Header>
-      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 10em)" }}>
+      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 12em)" }}>
         <Card>
           <StatusTable>
             <Row label={t("PT_PROPERTY_PTUID")} text={`${property.propertyId || "NA"}`} textStyle={{ whiteSpace: "pre" }} />
@@ -151,6 +152,15 @@ const PropertyInformation = () => {
                 <Row text="PT_NO_DOCUMENTS_MSG" />
               </StatusTable>
             )}
+          </div>
+          <div>
+            {(property?.status === "ACTIVE") &&
+              <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
+                <Link to={{ pathname:`/digit-ui/citizen/pt/property/edit-application/update=true/${property.propertyId}`}}>
+                  <SubmitBar label={t("PT_UPDATE")} />
+                </Link>
+              </div>
+            }
           </div>
         </Card>
       </div>

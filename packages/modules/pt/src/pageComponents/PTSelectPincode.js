@@ -5,15 +5,18 @@ import { useLocation } from "react-router-dom";
 const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, register, errors, props }) => {
   const tenants = Digit.Hooks.pt.useTenants();
   const [pincode, setPincode] = useState(() => formData?.address?.pincode || "");
-  const isEditProperty = formData?.isEditProperty || false;
   const { pathname } = useLocation();
   const presentInModifyApplication = pathname.includes("modify");
+  let isEditProperty = formData?.isEditProperty || false;
+  if(formData?.isUpdateProperty) isEditProperty = true;
+  ;
 
   const inputs = [
     {
       label: "CORE_COMMON_PINCODE",
       type: "text",
       name: "pincode",
+      disable: isEditProperty,
       validation: {
         minlength: 6,
         maxlength: 7,

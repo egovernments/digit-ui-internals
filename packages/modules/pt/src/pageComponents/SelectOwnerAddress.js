@@ -7,6 +7,7 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   const [isCorrespondenceAddress, setIsCorrespondenceAddress] = useState(
     formData.owners && formData.owners[index] && formData.owners[index].isCorrespondenceAddress
   );
+  const isUpdateProperty = formData?.isUpdateProperty || false;
 
   function setOwnerPermanentAddress(e) {
     setPermanentAddress(e.target.value);
@@ -42,7 +43,7 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
 
   return (
     <FormStep config={config} t={t} onSelect={goNext} isDisabled={!permanentAddress}>
-      <TextInput isMandatory={false} optionKey="i18nKey" t={t} name="address" onChange={setOwnerPermanentAddress} value={permanentAddress} />
+      <TextInput isMandatory={false} optionKey="i18nKey" t={t} name="address" onChange={setOwnerPermanentAddress} value={permanentAddress} disable = {isUpdateProperty} />
       {/* <CardLabel>{t("PT_OWNER_S_ADDRESS")}</CardLabel> */}
       <CheckBox
         label={t("PT_COMMON_SAME_AS_PROPERTY_ADDRESS")}
@@ -50,6 +51,7 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
         value={isCorrespondenceAddress}
         checked={isCorrespondenceAddress || false}
         style={{ paddingTop: "10px" }}
+        disable={isUpdateProperty}
       />
     </FormStep>
   );

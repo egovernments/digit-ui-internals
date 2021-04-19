@@ -5,7 +5,8 @@ import { cardBodyStyle } from "../utils";
 const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
   const allCities = Digit.Hooks.pt.useTenants();
   let tenantId = Digit.ULBService.getCurrentTenantId();
-  const isEditProperty = formData?.isEditProperty || false;
+  let isEditProperty = formData?.isEditProperty || false;
+  if(formData?.isUpdateProperty) isEditProperty = true;
   const { pincode, city } = formData?.address || "";
   const cities =
     userType === "employee"

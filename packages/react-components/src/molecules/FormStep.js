@@ -51,6 +51,7 @@ const FormStep = ({
               maxlength={input.validation.maxlength}
               inputRef={register(input.validation)}
               isMandatory={errors[input.name]}
+              disable={input.disable ? input.disable : false}
             />
           </div>
         </React.Fragment>

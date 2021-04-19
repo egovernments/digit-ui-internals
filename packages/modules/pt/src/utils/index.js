@@ -458,9 +458,9 @@ export const convertToProperty = (data = {}) => {
   let builtUpArea = data?.floordetails?.builtUpArea || null;
   let noOfFloors = data?.noOfFloors;
   let noOofBasements = data?.noOofBasements;
-  let unit = data?.units;
-  let basement1 = data?.units["-1"];
-  let basement2 = data?.units["-2"];
+  // let unit = data?.units;
+  // let basement1 = data?.units["-1"];
+  // let basement2 = data?.units["-2"];
 
   data = setDocumentDetails(data);
   data = setOwnerDetails(data);
@@ -491,9 +491,9 @@ export const convertToProperty = (data = {}) => {
         builtUpArea: builtUpArea,
         noOfFloors: noOfFloors,
         noOofBasements: noOofBasements,
-        unit: unit,
-        basement1: basement1,
-        basement2: basement2,
+        // unit: unit,
+        // basement1: basement1,
+        // basement2: basement2,
       },
 
       creationReason: "CREATE",
@@ -613,12 +613,16 @@ export const convertToUpdateProperty = (data = {}) => {
         propertyType: propertyType
       },
 
-      creationReason: "CREATE",
+      creationReason: !data?.isUpdateProperty ? "CREATE" : "UPDATE",
       source: "MUNICIPAL_RECORDS",
       channel: "CITIZEN",
-      workflow: {
+      workflow: !data?.isUpdateProperty ?  {
         action: "REOPEN",
         businessService: "PT.CREATE",
+        moduleName: "PT"
+      } : {
+        action: "OPEN",
+        businessService: "PT.UPDATE",
         moduleName: "PT"
       }
     },
