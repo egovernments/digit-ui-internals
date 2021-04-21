@@ -28,7 +28,7 @@ export const PTService = {
       useCache: true,
       userService: true,
       method: "POST",
-      params: { tenantId },
+      params: {  },
       auth: true,
     }),
   update: (details, tenantId) =>
@@ -38,7 +38,7 @@ export const PTService = {
       useCache: false,
       userService: true,
       method: "POST",
-      params: { tenantId },
+      params: {  },
       auth: true,
     }),
   assessmentCreate: (details, tenantId) =>
