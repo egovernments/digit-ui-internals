@@ -64,9 +64,9 @@ const getPropertyEditDetails = (data = {}) => {
     data.address.documents["ProofOfAddress"] = addressDocs[0];
   } else {
     data.address.documents = [];
-    data.address.documents["ProofOfAddress"] = addressDocs[0];
+    data.address.documents["ProofOfAddress"] = addressDocs&&Array.isArray(addressDocs)&&addressDocs.length>0&&addressDocs[0];
   }
-  data.documents["ProofOfAddress"] = addressDocs[0];
+  data.documents["ProofOfAddress"] =  addressDocs&&Array.isArray(addressDocs)&&addressDocs.length>0&&addressDocs[0];
 
   // asessment details
   if (data?.additionalDetails?.propertyType?.code === "VACANT") {
