@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import getPTAcknowledgementData from "../../getPTAcknowledgementData";
 import PropertyDocument from "../../pageComponents/PropertyDocument";
 import PTWFApplicationTimeline from "../../pageComponents/PTWFApplicationTimeline";
-import { propertyCardBodyStyle } from "../../utils";
+import { getPropertyTypeLocale, propertyCardBodyStyle } from "../../utils";
 
 const PTApplicationDetails = () => {
   const { t } = useTranslation();
@@ -61,7 +61,7 @@ const PTApplicationDetails = () => {
           <CardSubHeader>{t("PT_PROPERTY_ASSESSMENT_DETAILS_HEADER")}</CardSubHeader>
           <StatusTable>
             <Row label={t("PT_ASSESMENT_INFO_USAGE_TYPE")} text={`${t(application?.usageCategory)}` || "NA"} />
-            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(application?.propertyType.toLowerCase().split(".")[1])}` || "NA"} />
+            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(application?.propertyType))}` || "NA"} />
             <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${t(application?.landArea)}` || "NA"} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${t(application?.noOfFloors)}` || "NA"} />
           </StatusTable>
