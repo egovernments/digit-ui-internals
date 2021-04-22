@@ -69,6 +69,7 @@ export const setAddressDetails = (data) => {
   let { address } = data;
 
   let propAddress = {
+    ...address,
     pincode: address?.pincode,
     landmark: address?.landmark,
     city: address?.city?.name,
@@ -77,7 +78,7 @@ export const setAddressDetails = (data) => {
     locality: {
       code: address?.locality?.code || "NA",
       area: address?.locality?.name,
-    },
+    }
   };
   data.tenantId = data?.tenantId || "pb.amritsar";
   data.address = propAddress;
@@ -215,7 +216,7 @@ export const getSuperBuiltUparea = (data) => {
 };
 
 export const getnumberoffloors = (data) => {
-  let unitlenght = data?.units.length;
+  let unitlenght = data?.units?.length;
   if (data?.noOofBasements?.i18nKey === "PT_ONE_BASEMENT_OPTION") {
     return parseInt(unitlenght) + 1;
   } else if (data?.noOofBasements?.i18nKey === "PT_TWO_BASEMENT_OPTION") {
