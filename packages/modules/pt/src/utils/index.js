@@ -405,6 +405,7 @@ export const getunitsindependent = (data) => {
 };
 
 export const setPropertyDetails = (data) => {
+  let unitleghtvalue = getnumberoffloors(data);
   let propertyDetails = {};
   if (data?.PropertyType?.code?.includes("VACANT")) {
     propertyDetails = {
