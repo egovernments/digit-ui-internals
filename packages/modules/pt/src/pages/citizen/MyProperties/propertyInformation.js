@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import PropertyDocument from "../../../pageComponents/PropertyDocument";
-import { propertyCardBodyStyle } from "../../../utils";
+import { getPropertyTypeLocale, propertyCardBodyStyle } from "../../../utils";
 import { Link } from "react-router-dom";
 
 const PropertyInformation = () => {
@@ -63,7 +63,7 @@ const PropertyInformation = () => {
                 )}` || "NA"
               }
             />
-            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(`COMMON_PROPTYPE_BUILTUP_${property?.propertyType.split(".")[1]}`)}` || "NA"} />
+            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(property?.propertyType))}` || "NA"} />
             <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${property.landArea || "NA"}`} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${property.noOfFloors || "NA"}`} />
           </StatusTable>
