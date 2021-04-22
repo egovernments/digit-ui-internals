@@ -186,10 +186,14 @@ const getUsageType = (data) => {
 
 const getFloorNumber = (data) => {
   let floorcode = data?.Floorno?.i18nKey;
-  if (floorcode.charAt(floorcode.length - 3) === "_") {
+  if (floorcode.charAt(floorcode.length - 3) === "_" && floorcode.charAt(floorcode.length - 2) === "_") {
     return "-" + floorcode.charAt(floorcode.length - 1);
   } else {
-    return floorcode.charAt(floorcode.length - 1);
+    if (floorcode.charAt(floorcode.length - 2) !== "_") {
+      return floorcode.charAt(floorcode.length - 2) + floorcode.charAt(floorcode.length - 1);
+    } else {
+      return floorcode.charAt(floorcode.length - 1);
+    }
   }
 };
 
@@ -401,7 +405,6 @@ export const getunitsindependent = (data) => {
 };
 
 export const setPropertyDetails = (data) => {
-  let unitleghtvalue = getnumberoffloors(data);
   let propertyDetails = {};
   if (data?.PropertyType?.code?.includes("VACANT")) {
     propertyDetails = {
@@ -423,6 +426,7 @@ export const setPropertyDetails = (data) => {
     };
   } else if (data?.PropertyType?.code?.includes("INDEPENDENTPROPERTY")) {
     /*  update this case tulika*/
+    let unitleghtvalue = getnumberoffloors(data);
     propertyDetails = {
       units: getunitsindependent(data),
       landArea: data?.units[0]?.plotSize,
