@@ -60,9 +60,17 @@ const PTApplicationDetails = () => {
           </StatusTable>
           <CardSubHeader>{t("PT_PROPERTY_ASSESSMENT_DETAILS_HEADER")}</CardSubHeader>
           <StatusTable>
-            <Row label={t("PT_ASSESMENT_INFO_USAGE_TYPE")} text={`${t(application?.usageCategory)}` || "NA"} />
-            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(application?.propertyType))}` || "NA"} />
-            <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${t(application?.landArea)}` || "NA"} />
+            <Row
+              label={t("PT_ASSESMENT_INFO_USAGE_TYPE")}
+              text={
+                `${t(
+                  (application.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPSUBUSGTYPE_") +
+                    (application?.usageCategory?.split(".")[1] ? application?.usageCategory?.split(".")[1] : application.usageCategory)
+                )}` || "NA"
+              }
+            />
+            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(`COMMON_PROPTYPE_BUILTUP_${application?.propertyType.split(".")[1]}`)}` || "NA"} />
+            <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${t(`${application?.landArea} sq.ft`)}` || "NA"} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${t(application?.noOfFloors)}` || "NA"} />
           </StatusTable>
           {/* <CardSubHeader>{t("Ground Floor")}</CardSubHeader>
@@ -80,13 +88,13 @@ const PTApplicationDetails = () => {
               units.map((unit, index) => (
                 <div key={index}>
                   {(flrno !== unit?.floorNo ? (i = 1) : (i = i + 1)) && i === 1 && (
-                    <CardSubHeader>{`${t("PROPERTYTAX_FLOOR_")}${unit?.floorNo}`}</CardSubHeader>
+                    <CardSubHeader>{t(`PROPERTYTAX_FLOOR_${unit?.floorNo}`)}</CardSubHeader>
                   )}
                   <div style={{ border: "groove" }}>
                     <CardSubHeader>
                       {t("Unit")} {i}
                     </CardSubHeader>
-                    {(true ? (flrno = unit?.floorNo) : console.log("")) && (
+                    {(flrno = unit?.floorNo) > -3 && (
                       <StatusTable>
                         <Row
                           label={t("PT_ASSESSMENT_UNIT_USAGE_TYPE")}
@@ -99,7 +107,7 @@ const PTApplicationDetails = () => {
                           }
                         />
                         <Row label={t("PT_OCCUPANY_TYPE_LABEL")} text={`${t("PROPERTYTAX_OCCUPANCYTYPE_" + unit?.occupancyType)}` || "NA"} />
-                        <Row label={t("PT_BUILTUP_AREA_LABEL")} text={`${unit?.constructionDetail?.builtUpArea || "NA"}`} />
+                        <Row label={t("PT_BUILTUP_AREA_LABEL")} text={`${`${unit?.constructionDetail?.builtUpArea} sq.ft` || "NA"}`} />
                       </StatusTable>
                     )}
                   </div>
@@ -122,7 +130,10 @@ const PTApplicationDetails = () => {
                     <Row label={t("PT_COMMON_APPLICANT_NAME_LABEL")} text={`${t(owner?.name)}` || "NA"} />
                     <Row label={t("PT_FORM3_GUARDIAN_NAME")} text={`${t(owner?.fatherOrHusbandName)}` || "NA"} />
                     <Row label={t("PT_COMMON_GENDER_LABEL")} text={`${t(owner?.gender)}` || "NA"} />
-                    <Row label={t("PT_FORM3_OWNERSHIP_TYPE")} text={`${t(application?.ownershipCategory.toLowerCase().split(".")[1])}` || "NA"} />
+                    <Row
+                      label={t("PT_FORM3_OWNERSHIP_TYPE")}
+                      text={`${application?.ownershipCategory ? t(`PT_OWNERSHIP_${application?.ownershipCategory}`) : "NA"}`}
+                    />
                     <Row label={t("PT_FORM3_MOBILE_NUMBER")} text={`${t(owner?.mobileNumber)}`} />
                     <Row label={t("PT_MUTATION_AUTHORISED_EMAIL")} text={`${t("NA")}`} />
                     <Row label={t("PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY")} text={`${t(owner?.ownerType).toLowerCase()}`} />
