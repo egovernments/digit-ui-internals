@@ -54,9 +54,9 @@ const CheckPage = ({ onSubmit, value = {} }) => {
     floordetails,
     owners,
     isEditProperty,
-    isUpdateProperty
+    isUpdateProperty,
   } = value;
-  const typeOfApplication = ( !isEditProperty || !isUpdateProperty ) ? `new-application` : `edit-application`;
+  const typeOfApplication = !isEditProperty || !isUpdateProperty ? `new-application` : `edit-application`;
   let flatplotsize;
   if (isPropertyselfoccupied(selfOccupied?.i18nKey)) {
     flatplotsize = parseInt(landarea?.floorarea);
@@ -116,37 +116,51 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                       <Row
                         label={t("PT_COMMON_INSTITUTION_NAME")}
                         text={`${t(checkForNA(owner?.inistitutionName))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={t("PT_TYPE_OF_INSTITUTION")}
                         text={`${t(checkForNA(owner?.inistitutetype?.code))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={t("PT_OWNER_NAME")}
                         text={`${t(checkForNA(owner?.name))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={`${t("PT_COMMON_AUTHORISED_PERSON_DESIGNATION")}`}
                         text={`${t(checkForNA(owner?.designation))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={`${t("PT_FORM3_MOBILE_NUMBER")}`}
                         text={`${t(checkForNA(owner?.mobileNumber))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={`${t("PT_OWNERSHIP_INFO_TEL_PHONE_NO")}`}
                         text={`${t(checkForNA(owner?.altContactNumber))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={`${t("PT_FORM3_EMAIL_ID")}`}
                         text={`${t(checkForNA(owner?.emailId))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/inistitution-details/`}${index}`} />
+                        }
                       />
                       <Row
                         label={`${t("PT_OWNERSHIP_INFO_CORR_ADDR")}`}
@@ -165,7 +179,9 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                       <Row
                         label={t("PT_PROOF_IDENTITY_HEADER")}
                         text={`${(owner?.documents["proofIdentity"]?.name && getFixedFilename(owner.documents["proofIdentity"].name)) || "na"}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/institutional-proof-of-identity/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/institutional-proof-of-identity/`}${index}`} />
+                        }
                       />
                     </StatusTable>
                   </div>
@@ -200,7 +216,9 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                       <Row
                         label={t("PT_SPECIAL_OWNER_CATEGORY")}
                         text={`${t(checkForNA(owner?.ownerType?.code))}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/special-owner-category/`}${index}`} />}
+                        actionButton={
+                          <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/special-owner-category/`}${index}`} />
+                        }
                       />
                       <Row
                         label={`${t("PT_OWNERS_ADDRESS")}`}
@@ -212,12 +230,19 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                         text={`${t(checkForNA(owner?.isCorrespondenceAddress))}`}
                         actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/owner-address/`}${index}`} />}
                       />
-                      {(owner?.ownerType?.code !== "NONE") ?
-                       <Row
-                        label={t("PT_SPECIAL_OWNER_CATEGORY_PROOF_HEADER")}
-                        text={`${(owner?.documents["specialProofIdentity"]?.name && getFixedFilename(owner.documents["specialProofIdentity"].name)) || "na"}`}
-                        actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/special-owner-category-proof/`}${index}`} />}
-                      />: ""}
+                      {owner?.ownerType?.code !== "NONE" ? (
+                        <Row
+                          label={t("PT_SPECIAL_OWNER_CATEGORY_PROOF_HEADER")}
+                          text={`${
+                            (owner?.documents["specialProofIdentity"]?.name && getFixedFilename(owner.documents["specialProofIdentity"].name)) || "na"
+                          }`}
+                          actionButton={
+                            <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/special-owner-category-proof/`}${index}`} />
+                          }
+                        />
+                      ) : (
+                        ""
+                      )}
                       <Row
                         label={t("PT_PROOF_IDENTITY_HEADER")}
                         text={`${(owner?.documents["proofIdentity"]?.name && getFixedFilename(owner.documents["proofIdentity"].name)) || "na"}`}
@@ -299,14 +324,14 @@ const CheckPage = ({ onSubmit, value = {} }) => {
               text={`${t(checkForNA(floordetails?.builtUpArea))} ${(floordetails?.builtUpArea && "sq.ft") || ""}`}
               actionButton={<ActionButton jumpTo={`/digit-ui/citizen/pt/property/${typeOfApplication}/floordetails`} />}
             />
-            {isPropertyselfoccupied(selfOccupied?.i18nKey) && (
+            {!isPropertyselfoccupied(selfOccupied?.i18nKey) && (
               <Row
                 label={t("PT_PROPERTY_RENTED_AREA_LABEL")}
                 text={`${t(checkForNA(Constructiondetails?.RentArea))} ${(Constructiondetails?.RentArea && "sq.ft") || ""}`}
                 actionButton={<ActionButton jumpTo={`/digit-ui/citizen/pt/property/${typeOfApplication}/rental-details`} />}
               />
             )}
-            {isPropertyselfoccupied(selfOccupied?.i18nKey) && (
+            {!isPropertyselfoccupied(selfOccupied?.i18nKey) && (
               <Row
                 label={t("PT_PROPERTY_ANNUAL_RENT_LABEL")}
                 text={`${t(checkForNA(Constructiondetails?.AnnualRent))} ${(Constructiondetails?.AnnualRent && "sq.ft") || ""}`}
@@ -344,7 +369,9 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                     label={t("PT_ASSESMENT_INFO_OCCUPLANCY")}
                     //text={`${t(checkForNA(units[0]?.builtUpArea))} ${(units[0]?.builtUpArea && "sq.ft") || ""}`}
                     text={`${t(checkForNA(units[index]?.selfOccupied?.i18nKey))}`}
-                    actionButton={<ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/is-this-floor-self-occupied/`}${index}`} />}
+                    actionButton={
+                      <ActionButton jumpTo={`${`/digit-ui/citizen/pt/property/${typeOfApplication}/is-this-floor-self-occupied/`}${index}`} />
+                    }
                   />
                   <Row
                     label={t("PT_BUILT_UP_AREA_LABEL")}

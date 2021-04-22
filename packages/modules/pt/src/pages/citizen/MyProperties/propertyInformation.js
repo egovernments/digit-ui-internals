@@ -64,7 +64,7 @@ const PropertyInformation = () => {
               }
             />
             <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(property?.propertyType))}` || "NA"} />
-            <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${property.landArea || "NA"}`} />
+            <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${property.landArea} sq.ft` || "NA"} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${property.noOfFloors || "NA"}`} />
           </StatusTable>
           {/* <CardSubHeader>{t("Ground Floor")}</CardSubHeader>
@@ -91,13 +91,13 @@ const PropertyInformation = () => {
               units.map((unit, index) => (
                 <div key={index}>
                   {(flrno !== unit?.floorNo ? (i = 1) : (i = i + 1)) && i === 1 && (
-                    <CardSubHeader>{`${t("PROPERTYTAX_FLOOR_")}${unit?.floorNo}`}</CardSubHeader>
+                    <CardSubHeader>{t(`PROPERTYTAX_FLOOR_${unit?.floorNo}`)}</CardSubHeader>
                   )}
                   <div style={{ border: "groove" }}>
                     <CardSubHeader>
                       {t("Unit")} {i}
                     </CardSubHeader>
-                    {(true ? (flrno = unit?.floorNo) : console.log("")) && (
+                    {(flrno = unit?.floorNo) > -3 && (
                       <StatusTable>
                         <Row
                           label={t("PT_ASSESSMENT_UNIT_USAGE_TYPE")}
@@ -110,7 +110,7 @@ const PropertyInformation = () => {
                           }
                         />
                         <Row label={t("PT_OCCUPANY_TYPE_LABEL")} text={`${t("PROPERTYTAX_OCCUPANCYTYPE_" + unit?.occupancyType)}` || "NA"} />
-                        <Row label={t("PT_BUILTUP_AREA_LABEL")} text={`${unit?.constructionDetail?.builtUpArea || "NA"}`} />
+                        <Row label={t("PT_BUILTUP_AREA_LABEL")} text={`${`${unit?.constructionDetail?.builtUpArea} sq.ft` || "NA"}`} />
                       </StatusTable>
                     )}
                   </div>

@@ -210,6 +210,15 @@ export const getSuperBuiltUparea = (data) => {
   return builtUpArea;
 };
 
+export const getnumberoffloors = (data) => {
+  let unitlenght = data?.units.length;
+  if (data?.noOofBasements?.i18nKey === "PT_ONE_BASEMENT_OPTION") {
+    return parseInt(unitlenght) + 1;
+  } else if (data?.noOofBasements?.i18nKey === "PT_TWO_BASEMENT_OPTION") {
+    return parseInt(unitlenght) + 2;
+  }
+};
+
 export const getusageCategory = (data, i) => {
   if (data?.isResdential?.i18nKey === "PT_COMMON_YES") {
     return data?.isResdential?.code;
@@ -307,7 +316,7 @@ export const getunitarray = (i, unitsdata, unit, data) => {
   ) {
     unit.push({
       occupancyType: unitsdata[i].selfOccupied?.code,
-      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i + 1,
+      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i,
       constructionDetail: {
         builtUpArea: parseInt(unitsdata[i].builtUpArea) - parseInt(unitsdata[i].UnOccupiedArea),
       },
@@ -316,7 +325,7 @@ export const getunitarray = (i, unitsdata, unit, data) => {
     });
     unit.push({
       occupancyType: unitsdata[i]?.IsAnyPartOfThisFloorUnOccupied?.code,
-      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i + 1,
+      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i,
       constructionDetail: {
         builtUpArea: parseInt(unitsdata[i]?.UnOccupiedArea),
       },
@@ -329,7 +338,7 @@ export const getunitarray = (i, unitsdata, unit, data) => {
   ) {
     unit.push({
       occupancyType: unitsdata[i].selfOccupied?.code,
-      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i + 1,
+      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i,
       constructionDetail: {
         builtUpArea: parseInt(unitsdata[i]?.builtUpArea),
       },
@@ -340,7 +349,7 @@ export const getunitarray = (i, unitsdata, unit, data) => {
     if (unitsdata[i]?.selfOccupied?.i18nKey === "PT_PARTIALLY_RENTED_OUT") {
       unit.push({
         occupancyType: "SELFOCCUPIED",
-        floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i + 1,
+        floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i,
         constructionDetail: {
           builtUpArea: parseInt(unitsdata[i]?.floorarea),
         },
@@ -351,7 +360,7 @@ export const getunitarray = (i, unitsdata, unit, data) => {
     unit.push({
       occupancyType: unitsdata[i].selfOccupied?.code,
       arv: unitsdata[i].AnnualRent,
-      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i + 1,
+      floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i,
       constructionDetail: {
         builtUpArea: parseInt(unitsdata[i]?.RentArea),
       },
@@ -361,7 +370,7 @@ export const getunitarray = (i, unitsdata, unit, data) => {
     if (unitsdata[i]?.IsAnyPartOfThisFloorUnOccupied.i18nKey === "PT_COMMON_YES") {
       unit.push({
         occupancyType: unitsdata[i]?.IsAnyPartOfThisFloorUnOccupied?.code,
-        floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i + 1,
+        floorNo: i === "-1" ? "-1" : i === "-2" ? "-2" : i,
         constructionDetail: {
           builtUpArea: parseInt(unitsdata[i]?.UnOccupiedArea),
         },
@@ -392,6 +401,7 @@ export const getunitsindependent = (data) => {
 };
 
 export const setPropertyDetails = (data) => {
+  let unitleghtvalue = getnumberoffloors(data);
   let propertyDetails = {};
   if (data?.PropertyType?.code?.includes("VACANT")) {
     propertyDetails = {
@@ -417,7 +427,7 @@ export const setPropertyDetails = (data) => {
       units: getunitsindependent(data),
       landArea: data?.units[0]?.plotSize,
       propertyType: data?.PropertyType?.code,
-      noOfFloors: 1,
+      noOfFloors: unitleghtvalue,
       superBuiltUpArea: null,
       usageCategory: getUsageType(data),
     };
