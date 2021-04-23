@@ -16,9 +16,9 @@ function PropertyDocuments({ documents }) {
 
   useEffect(() => {
     Digit.UploadServices.Filefetch(filesArray, tenantId.split(".")[0]).then((res) => {
-      console.log("%c 🧔: PropertyDocuments -> res ", "font-size:16px;background-color:#96d741;color:black;", res);
       setPdfFiles(res?.data);
     });
+    return () => setPdfFiles({});
   }, []);
 
   return (

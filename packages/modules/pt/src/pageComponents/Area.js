@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { FormStep, CardLabel, TextInput } from "@egovernments/digit-ui-react-components";
+import React, { useEffect, useState } from "react";
+import { FormStep, CardLabel, TextInput, LabelFieldPair } from "@egovernments/digit-ui-react-components";
+import { useLocation } from "react-router-dom";
 
 const Area = ({ t, config, onSelect, value, userType, formData }) => {
   //let index = window.location.href.charAt(window.location.href.length - 1);
@@ -13,6 +14,7 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
   } else {
     [floorarea, setfloorarea] = useState(formData.landarea?.floorarea);
   }
+  const [error, setError] = useState(null);
   const [unitareaerror, setunitareaerror] = useState(null);
 
   function setPropertyfloorarea(e) {
@@ -62,12 +64,48 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
     } else {
       setError(null);
       setfloorarea(e.target.value);
-      if (userType === "employee") {
-        const value = e?.target?.value;
-        const key = e?.target?.id;
-        onSelect(key, value);
-      }
     }
+  }
+
+  useEffect(() => {
+    if (userType === "employee") {
+      onSelect(config.key, floorarea);
+    }
+  }, [floorarea]);
+
+  const inputs = [
+    {
+      label: "PT_PLOT_SIZE_SQUARE_FEET_LABEL",
+      type: "text",
+      name: "area",
+      validation: {},
+    },
+  ];
+
+  const { pathname } = useLocation();
+  const presentInModifyApplication = pathname.includes("modify");
+
+  if (userType === "employee") {
+    return inputs?.map((input, index) => {
+      return (
+        <LabelFieldPair key={index}>
+          <CardLabel className="card-label-smaller">
+            {t(input.label)}
+            {config.isMandatory ? " * " : null}
+          </CardLabel>
+          <div className="field">
+            <TextInput
+              key={input.name}
+              id={input.name}
+              value={floorarea}
+              onChange={onChange}
+              {...input.validation}
+              autoFocus={presentInModifyApplication}
+            />
+          </div>
+        </LabelFieldPair>
+      );
+    });
   }
 
   return (

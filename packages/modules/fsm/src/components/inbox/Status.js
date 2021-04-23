@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LinkButton, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import StatusCount from "./StatusCount";
@@ -20,6 +20,10 @@ const Status = ({ onAssignmentChange, fsmfilters, mergedRoleDetails }) => {
   );
 
   // console.log("find role status from here", applicationsWithCount , mergedRoleDetails, finalApplicationWithCount, moreApplicationWithCount);
+
+  useEffect(() => {
+    console.log(">>>>>>", applicationsWithCount);
+  }, [applicationsWithCount]);
 
   if (isLoading) {
     return <Loader />;

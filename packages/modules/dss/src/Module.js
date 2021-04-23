@@ -16,8 +16,8 @@ const Routes = ({ path }) => {
         <PrivateRoute path={`${path}/overview`} component={Overview} />
       </Switch>
     </>
-  )
-}
+  );
+};
 
 const DSSModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "DSS";
@@ -41,7 +41,7 @@ const DSSModule = ({ stateCode, userType, tenants }) => {
 
 const componentsToRegister = {
   DSSModule,
-  DSSCard
+  DSSCard,
 };
 
 export const initDSSComponents = () => {

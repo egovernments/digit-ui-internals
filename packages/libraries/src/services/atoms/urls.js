@@ -53,13 +53,14 @@ const Urls = {
     create: "/property-services/property/_create",
     search: "/property-services/property/_search",
     update: "/property-services/property/_update",
+    pt_calculation_estimate: "/pt-calculator-v2/propertytax/v2/_estimate",
     assessment_create: "/property-services/assessment/_create",
   },
 
   dss: {
     dashboardConfig: "/dashboard-analytics/dashboard/getDashboardConfig",
-    getCharts: "/dashboard-analytics/dashboard/getChartV2"
-  }
+    getCharts: "/dashboard-analytics/dashboard/getChartV2",
+  },
 };
 
 export default Urls;

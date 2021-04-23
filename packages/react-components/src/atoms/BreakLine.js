@@ -1,7 +1,7 @@
 import React from "react";
 
-const BreakLine = () => {
-  return <hr color="#d6d5d4" className="break-line"></hr>;
+const BreakLine = ({ style = {} }) => {
+  return <hr color="#d6d5d4" className="break-line" style={style}></hr>;
 };
 
 export default BreakLine;

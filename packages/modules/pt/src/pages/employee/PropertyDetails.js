@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
 
 import { useParams } from "react-router-dom";
+import { Header, Loader } from "@egovernments/digit-ui-react-components";
 
 const PropertyDetails = () => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { id: applicationNumber } = useParams();
+  const [showToast, setShowToast] = useState(null);
 
   let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, applicationNumber);
+  const { data: fetchBillData } = Digit.Hooks.useFetchBillsForBuissnessService({
+    businessService: "PT",
+    consumerCode: applicationNumber,
+  });
 
   const {
     isLoading: updatingApplication,
@@ -27,18 +33,21 @@ const PropertyDetails = () => {
     // serviceData: applicationDetails,
   });
 
+  const closeToast = () => {
+    setShowToast(null);
+  };
+
   applicationDetails?.applicationDetails?.shift();
   applicationDetails?.applicationDetails?.unshift({
-    title: "PT_TITLE_PROPERTY_INFORMATION",
     values: [
       {
-        title: "PT_TITLE_UNIQUE_PROPERTY_ID",
+        title: "ES_PT_TITLE_UNIQUE_PROPERTY_ID",
         value: applicationNumber,
       },
-      // TODO: add below item with value fetched
-      // {
-      //   title: 'PT_TITLE_TOTAL_PROPERTY_DUE', value: 0
-      // },
+      {
+        title: "ES_PT_TITLE_TOTAL_PROPERTY_DUE",
+        value: fetchBillData?.Bill[0]?.totalAmount ? `₹ ${fetchBillData?.Bill[0]?.totalAmount}` : "N/A",
+      },
     ],
   });
 
@@ -60,15 +69,21 @@ const PropertyDetails = () => {
   }
 
   return (
-    <ApplicationDetailsTemplate
-      applicationDetails={applicationDetails}
-      isLoading={isLoading}
-      isDataLoading={isLoading}
-      applicationData={applicationDetails?.applicationData}
-      mutate={mutate}
-      workflowDetails={workflowDetails}
-      businessService="PT"
-    />
+    <div>
+      <Header>{t("ES_PT_TITLE_PROPERTY_DETAILS")}</Header>
+      <ApplicationDetailsTemplate
+        applicationDetails={applicationDetails}
+        isLoading={isLoading}
+        isDataLoading={isLoading}
+        applicationData={applicationDetails?.applicationData}
+        mutate={mutate}
+        workflowDetails={workflowDetails}
+        businessService="PT"
+        showToast={showToast}
+        setShowToast={setShowToast}
+        closeToast={closeToast}
+      />
+    </div>
   );
 };
 

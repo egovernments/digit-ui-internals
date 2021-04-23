@@ -23,9 +23,7 @@ const DashBoard = () => {
   const { data: response, isLoading } = Digit.Hooks.dss.useDashboardConfig(moduleCode);
   // console.log("find all data here", dashData, screenConfig);
   if (isLoading) {
-    return (
-      <Loader />
-    );
+    return <Loader />;
   }
 
   const dashboardConfig = response?.responseData;

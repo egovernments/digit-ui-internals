@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { TypeSelectCard } from "@egovernments/digit-ui-react-components";
-import { FormStep, RadioOrSelect, RadioButtons } from "@egovernments/digit-ui-react-components";
+import React, { useEffect, useState } from "react";
+import { FormStep, RadioButtons, CardLabel, LabelFieldPair, Dropdown } from "@egovernments/digit-ui-react-components";
 
 const PropertyType = ({ t, config, onSelect, userType, formData }) => {
   const [BuildingType, setBuildingType] = useState(formData?.PropertyType);
@@ -29,9 +28,48 @@ const PropertyType = ({ t, config, onSelect, userType, formData }) => {
   }
 
   function goNext() {
-    sessionStorage.setItem("PropertyType", BuildingType.i18nKey);
+    sessionStorage.setItem("PropertyType", BuildingType?.i18nKey);
     onSelect(config.key, BuildingType);
   }
+
+  useEffect(() => {
+    if (userType === "employee") {
+      goNext();
+    }
+  }, [BuildingType]);
+
+  const inputs = [
+    {
+      label: "ES_NEW_APPLICATION_PROPERTY_TYPE",
+      type: "text",
+      name: "propertyType",
+      validation: {},
+    },
+  ];
+
+  if (userType === "employee") {
+    return inputs?.map((input, index) => {
+      return (
+        <LabelFieldPair key={index}>
+          <CardLabel className="card-label-smaller">
+            {t(input.label)}
+            {config.isMandatory ? " * " : null}
+          </CardLabel>
+          <Dropdown
+            className="form-field"
+            isMandatory={config.isMandatory}
+            selected={getPropertyTypeMenu(proptype)?.length === 1 ? getPropertyTypeMenu(proptype)[0] : BuildingType}
+            disable={getPropertyTypeMenu(proptype)?.length === 1}
+            option={getPropertyTypeMenu(proptype)}
+            select={selectBuildingType}
+            optionKey="i18nKey"
+            t={t}
+          />
+        </LabelFieldPair>
+      );
+    });
+  }
+
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!BuildingType}>
       <RadioButtons

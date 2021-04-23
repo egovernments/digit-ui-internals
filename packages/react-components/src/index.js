@@ -55,7 +55,28 @@ import ApplyFilterBar from "./atoms/ApplyFilterBar";
 import NavBar from "./atoms/NavBar";
 import Hamburger from "./atoms/Hamburger";
 import { PrivateRoute } from "./atoms/PrivateRoute";
-import { GetApp, ArrowLeft, ArrowDown, DownloadIcon, FilterIcon, PrintIcon, Ellipsis, RefreshIcon, Poll, Details, HomeIcon, LanguageIcon, LogoutIcon, ArrowRightInbox, SortDown, SortUp, ShippingTruck, CloseSvg, UpwardArrow, PropertyHouse } from "./atoms/svgindex";
+import {
+  GetApp,
+  ArrowLeft,
+  ArrowDown,
+  DownloadIcon,
+  FilterIcon,
+  PrintIcon,
+  Ellipsis,
+  RefreshIcon,
+  Poll,
+  Details,
+  HomeIcon,
+  LanguageIcon,
+  LogoutIcon,
+  ArrowRightInbox,
+  SortDown,
+  SortUp,
+  ShippingTruck,
+  CloseSvg,
+  UpwardArrow,
+  PropertyHouse,
+} from "./atoms/svgindex";
 import CustomButton from "./atoms/CustomButton";
 import CitizenInfoLabel from "./atoms/CitizenInfoLabel";
 import RoundedLabel from "./atoms/RoundedLabel";
@@ -193,5 +214,5 @@ export {
   Poll,
   Details,
   FilterIcon,
-  PrintIcon
+  PrintIcon,
 };

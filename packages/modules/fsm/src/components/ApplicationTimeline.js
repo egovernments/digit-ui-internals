@@ -86,7 +86,10 @@ export const ApplicationTimeline = (props) => {
         return (
           <div style={{ marginTop: "24px" }}>
             <Link
-              to={{ pathname: `/digit-ui/citizen/payment/collect/FSM.TRIP_CHARGES/${props.id}/?tenantId=${props.application.tenantId}`, state: { tenantId: props.application.tenantId } }}
+              to={{
+                pathname: `/digit-ui/citizen/payment/collect/FSM.TRIP_CHARGES/${props.id}/?tenantId=${props.application.tenantId}`,
+                state: { tenantId: props.application.tenantId },
+              }}
             >
               <SubmitBar label={t("CS_APPLICATION_DETAILS_MAKE_PAYMENT")} />
             </Link>

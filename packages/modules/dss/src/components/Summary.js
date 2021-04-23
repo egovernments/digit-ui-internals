@@ -4,15 +4,7 @@ import { startOfMonth, endOfMonth, getTime } from "date-fns";
 import { Card, Poll, Details, Loader, PrintIcon } from "@egovernments/digit-ui-react-components";
 import { Link } from "react-router-dom";
 
-const Chart = ({
-  data,
-  todayValue = 15012,
-  monthValue = 15.2,
-  target = "72%",
-  task = 133,
-  monthlyTask = 4500,
-  sla = "91%",
-}) => {
+const Chart = ({ data, todayValue = 15012, monthValue = 15.2, target = "72%", task = 133, monthlyTask = 4500, sla = "91%" }) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { id, name, chartType } = data;
@@ -21,7 +13,7 @@ const Chart = ({
     endDate: getTime(endOfMonth(new Date())),
     interval: "month",
     title: "",
-  }
+  };
   const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
     key: id,
     type: chartType,
@@ -30,16 +22,14 @@ const Chart = ({
   });
 
   if (isLoading) {
-    return (
-      <Loader />
-    )
+    return <Loader />;
   }
 
   return (
     <div className="blocks">
       <div>
         <p>{t(data?.name)}</p>
-        <p>{ response?.responseData?.data?.[0]?.headerValue }</p>
+        <p>{response?.responseData?.data?.[0]?.headerValue}</p>
       </div>
       {/* <div>
         <p>This Month</p>
@@ -50,8 +40,8 @@ const Chart = ({
         <p>{ target }</p>
       </div> */}
     </div>
-  )
-}
+  );
+};
 
 const Summary = ({
   title = "Total Collections",
@@ -128,7 +118,7 @@ const Summary = ({
             </p>
           </div>
         </div>
-      </div> 
+      </div>
     </Card>
   );
 };

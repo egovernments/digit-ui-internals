@@ -69,7 +69,7 @@ const PTApplicationDetails = () => {
                 )}` || "NA"
               }
             />
-            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(`COMMON_PROPTYPE_BUILTUP_${application?.propertyType.split(".")[1]}`)}` || "NA"} />
+            <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(application?.propertyType))}` || "NA"} />
             <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={`${t(`${application?.landArea} sq.ft`)}` || "NA"} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${t(application?.noOfFloors)}` || "NA"} />
           </StatusTable>

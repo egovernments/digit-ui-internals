@@ -5,21 +5,22 @@ import DateRange from "./DateRange";
 
 const ULBS = [
   {
-    name: 'All'
+    name: "All",
   },
   {
-    name: 'ULB A'
+    name: "ULB A",
   },
   {
-    name: 'ULB B'
-  },{
-    name: 'ULB C'
-  }
-]
+    name: "ULB B",
+  },
+  {
+    name: "ULB C",
+  },
+];
 
 const Filters = () => {
   const [filters, setFilters] = useState({});
-  const selectULB = () => {}
+  const selectULB = () => {};
   const handleFilterChange = (data) => {
     setFilters({ ...filters, ...{ range: data } });
   };
@@ -36,7 +37,7 @@ const Filters = () => {
       <Switch />
       <SubmitBar label={"Apply"} style={{ width: "100%" }} />
     </div>
-  )
+  );
 };
 
 export default Filters;

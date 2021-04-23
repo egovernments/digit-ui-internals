@@ -29,6 +29,6 @@ const DSSCard = () => {
       </div>
     </div>
   );
-}
+};
 
 export default DSSCard;

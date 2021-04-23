@@ -9,7 +9,7 @@ const GenericChart = ({ header, className, caption, children, showSearch = false
         <CardLabel style={{ fontWeight: "bold" }}>{header}</CardLabel>
         <div className="sideContent">
           {showSearch && <TextInput className="searchInput" placeholder="Search" />}
-          {showDownload && <DownloadIcon styles={{ marginRight: "15px" }}/>}
+          {showDownload && <DownloadIcon styles={{ marginRight: "15px" }} />}
           <Ellipsis />
         </div>
       </div>
@@ -18,7 +18,7 @@ const GenericChart = ({ header, className, caption, children, showSearch = false
       {children}
       {/* </div> */}
     </Card>
-  )
+  );
 };
 
 export default GenericChart;

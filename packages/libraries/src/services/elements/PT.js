@@ -28,7 +28,7 @@ export const PTService = {
       useCache: true,
       userService: true,
       method: "POST",
-      params: {  },
+      params: {},
       auth: true,
     }),
   update: (details, tenantId) =>
@@ -38,7 +38,17 @@ export const PTService = {
       useCache: false,
       userService: true,
       method: "POST",
-      params: {  },
+      params: {},
+      auth: true,
+    }),
+  ptCalculationEstimate: (details, tenantId) =>
+    Request({
+      url: Urls.pt.pt_calculation_estimate,
+      data: details,
+      useCache: false,
+      userService: true,
+      method: "POST",
+      params: { tenantId },
       auth: true,
     }),
   assessmentCreate: (details, tenantId) =>

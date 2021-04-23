@@ -50,21 +50,23 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
               </div>
             )}
             <div className="complaint-input-container" style={{ width: "100%" }}>
-              {searchFields?.map((input, index) => (
-                <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
-                  <Label>{input.label}</Label>
-                  {input.type !== "date" ? (
-                    <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
-                  ) : (
-                    <Controller
-                      render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                      name={input.name}
-                      control={control}
-                      defaultValue={null}
-                    />
-                  )}{" "}
-                </span>
-              ))}
+              {searchFields
+                ?.filter((e) => true)
+                ?.map((input, index) => (
+                  <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
+                    <Label>{input.label}</Label>
+                    {input.type !== "date" ? (
+                      <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
+                    ) : (
+                      <Controller
+                        render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
+                        name={input.name}
+                        control={control}
+                        defaultValue={null}
+                      />
+                    )}{" "}
+                  </span>
+                ))}
               {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />}
             </div>
             {type === "desktop" && !mobileView && <span className="clear-search">{clearAll()}</span>}

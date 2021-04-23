@@ -1,134 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+
 import { Card, Loader } from "@egovernments/digit-ui-react-components";
-import PTLink from "./inbox/PTLink";
+import InboxLinks from "./inbox/InboxLink";
 import ApplicationTable from "./inbox/ApplicationTable";
-import Filter from "./inbox/Filter";
 import SearchApplication from "./inbox/search";
 
-const DesktopInbox = (props) => {
+const DesktopInbox = ({ tableConfig, ...props }) => {
+  const { data } = props;
   const { t } = useTranslation();
-  const GetCell = (value) => <span className="cell-text">{value}</span>;
+  const [FilterComponent, setComp] = useState(() => Digit.ComponentRegistryService?.getComponent("PT_INBOX_FILTER"));
 
-  const GetSlaCell = (value) => {
-    if (isNaN(value)) return <span className="sla-cell-success">0</span>;
-    return value < 0 ? <span className="sla-cell-error">{value}</span> : <span className="sla-cell-success">{value}</span>;
-  };
+  // searchData, workFlowData
 
-  const columns = React.useMemo(() => {
-    if (props.isSearch) {
-      return [
-        {
-          Header: t("ES_INBOX_UNIQUE_PROPERTY_ID"),
-          accessor: "propertyId",
-          disableSortBy: true,
-          Cell: ({ row }) => {
-            return (
-              <div>
-                <span className="link">
-                  <Link to={`${props.parentRoute}/application-details/` + row.original["propertyId"]}>{row.original["propertyId"]}</Link>
-                </span>
-              </div>
-            );
-          },
-        },
-        {
-          Header: t("ES_INBOX_OWNER_NAME"),
-          disableSortBy: true,
-          // accessor: (row) => GetCell(row.citizen?.name || ""),
-          accessor: (row) => GetCell(row["owner"]),
-        },
-        {
-          Header: t("ES_INBOX_LOCALITY"),
-          // accessor: (row) => GetCell(t(Digit.Utils.locale.getRevenueLocalityCode(row.address.locality.code, row.tenantId))),
-          accessor: (row) => GetCell(row["locality"]),
-          disableSortBy: true,
-        },
-        {
-          Header: t("ES_SEARCH_PROPERTY_STATUS"),
-          // accessor: (row) => {
-          //   return GetCell(t(`CS_COMMON_FSM_${row.applicationStatus}`));
-          // },
-          accessor: (row) => {
-            return GetCell(row["propertyStatus"]);
-          },
-          disableSortBy: true,
-        },
-        {
-          Header: t("ES_SEARCH_TAX_DUE"),
-          // accessor: (row) => {
-          //   return GetCell(t(`CS_COMMON_FSM_${row.applicationStatus}`));
-          // },
-          accessor: (row) => {
-            return GetCell(row["taxDue"]);
-          },
-          disableSortBy: true,
-        },
-        {
-          Header: t("ES_SEARCH_ACTION"),
-          // accessor: (row) => {
-          //   return GetCell(t(`CS_COMMON_FSM_${row.applicationStatus}`));
-          // },
-          accessor: (row) => {
-            return GetCell(row["action"]);
-          },
-          disableSortBy: true,
-        },
-      ];
-    }
-    switch (props.userRole) {
-      default:
-        return [
-          {
-            Header: t("CS_FILE_DESLUDGING_APPLICATION_NO"),
-            Cell: ({ row }) => {
-              return (
-                <div>
-                  <span className="link">
-                    <Link to={`${props.parentRoute}/application-details/` + row.original["applicationNo"]}>{row.original["applicationNo"]}</Link>
-                  </span>
-                </div>
-              );
-            },
-          },
-          {
-            Header: t("ES_INBOX_UNIQUE_PROPERTY_ID"),
-            accessor: "propertyId",
-            Cell: ({ row }) => {
-              return GetCell(`${row.original["propertyId"]}`);
-            },
-          },
-          {
-            Header: t("ES_INBOX_OWNER"),
-            Cell: ({ row }) => {
-              return GetCell(`${row.original["owner"]}`);
-            },
-          },
-          {
-            Header: t("ES_INBOX_APPLICATION_TYPE"),
-            Cell: ({ row }) => GetCell(`${row.original["applicationType"]}`),
-          },
-          {
-            Header: t("ES_INBOX_STATUS"),
-            Cell: ({ row }) => {
-              return GetCell(`${row.original["status"]}`);
-            },
-          },
-          {
-            Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
-            Cell: ({ row }) => {
-              return GetSlaCell(row.original["sla"]);
-            },
-          },
-        ];
-    }
-  }, []);
+  const columns = React.useMemo(() => (props.isSearch ? tableConfig.searchColumns(props) : tableConfig.inboxColumns(props) || []), []);
+
+  useEffect(() => {
+    console.log(data, columns, "inside desktop inbox....");
+  }, [data, columns]);
 
   let result;
   if (props.isLoading) {
     result = <Loader />;
-  } else if ((props.isSearch && !props.shouldSearch) || props?.data?.length === 0) {
+  } else if (data?.length === 0) {
     result = (
       <Card style={{ marginTop: 20 }}>
         {/* TODO Change localization key */}
@@ -141,11 +35,11 @@ const DesktopInbox = (props) => {
           ))}
       </Card>
     );
-  } else if (props?.data?.length > 0) {
+  } else if (data?.length > 0) {
     result = (
       <ApplicationTable
         t={t}
-        data={props.data}
+        data={data}
         columns={columns}
         getCellProps={(cellInfo) => {
           return {
@@ -174,9 +68,17 @@ const DesktopInbox = (props) => {
     <div className="inbox-container">
       {!props.isSearch && (
         <div className="filters-container">
-          <PTLink parentRoute={props.parentRoute} />
+          <InboxLinks parentRoute={props.parentRoute} businessService={props.businessService} />
           <div>
-            <Filter searchParams={props.searchParams} applications={props.data} onFilterChange={props.onFilterChange} type="desktop" />
+            {<FilterComponent onFilterChange={props.onFilterChange} searchParams={props.searchParams} type="desktop" />}
+            {/* <Filter
+              businessService={props.businessService}
+              searchParams={props.searchParams}
+              applications={props.data}
+              onFilterChange={props.onFilterChange}
+              translatePrefix={props.translatePrefix}
+              type="desktop"
+            /> */}
           </div>
         </div>
       )}

@@ -1,10 +1,6 @@
 import React, { Fragment } from "react";
 
-const denominations = [
-  'Cr',
-  'Lac',
-  'Unit'
-]
+const denominations = ["Cr", "Lac", "Unit"];
 
 const Switch = () => {
   return (
@@ -19,8 +15,7 @@ const Switch = () => {
         ))}
       </div>
     </div>
-  )
+  );
 };
-
 
 export default Switch;

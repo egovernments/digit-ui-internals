@@ -17,8 +17,9 @@ import TLCaption from "./TLCaption";
 import { Link } from "react-router-dom";
 import PropertyDocuments from "./PropertyDocuments";
 import PropertyFloors from "./PropertyFloors";
+import PropertyEstimates from "./PropertyEstimates";
 
-function ApplicationDetailsContent({ applicationDetails, workflowDetails, isDataLoading, applicationData }) {
+function ApplicationDetailsContent({ applicationDetails, workflowDetails, isDataLoading, applicationData, businessService }) {
   const { t } = useTranslation();
 
   const getTimelineCaptions = (checkpoint) => {
@@ -99,6 +100,9 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
           </StatusTable>
           {detail?.additionalDetails?.floors && <PropertyFloors floors={detail?.additionalDetails?.floors} />}
           {detail?.additionalDetails?.documents && <PropertyDocuments documents={detail?.additionalDetails?.documents} />}
+          {detail?.additionalDetails?.taxHeadEstimatesCalculation && (
+            <PropertyEstimates taxHeadEstimatesCalculation={detail?.additionalDetails?.taxHeadEstimatesCalculation} />
+          )}
         </React.Fragment>
       ))}
       <BreakLine />
@@ -111,7 +115,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
           {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
             <CheckPoint
               isCompleted={true}
-              label={t("CS_COMMON_" + workflowDetails?.data?.timeline[0]?.status)}
+              label={t(`${businessService === "PT" ? "ES_PT_COMMON_STATUS_" : "CS_COMMON_"}${workflowDetails?.data?.timeline[0]?.state}`)}
               customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
             />
           ) : (
@@ -123,7 +127,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                       <CheckPoint
                         keyValue={index}
                         isCompleted={index === 0}
-                        label={t("CS_COMMON_FSM_" + checkpoint.status)}
+                        label={t(`${businessService === "PT" ? "ES_PT_COMMON_STATUS_" : "CS_COMMON_FSM_"}${checkpoint.state}`)}
                         customChild={getTimelineCaptions(checkpoint)}
                       />
                     </React.Fragment>

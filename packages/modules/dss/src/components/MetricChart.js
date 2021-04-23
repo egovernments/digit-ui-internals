@@ -4,55 +4,58 @@ import { startOfMonth, endOfMonth, getTime } from "date-fns";
 
 const MetricData = ({ data }) => {
   const displaySymbol = (type) => {
-    switch(type) {
-      case "Amount": return "₹";
-      case "number": return "";
-      default: return "";
+    switch (type) {
+      case "Amount":
+        return "₹";
+      case "number":
+        return "";
+      default:
+        return "";
     }
-  }
+  };
 
   return (
     <div>
-      <p className="heading-m" style={{ textAlign: "right", paddingTop: "0px" }}>{`${displaySymbol(data.headerSymbol)} ${+data.headerValue.toFixed(1)}`}</p>
-      {data.insight && 
+      <p className="heading-m" style={{ textAlign: "right", paddingTop: "0px" }}>{`${displaySymbol(data.headerSymbol)} ${+data.headerValue.toFixed(
+        1
+      )}`}</p>
+      {data.insight && (
         <div>
-          <p className={`${data.insight.colorCode}`}>
-            {data.insight.value}
-          </p>
+          <p className={`${data.insight.colorCode}`}>{data.insight.value}</p>
         </div>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 const res = {
-  "headerName": "DSS_TOTAL_COLLECTION",
-  "headerValue": 0.0,
-  "headerSymbol": "Amount",
-  "insight": {
-    "name": "INSIGHTS",
-    "value": "-100% than last year",
-    "indicator": "lower_red",
-    "colorCode": "lower_red"
+  headerName: "DSS_TOTAL_COLLECTION",
+  headerValue: 0.0,
+  headerSymbol: "Amount",
+  insight: {
+    name: "INSIGHTS",
+    value: "-100% than last year",
+    indicator: "lower_red",
+    colorCode: "lower_red",
   },
-  "plots": []
-}
+  plots: [],
+};
 
 const MetricChartRow = ({ data }) => {
-  const { id, chartType } = data
+  const { id, chartType } = data;
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const requestDate = {
     startDate: getTime(startOfMonth(new Date())),
     endDate: getTime(endOfMonth(new Date())),
     interval: "month",
     title: "",
-  }
-  const { isLoading, data: response, } = Digit.Hooks.dss.useGetChart({
+  };
+  const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
     key: id,
     type: chartType,
     tenantId,
-    requestDate
-  })
+    requestDate,
+  });
 
   if (isLoading) {
     return false;
@@ -64,8 +67,8 @@ const MetricChartRow = ({ data }) => {
       <MetricData data={response?.responseData?.data?.[0]} />
       {/* <div>{`${displaySymbol(response.headerSymbol)} ${response.headerValue}`}</div> */}
     </div>
-  )
-}
+  );
+};
 
 const MetricChart = ({ data }) => {
   const { charts } = data;
@@ -76,7 +79,7 @@ const MetricChart = ({ data }) => {
         <MetricChartRow data={chart} />
       ))}
     </>
-  )
+  );
 };
 
 export default MetricChart;

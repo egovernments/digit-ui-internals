@@ -482,13 +482,13 @@ const getDssDashboardCriteria = (tenantId, moduleCode) => ({
         moduleName: moduleCode,
         masterDetails: [
           {
-            name: "dashboard-config"
-          }
-        ]
-      }
-    ]
-  }
-})
+            name: "dashboard-config",
+          },
+        ],
+      },
+    ],
+  },
+});
 
 const GetEgovLocations = (MdmsRes) => {
   return MdmsRes["egov-location"].TenantBoundary[0].boundary.children.map((obj) => ({
@@ -640,9 +640,7 @@ const getRentalDetailsCategory = (MdmsRes) => {
   });
 };
 
-const getDssDashboard = () =>
-  MdmsRes['dss-dashboard']['dashboard-config'];
-
+const getDssDashboard = () => MdmsRes["dss-dashboard"]["dashboard-config"];
 
 const GetRoleStatusMapping = (MdmsRes) => MdmsRes["DIGIT-UI"].RoleStatusMapping;
 const GetCommonFields = (MdmsRes) => MdmsRes["FSM"].CommonFieldsConfig;

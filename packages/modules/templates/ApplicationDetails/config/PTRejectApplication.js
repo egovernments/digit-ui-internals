@@ -5,8 +5,8 @@ export const configPTRejectApplication = ({ t, action, selectFile, uploadedFile,
   return {
     label: {
       heading: `ES_PT_ACTION_TITLE_${action}`,
-      submit: `CS_COMMON_${action}`,
-      cancel: "CS_COMMON_CANCEL",
+      submit: `ES_PT_COMMON_${action}`,
+      cancel: "ES_PT_COMMON_CANCEL",
     },
     form: [
       {
@@ -27,7 +27,7 @@ export const configPTRejectApplication = ({ t, action, selectFile, uploadedFile,
                 onDelete={() => {
                   setUploadedFile(null);
                 }}
-                message={uploadedFile ? `1 ${t(`CS_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
+                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
               />
             ),
           },

@@ -6,7 +6,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
   const allCities = Digit.Hooks.pt.useTenants();
   let tenantId = Digit.ULBService.getCurrentTenantId();
   let isEditProperty = formData?.isEditProperty || false;
-  if(formData?.isUpdateProperty) isEditProperty = true;
+  if (formData?.isUpdateProperty) isEditProperty = true;
   const { pincode, city } = formData?.address || "";
   const cities =
     userType === "employee"

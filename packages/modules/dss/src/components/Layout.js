@@ -12,30 +12,22 @@ let index = 1;
 
 const Layout = ({ rowData }) => {
   const renderChart = (chart, key) => {
-    switch(chart.chartType) {
+    switch (chart.chartType) {
       case "table":
-        return (
-          <CustomTable />
-        )
+        return <CustomTable />;
       case "donut":
-        return (
-          <CustomPieChart data={chart} />
-        );
+        return <CustomPieChart data={chart} />;
       case "line":
-        return (
-          <CustomAreaChart data={chart} />
-        )
+        return <CustomAreaChart data={chart} />;
       case "horizontalBar":
-        return (
-          <CustomHorizontalBarChart />
-        )
+        return <CustomHorizontalBarChart />;
       default:
         return <CustomTable />;
     }
-  }
+  };
 
   const renderVisualizer = (visualizer, key) => {
-    switch(visualizer.vizType) {
+    switch (visualizer.vizType) {
       case "metric-collection":
         return (
           <GenericChart header={visualizer.name} className="metricsTable">
@@ -44,7 +36,8 @@ const Layout = ({ rowData }) => {
         );
       case "chart":
         return (
-          <GenericChart header={visualizer.name}
+          <GenericChart
+            header={visualizer.name}
             showDownload={visualizer?.charts?.[0].chartType === "table"}
             showSearch={visualizer?.charts?.[0].chartType === "table"}
           >
@@ -55,18 +48,12 @@ const Layout = ({ rowData }) => {
       case "performing-metric":
         return (
           <GenericChart header={visualizer.name}>
-            <CustomBarChart fillColor={(index++) % 2 ? "#00703C" : "#D4351C"} />
+            <CustomBarChart fillColor={index++ % 2 ? "#00703C" : "#D4351C"} />
           </GenericChart>
         );
       case "collection":
       case "module":
-        return (
-          <Summary
-            key={key}
-            ttile={visualizer.name}
-            data={visualizer}
-          />
-        )
+        return <Summary key={key} ttile={visualizer.name} data={visualizer} />;
       case "pie":
         return (
           <GenericChart header={visualizer.name}>
@@ -78,16 +65,10 @@ const Layout = ({ rowData }) => {
           <GenericChart header={visualizer.name} showSearch={true} showDownload={true}>
             <CustomTable />
           </GenericChart>
-        )
+        );
     }
-  }
-  return (
-    <div className="chart-row">
-      {rowData.vizArray.map((chart, key) => (
-        renderVisualizer(chart, key)
-      ))}
-    </div>
-  )
+  };
+  return <div className="chart-row">{rowData.vizArray.map((chart, key) => renderVisualizer(chart, key))}</div>;
 };
 
 export default Layout;

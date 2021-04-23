@@ -3,39 +3,39 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const PTLink = ({ parentRoute }) => {
+const InboxLinks = ({ parentRoute, businessService }) => {
   const { t } = useTranslation();
 
   const allLinks = [
     {
-      text: t("ES_TITLE_NEW_REGISTRATION"),
+      text: "ES_TITLE_NEW_REGISTRATION",
       link: "/digit-ui/employee/pt/new-application",
+      businessService: "PT",
+      roles: ["PT_DOC_VERIFIER"],
     },
     {
-      text: t("ES_TITILE_SEARCH_APPLICATION"),
-      link: `${parentRoute}/search`,
+      text: "ES_TITLE_NEW_REGISTRATION",
+      link: "/digit-ui/employee/pt/new-application",
+      businessService: "PT",
+      roles: ["PT_CEMP"],
+    },
+    {
+      text: "ES_TITILE_SEARCH_APPLICATION",
+      link: `/digit-ui/employee/pt/search`,
+      businessService: "PT",
+      roles: [],
     },
   ];
 
   const [links, setLinks] = useState([]);
 
-  const { roles } = Digit.UserService.getUser().info;
-
-  const hasAccess = (accessTo) => {
-    return roles.filter((role) => accessTo.includes(role.code)).length;
-  };
+  const { roles: userRoles } = Digit.UserService.getUser().info;
 
   useEffect(() => {
-    let linksToShow = [];
-    allLinks.forEach((link) => {
-      if (link.accessTo) {
-        if (hasAccess(link.accessTo)) {
-          linksToShow.push(link);
-        }
-      } else {
-        linksToShow.push(link);
-      }
-    });
+    let linksToShow = allLinks
+      .filter((e) => e.businessService === businessService)
+      .filter(({ roles }) => roles.some((e) => userRoles.map(({ code }) => code).includes(e)) || !roles.length);
+    console.log(linksToShow, "inside the links");
     setLinks(linksToShow);
   }, []);
 
@@ -66,4 +66,4 @@ const PTLink = ({ parentRoute }) => {
   );
 };
 
-export default PTLink;
+export default InboxLinks;

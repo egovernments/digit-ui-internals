@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { FormStep, TextInput, CheckBox, CardLabel } from "@egovernments/digit-ui-react-components";
+import React, { useEffect, useState } from "react";
+import { FormStep, TextInput, CheckBox, CardLabel, LabelFieldPair } from "@egovernments/digit-ui-react-components";
 
 const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   let index = window.location.href.charAt(window.location.href.length - 1);
-  const [permanentAddress, setPermanentAddress] = useState(formData.owners && formData.owners[index] && formData.owners[index].permanentAddress);
+  const [permanentAddress, setPermanentAddress] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].permanentAddress) || ""
+  );
   const [isCorrespondenceAddress, setIsCorrespondenceAddress] = useState(
     formData.owners && formData.owners[index] && formData.owners[index].isCorrespondenceAddress
   );
@@ -35,15 +37,37 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   }
 
   const goNext = () => {
-    let ownerDetails = formData.owners && formData.owners[index];
-    ownerDetails["permanentAddress"] = permanentAddress;
-    ownerDetails["isCorrespondenceAddress"] = isCorrespondenceAddress;
-    onSelect(config.key, ownerDetails, "", index);
+    onSelect(config.key, { ...formData[config.key], permanentAddress, isCorrespondenceAddress }, index);
   };
+
+  useEffect(() => {
+    if (userType === "employee") {
+      goNext();
+    }
+  }, [permanentAddress]);
+
+  if (userType === "employee") {
+    return (
+      <LabelFieldPair key={index}>
+        <CardLabel className="card-label-smaller">{t("PT_OWNERS_ADDRESS")}</CardLabel>
+        <div className="field">
+          <TextInput name="address" onChange={setOwnerPermanentAddress} value={permanentAddress} />
+        </div>
+      </LabelFieldPair>
+    );
+  }
 
   return (
     <FormStep config={config} t={t} onSelect={goNext} isDisabled={!permanentAddress}>
-      <TextInput isMandatory={false} optionKey="i18nKey" t={t} name="address" onChange={setOwnerPermanentAddress} value={permanentAddress} disable = {isUpdateProperty} />
+      <TextInput
+        isMandatory={false}
+        optionKey="i18nKey"
+        t={t}
+        name="address"
+        onChange={setOwnerPermanentAddress}
+        value={permanentAddress}
+        disable={isUpdateProperty}
+      />
       {/* <CardLabel>{t("PT_OWNER_S_ADDRESS")}</CardLabel> */}
       <CheckBox
         label={t("PT_COMMON_SAME_AS_PROPERTY_ADDRESS")}

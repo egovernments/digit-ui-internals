@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormStep, TypeSelectCard, RadioButtons, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
-import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import { cardBodyStyle } from "../utils";
+import { FormStep, RadioButtons, CitizenInfoLabel, LabelFieldPair, CardLabel, Dropdown } from "@egovernments/digit-ui-react-components";
 
 const PropertyUsageType = ({ t, config, onSelect, userType, formData }) => {
   const [usageCategoryMajor, setPropertyPurpose] = useState(formData?.usageCategoryMajor);
@@ -54,7 +52,7 @@ const PropertyUsageType = ({ t, config, onSelect, userType, formData }) => {
   }
 
   function goNext() {
-    if (usageCategoryMajor.i18nKey === "PROPERTYTAX_BILLING_SLAB_OTHERS") {
+    if (usageCategoryMajor?.i18nKey === "PROPERTYTAX_BILLING_SLAB_OTHERS") {
       usageCategoryMajor.i18nKey = "PROPERTYTAX_BILLING_SLAB_NONRESIDENTIAL";
       onSelect(config.key, usageCategoryMajor);
     } else {
@@ -62,6 +60,45 @@ const PropertyUsageType = ({ t, config, onSelect, userType, formData }) => {
     }
     // onSelect(config.key,ResidentialType, false, index);
   }
+
+  useEffect(() => {
+    if (userType === "employee") {
+      goNext();
+    }
+  }, [usageCategoryMajor]);
+
+  const inputs = [
+    {
+      label: "PT_PROPERTY_DETAILS_USAGE_TYPE_HEADER",
+      type: "dropdown",
+      name: "propertyUsageType",
+      validation: {},
+    },
+  ];
+
+  if (userType === "employee") {
+    return inputs?.map((input, index) => {
+      return (
+        <LabelFieldPair key={index}>
+          <CardLabel className="card-label-smaller">
+            {t(input.label)}
+            {config.isMandatory ? " * " : null}
+          </CardLabel>
+          <Dropdown
+            className="form-field"
+            isMandatory={config.isMandatory}
+            selected={usageCategoryMajorMenu(usagecat)?.length === 1 ? usageCategoryMajorMenu(usagecat)[0] : usageCategoryMajor}
+            disable={usageCategoryMajorMenu(usagecat)?.length === 1}
+            option={usageCategoryMajorMenu(usagecat)}
+            select={selectPropertyPurpose}
+            optionKey="i18nKey"
+            t={t}
+          />
+        </LabelFieldPair>
+      );
+    });
+  }
+
   return (
     <React.Fragment>
       <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!usageCategoryMajor}>

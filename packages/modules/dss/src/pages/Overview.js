@@ -13,7 +13,7 @@ const response = [
     task: 133,
     monthlyTask: 4500,
     sla: "91%",
-    logo: <Poll />
+    logo: <Poll />,
   },
   {
     title: "Property Tax",
@@ -23,7 +23,7 @@ const response = [
     task: 133,
     monthlyTask: 4500,
     sla: "91%",
-    logo: <Poll />
+    logo: <Poll />,
   },
   {
     title: "Trade License",
@@ -33,9 +33,9 @@ const response = [
     task: 133,
     monthlyTask: 4500,
     sla: "91%",
-    logo: <Poll />
-  }
-]
+    logo: <Poll />,
+  },
+];
 const Overview = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
@@ -43,14 +43,12 @@ const Overview = () => {
   const { data: response, isLoading } = Digit.Hooks.dss.useDashboardConfig(moduleCode);
 
   if (isLoading) {
-    return (
-      <Loader />
-    )
+    return <Loader />;
   }
 
   return (
     <div>
-      <Header>{ t(response?.[0]?.name) }</Header>
+      <Header>{t(response?.[0]?.name)}</Header>
       {response?.responseData?.[0]?.visualizations.map((item, key) => (
         <Layout rowData={item} key={key} />
         // <Summary
@@ -66,7 +64,7 @@ const Overview = () => {
         // />
       ))}
     </div>
-  )
-}
+  );
+};
 
 export default Overview;

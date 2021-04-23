@@ -8,9 +8,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
   const { pathname } = useLocation();
   const presentInModifyApplication = pathname.includes("modify");
   let isEditProperty = formData?.isEditProperty || false;
-  if(formData?.isUpdateProperty) isEditProperty = true;
-  ;
-
+  if (formData?.isUpdateProperty) isEditProperty = true;
   const inputs = [
     {
       label: "CORE_COMMON_PINCODE",

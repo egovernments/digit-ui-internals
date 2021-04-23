@@ -1,49 +1,24 @@
 {
   "id": 12069,
+  "uuid": "29a02577-7f30-4d00-9041-0c499e34fd87",
   "userName": "QACE",
-  "salutation": null,
   "name": "Employee Creator",
-  "gender": "MALE",
   "mobileNumber": "9911999999",
   "emailId": null,
-  "altContactNumber": null,
-  "pan": null,
-  "aadhaarNumber": null,
-  "permanentAddress": null,
-  "permanentCity": null,
-  "permanentPinCode": null,
-  "correspondenceAddress": null,
-  "correspondenceCity": null,
-  "correspondencePinCode": null,
-  "active": true,
   "locale": null,
   "type": "EMPLOYEE",
-  "accountLocked": false,
-  "accountLockedDate": 0,
-  "fatherOrHusbandName": "Test",
-  "relationship": "FATHER",
-  "signature": null,
-  "bloodGroup": null,
-  "photo": null,
-  "identificationMark": null,
-  "createdBy": 12011,
-  "lastModifiedBy": 1,
-  "tenantId": "pb.amritsar",
   "roles": [
     {
-      "code": "EMPLOYEE",
       "name": "Employee",
+      "code": "EMPLOYEE",
       "tenantId": "pb.amritsar"
     },
     {
-      "code": "FSM_EMP_FSTPO",
-      "name": "FSM FSTP Opperator",
+      "name": "FSM Employee Application Creator",
+      "code": "FSM_CREATOR_EMP",
       "tenantId": "pb.amritsar"
     }
   ],
-  "uuid": "29a02577-7f30-4d00-9041-0c499e34fd87",
-  "createdDate": "15-02-2021 14:31:06",
-  "lastModifiedDate": "08-03-2021 23:17:01",
-  "dob": "9/9/1990",
-  "pwdExpiryDate": "16-05-2021 14:31:06"
+  "active": true,
+  "tenantId": "pb.amritsar"
 }

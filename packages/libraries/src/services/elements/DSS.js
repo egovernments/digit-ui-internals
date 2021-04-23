@@ -18,5 +18,5 @@ export const DSSService = {
       method: "POST",
       auth: true,
       data,
-    })
+    }),
 };

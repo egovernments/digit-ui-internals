@@ -25,7 +25,7 @@ const CloseBtn = (props) => {
 const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, applicationData, businessService }) => {
   const { data: fieldInspectorData } = Digit.Hooks.useEmployeeSearch(tenantId, { roles: [{ code: "PT_FIELD_INSPECTOR" }], isActive: true });
   const { data: approverData } = Digit.Hooks.useEmployeeSearch(tenantId, { roles: [{ code: "PT_APPROVER" }], isActive: true });
-  const { data: financialYearsData } = Digit.Hooks.pt.useMDMS(
+  const { isLoading: financialYearsLoading, data: financialYearsData } = Digit.Hooks.pt.useMDMS(
     tenantId,
     businessService,
     "FINANCIAL_YEARLS",
@@ -181,7 +181,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         console.log("default case");
         break;
     }
-  }, [action, fieldInspectors, approvers, financialYears, selectedFinancialYear]);
+  }, [action, fieldInspectors, approvers, financialYears, selectedFinancialYear, uploadedFile]);
 
   return action && config.form ? (
     <Modal
@@ -193,15 +193,19 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       actionSaveOnSubmit={() => {}}
       formId="modal-action"
     >
-      <FormComposer
-        config={config.form}
-        noBoxShadow
-        inline
-        childrenAtTheBottom
-        onSubmit={submit}
-        defaultValues={defaultValues}
-        formId="modal-action"
-      />
+      {financialYearsLoading ? (
+        <Loader />
+      ) : (
+        <FormComposer
+          config={config.form}
+          noBoxShadow
+          inline
+          childrenAtTheBottom
+          onSubmit={submit}
+          defaultValues={defaultValues}
+          formId="modal-action"
+        />
+      )}
     </Modal>
   ) : (
     <Loader />

@@ -65,7 +65,7 @@ const UploadFile = (props) => {
   return (
     <div className="upload-file">
       <div>
-        <ButtonSelector theme="border" label="Choose File" style={extraStyles ? extraStyles?.buttonStyles : null} />
+        <ButtonSelector theme="border" label="Choose File" style={extraStyles ? extraStyles?.buttonStyles : null} textStyles={props?.textStyles} />
         {!hasFile ? (
           <h2 className="file-upload-status">{props.message}</h2>
         ) : (

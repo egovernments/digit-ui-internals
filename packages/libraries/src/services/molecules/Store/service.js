@@ -69,7 +69,7 @@ export const StoreService = {
         bannerUrl: stateInfo.bannerUrl,
       },
       localizationModules: stateInfo.localizationModules,
-      modules: MdmsRes?.tenant?.citymodule.filter(module => module.active).filter((module) => enabledModules.includes(module.code)),
+      modules: MdmsRes?.tenant?.citymodule.filter((module) => module.active).filter((module) => enabledModules.includes(module.code)),
     };
     initData.selectedLanguage = initData.languages[0].value;
 
@@ -79,7 +79,7 @@ export const StoreService = {
       module: "DSS",
       code: "DSS",
       tenants: [{ code: "pb.amritsar" }],
-    })
+    });
 
     const moduleTenants = initData.modules
       .map((module) => module.tenants)

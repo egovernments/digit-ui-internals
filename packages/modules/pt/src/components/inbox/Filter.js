@@ -75,7 +75,12 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
             </div>
           </div>
           <div>
-            <Status onAssignmentChange={onStatusChange} fsmfilters={searchParams} />
+            <Status
+              translatePrefix={props.translatePrefix}
+              businessService={props.businessService}
+              onAssignmentChange={onStatusChange}
+              fsmfilters={searchParams}
+            />
           </div>
         </div>
       </div>

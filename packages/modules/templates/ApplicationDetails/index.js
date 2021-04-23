@@ -19,10 +19,19 @@ const ApplicationDetails = (props) => {
   const [displayMenu, setDisplayMenu] = useState(false);
   const [selectedAction, setSelectedAction] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showToast, setShowToast] = useState(null);
 
-  const { applicationDetails, isLoading, isDataLoading, applicationData, mutate, workflowDetails } = props;
-  const { mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantId);
+  const {
+    applicationDetails,
+    showToast,
+    setShowToast,
+    isLoading,
+    isDataLoading,
+    applicationData,
+    mutate,
+    workflowDetails,
+    businessService,
+    closeToast,
+  } = props;
 
   useEffect(() => {
     if (showToast) {
@@ -77,25 +86,12 @@ const ApplicationDetails = (props) => {
     setShowModal(false);
   };
 
-  const closeToast = () => {
-    setShowToast(null);
-  };
-
   const submitAction = (data) => {
     if (selectedAction === "ASSESS_PROPERTY") {
-      assessmentMutate(
-        { Assessment: data?.Assessment },
-        {
-          onError: (error, variables) => {
-            setShowToast({ key: "error", action: error });
-            setTimeout(closeToast, 5000);
-          },
-          onSuccess: (data, variables) => {
-            setShowToast({ key: "success", action: selectedAction });
-            setTimeout(closeToast, 5000);
-          },
-        }
-      );
+      history.push({
+        pathname: `/digit-ui/employee/pt/assessment-details/${applicationNumber}`,
+        state: data,
+      });
     } else {
       mutate(data, {
         onError: (error, variables) => {
@@ -127,6 +123,7 @@ const ApplicationDetails = (props) => {
             workflowDetails={workflowDetails}
             isDataLoading={isDataLoading}
             applicationData={applicationData}
+            businessService={businessService}
           />
           {showModal ? (
             <ActionModal
@@ -139,15 +136,16 @@ const ApplicationDetails = (props) => {
               closeModal={closeModal}
               submitAction={submitAction}
               actionData={workflowDetails?.data?.timeline}
-              businessService={props?.businessService}
+              businessService={businessService}
             />
           ) : null}
-          <ApplicationDetailsToast t={t} showToast={showToast} closeToast={closeToast} />
+          <ApplicationDetailsToast t={t} showToast={showToast} closeToast={closeToast} businessService={businessService} />
           <ApplicationDetailsActionBar
             workflowDetails={workflowDetails}
             displayMenu={displayMenu}
             onActionSelect={onActionSelect}
             setDisplayMenu={setDisplayMenu}
+            businessService={businessService}
           />
         </React.Fragment>
       ) : (

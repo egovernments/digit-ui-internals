@@ -4,24 +4,26 @@ import { DSSService } from "../../services/elements/DSS";
 
 const getRequest = (type, code, requestDate) => ({
   aggregationRequestDto: {
-		visualizationType: type.toUpperCase(),
-		visualizationCode: code,
-		queryType: "",
-		filters: {},
-		moduleLevel: "",
-		aggregationFactors: null,
-		requestDate,
-	}
-})
+    visualizationType: type.toUpperCase(),
+    visualizationCode: code,
+    queryType: "",
+    filters: {},
+    moduleLevel: "",
+    aggregationFactors: null,
+    requestDate,
+  },
+});
 
 const useGetChart = (args) => {
   const { key, type, tenantId, requestDate } = args;
-  return useQuery([key], () => DSSService.getCharts({
-    ...getRequest(type, key, requestDate),
-    headers: {
-      tenantId,
-    }
-  }))
+  return useQuery([key], () =>
+    DSSService.getCharts({
+      ...getRequest(type, key, requestDate),
+      headers: {
+        tenantId,
+      },
+    })
+  );
 };
 
 export default useGetChart;

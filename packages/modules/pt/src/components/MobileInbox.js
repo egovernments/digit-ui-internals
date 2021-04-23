@@ -12,18 +12,16 @@ const GetCell = (value) => <span className="sla-cell">{value}</span>;
 
 const MobileInbox = ({
   data,
-  vehicleLog,
   isLoading,
   isSearch,
-  onSearch,
-  onFilterChange,
-  onSort,
-  searchParams,
   searchFields,
-  linkPrefix,
+  onFilterChange,
+  onSearch,
+  onSort,
   parentRoute,
-  removeParam,
+  searchParams,
   sortParams,
+  linkPrefix,
 }) => {
   const { t } = useTranslation();
   const getData = () => {
@@ -65,7 +63,6 @@ const MobileInbox = ({
             searchParams={searchParams}
             searchFields={searchFields}
             linkPrefix={linkPrefix}
-            removeParam={removeParam}
             sortParams={sortParams}
           />
         </div>

@@ -9,8 +9,6 @@ export const MyReceipts = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { info: userInfo } = Digit.UserService.getUser();
 
-  //   const { isLoading, isError, error, data } = Digit.Hooks.fsm.useSearch(tenantId, { uuid: userInfo.uuid, limit: 100 });
-
   const applicationsList = [
     {
       trasactionId: "123",
