@@ -203,7 +203,7 @@ export const newConfig = [
         texts: {
           headerCaption: "",
           header: "PT_ASSESSMENT_FLOW_AREA_HEADER",
-          cardText: "",
+          cardText: "PT_SELFOCCUPIED_AREA",
           submitBarLabel: "PT_COMMON_NEXT",
         },
         key: "units",

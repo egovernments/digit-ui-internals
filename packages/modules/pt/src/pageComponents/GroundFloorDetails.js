@@ -77,6 +77,7 @@ const GroundFloorDetails = ({ t, config, onSelect, value, userType, formData }) 
       t={t}
       forcedError={t(builtupplotsizeeroor)}
       isDisabled={builtupplotsizeeroor || (!builtUpArea && (!plotSize || !builtUpArea))}
+      showErrorBelowChildren={true}
     >
       {(index === "0" || isNaN(index)) && (
         <div>

@@ -21,6 +21,7 @@ const FormStep = ({
   componentInFront,
   onAdd,
   isMultipleAllow = false,
+  showErrorBelowChildren=false
 }) => {
   const { register, watch, errors, handleSubmit } = useForm({
     defaultValues: _defaultValues,
@@ -72,8 +73,9 @@ const FormStep = ({
     <form onSubmit={handleSubmit(goNext)}>
       <InputCard {...{ isDisable: isDisable, isMultipleAllow: isMultipleAllow }} {...config} submit {...{ onSkip: onSkip, onAdd: onAdd }} t={t}>
         {inputs}
-        {forcedError && <CardLabelError>{t(forcedError)}</CardLabelError>}
+        {forcedError &&!showErrorBelowChildren&& <CardLabelError>{t(forcedError)}</CardLabelError>}
         {children}
+        {forcedError &&showErrorBelowChildren&& <CardLabelError>{t(forcedError)}</CardLabelError>}
       </InputCard>
     </form>
   );
