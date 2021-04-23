@@ -89,7 +89,7 @@ const RentalDetails = ({ t, config, onSelect, value, userType, formData }) => {
       t={t}
       isDisabled={unitareaerror || !RentArea || !AnnualRent}
     >
-      <CardLabel>{`${t("PT_FLOOR_DETAILS_RENTED_AREA_LABEL")}*`}</CardLabel>
+      <CardLabel>{`${t("PT_FLOOR_DETAILS_RENTED_AREA_LABEL")}`}</CardLabel>
       <TextInput
         t={t}
         isMandatory={false}
@@ -100,7 +100,7 @@ const RentalDetails = ({ t, config, onSelect, value, userType, formData }) => {
         onChange={setPropertyRentArea}
         {...(validation = { pattern: "^([0-9]){0,8}$", type: "number", title: t("PT_RENT_AREA_ERROR_MESSAGE") })}
       />
-      <CardLabel>{`${t("PT_FLOOR_DETAILS_ANNUAL_RENT_LABEL")}*`}</CardLabel>
+      <CardLabel>{`${t("PT_FLOOR_DETAILS_ANNUAL_RENT_LABEL")}`}</CardLabel>
       <TextInput
         t={t}
         isMandatory={false}

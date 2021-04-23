@@ -58,7 +58,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
       isDisabled={!name || !mobileNumber || !gender || !relationship || !fatherOrHusbandName}
     >
       <div style={cardBodyStyle}>
-        <CardLabel>{`${t("PT_OWNER_NAME")}*`}</CardLabel>
+        <CardLabel>{`${t("PT_OWNER_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           type={"text"}
@@ -75,7 +75,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
             title: t("PT_NAME_ERROR_MESSAGE"),
           })}
         />
-        <CardLabel>{`${t("PT_FORM3_GENDER")}*`}</CardLabel>
+        <CardLabel>{`${t("PT_FORM3_GENDER")}`}</CardLabel>
         <RadioButtons 
           t={t} 
           options={options} 
@@ -88,7 +88,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
           labelKey = "PT_COMMON_GENDER"
           disabled = {isUpdateProperty}
           />
-        <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}*`}</CardLabel>
+        <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}`}</CardLabel>
         <TextInput
           type={"text"}
           t={t}
@@ -105,7 +105,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
             title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
           })}
         />
-        <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}*`}</CardLabel>
+        <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           type={"text"}
@@ -122,7 +122,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
             title: t("PT_NAME_ERROR_MESSAGE"),
           })}
         />
-        <CardLabel>{`${t("PT_FORM3_RELATIONSHIP")}*`}</CardLabel>
+        <CardLabel>{`${t("PT_FORM3_RELATIONSHIP")}`}</CardLabel>
         <RadioButtons
           t={t}
           optionsKey="i18nKey"

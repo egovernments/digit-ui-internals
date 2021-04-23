@@ -44,7 +44,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
         onSelect(config.key, { ...formData.address, city, pincode: e.target.value, slum: null });
       } else {
         onSelect(config.key, { ...formData.address, pincode: e.target.value });
-        setPincodeServicability("CS_COMMON_PINCODE_NOT_SERVICABLE");
+        setPincodeServicability("PT_COMMON_PINCODE_NOT_SERVICABLE");
       }
     }
   }
@@ -54,7 +54,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
     if (foundValue) {
       onSelect(config.key, { pincode });
     } else {
-      setPincodeServicability("CS_COMMON_PINCODE_NOT_SERVICABLE");
+      setPincodeServicability("PT_COMMON_PINCODE_NOT_SERVICABLE");
     }
   };
 

@@ -80,7 +80,7 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
       t={t}
       isDisabled={unitareaerror || !floorarea}
     >
-      <CardLabel>{`${t("PT_PLOT_SIZE_SQUARE_FEET_LABEL")}*`}</CardLabel>
+      <CardLabel>{`${t("PT_PLOT_SIZE_SQUARE_FEET_LABEL")}`}</CardLabel>
       <TextInput
         t={t}
         type={"number"}

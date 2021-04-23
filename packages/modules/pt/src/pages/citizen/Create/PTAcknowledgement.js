@@ -44,7 +44,10 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
 
   useEffect(() => {
     try {
+      let tenantId=data?.address?.city ? data.address?.city?.code : tenantId;
+      data.tenantId=tenantId;
       let formdata = !window.location.href.includes("edit-application") ? convertToProperty(data) : convertToUpdateProperty(data);
+      formdata.Property.tenantId=formdata?.Property?.tenantId||tenantId;
       mutation.mutate(formdata, {
         onSuccess,
       });

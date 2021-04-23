@@ -80,7 +80,7 @@ export const setAddressDetails = (data) => {
       area: address?.locality?.name,
     },
   };
-  data.tenantId = data?.tenantId || "pb.amritsar";
+
   data.address = propAddress;
   return data;
 };
@@ -99,8 +99,8 @@ export const setOwnerDetails = (data) => {
       let document = [];
       if (owners[0]?.documents["proofIdentity"]?.fileStoreId) {
         document.push({
-          fileStoreId: owners[0].documents["proofIdentity"].fileStoreId || "",
-          documentType: owners[0].documents["proofIdentity"].documentType || "",
+          fileStoreId: owners[0]?.documents["proofIdentity"]?.fileStoreId || "",
+          documentType: owners[0]?.documents["proofIdentity"]?.documentType || "",
         });
       }
       owner.push({
@@ -121,14 +121,14 @@ export const setOwnerDetails = (data) => {
         let document = [];
         if (ownr?.ownerType?.code != "NONE") {
           document.push({
-            fileStoreId: ownr.documents["specialProofIdentity"].fileStoreId || "",
-            documentType: ownr.documents["specialProofIdentity"].documentType || "",
+            fileStoreId: ownr?.documents["specialProofIdentity"]?.fileStoreId || "",
+            documentType: ownr?.documents["specialProofIdentity"]?.documentType || "",
           });
         }
         if (ownr?.documents["proofIdentity"]?.fileStoreId) {
           document.push({
-            fileStoreId: ownr.documents["proofIdentity"].fileStoreId || "",
-            documentType: ownr.documents["proofIdentity"].documentType || "",
+            fileStoreId: ownr?.documents["proofIdentity"]?.fileStoreId || "",
+            documentType: ownr?.documents["proofIdentity"]?.documentType || "",
           });
         }
         owner.push({
@@ -162,14 +162,14 @@ export const setDocumentDetails = (data) => {
     owners.map((owner) => {
       if (owner.documents && owner.documents["proofIdentity"]) {
         documents.push({
-          fileStoreId: owner.documents["proofIdentity"].fileStoreId || "",
-          documentType: owner.documents["proofIdentity"].documentType || "",
+          fileStoreId: owner?.documents["proofIdentity"].fileStoreId || "",
+          documentType: owner?.documents["proofIdentity"].documentType || "",
         });
       }
       if (owner.documents && owner.documents["specialProofIdentity"]) {
         documents.push({
-          fileStoreId: owner.documents["specialProofIdentity"].fileStoreId || "",
-          documentType: owner.documents["specialProofIdentity"].documentType || "",
+          fileStoreId: owner?.documents["specialProofIdentity"]?.fileStoreId || "",
+          documentType: owner?.documents["specialProofIdentity"]?.documentType || "",
         });
       }
     });
@@ -478,11 +478,11 @@ export const convertToProperty = (data = {}) => {
   let unit = data?.units;
   let basement1 = Array.isArray(data?.units) && data?.units["-1"] ? data?.units["-1"] : null;
   let basement2 = Array.isArray(data?.units) && data?.units["-2"] ? data?.units["-2"] : null;
-
   data = setDocumentDetails(data);
   data = setOwnerDetails(data);
   data = setAddressDetails(data);
   data = setPropertyDetails(data);
+
 
   const formdata = {
     Property: {

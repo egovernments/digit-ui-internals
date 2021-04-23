@@ -14,7 +14,7 @@ const PTSelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
     setPincodeServicability(null);
     const foundValue = tenants?.find((obj) => obj.pincode?.find((item) => item == code));
     if (!foundValue) {
-      setPincodeServicability("CS_COMMON_PINCODE_NOT_SERVICABLE");
+      setPincodeServicability("PT_COMMON_PINCODE_NOT_SERVICABLE");
       setPincode("");
       setGeoLocation({});
     } else {
