@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormStep, UploadFile, CardLabelDesc } from "@egovernments/digit-ui-react-components";
+import { FormStep, UploadFile, CardLabelDesc, Dropdown } from "@egovernments/digit-ui-react-components";
 
 const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
   let index = window.location.href.charAt(window.location.href.length - 1);
@@ -8,6 +8,19 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
   const onSkip = () => onSelect();
+
+  const [dropdownValue, setDropdownValue] = useState(formData?.owners[index]?.documents?.proofIdentity?.documentType);
+  let dropdownData = [];
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const stateId = tenantId.split(".")[0];
+  const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
+  const docs = Documentsob?.PropertyTax?.Documents;
+  const proofIdentity = Array.isArray(docs) && docs.filter(doc => (doc.code).includes("IDENTITYPROOF"));
+  if(proofIdentity.length > 0) { dropdownData = proofIdentity[0]?.dropdownData }
+
+  function setTypeOfDropdownValue(dropdownValue) {
+    setDropdownValue(dropdownValue);
+  }
 
   function selectfile(e) {
     setFile(e.target.files[0]);
@@ -47,7 +60,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       let fileStoreId = uploadedFile;
       let fileDetails = file;
       if (fileDetails) {
-        fileDetails.documentType = "IDENTITYPROOF";
+        fileDetails.documentType = dropdownValue?.code;
         fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
       }
       let ownerDetails = formData.owners && formData.owners[index];
@@ -68,7 +81,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
     if (fileDetails) {
-      fileDetails.documentType = "IDENTITYPROOF";
+      fileDetails.documentType = dropdownValue?.code;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
     let ownerDetails = formData.owners && formData.owners[index];
@@ -87,12 +100,20 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       onSelect={handleSubmit}
       onSkip={onSkip}
       forcedError={t(multipleownererror)}
-      isDisabled={multipleownererror || !uploadedFile}
+      isDisabled={multipleownererror || !uploadedFile || !dropdownValue}
       onAdd={onAdd}
       isMultipleAllow={formData?.ownershipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS"}
     >
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
+      <Dropdown
+          t={t}
+          isMandatory={false}
+          option={dropdownData}
+          selected={dropdownValue}
+          optionKey="code"
+          select={setTypeOfDropdownValue}
+        />
       <UploadFile
         extraStyleName={"propertyCreate"}
         accept=".jpg,.png,.pdf"
