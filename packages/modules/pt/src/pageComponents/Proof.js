@@ -16,7 +16,10 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
   const docs = Documentsob?.PropertyTax?.Documents;
   const proofOfAddress = Array.isArray(docs) && docs.filter(doc => (doc.code).includes("ADDRESSPROOF"));
-  if(proofOfAddress.length > 0) { dropdownData = proofOfAddress[0]?.dropdownData }
+  if(proofOfAddress.length > 0) { 
+    dropdownData = proofOfAddress[0]?.dropdownData;
+    dropdownData.forEach(data => { data.i18nKey = data.code.replaceAll(".", "_") })
+  }
 
   function setTypeOfDropdownValue(dropdownValue) {
     setDropdownValue(dropdownValue);
@@ -76,7 +79,7 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
           isMandatory={false}
           option={dropdownData}
           selected={dropdownValue}
-          optionKey="code"
+          optionKey="i18nKey"
           select={setTypeOfDropdownValue}
         />
       <UploadFile
