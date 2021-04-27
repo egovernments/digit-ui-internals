@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardSubHeader, CardText, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { cardBodyStyle } from "../utils";
 //import { map } from "lodash-es";
 
 const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
@@ -19,7 +18,7 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
     <React.Fragment>
       <Card>
         <CardHeader>{t("PT_DOC_REQ_SCREEN_HEADER")}</CardHeader>
-        <div style={cardBodyStyle}>
+        <div>
           <CardText>{t("PT_DOC_REQ_SCREEN_SUB_HEADER")}</CardText>
           <CardText>{t("PT_DOC_REQ_SCREEN_TEXT")}</CardText>
           <CardText>{t("PT_DOC_REQ_SCREEN_SUB_TEXT")}</CardText>
