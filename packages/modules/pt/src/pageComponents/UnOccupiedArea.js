@@ -100,6 +100,7 @@ const UnOccupiedArea = ({ t, config, onSelect, value, userType, formData }) => {
       onSkip={onSkip}
       t={t}
       isDisabled={unitareaerror || !UnOccupiedArea}
+      showErrorBelowChildren={true}
     >
       <CardLabel>{`${t("PT_UNOCCUPIED_AREA_SQ_FEET_LABEL")}`}</CardLabel>
       <TextInput

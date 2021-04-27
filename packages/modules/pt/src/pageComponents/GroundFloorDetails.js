@@ -1,5 +1,5 @@
+import { CardLabel, FormStep, TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useState } from "react";
-import { FormStep, CardLabel, TextInput, CardHeader, Card, CardText } from "@egovernments/digit-ui-react-components";
 
 const GroundFloorDetails = ({ t, config, onSelect, value, userType, formData }) => {
   //let index = window.location.href.charAt(window.location.href.length - 1);

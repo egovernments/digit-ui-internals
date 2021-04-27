@@ -1,5 +1,5 @@
+import { CardLabel, FormStep, LabelFieldPair, TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
-import { FormStep, CardLabel, TextInput, LabelFieldPair } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
 
 const Area = ({ t, config, onSelect, value, userType, formData }) => {
@@ -117,6 +117,7 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
       onSkip={onSkip}
       t={t}
       isDisabled={unitareaerror || !floorarea}
+      showErrorBelowChildren={true}
     >
       <CardLabel>{`${t("PT_PLOT_SIZE_SQUARE_FEET_LABEL")}`}</CardLabel>
       <TextInput

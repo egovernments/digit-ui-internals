@@ -88,6 +88,7 @@ const RentalDetails = ({ t, config, onSelect, value, userType, formData }) => {
       forcedError={t(unitareaerror)}
       t={t}
       isDisabled={unitareaerror || !RentArea || !AnnualRent}
+      showErrorBelowChildren={true}
     >
       <CardLabel>{`${t("PT_FLOOR_DETAILS_RENTED_AREA_LABEL")}`}</CardLabel>
       <TextInput
