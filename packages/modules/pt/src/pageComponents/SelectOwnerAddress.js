@@ -37,7 +37,14 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   }
 
   const goNext = () => {
-    onSelect(config.key, { ...formData[config.key], permanentAddress, isCorrespondenceAddress }, index);
+    if (userType === "employee") {
+      onSelect(config.key, { ...formData[config.key], permanentAddress, isCorrespondenceAddress }, index);
+    } else {
+      let ownerDetails = formData.owners && formData.owners[index];
+      ownerDetails["permanentAddress"] = permanentAddress;
+      ownerDetails["isCorrespondenceAddress"] = isCorrespondenceAddress;
+      onSelect(config.key, ownerDetails, "", index);
+    }
   };
 
   useEffect(() => {
