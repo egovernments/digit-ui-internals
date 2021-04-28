@@ -29,7 +29,7 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   const handleSubmit = () => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
-    if (fileDetails) fileDetails.documentType = dropdownValue?.code;
+    if (fileDetails) fileDetails.documentType = dropdownValue;
     if (fileDetails) fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     let address = formData?.address;
     if (address && address.documents) {
@@ -71,7 +71,7 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   }, [file]);
 
   return (
-    <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={!uploadedFile}>
+    <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={ !uploadedFile || !dropdownValue }>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <Dropdown

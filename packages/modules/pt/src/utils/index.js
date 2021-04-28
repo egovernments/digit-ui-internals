@@ -100,7 +100,7 @@ export const setOwnerDetails = (data) => {
       if (owners[0]?.documents["proofIdentity"]?.fileStoreId) {
         document.push({
           fileStoreId: owners[0]?.documents["proofIdentity"]?.fileStoreId || "",
-          documentType: owners[0]?.documents["proofIdentity"]?.documentType || "",
+          documentType: owners[0]?.documents["proofIdentity"]?.documentType?.code || "",
         });
       }
       owner.push({
@@ -122,13 +122,13 @@ export const setOwnerDetails = (data) => {
         if (ownr?.ownerType?.code != "NONE") {
           document.push({
             fileStoreId: ownr?.documents["specialProofIdentity"]?.fileStoreId || "",
-            documentType: ownr?.documents["specialProofIdentity"]?.documentType || "",
+            documentType: ownr?.documents["specialProofIdentity"]?.documentType?.code || "",
           });
         }
         if (ownr?.documents["proofIdentity"]?.fileStoreId) {
           document.push({
             fileStoreId: ownr?.documents["proofIdentity"]?.fileStoreId || "",
-            documentType: ownr?.documents["proofIdentity"]?.documentType || "",
+            documentType: ownr?.documents["proofIdentity"]?.documentType?.code || "",
           });
         }
         owner.push({
@@ -155,7 +155,7 @@ export const setDocumentDetails = (data) => {
   let documents = [];
   documents.push({
     fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
-    documentType: address?.documents["ProofOfAddress"]?.documentType || "",
+    documentType: address?.documents["ProofOfAddress"]?.documentType?.code || "",
   });
   owners &&
     owners.length > 0 &&
@@ -163,13 +163,13 @@ export const setDocumentDetails = (data) => {
       if (owner.documents && owner.documents["proofIdentity"]) {
         documents.push({
           fileStoreId: owner?.documents["proofIdentity"].fileStoreId || "",
-          documentType: owner?.documents["proofIdentity"].documentType || "",
+          documentType: owner?.documents["proofIdentity"].documentType?.code || "",
         });
       }
       if (owner.documents && owner.documents["specialProofIdentity"]) {
         documents.push({
           fileStoreId: owner?.documents["specialProofIdentity"]?.fileStoreId || "",
-          documentType: owner?.documents["specialProofIdentity"]?.documentType || "",
+          documentType: owner?.documents["specialProofIdentity"]?.documentType?.code || "",
         });
       }
     });
@@ -534,14 +534,14 @@ export const setUpdateOwnerDetails = (data = []) => {
       if (owners[0]?.documents["proofIdentity"]?.fileStoreId && owners[0].documents["proofIdentity"].id) {
         document.push({
           fileStoreId: owners[0].documents["proofIdentity"].fileStoreId || "",
-          documentType: owners[0].documents["proofIdentity"].documentType || "",
+          documentType: owners[0].documents["proofIdentity"].documentType?.code || "",
           id: owners[0].documents["proofIdentity"].id || "",
           status: owners[0].documents["proofIdentity"].status || "",
         });
       } else {
         document.push({
           fileStoreId: owners[0].documents["proofIdentity"].fileStoreId || "",
-          documentType: owners[0].documents["proofIdentity"].documentType || "",
+          documentType: owners[0].documents["proofIdentity"].documentType?.code || "",
         });
       }
       data.owners.forEach((owner) => {
@@ -564,14 +564,14 @@ export const setUpdateOwnerDetails = (data = []) => {
         if (owner.documents["specialProofIdentity"].id) {
           document.push({
             fileStoreId: owner.documents["specialProofIdentity"].fileStoreId || "",
-            documentType: owner.documents["specialProofIdentity"].documentType || "",
+            documentType: owner.documents["specialProofIdentity"].documentType?.code || "",
             id: owner.documents["specialProofIdentity"].id || "",
             status: owner.documents["specialProofIdentity"].status || "",
           });
         } else {
           document.push({
             fileStoreId: owner.documents["specialProofIdentity"].fileStoreId || "",
-            documentType: owner.documents["specialProofIdentity"].documentType || "",
+            documentType: owner.documents["specialProofIdentity"].documentType?.code || "",
           });
         }
       }
@@ -579,14 +579,14 @@ export const setUpdateOwnerDetails = (data = []) => {
         if (owner.documents["proofIdentity"].id) {
           document.push({
             fileStoreId: owner.documents["proofIdentity"].fileStoreId || "",
-            documentType: owner.documents["proofIdentity"].documentType || "",
+            documentType: owner.documents["proofIdentity"].documentType?.code || "",
             id: owner.documents["proofIdentity"].id || "",
             status: owner.documents["proofIdentity"].status || "",
           });
         } else {
           document.push({
             fileStoreId: owner.documents["proofIdentity"].fileStoreId || "",
-            documentType: owner.documents["proofIdentity"].documentType || "",
+            documentType: owner.documents["proofIdentity"].documentType?.code || "",
           });
         }
       }

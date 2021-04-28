@@ -63,7 +63,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       let fileStoreId = uploadedFile;
       let fileDetails = file;
       if (fileDetails) {
-        fileDetails.documentType = dropdownValue?.code;
+        fileDetails.documentType = dropdownValue;
         fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
       }
       let ownerDetails = formData.owners && formData.owners[index];
@@ -84,7 +84,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
     if (fileDetails) {
-      fileDetails.documentType = dropdownValue?.code;
+      fileDetails.documentType = dropdownValue;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
     let ownerDetails = formData.owners && formData.owners[index];
@@ -103,7 +103,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       onSelect={handleSubmit}
       onSkip={onSkip}
       forcedError={t(multipleownererror)}
-      isDisabled={multipleownererror || !uploadedFile || !dropdownValue}
+      isDisabled={multipleownererror || !uploadedFile || !dropdownValue }
       onAdd={onAdd}
       isMultipleAllow={formData?.ownershipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS"}
     >
