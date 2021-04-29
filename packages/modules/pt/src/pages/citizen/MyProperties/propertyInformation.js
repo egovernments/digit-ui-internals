@@ -46,7 +46,7 @@ const PropertyInformation = () => {
         <Card>
           <StatusTable>
             <Row label={t("PT_PROPERTY_PTUID")} text={`${property.propertyId || "NA"}`} textStyle={{ whiteSpace: "pre" }} />
-            <Row label={t("CS_COMMON_TOTAL_AMOUNT_DUE")} text={`${fetchBillData?.Bill[0].totalAmount || "NA"}`} />
+            <Row label={t("CS_COMMON_TOTAL_AMOUNT_DUE")} text={`${fetchBillData ? fetchBillData?.Bill[0].totalAmount : "NA"}`} />
           </StatusTable>
           <CardSubHeader>{t("PT_PROPERTY_ADDRESS_SUB_HEADER")}</CardSubHeader>
           <StatusTable>
