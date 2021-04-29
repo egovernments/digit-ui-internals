@@ -166,6 +166,15 @@ const PropertyInformation = () => {
             )}
           </div>
           <div>
+            {fetchBillData && fetchBillData?.Bill[0].totalAmount && (
+              <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
+                <Link to={{ pathname: `/digit-ui/citizen/payment/my-bills/PT/${property.propertyId}` }}>
+                  <SubmitBar label={t("PT_MAKE_PAYMENT_BUTTON")} />
+                </Link>
+              </div>
+            )}
+          </div>
+          <div>
             {property?.status === "ACTIVE" && (
               <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
                 <Link to={{ pathname: `/digit-ui/citizen/pt/property/edit-application/update=true/${property.propertyId}` }}>
