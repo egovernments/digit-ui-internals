@@ -13,6 +13,10 @@ const PropertyInformation = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch({ filters: { propertyIds } }, { filters: { propertyIds } });
 
+  const { data: fetchBillData } = Digit.Hooks.useFetchBillsForBuissnessService({
+    businessService: "PT",
+    consumerCode: propertyIds,
+  });
   const property = data?.Properties[0] || " ";
   let docs = [];
   docs = property?.documents;
@@ -42,7 +46,7 @@ const PropertyInformation = () => {
         <Card>
           <StatusTable>
             <Row label={t("PT_PROPERTY_PTUID")} text={`${property.propertyId || "NA"}`} textStyle={{ whiteSpace: "pre" }} />
-            <Row label={t("Total Property Due")} text={"NA"} />
+            <Row label={t("CS_COMMON_TOTAL_AMOUNT_DUE")} text={`${fetchBillData?.Bill[0].totalAmount || "NA"}`} />
           </StatusTable>
           <CardSubHeader>{t("PT_PROPERTY_ADDRESS_SUB_HEADER")}</CardSubHeader>
           <StatusTable>
