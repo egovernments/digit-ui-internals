@@ -46,7 +46,7 @@ export const PTMyApplications = () => {
 
       <p style={{ marginLeft: "16px", marginTop: "16px" }}>
         {t("PT_TEXT_NOT_ABLE_TO_FIND_THE_APPLICATION")}{" "}
-        <span className="link">
+        <span className="link" style={{display: 'block'}}>
           <Link to="/digit-ui/citizen/pt/property/new-application/info">{t("PT_COMMON_CLICK_HERE_TO_REGISTER_NEW_PROPERTY")}</Link>
         </span>
       </p>
