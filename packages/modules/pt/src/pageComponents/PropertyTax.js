@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardSubHeader, CardText, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { cardBodyStyle } from "../utils";
+import { cardBodyStyle, stringReplaceAll } from "../utils";
 //import { map } from "lodash-es";
 
 const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
@@ -30,10 +30,10 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
               ? docs.map(({ code, dropdownData }, index) => (
                   <div key={index}>
                     <CardSubHeader>
-                      {index + 1}. {t("PROPERTYTAX_" + code.replaceAll(".", "_") + "_HEADING")}
+                      {index + 1}. {t("PROPERTYTAX_" + stringReplaceAll(code,".", "_") + "_HEADING")}
                     </CardSubHeader>
                     {dropdownData.map((dropdownData) => (
-                      <CardText>{t("PROPERTYTAX_" + dropdownData?.code.replaceAll(".", "_") + "_LABEL")}</CardText>
+                      <CardText>{t("PROPERTYTAX_" + stringReplaceAll(dropdownData?.code,".", "_") + "_LABEL")}</CardText>
                     ))}
                   </div>
                 ))

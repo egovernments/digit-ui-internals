@@ -4,7 +4,7 @@ export const checkForNotNull = (value = "") => {
 };
 
 export const convertDotValues = (value = "") => {
-  return (checkForNotNull(value) && ((value.replaceAll && value.replaceAll(".", "_")) || (value.replace && value.replace(".", "_")))) || "NA";
+  return (checkForNotNull(value) && ((value.replaceAll && value.replaceAll(".", "_")) || (value.replace && stringReplaceAll(value, ".", "_")))) || "NA";
 };
 
 export const convertToLocale = (value = "", key = "") => {
@@ -640,15 +640,15 @@ export const convertToUpdateProperty = (data = {}) => {
       channel: "CITIZEN",
       workflow: !data?.isUpdateProperty
         ? {
-            action: "REOPEN",
-            businessService: "PT.CREATE",
-            moduleName: "PT",
-          }
+          action: "REOPEN",
+          businessService: "PT.CREATE",
+          moduleName: "PT",
+        }
         : {
-            action: "OPEN",
-            businessService: "PT.UPDATE",
-            moduleName: "PT",
-          },
+          action: "OPEN",
+          businessService: "PT.UPDATE",
+          moduleName: "PT",
+        },
     },
   };
   console.info("propertyCreated", formdata);
@@ -730,3 +730,12 @@ export const convertEpochToDate = (dateEpoch) => {
     return null;
   }
 };
+
+
+export const stringReplaceAll = (str = '', searcher = '', replaceWith = '') => {
+  if (searcher == '') return str;
+  while (str.includes(searcher)) {
+    str = str.replace(searcher,replaceWith);
+  }
+  return str;
+}

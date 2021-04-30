@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FormStep, CardLabel, RadioButtons, RadioOrSelect } from "@egovernments/digit-ui-react-components";
-import { cardBodyStyle } from "../utils";
+import { cardBodyStyle, stringReplaceAll } from "../utils";
 
 const ProvideFloorNo = ({ t, config, onSelect, userType, formData }) => {
   //let index = window.location.href.charAt(window.location.href.length - 1);
@@ -18,7 +18,7 @@ const ProvideFloorNo = ({ t, config, onSelect, userType, formData }) => {
 
   function getfloorlistdata(floorlist) {
     for (i = 0; Array.isArray(floorlist) && i < floorlist.length; i++) {
-      data.push({ i18nKey: "PROPERTYTAX_FLOOR_" + floorlist[i].code.replaceAll("-", "_") });
+      data.push({ i18nKey: "PROPERTYTAX_FLOOR_" + stringReplaceAll(floorlist[i].code,"-", "_") });
     }
     return data;
   }

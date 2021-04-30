@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FormStep, UploadFile, CardLabelDesc, Dropdown, CardLabel } from "@egovernments/digit-ui-react-components";
+import { stringReplaceAll } from "../utils";
 
 const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData }) => {
   let index = window.location.href.charAt(window.location.href.length - 1);
@@ -18,7 +19,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
   const specialProofIdentity = Array.isArray(docs) && docs.filter(doc => (doc.code).includes("SPECIALCATEGORYPROOF"));
   if(specialProofIdentity.length > 0) { 
     dropdownData = specialProofIdentity[0]?.dropdownData;
-    dropdownData.forEach(data => { data.i18nKey = data.code.replaceAll(".", "_") });
+    dropdownData.forEach(data => { data.i18nKey = stringReplaceAll(data.code,".", "_") });
    }
 
   function setTypeOfDropdownValue(dropdownValue) {

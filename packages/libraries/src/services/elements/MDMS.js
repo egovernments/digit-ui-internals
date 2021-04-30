@@ -1,3 +1,4 @@
+import { stringReplaceAll } from "@egovernments/digit-ui-module-pt/src/utils";
 import { ApiCacheService } from "../atoms/ApiCacheService";
 import Urls from "../atoms/urls";
 import { Request, ServiceRequest } from "../atoms/Utils/Request";
@@ -606,7 +607,7 @@ const getPTPropertyType = (MdmsRes) =>
   MdmsRes["PropertyTax"].UsageCategory.filter((PropertyType) => PropertyType.active).map((PTPropertyTypelist) => {
     return {
       ...UsageCategorylist,
-      i18nKey: `COMMON_PROPTYPE_${PTPropertyTypelist.code.replaceAll(".", "_")}`,
+      i18nKey: `COMMON_PROPTYPE_${stringReplaceAll(PTPropertyTypelist.code,".", "_")}`,
     };
   });
 

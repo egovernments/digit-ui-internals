@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CardLabel, LabelFieldPair, Dropdown, TextInput, LinkButton } from "@egovernments/digit-ui-react-components";
+import { stringReplaceAll } from "../utils";
 
 const Units = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -24,7 +25,7 @@ const Units = ({ t, config, onSelect, userType, formData }) => {
 
   function getfloorlistdata(floorlist) {
     for (i = 0; Array.isArray(floorlist) && i < floorlist.length; i++) {
-      floorListData.push({ i18nKey: "PROPERTYTAX_FLOOR_" + floorlist[i].code.replaceAll("-", "_"), code: floorlist[i].code });
+      floorListData.push({ i18nKey: "PROPERTYTAX_FLOOR_" + stringReplaceAll(floorlist[i].code,"-", "_"), code: floorlist[i].code });
     }
     return floorListData;
   }
