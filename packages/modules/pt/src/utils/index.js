@@ -153,24 +153,53 @@ export const setOwnerDetails = (data) => {
 export const setDocumentDetails = (data) => {
   const { address, owners } = data;
   let documents = [];
-  documents.push({
-    fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
-    documentType: address?.documents["ProofOfAddress"]?.documentType?.code || "",
-  });
+  if (address?.documents["ProofOfAddress"]?.id) {
+    documents.push({
+      fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
+      documentType: address?.documents["ProofOfAddress"]?.documentType?.code || "",
+      id: address?.documents["ProofOfAddress"]?.id || "",
+      status: address?.documents["ProofOfAddress"]?.status || "",
+    });
+  } else {
+    documents.push({
+      fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
+      documentType: address?.documents["ProofOfAddress"]?.documentType?.code || "",
+    });
+  }
+  
   owners &&
     owners.length > 0 &&
     owners.map((owner) => {
       if (owner.documents && owner.documents["proofIdentity"]) {
-        documents.push({
-          fileStoreId: owner?.documents["proofIdentity"].fileStoreId || "",
-          documentType: owner?.documents["proofIdentity"].documentType?.code || "",
-        });
+        if(owner?.documents["proofIdentity"]?.id) {
+          documents.push({
+            fileStoreId: owner?.documents["proofIdentity"].fileStoreId || "",
+            documentType: owner?.documents["proofIdentity"].documentType?.code || "",
+            id: owner?.documents["proofIdentity"]?.id || "",
+            status: owner?.documents["proofIdentity"]?.status || "",
+          });
+        } else {
+          documents.push({
+            fileStoreId: owner?.documents["proofIdentity"].fileStoreId || "",
+            documentType: owner?.documents["proofIdentity"].documentType?.code || "",
+          });
+        }
       }
       if (owner.documents && owner.documents["specialProofIdentity"]) {
-        documents.push({
-          fileStoreId: owner?.documents["specialProofIdentity"]?.fileStoreId || "",
-          documentType: owner?.documents["specialProofIdentity"]?.documentType?.code || "",
-        });
+        if(owner?.documents["specialProofIdentity"]?.id) {
+          documents.push({
+            fileStoreId: owner?.documents["specialProofIdentity"]?.fileStoreId || "",
+            documentType: owner?.documents["specialProofIdentity"]?.documentType?.code || "",
+            id: owner?.documents["specialProofIdentity"]?.id || "",
+            status: owner?.documents["specialProofIdentity"]?.status || "",
+          });
+        } else {
+          documents.push({
+            fileStoreId: owner?.documents["specialProofIdentity"]?.fileStoreId || "",
+            documentType: owner?.documents["specialProofIdentity"]?.documentType?.code || "",
+          });
+        }
+        
       }
     });
   data.documents = documents;
@@ -599,8 +628,36 @@ export const setUpdateOwnerDetails = (data = []) => {
       owner.gender = owner?.gender?.code;
       owner.ownerType = owner?.ownerType?.code;
       owner.relationship = owner?.relationship?.code;
+      owner.documents = document;
     });
   }
+  return data;
+};
+export const setUpdatedDocumentDetails = (data) => {
+  const { address, owners } = data;
+  let documents = [];
+  if (address?.documents["ProofOfAddress"]?.id) {
+    documents.push({
+      fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
+      documentType: address?.documents["ProofOfAddress"]?.documentType?.code || "",
+      id: address?.documents["ProofOfAddress"]?.id || "",
+      status: address?.documents["ProofOfAddress"]?.status || "",
+    });
+  } else {
+    documents.push({
+      fileStoreId: address?.documents["ProofOfAddress"]?.fileStoreId || "",
+      documentType: address?.documents["ProofOfAddress"]?.documentType?.code || "",
+    });
+  }
+  
+  owners &&
+    owners.length > 0 &&
+    owners.map((owner) => {
+      owner.documents.map(document => {
+        documents.push(document);
+      });
+    });
+  data.documents = documents;
   return data;
 };
 export const convertToUpdateProperty = (data = {}) => {
@@ -609,6 +666,7 @@ export const convertToUpdateProperty = (data = {}) => {
   let propertyType = data.PropertyType;
   data = setAddressDetails(data);
   data = setUpdateOwnerDetails(data);
+  data = setUpdatedDocumentDetails(data);
   data = setPropertyDetails(data);
 
   const formdata = {

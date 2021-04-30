@@ -7,13 +7,14 @@ import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from 
 import { newConfig } from "../../../config/Create/config";
 import CheckPage from "../Create/CheckPage";
 import PTAcknowledgement from "../Create/PTAcknowledgement";
+import { stringReplaceAll } from "../../../utils";
 
 const getPropertyEditDetails = (data = {}) => {
   // converting owners details
   if (data?.ownershipCategory === "INSTITUTIONALPRIVATE" || data?.ownershipCategory === "INSTITUTIONALGOVERNMENT") {
     let document = [];
     if (data?.owners[0]?.documents[0]?.documentType.includes("IDENTITYPROOF")) {
-      data.owners[0].documents[0].documentType = { code: data?.owners[0]?.documents[0].documentType };
+      data.owners[0].documents[0].documentType = { code: data?.owners[0]?.documents[0].documentType, "i18nKey": stringReplaceAll(data?.owners[0]?.documents[0].documentType,".", "_") };
       document["proofIdentity"] = data?.owners[0]?.documents[0];
     }
     (data.owners[0].designation = data?.institution?.designation),
@@ -28,12 +29,12 @@ const getPropertyEditDetails = (data = {}) => {
       let document = [];
       owner.documents &&
         owner.documents.map((doc) => {
-          if (doc.documentType.includes("SPECIALCATEGORYPROOF")) {
-            doc.documentType = { code: doc.documentType };
+          if (doc.documentType && typeof (doc.documentType) == "string" && doc.documentType.includes("SPECIALCATEGORYPROOF")) {
+            doc.documentType = { code: doc.documentType, "i18nKey": stringReplaceAll(doc.documentType,".", "_") };
             document["specialProofIdentity"] = doc;
           }
-          if (doc.documentType.includes("IDENTITYPROOF")) {
-            doc.documentType = { code: doc.documentType };
+          if (doc.documentType && typeof (doc.documentType) == "string" && doc.documentType.includes("IDENTITYPROOF")) {
+            doc.documentType = { code: doc.documentType, "i18nKey": stringReplaceAll(doc.documentType,".", "_") };
             document["proofIdentity"] = doc;
           }
         });
@@ -63,7 +64,7 @@ const getPropertyEditDetails = (data = {}) => {
   }
   data.address.pincode = data?.address?.pincode;
   let addressDocs = data?.documents?.filter((doc) => doc.documentType.includes("ADDRESSPROOF"));
-  addressDocs[0].documentType = { code: addressDocs[0].documentType };
+  addressDocs[0].documentType = { code: addressDocs[0].documentType, "i18nKey": stringReplaceAll(addressDocs[0].documentType,".", "_") };
   if (data?.address?.documents) {
     data.address.documents["ProofOfAddress"] = addressDocs[0];
   } else {
