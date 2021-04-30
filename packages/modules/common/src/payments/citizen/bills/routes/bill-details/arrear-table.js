@@ -13,8 +13,8 @@ const styles = {
         backgroundColor: 'rgba(250, 250, 250, var(--bg-opacity))'
     },
     cell: {
-        maxWidth: '20px',
-        minWidth: '15px',
+        maxWidth: '1.5em',
+        minWidth: '1em',
         border: '1px solid #e8e7e6',
         padding: '4px 10px'
     },
@@ -42,7 +42,7 @@ const ArrearTable = ({
                 <table className={className} style={styles.table}>
                     <thead>
                         <tr>
-                            <th style={{ ...styles.cell, maxWidth:'25px',...styles.cellLeft}}>
+                            <th style={{ ...styles.cell, maxWidth:'2em',...styles.cellLeft}}>
                                 {t('CS_BILL_PERIOD')}
                             </th>
                             {headers.map((header, ind) => {
@@ -55,15 +55,15 @@ const ArrearTable = ({
                     <tbody>
                         {Object.values(values).map((row, ind) => (
                             <tr key={ind}>
-                                <td style={{ ...styles.cell, maxWidth:'25px',...styles.cellLeft}} component="th" scope="row">{Object.keys(values)[ind]}</td>
+                                <td style={{ ...styles.cell, maxWidth:'2em',...styles.cellLeft}} component="th" scope="row">{Object.keys(values)[ind]}</td>
                                 {headers.map((header, i) => {
                                      let styleRight=headers.length==i+1?styles.cellRight:{};
-                                    return (<td style={{ ...styles.cell, textAlign: 'right',...styleRight }} key={i} numeric>₹ {row[header] && row[header]['value'] || '0'}</td>)
+                                    return (<td style={{ ...styles.cell, textAlign: 'right',...styleRight,  whiteSpace: 'pre' }} key={i} numeric>₹{row[header] && row[header]['value'] || '0'}</td>)
                                 })}
                             </tr>
                         ))}
                         <tr>
-                            <td style={{...styles.cell,...styles.cellLeft}}></td>
+                            <td style={{...styles.cell,...styles.cellLeft,maxWidth:'2em'}}></td>
                             {headers.map((header, ind) => {
                                 if (ind == headers.length - 1) {
                                     return (<td style={{ ...styles.cell,...styles.cellRight, textAlign: 'right' ,fontWeight: '700' ,  whiteSpace: 'pre'}} key={ind} numeric>{arrears}</td>)
