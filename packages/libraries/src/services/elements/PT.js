@@ -61,6 +61,16 @@ export const PTService = {
       params: { tenantId },
       auth: true,
     }),
+    assessmentSearch: ({tenantId, filters}) =>
+    Request({
+      url: Urls.pt.assessment_search,
+      useCache: false,
+      method: "POST",
+      auth: true,
+      userService: true,
+      params: { tenantId, ...filters },
+    }),
+    
 };
 
 // export const PTService = {
