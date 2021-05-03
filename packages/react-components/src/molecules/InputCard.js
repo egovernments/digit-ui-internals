@@ -9,11 +9,11 @@ import LinkButton from "../atoms/LinkButton";
 import CardCaption from "../atoms/CardCaption";
 import TextInput from "../atoms/TextInput";
 
-const InputCard = ({ t, children, texts = {}, submit = false, inputs = [], inputRef, onNext, onSkip, isDisable, onAdd, isMultipleAllow = false }) => {
+const InputCard = ({ t, children, texts = {}, submit = false, inputs = [], inputRef, onNext, onSkip, isDisable, onAdd, isMultipleAllow = false ,cardStyle={}}) => {
   // TODO: inputs handle
   console.log("FIND ME", isDisable, isMultipleAllow);
   return (
-    <Card>
+    <Card style={cardStyle}>
       {texts.headerCaption && <CardCaption>{t(texts.headerCaption)}</CardCaption>}
       <CardHeader>{t(texts.header)}</CardHeader>
       <CardText>{t(texts.cardText)}</CardText>
