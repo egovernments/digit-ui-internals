@@ -145,7 +145,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
             t={t}
           /></span>
         )}
-      </div>
+      {/* </div> */}
     </FormStep>
   );
 };

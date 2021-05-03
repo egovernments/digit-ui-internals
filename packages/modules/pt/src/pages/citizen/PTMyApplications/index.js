@@ -22,7 +22,7 @@ export const PTMyApplications = () => {
 
   return (
     <React.Fragment>
-      <Header>{t("CS_TITLE_MY_APPLICATIONS")}</Header>
+      <Header>{`${t("CS_TITLE_MY_APPLICATIONS")} ${applicationsList ? `(${applicationsList.length})` : ""}`}</Header>
       <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 14em)" }}>
         {applicationsList?.length > 0 &&
           applicationsList.map((application, index) => (

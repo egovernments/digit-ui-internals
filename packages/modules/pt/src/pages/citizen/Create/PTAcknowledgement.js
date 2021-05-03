@@ -71,7 +71,7 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
       <BannerPicker t={t} data={mutation.data} isSuccess={mutation.isSuccess} isLoading={mutation.isIdle || mutation.isLoading} />
       {mutation.isSuccess && <CardText>{t("CS_FILE_PROPERTY_RESPONSE")}</CardText>}
       {!mutation.isSuccess && <CardText>{t("CS_FILE_PROPERTY_FAILED_RESPONSE")}</CardText>}
-      {mutation.isSuccess && (
+      {/* {mutation.isSuccess && (
         <LinkButton
           label={
             <div className="response-download-button">
@@ -80,13 +80,12 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
                   <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
                 </svg>
               </span>
-              <span className="download-button">{t("CS_COMMON_DOWNLOAD")}</span>
+              <span className="download-button">{t("CS_COMMON_DOWNLOAD")}</span> 
             </div>
           }
           onClick={handleDownloadPdf}
           className="w-full"
-        />
-      )}
+        />)}*/}
       <StatusTable>
         {mutation.isSuccess && (
           <Row
@@ -98,8 +97,10 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
           />
         )}
       </StatusTable>
+      {mutation.isSuccess && <SubmitBar label={t("PT_DOWNLOAD_ACK_FORM")} onClick={handleDownloadPdf} />}
+
       <Link to={`/digit-ui/citizen`}>
-        <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
+        <LinkButton label={t("CORE_COMMON_GO_TO_HOME")} />
       </Link>
     </Card>
   );
