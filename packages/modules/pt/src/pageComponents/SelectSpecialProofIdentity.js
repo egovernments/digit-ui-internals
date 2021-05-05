@@ -69,7 +69,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
             }
           } catch (err) {
             console.error("Modal -> err ", err);
-            setError(t("PT_FILE_UPLOAD_ERROR"));
+            // setError(t("PT_FILE_UPLOAD_ERROR"));
           }
         }
       }
