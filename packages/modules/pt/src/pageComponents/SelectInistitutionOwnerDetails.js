@@ -173,12 +173,12 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
           name="altContactNumber"
           onChange={setAltContactNo}
           value={altContactNumber}
-          type={"number"}
+          type={"tel"}
           disable={isUpdateProperty}
           {...(validation = {
             isRequired: true,
-            pattern: "^[0-9]{10,11}$",
-            type: "number",
+            pattern: "^[0-9]{11}$",
+            type: "tel",
             title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
           })}
         />

@@ -57,7 +57,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
     (async () => {
       setError(null);
       if (file) {
-        if (file.size >= 5242880) {
+        if (file.size >= 2000000) {
           setError(t("PT_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
         } else {
           try {
@@ -77,7 +77,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
   }, [file]);
 
   return (
-    <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={ !uploadedFile || !dropdownValue }>
+    <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={ !uploadedFile || !dropdownValue || error }>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <CardLabel>{`${t("PT_CATEGORY_DOCUMENT_TYPE")}`}</CardLabel>
@@ -98,7 +98,9 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
           setUploadedFile(null);
         }}
         message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
+        error={error}
       />
+      {error ? <div style={{ height: "20px", width: "100%", fontSize: "20px", color: "red", marginTop: "5px" }}>{error}</div> : ""}
       <div style={{ disabled: "true", height: "20px", width: "100%" }}></div>
     </FormStep>
   );
