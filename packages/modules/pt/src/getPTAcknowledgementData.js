@@ -8,6 +8,7 @@ import {
   getMohallaLocale,
   pdfDocumentName,
   pdfDownloadLink,
+  getCityLocale,
 } from "./utils";
 
 const capitalize = (text) => text.substr(0, 1).toUpperCase() + text.substr(1);
@@ -163,7 +164,7 @@ const getPTAcknowledgementData = async (application, tenantInfo, t) => {
         title: t("PT_PROPERTY_ADDRESS_SUB_HEADER"),
         values: [
           { title: t("PT_PROPERTY_ADDRESS_PINCODE"), value: application?.address?.pincode || "N/A" },
-          { title: t("PT_PROPERTY_ADDRESS_CITY"), value: application?.address?.city || "N/A" },
+          { title: t("PT_PROPERTY_ADDRESS_CITY"), value: t(getCityLocale(application?.tenantId)) || "N/A" },
           {
             title: t("PT_PROPERTY_ADDRESS_MOHALLA"),
             value: t(`${getMohallaLocale(application?.address?.locality?.code, application?.tenantId)}`) || "N/A",

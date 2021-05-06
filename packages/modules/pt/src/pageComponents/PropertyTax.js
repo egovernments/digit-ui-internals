@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardSubHeader, CardText, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Card, CardHeader, CardSubHeader, CardText, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { cardBodyStyle, stringReplaceAll } from "../utils";
 //import { map } from "lodash-es";
@@ -7,9 +7,9 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
 
-  const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
-  const docs = Documentsob?.PropertyTax?.Documents;
-
+  const { isLoading,data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
+  let docs = Documentsob?.PropertyTax?.Documents;
+  docs=docs?.filter(doc=>doc['digit-citizen']);
   function onSave() {}
 
   function goNext() {
@@ -26,6 +26,7 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
           <CardSubHeader>{t("PT_DOC_REQ_SCREEN_LABEL")}</CardSubHeader>
           <CardText>{t("PT_DOC_REQ_SCREEN_LABEL_TEXT")}</CardText>
           <div>
+            {isLoading&& <Loader />}
             {Array.isArray(docs)
               ? docs.map(({ code, dropdownData }, index) => (
                   <div key={index}>

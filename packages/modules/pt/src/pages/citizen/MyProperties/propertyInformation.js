@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory, useParams } from "react-router-dom";
 import PropertyDocument from "../../../pageComponents/PropertyDocument";
-import { getPropertyTypeLocale, propertyCardBodyStyle } from "../../../utils";
+import { getCityLocale, getPropertyTypeLocale, propertyCardBodyStyle } from "../../../utils";
 
 const setBillData = async (tenantId, propertyIds, updatefetchBillData, updateCanFetchBillData) => {
   const assessmentData = await Digit.PTService.assessmentSearch({ tenantId, filters: { propertyIds } });
@@ -111,7 +111,7 @@ const PropertyInformation = () => {
             <Row label={t("PT_PROPERTY_ADDRESS_COLONY_NAME")} text={`${property.address?.buildingName || "NA"}`} />
             <Row label={t("PT_PROPERTY_ADDRESS_STREET_NAME")} text={`${property.address?.street || "NA"}`} />
             <Row label={t("PT_COMMON_LOCALITY_OR_MOHALLA")} text={`${t(property?.address?.locality?.name)}` || "NA"} />
-            <Row label={t("PT_COMMON_CITY")} text={`${property.address?.city || "NA"}`} />
+            <Row label={t("PT_COMMON_CITY")} text={`${t(getCityLocale(property?.tenantId)) || "NA"}`} />
             <Row label={t("PT_PROPERTY_ADDRESS_PINCODE")} text={`${property.address?.pincode || "NA"}`} />
           </StatusTable>
           <CardSubHeader>{t("PT_PROPERTY_ASSESSMENT_DETAILS_HEADER")}</CardSubHeader>

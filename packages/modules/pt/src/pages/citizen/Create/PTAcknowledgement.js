@@ -26,7 +26,7 @@ const BannerPicker = (props) => {
     <Banner
       message={GetActionMessage(props)}
       applicationNumber={props.data?.Properties[0].acknowldgementNumber}
-      info={props.t("PT_APPLICATION_NO")}
+      info={props.isSuccess?props.t("PT_APPLICATION_NO"):''}
       successful={props.isSuccess}
     />
   );
@@ -37,7 +37,6 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const mutation = Digit.Hooks.pt.usePropertyAPI(
     data?.address?.city ? data.address?.city?.code : tenantId,
-    {},
     !window.location.href.includes("edit-application")
   );
   const coreData = Digit.Hooks.useCoreData();

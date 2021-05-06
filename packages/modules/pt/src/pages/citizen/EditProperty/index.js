@@ -401,6 +401,7 @@ const EditProperty = ({ parentRoute }) => {
   const propertyIds = window.location.href.split("/").pop();
   let application = {};
   const typeOfProperty = window.location.href.includes("update=true");
+
   const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
     { filters: typeOfProperty ? { propertyIds } : { acknowledgementIds } },
     {

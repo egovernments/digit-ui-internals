@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import getPTAcknowledgementData from "../../getPTAcknowledgementData";
 import PropertyDocument from "../../pageComponents/PropertyDocument";
 import PTWFApplicationTimeline from "../../pageComponents/PTWFApplicationTimeline";
-import { getPropertyTypeLocale, propertyCardBodyStyle } from "../../utils";
+import { getCityLocale, getPropertyTypeLocale, propertyCardBodyStyle } from "../../utils";
 
 const PTApplicationDetails = () => {
   const { t } = useTranslation();
@@ -69,7 +69,7 @@ const PTApplicationDetails = () => {
           <CardSubHeader>{t("PT_PROPERTY_ADDRESS_SUB_HEADER")}</CardSubHeader>
           <StatusTable>
             <Row label={t("PT_PROPERTY_ADDRESS_PINCODE")} text={`${t(application?.address?.pincode)}` || "NA"} />
-            <Row label={t("PT_COMMON_CITY")} text={`${t(application?.address?.city)}` || "NA"} />
+            <Row label={t("PT_COMMON_CITY")} text={`${t(getCityLocale(application?.tenantId))}` || "NA"} />
             <Row label={t("PT_COMMON_LOCALITY_OR_MOHALLA")} text={`${t(application?.address?.locality?.name)}` || "NA"} />
             <Row label={t("PT_PROPERTY_ADDRESS_STREET_NAME")} text={`${t(application?.address?.street)}` || "NA"} />
             <Row label={t("PT_PROPERTY_ADDRESS_COLONY_NAME")} text={`${t(application?.address?.buildingName)}` || "NA"} />
