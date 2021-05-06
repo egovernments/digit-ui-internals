@@ -33,7 +33,9 @@ const ApplicationDetails = () => {
     setShowToast(null);
   };
 
-  if (applicationDetails?.applicationData?.status === "ACTIVE") {
+  const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
+
+  if (applicationDetails?.applicationData?.status === "ACTIVE" && PT_CEMP) {
     workflowDetails = {
       ...workflowDetails,
       data: {
@@ -41,6 +43,12 @@ const ApplicationDetails = () => {
         nextActions: [
           {
             action: "VIEW_DETAILS",
+            auditDetails: null,
+            roles: ["PT_CEMP"],
+            tenantId: "pb",
+          },
+          {
+            action: "UPDATE",
             auditDetails: null,
             roles: ["PT_CEMP"],
             tenantId: "pb",

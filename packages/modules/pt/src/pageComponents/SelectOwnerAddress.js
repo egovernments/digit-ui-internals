@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { FormStep, TextInput, CheckBox, CardLabel, LabelFieldPair, TextArea } from "@egovernments/digit-ui-react-components";
+import { useLocation } from "react-router-dom";
 
 const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   let index = window.location.href.charAt(window.location.href.length - 1);
   const [permanentAddress, setPermanentAddress] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].permanentAddress) || ""
+    (formData.owners && formData.owners[index] && formData.owners[index].permanentAddress) || formData?.owners?.permanentAddress || ""
   );
   const [isCorrespondenceAddress, setIsCorrespondenceAddress] = useState(
     formData.owners && formData.owners[index] && formData.owners[index].isCorrespondenceAddress
   );
   const isUpdateProperty = formData?.isUpdateProperty || false;
+  const { pathname: url } = useLocation();
+  const editScreen = url.includes("/modify-application/");
 
   function setOwnerPermanentAddress(e) {
     setPermanentAddress(e.target.value);
@@ -56,9 +59,11 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   if (userType === "employee") {
     return (
       <LabelFieldPair key={index}>
-        <CardLabel className="card-label-smaller">{t("PT_OWNERS_ADDRESS")}</CardLabel>
+        <CardLabel className="card-label-smaller" style={editScreen ? { color: "#B1B4B6" } : {}}>
+          {t("PT_OWNERS_ADDRESS")}
+        </CardLabel>
         <div className="field">
-          <TextInput name="address" onChange={setOwnerPermanentAddress} value={permanentAddress} />
+          <TextInput name="address" onChange={setOwnerPermanentAddress} value={permanentAddress} disable={editScreen} />
         </div>
       </LabelFieldPair>
     );

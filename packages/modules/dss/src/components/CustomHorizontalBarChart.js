@@ -5,14 +5,12 @@ import { Loader, ResponseComposer } from "@egovernments/digit-ui-react-component
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import FilterContext from "./FilterContext";
 
-const barColors = ["#61A0FF", "#ECC478", "#ECC478"]
+const barColors = ["#61A0FF", "#ECC478", "#ECC478"];
 
-const CustomHorizontalBarChart = ({
-  data
-}) => {
+const CustomHorizontalBarChart = ({ data }) => {
   const { id } = data;
   const { t } = useTranslation();
-  const { value } = useContext(FilterContext)
+  const { value } = useContext(FilterContext);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const requestDate = {
     startDate: value?.range?.startDate.getTime(),
@@ -28,35 +26,31 @@ const CustomHorizontalBarChart = ({
   });
 
   const constructChartData = (data) => {
-    let result = {}
+    let result = {};
     for (let i = 0; i < data?.length; i++) {
-      const row = data[i]
-      for(let j = 0; j < row.plots.length; j++) {
+      const row = data[i];
+      for (let j = 0; j < row.plots.length; j++) {
         const plot = row.plots[j];
-        result[plot.name] = { ...result[plot.name], [row.headerName]: plot.value }
+        result[plot.name] = { ...result[plot.name], [row.headerName]: plot.value };
       }
     }
-    return Object.keys(result).map(key => {
+    return Object.keys(result).map((key) => {
       return {
         name: key,
-        ...result[key], 
-      }
-    })
-  }
+        ...result[key],
+      };
+    });
+  };
 
   const chartData = useMemo(() => constructChartData(response?.responseData?.data), [response]);
 
-  const renderLegend = (value) => (
-    <span>{value}</span>
-  )
+  const renderLegend = (value) => <span>{value}</span>;
 
   if (isLoading) {
-    return (
-      <Loader />
-    )
+    return <Loader />;
   }
 
-  const bars = response?.responseData?.data?.map(bar => bar?.headerName);
+  const bars = response?.responseData?.data?.map((bar) => bar?.headerName);
 
   return (
     <ResponsiveContainer width="99%" height={300}>

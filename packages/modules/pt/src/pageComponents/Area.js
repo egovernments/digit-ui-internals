@@ -97,10 +97,7 @@ const Area = ({ t, config, onSelect, value, userType, formData }) => {
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
-            {t(input.label)}
-            {config.isMandatory ? " * " : null}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t(input.label)}</CardLabel>
           <div className="field">
             <TextInput
               key={input.name}

@@ -41,7 +41,7 @@ export const Request = async ({
   userService,
   reciept = false,
   authHeader = false,
-  setTimeParam=true
+  setTimeParam = true,
 }) => {
   // console.log("params:", params);
   // console.log("in request", method);
@@ -72,8 +72,7 @@ export const Request = async ({
     if (value) {
       return value;
     }
-  }
-  else if(setTimeParam){
+  } else if (setTimeParam) {
     params._ = Date.now();
   }
 

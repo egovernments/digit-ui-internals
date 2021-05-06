@@ -16,16 +16,17 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   const stateId = tenantId.split(".")[0];
   const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
   const docs = Documentsob?.PropertyTax?.Documents;
-  const proofOfAddress = Array.isArray(docs) && docs.filter(doc => (doc.code).includes("ADDRESSPROOF"));
-  if(proofOfAddress.length > 0) { 
+  const proofOfAddress = Array.isArray(docs) && docs.filter((doc) => doc.code.includes("ADDRESSPROOF"));
+  if (proofOfAddress.length > 0) {
     dropdownData = proofOfAddress[0]?.dropdownData;
-    dropdownData.forEach(data => { data.i18nKey = stringReplaceAll(data.code,".", "_") })
+    dropdownData.forEach((data) => {
+      data.i18nKey = stringReplaceAll(data.code, ".", "_");
+    });
   }
 
   function setTypeOfDropdownValue(dropdownValue) {
     setDropdownValue(dropdownValue);
   }
-
 
   const handleSubmit = () => {
     let fileStoreId = uploadedFile;
@@ -72,19 +73,19 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
   }, [file]);
 
   return (
-    <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={ !uploadedFile || !dropdownValue || error }>
+    <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={!uploadedFile || !dropdownValue || error}>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <CardLabel>{`${t("PT_CATEGORY_DOCUMENT_TYPE")}`}</CardLabel>
       <Dropdown
-          t={t}
-          isMandatory={false}
-          option={dropdownData}
-          selected={dropdownValue}
-          optionKey="i18nKey"
-          select={setTypeOfDropdownValue}
-          placeholder={t(`PT_MUTATION_SELECT_DOC_LABEL`)}
-        />
+        t={t}
+        isMandatory={false}
+        option={dropdownData}
+        selected={dropdownValue}
+        optionKey="i18nKey"
+        select={setTypeOfDropdownValue}
+        placeholder={t(`PT_MUTATION_SELECT_DOC_LABEL`)}
+      />
       <UploadFile
         extraStyleName={"propertyCreate"}
         accept=".jpg,.png,.pdf"

@@ -60,10 +60,7 @@ const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
-            {t(input.label)}
-            {config.isMandatory ? " * " : null}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t(input.label)}</CardLabel>
           <div className="field">
             <TextInput key={input.name} value={pincode} onChange={onChange} {...input.validation} autoFocus={presentInModifyApplication} />
           </div>

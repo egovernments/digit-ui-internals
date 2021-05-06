@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Banner, CardText, SubmitBar, Loader, LinkButton, Toast } from "@egovernments/digit-ui-react-components";
+import { Card, Banner, CardText, SubmitBar, Loader, LinkButton, Toast, ActionBar } from "@egovernments/digit-ui-react-components";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
@@ -44,7 +44,7 @@ const Response = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { state } = props.location;
 
-  const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId);
+  const mutation = state.key === "UPDATE" ? Digit.Hooks.pt.usePropertyAPI(tenantId, false) : Digit.Hooks.pt.usePropertyAPI(tenantId);
 
   useEffect(() => {
     const onSuccess = () => {
@@ -54,10 +54,16 @@ const Response = (props) => {
       setShowToast({ key: "error" });
       setError(error?.response?.data?.Errors[0]?.message || null);
     };
-    mutation.mutate(state, {
-      onError,
-      onSuccess,
-    });
+
+    mutation.mutate(
+      {
+        Property: state?.Property,
+      },
+      {
+        onError,
+        onSuccess,
+      }
+    );
   }, []);
 
   if (mutation.isLoading || mutation.isIdle) {
@@ -76,11 +82,13 @@ const Response = (props) => {
           isEmployee={props.parentRoute.includes("employee")}
         />
         <CardText>{DisplayText(state.action, mutation.isSuccess, props.parentRoute.includes("employee"), t)}</CardText>
+      </Card>
+      {showToast && <Toast error={showToast.key === "error" ? true : false} label={error} onClose={closeToast} />}
+      <ActionBar>
         <Link to={`${props.parentRoute.includes("employee") ? "/digit-ui/employee" : "/digit-ui/citizen"}`}>
           <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
         </Link>
-      </Card>
-      {showToast && <Toast error={showToast.key === "error" ? true : false} label={error} onClose={closeToast} />}
+      </ActionBar>
     </div>
   );
 };

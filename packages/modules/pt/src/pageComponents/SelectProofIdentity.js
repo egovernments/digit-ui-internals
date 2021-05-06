@@ -16,10 +16,12 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
   const stateId = tenantId.split(".")[0];
   const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
   const docs = Documentsob?.PropertyTax?.Documents;
-  const proofIdentity = Array.isArray(docs) && docs.filter(doc => (doc.code).includes("IDENTITYPROOF"));
-  if(proofIdentity.length > 0) { 
+  const proofIdentity = Array.isArray(docs) && docs.filter((doc) => doc.code.includes("IDENTITYPROOF"));
+  if (proofIdentity.length > 0) {
     dropdownData = proofIdentity[0]?.dropdownData;
-    dropdownData.forEach(data => { data.i18nKey = stringReplaceAll(data.code,".", "_") }); 
+    dropdownData.forEach((data) => {
+      data.i18nKey = stringReplaceAll(data.code, ".", "_");
+    });
   }
 
   function setTypeOfDropdownValue(dropdownValue) {
@@ -104,7 +106,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       onSelect={handleSubmit}
       onSkip={onSkip}
       forcedError={t(multipleownererror)}
-      isDisabled={multipleownererror || !uploadedFile || !dropdownValue || error }
+      isDisabled={multipleownererror || !uploadedFile || !dropdownValue || error}
       onAdd={onAdd}
       isMultipleAllow={formData?.ownershipCategory?.value == "INDIVIDUAL.MULTIPLEOWNERS"}
     >
@@ -112,14 +114,14 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData }) => {
       <CardLabelDesc>{t(`PT_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <CardLabel>{`${t("PT_CATEGORY_DOCUMENT_TYPE")}`}</CardLabel>
       <Dropdown
-          t={t}
-          isMandatory={false}
-          option={dropdownData}
-          selected={dropdownValue}
-          optionKey="i18nKey"
-          select={setTypeOfDropdownValue}
-          placeholder={t(`PT_MUTATION_SELECT_DOC_LABEL`)}
-        />
+        t={t}
+        isMandatory={false}
+        option={dropdownData}
+        selected={dropdownValue}
+        optionKey="i18nKey"
+        select={setTypeOfDropdownValue}
+        placeholder={t(`PT_MUTATION_SELECT_DOC_LABEL`)}
+      />
       <UploadFile
         extraStyleName={"propertyCreate"}
         accept=".jpg,.png,.pdf"

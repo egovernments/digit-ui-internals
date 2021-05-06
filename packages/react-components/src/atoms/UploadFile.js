@@ -72,15 +72,20 @@ const UploadFile = (props) => {
           <h2 className="file-upload-status">{props.message}</h2>
         ) : (
           <div className="tag-container" style={extraStyles ? extraStyles?.tagContainerStyles : null}>
-            {!props.error ? <div className="tag" style={extraStyles ? extraStyles?.tagStyles : null}>
-              <span className="text" style={extraStyles ? extraStyles?.textStyles : null}>
-                {inpRef.current.files[0]?.name?.slice(0, 20)}
-              </span>
-              <span onClick={() => handleDelete()}>
-                <Close className="close" />
-              </span> 
-            </div>: <h2 className="file-upload-status" style={{marginTop: "18px"}}>{t(`PT_ACTION_NO_FILEUPLOADED`)}</h2>
-            }
+            {!props.error ? (
+              <div className="tag" style={extraStyles ? extraStyles?.tagStyles : null}>
+                <span className="text" style={extraStyles ? extraStyles?.textStyles : null}>
+                  {inpRef.current.files[0]?.name?.slice(0, 20)}
+                </span>
+                <span onClick={() => handleDelete()}>
+                  <Close className="close" />
+                </span>
+              </div>
+            ) : (
+              <h2 className="file-upload-status" style={{ marginTop: "18px" }}>
+                {t(`PT_ACTION_NO_FILEUPLOADED`)}
+              </h2>
+            )}
           </div>
         )}
       </div>

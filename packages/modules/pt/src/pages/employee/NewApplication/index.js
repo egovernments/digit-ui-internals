@@ -52,9 +52,11 @@ const NewApplication = () => {
         city: data?.address?.city?.name,
       },
       usageCategory: data?.usageCategoryMinor?.subuagecode ? data?.usageCategoryMinor?.subuagecode : data?.usageCategoryMajor?.code,
+      usageCategoryMinor: data?.usageCategoryMinor?.subuagecode,
+      usageCategoryMajor: data?.usageCategoryMajor?.code,
       landArea: data?.landarea,
       propertyType: data?.PropertyType?.code,
-      noOfFloors: data?.noOfFloors?.code,
+      noOfFloors: Number(data?.noOfFloors?.code),
       ownershipCategory: data?.ownershipCategory?.code,
       owners: [
         {

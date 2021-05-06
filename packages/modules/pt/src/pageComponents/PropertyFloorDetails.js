@@ -69,10 +69,7 @@ const PropertyFloorsDetails = ({ t, config, onSelect, formData, userType }) => {
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
-            {t(input.label)}
-            {config.isMandatory ? " * " : null}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t(input.label)}</CardLabel>
           <Dropdown
             className="form-field"
             isMandatory={config.isMandatory}

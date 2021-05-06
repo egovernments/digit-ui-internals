@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, RadioButtons, CardLabel, LabelFieldPair, Dropdown,Loader } from "@egovernments/digit-ui-react-components";
+import { FormStep, RadioButtons, CardLabel, LabelFieldPair, Dropdown, Loader } from "@egovernments/digit-ui-react-components";
 import { stringReplaceAll } from "../utils";
 
 const PropertyType = ({ t, config, onSelect, userType, formData }) => {
   const [BuildingType, setBuildingType] = useState(formData?.PropertyType);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
-  const { data: Menu = {} ,isLoading} = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "PTPropertyType") || {};
+  const { data: Menu = {}, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "PTPropertyType") || {};
   let proptype = [];
   proptype = Menu?.PropertyTax?.PropertyType;
   let i;
@@ -14,13 +14,13 @@ const PropertyType = ({ t, config, onSelect, userType, formData }) => {
   function getPropertyTypeMenu(proptype) {
     if (userType === "employee") {
       return proptype
-        ?.map((item) => ({ i18nKey: "COMMON_PROPTYPE_" + stringReplaceAll(item?.code,".", "_"), code: item?.code }))
+        ?.map((item) => ({ i18nKey: "COMMON_PROPTYPE_" + stringReplaceAll(item?.code, ".", "_"), code: item?.code }))
         ?.sort((a, b) => a.i18nKey.split("_").pop().localeCompare(b.i18nKey.split("_").pop()));
     } else {
       if (Array.isArray(proptype) && proptype.length > 0) {
         for (i = 0; i < proptype.length; i++) {
           if (i != 1 && i != 4 && Array.isArray(proptype) && proptype.length > 0)
-            menu.push({ i18nKey: "COMMON_PROPTYPE_" + stringReplaceAll(proptype[i].code,".", "_"), code: proptype[i].code });
+            menu.push({ i18nKey: "COMMON_PROPTYPE_" + stringReplaceAll(proptype[i].code, ".", "_"), code: proptype[i].code });
         }
       }
       menu.sort((a, b) => a.i18nKey.split("_").pop().localeCompare(b.i18nKey.split("_").pop()));
@@ -62,13 +62,9 @@ const PropertyType = ({ t, config, onSelect, userType, formData }) => {
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
-            {t(input.label)}
-            {config.isMandatory ? " * " : null}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t(input.label)}</CardLabel>
           <Dropdown
             className="form-field"
-            isMandatory={config.isMandatory}
             selected={getPropertyTypeMenu(proptype)?.length === 1 ? getPropertyTypeMenu(proptype)[0] : BuildingType}
             disable={getPropertyTypeMenu(proptype)?.length === 1}
             option={getPropertyTypeMenu(proptype)}

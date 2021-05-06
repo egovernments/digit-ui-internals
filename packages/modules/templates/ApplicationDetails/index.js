@@ -75,6 +75,8 @@ const ApplicationDetails = (props) => {
         return history.push(`/digit-ui/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}`);
       case "VIEW_DETAILS":
         return history.push(`/digit-ui/employee/pt/property-details/${applicationNumber}`);
+      case "UPDATE":
+        return history.push(`/digit-ui/employee/pt/modify-application/${applicationNumber}`);
       default:
         console.log("default case");
         break;

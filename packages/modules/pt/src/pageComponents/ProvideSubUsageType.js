@@ -152,13 +152,9 @@ const ProvideSubUsageType = ({ t, config, onSelect, userType, formData }) => {
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
-            {t(input.label)}
-            {config.isMandatory ? " * " : null}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t(input.label)}</CardLabel>
           <Dropdown
             className="form-field"
-            isMandatory={config.isMandatory}
             selected={getSubUsagedata(subusageoption)?.length === 1 ? getSubUsagedata(subusageoption)[0] : SubUsageType}
             disable={getSubUsagedata(subusageoption)?.length === 1}
             option={getSubUsagedata(subusageoption)}

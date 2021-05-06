@@ -69,9 +69,10 @@ const DashBoard = () => {
             {t(`ES_DSS_DOWNLOAD`)}
           </div>
         </div>
-        {dashboardConfig?.[0]?.visualizations.map((row, key) => (
-          <Layout rowData={row} key={key} />
-        ))}
+        {dashboardConfig?.[0]?.visualizations.map((row, key) => {
+          if (row.row === 4) return null;
+          return <Layout rowData={row} key={key} />;
+        })}
       </div>
     </FilterContext.Provider>
   );

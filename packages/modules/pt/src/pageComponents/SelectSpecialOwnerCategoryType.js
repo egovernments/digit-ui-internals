@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { FormStep, RadioOrSelect, RadioButtons, LabelFieldPair, CardLabel, Dropdown } from "@egovernments/digit-ui-react-components";
 import { cardBodyStyle } from "../utils";
+import { useLocation } from "react-router-dom";
 
 const SelectSpecialOwnerCategoryType = ({ t, config, onSelect, userType, formData }) => {
   let index = window.location.href.charAt(window.location.href.length - 1);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
   const isUpdateProperty = formData?.isUpdateProperty || false;
-  const [ownerType, setOwnerType] = useState(formData.owners && formData.owners[index] && formData.owners[index].ownerType);
+  const [ownerType, setOwnerType] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].ownerType) || formData.owners?.ownerType || {}
+  );
   const { data: Menu, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "OwnerType");
   Menu ? Menu.sort((a, b) => a.name.localeCompare(b.name)) : "";
+  const { pathname: url } = useLocation();
+  const editScreen = url.includes("/modify-application/");
 
   const onSkip = () => onSelect();
 
@@ -42,15 +47,13 @@ const SelectSpecialOwnerCategoryType = ({ t, config, onSelect, userType, formDat
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
+          <CardLabel className="card-label-smaller" style={editScreen ? { color: "#B1B4B6" } : {}}>
             {t(input.label)}
-            {config.isMandatory ? " * " : null}
           </CardLabel>
           <Dropdown
             className="form-field"
-            isMandatory={config.isMandatory}
             selected={Menu?.length === 1 ? Menu[0] : ownerType}
-            disable={Menu?.length === 1}
+            disable={Menu?.length === 1 || editScreen}
             option={Menu}
             select={setTypeOfOwner}
             optionKey="i18nKey"

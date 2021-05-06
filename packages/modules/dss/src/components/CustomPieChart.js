@@ -10,8 +10,8 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const CustomPieChart = ({ dataKey = "value", data }) => {
   const { id } = data;
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const { t } = useTranslation()
-  const { value } = useContext(FilterContext)
+  const { t } = useTranslation();
+  const { value } = useContext(FilterContext);
   const requestDate = {
     startDate: value?.range?.startDate.getTime(),
     endDate: value?.range?.endDate.getTime(),
@@ -25,26 +25,24 @@ const CustomPieChart = ({ dataKey = "value", data }) => {
     requestDate,
   });
 
-  const renderLegend = (value) => (
-    <span>{ t(`PROPERTYTYPE_MASTERS_${value}`) }</span>
-  )
+  const renderLegend = (value) => <span>{t(`PROPERTYTYPE_MASTERS_${value}`)}</span>;
 
   const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value, index, startAngle, endAngle }) => {
     const diffAngle = endAngle - startAngle;
-    const delta = ((360-diffAngle)/40)-1;
+    const delta = (360 - diffAngle) / 40 - 1;
     if (diffAngle < 5) {
       return null;
     }
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius);
-    const x = cx + (radius+delta) * Math.cos(-midAngle * RADIAN);
-    const y = cy + (radius+(delta*delta)) * Math.sin(-midAngle * RADIAN);
+    const x = cx + (radius + delta) * Math.cos(-midAngle * RADIAN);
+    const y = cy + (radius + delta * delta) * Math.sin(-midAngle * RADIAN);
     return (
-      <text x={x} y={y} textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text x={x} y={y} textAnchor={x > cx ? "start" : "end"} dominantBaseline="central">
         {value}
       </text>
     );
-  }
+  };
 
   if (isLoading) {
     return <Loader />;

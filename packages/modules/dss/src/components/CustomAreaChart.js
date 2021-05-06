@@ -9,7 +9,7 @@ const getValue = (plot) => plot.value;
 const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
   const { id } = data;
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const { value } = useContext(FilterContext)
+  const { value } = useContext(FilterContext);
   const requestDate = {
     startDate: value?.range?.startDate.getTime(),
     endDate: value?.range?.endDate.getTime(),
@@ -25,7 +25,7 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
 
   const renderPlot = (plot) => {
     const { denomination } = value;
-    switch(denomination) {
+    switch (denomination) {
       case "Unit":
         return plot?.value;
       case "Lac":
@@ -33,11 +33,9 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
       case "Cr":
         return Number((plot.value / 10000000).toFixed(2));
     }
-  }
+  };
 
-  const renderLegend = (value) => (
-    <span>{value}</span>
-  )
+  const renderLegend = (value) => <span>{value}</span>;
 
   if (isLoading) {
     return <Loader />;
@@ -55,8 +53,12 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
           <CartesianGrid />
           <Tooltip />
           <XAxis dataKey={xDataKey} />
-          <YAxis  />
-          <Legend verticalAlign="bottom" payload={[{ value: response?.responseData?.data?.[0]?.headerName, type: 'circle', id: 'id', color: '#F47738' }]} formatter={renderLegend} />
+          <YAxis />
+          <Legend
+            verticalAlign="bottom"
+            payload={[{ value: response?.responseData?.data?.[0]?.headerName, type: "circle", id: "id", color: "#F47738" }]}
+            formatter={renderLegend}
+          />
           <Area type="monotone" dataKey={renderPlot} stroke="#FF6726" fill="url(#colorUv)" dot={true} />
         </AreaChart>
       </ResponsiveContainer>

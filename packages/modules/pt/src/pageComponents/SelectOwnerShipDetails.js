@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FormStep, RadioOrSelect, RadioButtons, LabelFieldPair, Dropdown, CardLabel } from "@egovernments/digit-ui-react-components";
 import { cardBodyStyle } from "../utils";
+import { useLocation } from "react-router-dom";
 
 const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -13,6 +14,8 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => 
   let subCategoriesInOwnersType = ["INDIVIDUAL"];
   let OwnerShipCategory = {};
   let SubOwnerShipCategory = {};
+  const { pathname: url } = useLocation();
+  const editScreen = url.includes("/modify-application/");
 
   useEffect(() => {
     if (!isLoading && SubOwnerShipCategoryOb && OwnerShipCategoryOb) {
@@ -103,15 +106,13 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData }) => 
     return inputs?.map((input, index) => {
       return (
         <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">
+          <CardLabel className="card-label-smaller" style={editScreen ? { color: "#B1B4B6" } : {}}>
             {t(input.label)}
-            {config.isMandatory ? " * " : null}
           </CardLabel>
           <Dropdown
             className="form-field"
-            isMandatory={config.isMandatory}
             selected={getDropdwonForProperty(ownerShipdropDown)?.length === 1 ? getDropdwonForProperty(ownerShipdropDown)[0] : ownershipCategory}
-            disable={getDropdwonForProperty(ownerShipdropDown)?.length === 1}
+            disable={getDropdwonForProperty(ownerShipdropDown)?.length === 1 || editScreen}
             option={getDropdwonForProperty(ownerShipdropDown)}
             select={selectedValue}
             optionKey="i18nKey"

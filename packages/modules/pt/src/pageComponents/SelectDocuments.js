@@ -1,11 +1,60 @@
 import React, { useEffect, useState } from "react";
 import { CardLabel, LabelFieldPair, Dropdown, UploadFile, Toast, Loader } from "@egovernments/digit-ui-react-components";
 
-const SelectDocument = ({ t, document, setDocuments, error, setError }) => {
+const SelectDocuments = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [selectedDocument, setSelectedDocument] = useState(document?.dropdownData?.length === 1 ? document?.dropdownData[0] : {});
+  const [documents, setDocuments] = useState(formData?.documents?.documents || []);
+  const [error, setError] = useState(null);
+
+  const { isLoading, data } = Digit.Hooks.pt.useMDMS(
+    tenantId,
+    "PT",
+    "PROPERTY_TAX_DOCUMENTS",
+    {},
+    {
+      details: {
+        tenantId: "pb",
+        moduleDetails: [{ moduleName: "PropertyTax", masterDetails: [{ name: "Documents" }] }],
+      },
+    }
+  );
+
+  const propertyTaxDocuments = data?.PropertyTax?.Documents;
+
+  const goNext = () => {
+    onSelect(config.key, { documents, propertyTaxDocumentsLength: propertyTaxDocuments?.length });
+  };
+
+  useEffect(() => {
+    goNext();
+  }, [documents]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <div>
+      {propertyTaxDocuments?.map((document, index) => (
+        <SelectDocument key={index} document={document} t={t} error={error} setError={setError} setDocuments={setDocuments} documents={documents} />
+      ))}
+      {error && <Toast label={error} onClose={() => setError(null)} error />}
+    </div>
+  );
+};
+
+function SelectDocument({ t, document, setDocuments, error, setError, documents }) {
+  const filteredDocument = documents?.filter((item) => item?.documentType?.includes(document?.code))[0];
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const [selectedDocument, setSelectedDocument] = useState(
+    filteredDocument
+      ? { ...filteredDocument, active: filteredDocument?.status === "ACTIVE", code: filteredDocument?.documentType }
+      : document?.dropdownData?.length === 1
+      ? document?.dropdownData[0]
+      : {}
+  );
   const [file, setFile] = useState(null);
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(() => filteredDocument?.fileStoreId || null);
 
   const handleSelectDocument = (value) => setSelectedDocument(value);
 
@@ -43,6 +92,7 @@ const SelectDocument = ({ t, document, setDocuments, error, setError }) => {
           setError(t("CS_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
         } else {
           try {
+            setUploadedFile(null);
             const response = await Digit.UploadServices.Filestorage("PT", file, tenantId?.split(".")[0]);
             if (response?.data?.files?.length > 0) {
               setUploadedFile(response?.data?.files[0]?.fileStoreId);
@@ -61,7 +111,7 @@ const SelectDocument = ({ t, document, setDocuments, error, setError }) => {
   return (
     <div style={{ marginBottom: "24px" }}>
       <LabelFieldPair>
-        <CardLabel className="card-label-smaller">{t(document?.code)}*</CardLabel>
+        <CardLabel className="card-label-smaller">{t(document?.code)}</CardLabel>
         <Dropdown
           className="form-field"
           selected={selectedDocument}
@@ -87,48 +137,6 @@ const SelectDocument = ({ t, document, setDocuments, error, setError }) => {
       </LabelFieldPair>
     </div>
   );
-};
-
-const SelectDocuments = ({ t, config, onSelect, userType, formData }) => {
-  const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [documents, setDocuments] = useState([]);
-  const [error, setError] = useState(null);
-
-  const { isLoading, data } = Digit.Hooks.pt.useMDMS(
-    tenantId,
-    "PT",
-    "PROPERTY_TAX_DOCUMENTS",
-    {},
-    {
-      details: {
-        tenantId: "pb",
-        moduleDetails: [{ moduleName: "PropertyTax", masterDetails: [{ name: "Documents" }] }],
-      },
-    }
-  );
-
-  const propertyTaxDocuments = data?.PropertyTax?.Documents;
-
-  const goNext = () => {
-    onSelect(config.key, { documents, propertyTaxDocumentsLength: propertyTaxDocuments?.length });
-  };
-
-  useEffect(() => {
-    goNext();
-  }, [documents]);
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  return (
-    <div>
-      {propertyTaxDocuments?.map((document, index) => (
-        <SelectDocument key={index} document={document} t={t} error={error} setError={setError} setDocuments={setDocuments} />
-      ))}
-      {error && <Toast label={error} onClose={() => setError(null)} error />}
-    </div>
-  );
-};
+}
 
 export default SelectDocuments;

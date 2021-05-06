@@ -87,13 +87,9 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
     return (
       <div>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">
-            {t("MYCITY_CODE_LABEL")}
-            {/* {config.isMandatory ? " * " : null} */}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t("MYCITY_CODE_LABEL")}</CardLabel>
           <Dropdown
             className="form-field"
-            isMandatory
             selected={cities?.length === 1 ? cities[0] : selectedCity}
             disable={isEditProperty ? isEditProperty : cities?.length === 1}
             option={cities}
@@ -103,13 +99,9 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData }) => {
           />
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">
-            {t("PT_LOCALITY_LABEL")}
-            {/* {config.isMandatory ? " * " : null} */}
-          </CardLabel>
+          <CardLabel className="card-label-smaller">{t("PT_LOCALITY_LABEL")}</CardLabel>
           <Dropdown
             className="form-field"
-            isMandatory
             selected={selectedLocality}
             option={localities}
             select={selectLocality}

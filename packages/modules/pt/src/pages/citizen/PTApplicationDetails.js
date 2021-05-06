@@ -86,7 +86,7 @@ const PTApplicationDetails = () => {
               }
             />
             <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(application?.propertyType))}` || "NA"} />
-            <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={application?.landArea&&`${t(`${application?.landArea} sq.ft`)}` || "NA"} />
+            <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={(application?.landArea && `${t(`${application?.landArea} sq.ft`)}`) || "NA"} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${t(application?.noOfFloors)}` || "NA"} />
           </StatusTable>
           {/* <CardSubHeader>{t("Ground Floor")}</CardSubHeader>

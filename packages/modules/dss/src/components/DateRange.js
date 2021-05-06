@@ -35,9 +35,9 @@ const DateRange = ({ values, onFilterChange }) => {
     handleSubmit(selection);
   };
 
-  const handleFocusChange = focusedRange => {
-    setFocusedRange(focusedRange)
-  }
+  const handleFocusChange = (focusedRange) => {
+    setFocusedRange(focusedRange);
+  };
 
   const handleClose = () => {
     setIsModalOpen(false);
@@ -61,17 +61,18 @@ const DateRange = ({ values, onFilterChange }) => {
           <input className="employee-select-wrap--elipses" type="text" value={values?.title ? `${values?.title}` : ""} />
           <Calender onClick={() => setIsModalOpen((prevState) => !prevState)} />
         </div>
-        {isModalOpen && <div className="options-card" style={{ overflow: "visible", width: "unset", maxWidth: "unset" }}>
-          <DateRangePicker
-            focusedRange={focusedRange}
-            ranges={[values]}
-            rangeColors={["#f47738"]}
-            onChange={handleSelect}
-            onRangeFocusChange={handleFocusChange}
-            showSelectionPreview={true}
-          />
-        </div>
-        }
+        {isModalOpen && (
+          <div className="options-card" style={{ overflow: "visible", width: "unset", maxWidth: "unset" }}>
+            <DateRangePicker
+              focusedRange={focusedRange}
+              ranges={[values]}
+              rangeColors={["#f47738"]}
+              onChange={handleSelect}
+              onRangeFocusChange={handleFocusChange}
+              showSelectionPreview={true}
+            />
+          </div>
+        )}
       </div>
     </>
   );

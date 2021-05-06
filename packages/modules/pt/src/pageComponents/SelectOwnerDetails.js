@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown } from "@egovernments/digit-ui-react-components";
 import { cardBodyStyle } from "../utils";
+import { useLocation } from "react-router-dom";
 
 const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   let index = window.location.href.charAt(window.location.href.length - 1);
   let validation = {};
-  const [name, setName] = useState(formData.owners && formData.owners[index] && formData.owners[index].name);
-  const [email, setEmail] = useState((formData.owners && formData.owners[index] && formData.owners[index].email) || "");
-  const [gender, setGender] = useState(formData.owners && formData.owners[index] && formData.owners[index].gender);
-  const [mobileNumber, setMobileNumber] = useState(formData.owners && formData.owners[index] && formData.owners[index].mobileNumber);
-  const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
-    formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName
+  const [name, setName] = useState((formData.owners && formData.owners[index] && formData.owners[index].name) || formData?.owners?.name || "");
+  const [email, setEmail] = useState((formData.owners && formData.owners[index] && formData.owners[index].email) || formData?.owners?.emailId || "");
+  const [gender, setGender] = useState((formData.owners && formData.owners[index] && formData.owners[index].gender) || formData?.owners?.gender);
+  const [mobileNumber, setMobileNumber] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || ""
   );
-  const [relationship, setRelationship] = useState(formData.owners && formData.owners[index] && formData.owners[index].relationship);
+  const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || ""
+  );
+  const [relationship, setRelationship] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].relationship) || formData?.owners?.relationship || {}
+  );
   const isUpdateProperty = formData?.isUpdateProperty || false;
+  const { pathname: url } = useLocation();
+  const editScreen = url.includes("/modify-application/");
 
   function setOwnerName(e) {
     setName(e.target.value);
@@ -49,9 +56,10 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   const onSkip = () => onSelect();
 
   const options = [
-    { value: "Female", code: "PT_FORM3_FEMALE", value: "FEMALE", code: "FEMALE" },
-    { value: "Male", code: "PT_FORM3_MALE", value: "MALE", code: "MALE" },
-    { value: "Transgender", code: "PT_COMMON_GENDER_TRANSGENDER", value: "TRANSGENDER", code: "TRANSGENDER" },
+    { name: "Female", value: "FEMALE", code: "FEMALE" },
+    { name: "Male", value: "MALE", code: "MALE" },
+    { name: "Transgender", value: "TRANSGENDER", code: "TRANSGENDER" },
+    { name: "Other", value: "OTHER", code: "OTHER" },
   ];
 
   const GuardianOptions = [
@@ -71,7 +79,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     return (
       <div>
         <LabelFieldPair>
-          <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}*`}</CardLabel>
+          <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_MOBILE_NUMBER")}`}</CardLabel>
           <div className="field">
             <TextInput
               type={"text"}
@@ -86,11 +94,12 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                 type: "tel",
                 title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
               })}
+              disable={editScreen}
             />
           </div>
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel>{`${t("PT_OWNER_NAME")}*`}</CardLabel>
+          <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_OWNER_NAME")}`}</CardLabel>
           <div className="field">
             <TextInput
               t={t}
@@ -105,11 +114,12 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                 type: "tel",
                 title: t("PT_NAME_ERROR_MESSAGE"),
               })}
+              disable={editScreen}
             />
           </div>
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}*`}</CardLabel>
+          <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
           <div className="field">
             <TextInput
               t={t}
@@ -123,15 +133,16 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                 type: "tel",
                 title: t("PT_NAME_ERROR_MESSAGE"),
               })}
+              disable={editScreen}
             />
           </div>
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel>{`${t("PT_FORM3_RELATIONSHIP")}*`}</CardLabel>
+          <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_RELATIONSHIP")}`}</CardLabel>
           <Dropdown
             className="form-field"
             selected={relationship?.length === 1 ? relationship[0] : relationship}
-            disable={relationship?.length === 1}
+            disable={relationship?.length === 1 || editScreen}
             option={GuardianOptions}
             select={setGuardianName}
             optionKey="i18nKey"
@@ -140,11 +151,11 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
           />
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel>{`${t("PT_FORM3_GENDER")}*`}</CardLabel>
+          <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_FORM3_GENDER")}`}</CardLabel>
           <Dropdown
             className="form-field"
             selected={gender?.length === 1 ? gender[0] : gender}
-            disable={gender?.length === 1}
+            disable={gender?.length === 1 || editScreen}
             option={options}
             select={setGenderName}
             optionKey="code"
@@ -153,9 +164,18 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
           />
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel>{`${t("PT_OWNER_EMAIL")}*`}</CardLabel>
+          <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("PT_OWNER_EMAIL")}`}</CardLabel>
           <div className="field">
-            <TextInput t={t} type={"email"} isMandatory={false} optionKey="i18nKey" name="email" value={email} onChange={setOwnerEmail} />
+            <TextInput
+              t={t}
+              type={"email"}
+              isMandatory={false}
+              optionKey="i18nKey"
+              name="email"
+              value={email}
+              onChange={setOwnerEmail}
+              disable={editScreen}
+            />
           </div>
         </LabelFieldPair>
       </div>
