@@ -47,7 +47,7 @@ export const getCityLocale = (value = "") => {
     return "PT_NA";
   }
   convertedValue = convertedValue.toUpperCase();
-  return convertToLocale(value, `TENANT_TENANTS_${convertedValue}`);
+  return convertToLocale( convertedValue,`TENANT_TENANTS`);
 };
 
 
