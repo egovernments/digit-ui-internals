@@ -65,8 +65,8 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   const GuardianOptions = [
     { name: "Mother", code: "MOTHER", i18nKey: "PT_RELATION_MOTHER" },
     { name: "Father", code: "FATHER", i18nKey: "PT_RELATION_FATHER" },
-    { name: "Husband/Wife", code: "HUSBANDWIFE", i18nKey: "PT_RELATION_HUSBANDWIFE" },
-    { name: "Other", code: "OTHER", i18nKey: "PT_RELATION_OTHER" },
+    // { name: "Husband/Wife", code: "HUSBANDWIFE", i18nKey: "PT_RELATION_HUSBANDWIFE" },
+    // { name: "Other", code: "OTHER", i18nKey: "PT_RELATION_OTHER" },
   ];
 
   useEffect(() => {

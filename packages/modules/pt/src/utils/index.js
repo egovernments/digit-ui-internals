@@ -678,6 +678,16 @@ export const convertToUpdateProperty = (data = {}) => {
   console.info("propertyFormData", data);
   let isResdential = data.isResdential;
   let propertyType = data.PropertyType;
+  let selfOccupied = data.selfOccupied;
+  let Subusagetypeofrentedarea = data.Subusagetypeofrentedarea || null;
+  let subusagetype = data.subusagetype || null;
+  let IsAnyPartOfThisFloorUnOccupied = data.IsAnyPartOfThisFloorUnOccupied || null;
+  let builtUpArea = data?.floordetails?.builtUpArea || null;
+  let noOfFloors = data?.noOfFloors;
+  let noOofBasements = data?.noOofBasements;
+  let unit = data?.units;
+  let basement1 = Array.isArray(data?.units) && data?.units["-1"] ? data?.units["-1"] : null;
+  let basement2 = Array.isArray(data?.units) && data?.units["-2"] ? data?.units["-2"] : null;
   data = setAddressDetails(data);
   data = setUpdateOwnerDetails(data);
   data = setUpdatedDocumentDetails(data);
@@ -705,6 +715,16 @@ export const convertToUpdateProperty = (data = {}) => {
         heightAbove36Feet: false,
         isResdential: isResdential,
         propertyType: propertyType,
+        selfOccupied: selfOccupied,
+        Subusagetypeofrentedarea: Subusagetypeofrentedarea,
+        subusagetype: subusagetype,
+        IsAnyPartOfThisFloorUnOccupied: IsAnyPartOfThisFloorUnOccupied,
+        builtUpArea: builtUpArea,
+        noOfFloors: noOfFloors,
+        noOofBasements: noOofBasements,
+        unit: unit,
+        basement1: basement1,
+        basement2: basement2,
       },
 
       creationReason: !data?.isUpdateProperty ? "CREATE" : "UPDATE",
@@ -726,10 +746,11 @@ export const convertToUpdateProperty = (data = {}) => {
 
   let propertyInitialObject = JSON.parse(sessionStorage.getItem("propertyInitialObject"));
   if (checkArrayLength(propertyInitialObject?.units) && checkIsAnArray(formdata.Property?.units)) {
-    let oldUnits = propertyInitialObject.units.map((unit) => {
-      return { ...unit, active: false };
-    });
-    formdata.Property?.units.push(...oldUnits);
+    propertyInitialObject.units=propertyInitialObject.units.filter(unit=>unit.active);
+    let oldUnits = propertyInitialObject.units.map(unit => {
+      return { ...unit, active: false }
+    })
+    formdata.Property?.units.push(...oldUnits)
   }
 
   if (propertyInitialObject?.auditDetails) {

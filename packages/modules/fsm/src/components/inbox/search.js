@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextInput, Label, SubmitBar, LinkLabel, ActionBar, CloseSvg, DatePicker } from "@egovernments/digit-ui-react-components";
+import { TextInput, Label, SubmitBar, LinkLabel, ActionBar, CloseSvg, DatePicker, CardLabelError } from "@egovernments/digit-ui-react-components";
 import DropdownStatus from "./DropdownStatus";
 import { useTranslation } from "react-i18next";
 
@@ -13,6 +13,7 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
   const { register, handleSubmit, reset, watch, control } = useForm({
     defaultValues: storedSearchParams || searchParams,
   });
+  const [error, setError] = useState(false);
   const mobileView = innerWidth <= 640;
   const FSTP = Digit.UserService.hasAccess("FSM_EMP_FSTPO") || false;
   const watchSearch = watch(["applicationNos", "mobileNumber"]);
@@ -50,6 +51,7 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
 
   const searchValidation = (data) => {
     // console.log("find input", watchSearch, data);
+    watchSearch.applicationNos || watchSearch.mobileNumber ? setError(false) : setError(true);
     return watchSearch.applicationNos || watchSearch.mobileNumber ? true : false;
   };
 
@@ -131,6 +133,7 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
               </span> */}
               {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />}
             </div>
+            {error ? <CardLabelError className="search-error-label">{t("ES_SEARCH_APPLICATION_ERROR")}</CardLabelError> : null}
             {type === "desktop" && !mobileView && <span className="clear-search">{clearAll()}</span>}
           </div>
         </div>

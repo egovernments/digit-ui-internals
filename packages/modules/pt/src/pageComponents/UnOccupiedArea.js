@@ -12,22 +12,6 @@ const UnOccupiedArea = ({ t, config, onSelect, value, userType, formData }) => {
     [UnOccupiedArea, setUnOccupiedArea] = useState(formData?.UnOccupiedArea?.UnOccupiedArea);
   }
 
-  /* useEffect(() => {
-    //let index = window.location.href.charAt(window.location.href.length - 1);
-    let index = window.location.href.split("/").pop();
-    if (userType !== "employee" && formData?.IsAnyPartOfThisFloorUnOccupied?.i18nKey === "PT_COMMON_NO") {
-      //selectPropertyPurpose({i18nKey : "RESIDENTAL"})
-      if (!isNaN(index)) {
-        //let index = window.location.href.charAt(window.location.href.length - 1);
-        let index = window.location.href.split("/").pop();
-        let unit = formData.units && formData.units[index];
-        onSelect(config.key, unit, true, index);
-      } else {
-        onSelect(config.key, {}, true, index);
-      }
-    }
-  }); */
-
   let validation = {};
   const [unitareaerror, setunitareaerror] = useState(null);
   const [areanotzeroerror, setareanotzeroerror] = useState(null);
@@ -40,6 +24,11 @@ const UnOccupiedArea = ({ t, config, onSelect, value, userType, formData }) => {
       let totalarea = parseInt(formData?.units[index]?.floorarea || 0) + parseInt(formData?.units[index]?.RentArea || 0) + parseInt(e.target.value);
       if (parseInt(formData?.units[index]?.builtUpArea) < totalarea) {
         setunitareaerror("PT_TOTUNITAREA_LESS_THAN_BUILTUP_ERR_MSG");
+      } else if (
+        formData?.units[index]?.selfOccupied?.i18nKey === "PT_YES_IT_IS_SELFOCCUPIED" &&
+        parseInt(formData?.units[index]?.builtUpArea) == parseInt(e.target.value)
+      ) {
+        setunitareaerror("PT_BUILTUP_UNOCCUPIED_AREA_NOT_SAME");
       }
     }
     if (
@@ -48,6 +37,12 @@ const UnOccupiedArea = ({ t, config, onSelect, value, userType, formData }) => {
         parseInt(e.target.value) + parseInt(formData?.landarea?.floorarea || "0") + parseInt(formData?.Constructiondetails?.RentArea || "0")
     ) {
       setunitareaerror("PT_TOTUNITAREA_LESS_THAN_BUILTUP_ERR_MSG");
+    } else if (
+      formData?.PropertyType?.code === "BUILTUP.SHAREDPROPERTY" &&
+      formData?.selfOccupied?.i18nKey === "PT_YES_IT_IS_SELFOCCUPIED" &&
+      parseInt(formData?.floordetails?.builtUpArea) == parseInt(e.target.value)
+    ) {
+      setunitareaerror("PT_BUILTUP_UNOCCUPIED_AREA_NOT_SAME");
     }
     if (parseInt(e.target.value) == 0) {
       setareanotzeroerror("PT_AREA_NOT_0_MSG");
