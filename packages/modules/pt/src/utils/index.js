@@ -702,18 +702,30 @@ export const convertToUpdateProperty = (data = {}) => {
       channel: "CITIZEN",
       workflow: !data?.isUpdateProperty
         ? {
-            action: "REOPEN",
-            businessService: "PT.CREATE",
-            moduleName: "PT",
-          }
+          action: "REOPEN",
+          businessService: "PT.CREATE",
+          moduleName: "PT",
+        }
         : {
-            action: "OPEN",
-            businessService: "PT.UPDATE",
-            moduleName: "PT",
-          },
+          action: "OPEN",
+          businessService: "PT.UPDATE",
+          moduleName: "PT",
+        },
     },
   };
-  console.info("propertyCreated", formdata);
+
+  let propertyInitialObject = JSON.parse(sessionStorage.getItem('propertyInitialObject'));
+  if (checkArrayLength(propertyInitialObject?.units) && checkIsAnArray(formdata.Property?.units)) {
+    let oldUnits = propertyInitialObject.units.map(unit => {
+      return { ...unit, active: false }
+    })
+    formdata.Property?.units.push(...oldUnits)
+  }
+  
+  if (propertyInitialObject?.auditDetails) {
+    formdata.Property['auditDetails']={...propertyInitialObject.auditDetails}
+    }
+  console.info("propertyUpdated", formdata);
   return formdata;
 };
 
@@ -800,3 +812,12 @@ export const stringReplaceAll = (str = "", searcher = "", replaceWith = "") => {
   }
   return str;
 };
+
+
+
+export const checkIsAnArray = (obj = []) => {
+  return obj && Array.isArray(obj) ? true : false;
+}
+export const checkArrayLength = (obj = [], length = 0) => {
+  return checkIsAnArray(obj) && obj.length > length ? true : false;
+}

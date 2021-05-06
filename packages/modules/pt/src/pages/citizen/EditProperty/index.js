@@ -14,10 +14,10 @@ const getPropertyEditDetails = (data = {}) => {
 
   if (data?.ownershipCategory === "INSTITUTIONALPRIVATE" || data?.ownershipCategory === "INSTITUTIONALGOVERNMENT") {
     let document = [];
-    if (data?.owners[0]?.documents[0]?.documentType.includes("IDENTITYPROOF")) {
+    if (data?.owners[0]?.documents[0]?.documentType?.includes("IDENTITYPROOF")) {
       data.owners[0].documents[0].documentType = {
-        code: data?.owners[0]?.documents[0].documentType,
-        i18nKey: stringReplaceAll(data?.owners[0]?.documents[0].documentType, ".", "_"),
+        code: data?.owners[0]?.documents[0]?.documentType,
+        i18nKey: stringReplaceAll(data?.owners[0]?.documents[0]?.documentType, ".", "_"),
       };
       document["proofIdentity"] = data?.owners[0]?.documents[0];
     }
@@ -33,12 +33,12 @@ const getPropertyEditDetails = (data = {}) => {
       let document = [];
       owner.documents &&
         owner.documents.map((doc) => {
-          if (doc.documentType && typeof doc.documentType == "string" && doc.documentType.includes("SPECIALCATEGORYPROOF")) {
-            doc.documentType = { code: doc.documentType, i18nKey: stringReplaceAll(doc.documentType, ".", "_") };
+          if (doc?.documentType && typeof doc?.documentType == "string" && doc?.documentType?.includes("SPECIALCATEGORYPROOF")) {
+            doc.documentType = { code: doc?.documentType, i18nKey: stringReplaceAll(doc?.documentType, ".", "_") };
             document["specialProofIdentity"] = doc;
           }
-          if (doc.documentType && typeof doc.documentType == "string" && doc.documentType.includes("IDENTITYPROOF")) {
-            doc.documentType = { code: doc.documentType, i18nKey: stringReplaceAll(doc.documentType, ".", "_") };
+          if (doc?.documentType && typeof doc?.documentType == "string" && doc?.documentType?.includes("IDENTITYPROOF")) {
+            doc.documentType = { code: doc?.documentType, i18nKey: stringReplaceAll(doc?.documentType, ".", "_") };
             document["proofIdentity"] = doc;
           }
         });
@@ -69,8 +69,8 @@ const getPropertyEditDetails = (data = {}) => {
   data.address.pincode = data?.address?.pincode;
   data.address.city = { code: data?.tenantId };
   data.address.locality.i18nkey =  data?.tenantId.replace(".", "_").toUpperCase() + "_" + "REVENUE" + "_" + data?.address?.locality?.code
-  let addressDocs = data?.documents?.filter((doc) => doc.documentType.includes("ADDRESSPROOF"));
-  addressDocs[0].documentType = { code: addressDocs[0].documentType, i18nKey: stringReplaceAll(addressDocs[0].documentType, ".", "_") };
+  let addressDocs = data?.documents?.filter((doc) => doc?.documentType?.includes("ADDRESSPROOF"));
+  addressDocs[0]?.documentType = { code: addressDocs[0]?.documentType, i18nKey: stringReplaceAll(addressDocs[0]?.documentType, ".", "_") };
   if (data?.address?.documents) {
     data.address.documents["ProofOfAddress"] = addressDocs[0];
   } else {
@@ -408,6 +408,7 @@ const EditProperty = ({ parentRoute }) => {
     }
   );
   sessionStorage.setItem("isEditApplication", false);
+
   useEffect(() => {
     application = data?.Properties[0];
     if (data && application) {
@@ -419,6 +420,7 @@ const EditProperty = ({ parentRoute }) => {
         application.isUpdateProperty = false;
         application.isEditProperty = true;
       }
+      sessionStorage.setItem("propertyInitialObject", JSON.stringify({...application}));
       let propertyEditDetails = getPropertyEditDetails(application);
       setParams({ ...params, ...propertyEditDetails });
     }

@@ -25,7 +25,8 @@ export const PTService = {
     Request({
       url: Urls.pt.create,
       data: details,
-      useCache: true,
+      useCache: false,
+      setTimeParam:false,
       userService: true,
       method: "POST",
       params: {},
@@ -36,6 +37,7 @@ export const PTService = {
       url: Urls.pt.update,
       data: details,
       useCache: false,
+      setTimeParam:false,
       userService: true,
       method: "POST",
       params: {},
