@@ -12,7 +12,7 @@ import { shouldHideBackButton } from "../../utils";
 import propertyOwnerHistory from "./MyProperties/propertyOwnerHistory";
 import EditProperty from "./EditProperty";
 
-const hideBackButtonConfig = [{ screenPath: "property/new-application/acknowledgement" }];
+const hideBackButtonConfig = [{ screenPath: "property/new-application/acknowledgement" },{ screenPath: "property/edit-application/acknowledgement" }];
 
 const App = () => {
   const { path, url, ...match } = useRouteMatch();
