@@ -124,7 +124,7 @@ const getAssessmentInfo = (application, t) => {
               ? t("PT_FORM2_TOTAL_ANNUAL_RENT")
               : t("")
             : "",
-        value: (flrno = unit?.floorNo) > -3 ? (t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) === "Rented" ? t(unit?.arv) : t("")) : "",
+        value: (flrno = unit?.floorNo) > -3 ? (t(getPropertyOccupancyTypeLocale(unit?.occupancyType)) === "Rented" ?  unit?.arv&&`₹${t(unit?.arv)}`||'NA' : t("")) : "",
       },
     ];
 
