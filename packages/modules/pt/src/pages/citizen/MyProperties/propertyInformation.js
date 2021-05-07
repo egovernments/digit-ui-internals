@@ -44,6 +44,7 @@ const PropertyInformation = () => {
   const [fetchBillData, updatefetchBillData] = useState({});
 
   const property = data?.Properties[0] || " ";
+  sessionStorage.setItem("pt-property",JSON.stringify(property))
   let docs = [];
   docs = property?.documents;
   let units = [];

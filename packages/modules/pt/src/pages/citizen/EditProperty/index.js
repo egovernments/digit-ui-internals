@@ -401,17 +401,18 @@ const EditProperty = ({ parentRoute }) => {
   const propertyIds = window.location.href.split("/").pop();
   let application = {};
   const typeOfProperty = window.location.href.includes("update=true");
-
-  const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
+  const ptProperty=JSON.parse(sessionStorage.getItem("pt-property"))||{};
+  const data= {Properties:[ptProperty]};
+/* const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
     { filters: typeOfProperty ? { propertyIds } : { acknowledgementIds } },
     {
       filters: typeOfProperty ? { propertyIds } : { acknowledgementIds },
     }
-  );
+  ); */
   sessionStorage.setItem("isEditApplication", false);
 
   useEffect(() => {
-    application = data?.Properties[0];
+    application = data?.Properties&&data.Properties[0]&&data.Properties[0];
     if (data && application) {
       application = data?.Properties[0];
       if (typeOfProperty) {
@@ -425,9 +426,8 @@ const EditProperty = ({ parentRoute }) => {
       let propertyEditDetails = getPropertyEditDetails(application);
       setParams({ ...params, ...propertyEditDetails });
     }
-  }, [data]);
+  }, []);
 
-  // const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_PROPERTY", application);
 
   const goNext = (skipStep, index, isAddMultiple, key) => {
     let currentPath = pathname.split("/").pop(),
@@ -543,6 +543,8 @@ const EditProperty = ({ parentRoute }) => {
   const onSuccess = () => {
     clearParams();
     queryClient.invalidateQueries("PT_CREATE_PROPERTY");
+    sessionStorage.setItem("propertyInitialObject", JSON.stringify({ }));
+    sessionStorage.setItem("pt-property", JSON.stringify({ }));
   };
   newConfig.forEach((obj) => {
     config = config.concat(obj.body.filter((a) => !a.hideInCitizen));

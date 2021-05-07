@@ -18,6 +18,7 @@ const PTApplicationDetails = () => {
   );
 
   const application = data?.Properties[0];
+  sessionStorage.setItem("pt-property",JSON.stringify(application))
   let units = [];
   units = application?.units;
   units &&
@@ -43,6 +44,7 @@ const PTApplicationDetails = () => {
   if (isLoading) {
     return <Loader />;
   }
+  
   let flrno,
     i = 0;
   flrno = units && units[0]?.floorNo;
@@ -89,15 +91,6 @@ const PTApplicationDetails = () => {
             <Row label={t("PT_ASSESMENT1_PLOT_SIZE")} text={(application?.landArea && `${t(`${application?.landArea} sq.ft`)}`) || "NA"} />
             <Row label={t("PT_ASSESMENT_INFO_NO_OF_FLOOR")} text={`${t(application?.noOfFloors)}` || "NA"} />
           </StatusTable>
-          {/* <CardSubHeader>{t("Ground Floor")}</CardSubHeader>
-          <CardSubHeader>{t("Unit 1")}</CardSubHeader>
-          <div style={{ border: "groove" }}>
-            <StatusTable>
-              <Row label={t("PT_ASSESSMENT_UNIT_USAGE_TYPE")} text={`${t(Array.isArray(units) && units[0]?.usageCategory)}` || "NA"} />
-              <Row label={t("PT_OCCUPANY_TYPE_LABEL")} text={`${t(Array.isArray(units) && units[0]?.occupancyType)}` || "NA"} />
-              <Row label={t("PT_BUILTUP_AREA_LABEL")} text={`${t(Array.isArray(units) && units[0]?.constructionDetail?.builtUpArea)}` || "NA"} />
-            </StatusTable>
-          </div> */}
           <div>
             {Array.isArray(units) &&
               units.length > 0 &&

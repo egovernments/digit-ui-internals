@@ -53,6 +53,7 @@ const PTWFApplicationTimeline = (props) => {
     const next = nextActions.map(action => action.action);
     if (next.includes('PAY') || next.includes('EDIT')) {
       let currentIndex = next.indexOf('EDIT') || next.indexOf('PAY');
+      currentIndex=currentIndex!=-1?currentIndex:next.indexOf('PAY');
       nextAction = nextActions[currentIndex];
     }
     switch (nextAction?.action) {
@@ -69,11 +70,11 @@ const PTWFApplicationTimeline = (props) => {
       case "EDIT":
         return (
           <div style={{ marginTop: "24px", position: "fixed", bottom: "0px", width: "100%", marginLeft: "-6%" }}>
-          <Link
+          {businessService!='PT.MUTATION'&&<Link
             to={{ pathname: `/digit-ui/citizen/pt/property/edit-application/edit=true/${props.id}`, state: { tenantId: props.application.tenantId } }}
           >
             <SubmitBar label={t("CS_APPLICATION_DETAILS_EDIT")} />
-          </Link>
+          </Link>}
         </div>
         );
       case "SUBMIT_FEEDBACK":

@@ -54,16 +54,16 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   };
 
   const onSkip = () => onSelect();
-
+// As Ticket RAIN-2619 other option in gender and gaurdian will be enhance , dont uncomment it 
   const options = [
     { name: "Female", value: "FEMALE", code: "FEMALE" },
     { name: "Male", value: "MALE", code: "MALE" },
     { name: "Transgender", value: "TRANSGENDER", code: "TRANSGENDER" },
-    { name: "Other", value: "OTHER", code: "OTHER" },
+    // { name: "Other", value: "OTHER", code: "OTHER" },
   ];
 
   const GuardianOptions = [
-    { name: "Mother", code: "MOTHER", i18nKey: "PT_RELATION_MOTHER" },
+    { name: "HUSBAND", code: "HUSBAND", i18nKey: "PT_RELATION_HUSBAND" },
     { name: "Father", code: "FATHER", i18nKey: "PT_RELATION_FATHER" },
     // { name: "Husband/Wife", code: "HUSBANDWIFE", i18nKey: "PT_RELATION_HUSBANDWIFE" },
     // { name: "Other", code: "OTHER", i18nKey: "PT_RELATION_OTHER" },
