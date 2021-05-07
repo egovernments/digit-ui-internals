@@ -10,14 +10,22 @@ export const PTMyApplications = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
   let filter = window.location.href.split("/").pop();
-  let filter1 =
-    filter === "limit:50" ? { limit: "50", sortOrder: "ASC", sortBy: "createdTime" } : { limit: "4", sortOrder: "ASC", sortBy: "createdTime" };
+  let t1;
+  let off;
+  if (!isNaN(parseInt(filter))) {
+    off = filter;
+    t1 = parseInt(filter) + 50;
+  } else {
+    t1 = 4;
+  }
+  let filter1 = !isNaN(parseInt(filter))
+    ? { limit: "50", sortOrder: "ASC", sortBy: "createdTime", offset: off }
+    : { limit: "4", sortOrder: "ASC", sortBy: "createdTime", offset: "0" };
 
   const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch({ filters: filter1 }, { filters: filter1 });
   if (isLoading) {
     return <Loader />;
   }
-
   const { Properties: applicationsList } = data || {};
 
   return (
@@ -32,13 +40,11 @@ export const PTMyApplications = () => {
           ))}
         {!applicationsList?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PT_NO_APPLICATION_FOUND_MSG")}</p>}
 
-        {filter !== "limit:50" && (
+        {applicationsList?.length !== 0 && (
           <div>
             <p style={{ marginLeft: "16px", marginTop: "16px" }}>
               {t("PT_LOAD_MORE_MSG")}{" "}
-              <span className="link">
-                <Link to="/digit-ui/citizen/pt/property/my-applications/limit:50">{t("PT_COMMON_CLICK_HERE")}</Link>
-              </span>
+              <span className="link">{<Link to={`/digit-ui/citizen/pt/property/my-applications/${t1}`}>{t("PT_COMMON_CLICK_HERE")}</Link>}</span>
             </p>
           </div>
         )}
