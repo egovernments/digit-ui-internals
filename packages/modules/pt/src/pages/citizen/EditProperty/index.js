@@ -7,7 +7,7 @@ import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from 
 import { newConfig } from "../../../config/Create/config";
 import CheckPage from "../Create/CheckPage";
 import PTAcknowledgement from "../Create/PTAcknowledgement";
-import { stringReplaceAll } from "../../../utils";
+import { checkArrayLength, stringReplaceAll } from "../../../utils";
 
 const getPropertyEditDetails = (data = {}) => {
   // converting owners details
@@ -70,7 +70,7 @@ const getPropertyEditDetails = (data = {}) => {
   data.address.city = { code: data?.tenantId };
   data.address.locality.i18nkey = data?.tenantId.replace(".", "_").toUpperCase() + "_" + "REVENUE" + "_" + data?.address?.locality?.code;
   let addressDocs = data?.documents?.filter((doc) => doc?.documentType?.includes("ADDRESSPROOF"));
-  addressDocs[0].documentType = { code: addressDocs[0]?.documentType, i18nKey: stringReplaceAll(addressDocs[0]?.documentType, ".", "_") };
+  if(checkArrayLength(addressDocs)){addressDocs[0].documentType = { code: addressDocs[0]?.documentType, i18nKey: stringReplaceAll(addressDocs[0]?.documentType, ".", "_") };}
   if (data?.address?.documents) {
     data.address.documents["ProofOfAddress"] = addressDocs[0];
   } else {
@@ -400,7 +400,8 @@ const EditProperty = ({ parentRoute }) => {
   const acknowledgementIds = window.location.href.split("/").pop();
   const propertyIds = window.location.href.split("/").pop();
   let application = {};
-  const typeOfProperty = window.location.href.includes("update=true");
+  const updateProperty = window.location.href.includes("action=UPDATE");
+ const typeOfProperty= window.location.href.includes("UPDATE")?true:false
   const ptProperty=JSON.parse(sessionStorage.getItem("pt-property"))||{};
   const data= {Properties:[ptProperty]};
 /* const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
@@ -415,11 +416,11 @@ const EditProperty = ({ parentRoute }) => {
     application = data?.Properties&&data.Properties[0]&&data.Properties[0];
     if (data && application) {
       application = data?.Properties[0];
-      if (typeOfProperty) {
+      if (updateProperty) {
         application.isUpdateProperty = true;
         application.isEditProperty = false;
       } else {
-        application.isUpdateProperty = false;
+        application.isUpdateProperty =  typeOfProperty;
         application.isEditProperty = true;
       }
       sessionStorage.setItem("propertyInitialObject", JSON.stringify({ ...application }));

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FormStep, UploadFile, CardLabelDesc, Dropdown, CardLabel } from "@egovernments/digit-ui-react-components";
+import { CardLabel, CardLabelDesc, Dropdown, FormStep, UploadFile } from "@egovernments/digit-ui-react-components";
+import React, { useEffect, useState } from "react";
 import { stringReplaceAll } from "../utils";
 
 const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData }) => {
@@ -8,7 +8,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
   const [file, setFile] = useState(formData?.owners[index]?.documents?.specialProofIdentity);
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
-
+  const isUpdateProperty = formData?.isUpdateProperty || false;
   const [dropdownValue, setDropdownValue] = useState(formData?.owners[index]?.documents?.specialProofIdentity?.documentType);
   let dropdownData = [];
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -21,6 +21,11 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
     dropdownData.forEach((data) => {
       data.i18nKey = stringReplaceAll(data.code, ".", "_");
     });
+
+    dropdownData = dropdownData?.filter(dropdown => dropdown.parentValue.includes(formData?.owners[index]?.ownerType?.code));
+    if (dropdownData.length == 1 && dropdownValue!=dropdownData[0]) {
+      setTypeOfDropdownValue(dropdownData[0])
+    }
   }
 
   function setTypeOfDropdownValue(dropdownValue) {
@@ -88,6 +93,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData })
         optionKey="i18nKey"
         select={setTypeOfDropdownValue}
         placeholder={t(`PT_MUTATION_SELECT_DOC_LABEL`)}
+        disable={isUpdateProperty}
       />
       <UploadFile
         extraStyleName={"propertyCreate"}
