@@ -4,7 +4,7 @@ import { Dropdown, RadioButtons, ActionBar, RemoveableTag, CloseSvg, CheckBox, L
 import { useTranslation } from "react-i18next";
 
 import Status from "./Status";
-import ServiceCategory from "./ServiceCategoryCount";
+import ServiceCategory from "./ServiceCategory";
 import _ from "lodash";
 
 const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props }) => {
@@ -23,27 +23,6 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
   const clearAll = () => {
     setSearchParams(defaultSearchParams);
     onFilterChange(defaultSearchParams);
-  };
-  const ApplicationTypeMenu = [
-    {
-      label: "ES_PT_NEW_PROPERTY",
-      value: "PT.CREATE",
-    },
-    {
-      label: "ES_PT_TRANSFER_OWNERSHIP",
-      value: "PT.MUTATION",
-    },
-  ];
-
-  const tenantId = Digit.ULBService.getCurrentTenantId();
-
-  const onServiceSelect = (e, label) => {
-    if (e.target.checked) localParamChange({ services: [..._searchParams.services, label] });
-    else localParamChange({ services: _searchParams.services.filter((o) => o !== label) });
-  };
-
-  const selectLocality = (d) => {
-    localParamChange({ locality: [..._searchParams?.locality, d] });
   };
 
   return (
@@ -83,59 +62,13 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
             )}
           </div>
           <div>
-            {/* <RadioButtons
-              onSelect={(d) => localParamChange({ uuid: d })}
-              selectedOption={_searchParams?.uuid}
-              t={t}
-              optionsKey="name"
-              options={[
-                { code: "ASSIGNED_TO_ME", name: "ES_INBOX_ASSIGNED_TO_ME" },
-                { code: "ASSIGNED_TO_ALL", name: "ES_INBOX_ASSIGNED_TO_ALL" },
-              ]}
-            />
-            <div>
-              <div className="filter-label" style={{ fontWeight: "normal" }}>
-                {t("ES_INBOX_LOCALITY")}:
-              </div>
-              <Localities selectLocality={selectLocality} tenantId={tenantId} boundaryType="revenue" />
-              <div className="tag-container">
-                {_searchParams?.locality?.map((locality, index) => {
-                  return (
-                    <RemoveableTag
-                      key={index}
-                      text={locality.name}
-                      onClick={() => {
-                        localParamChange({ locality: _searchParams?.locality.filter((loc) => loc.code !== locality.code) });
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-            <div>
-              <div className="filter-label" style={{ fontWeight: "normal" }}>
-                {t("ES_PT_APP_TYPE")}
-              </div>
-              {ApplicationTypeMenu.map((e, index) => {
-                const checked = _searchParams?.services?.includes(e.value);
-                return (
-                  <CheckBox
-                    key={index + "service"}
-                    label={t(e.label)}
-                    value={e.label}
-                    checked={checked}
-                    onChange={(event) => onServiceSelect(event, e.value)}
-                  />
-                );
-              })}
-            </div> */}
             <div>
               <Status
                 _searchParams={_searchParams}
                 businessServices={_searchParams.services}
                 onAssignmentChange={(e, status) => {
-                  if (e.target.checked) localParamChange({ applicationStatus: [..._searchParams?.applicationStatus, status] });
-                  else localParamChange({ applicationStatus: _searchParams?.applicationStatus.filter((e) => e.code !== status.code) });
+                  if (e.target.checked) localParamChange({ status: [..._searchParams?.status, status?.code] });
+                  else localParamChange({ status: _searchParams?.status.filter((e) => e !== status?.code) });
                 }}
               />
             </div>
@@ -143,13 +76,13 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
               <ServiceCategory
                 _searchParams={_searchParams}
                 businessServices={_searchParams.services}
-                onAssignmentChange={(e, status) => {
-                  if (e.target.checked) localParamChange({ applicationStatus: [..._searchParams?.applicationStatus, status] });
-                  else localParamChange({ applicationStatus: _searchParams?.applicationStatus.filter((e) => e.code !== status.code) });
+                onAssignmentChange={(e, businessService) => {
+                  if (e.target.checked) localParamChange({ businessService: [..._searchParams?.businessService, businessService?.code] });
+                  else localParamChange({ businessService: _searchParams?.businessService.filter((e) => e !== businessService?.code) });
                 }}
               />
             </div>
-
+            
             <div>
               <SubmitBar
                 disabled={_.isEqual(_searchParams, searchParams)}

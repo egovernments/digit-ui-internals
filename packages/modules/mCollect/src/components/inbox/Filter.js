@@ -9,13 +9,12 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
   const { t } = useTranslation();
 
   const onStatusChange = (e, type) => {
-    debugger;
-    if (e.target.checked) onFilterChange({ applicationStatus: [...searchParams?.applicationStatus, type] });
-    else onFilterChange({ applicationStatus: searchParams?.applicationStatus.filter((option) => type.name !== option.name) });
+    if (e.target.checked) onFilterChange({ status: [...searchParams?.status, type] });
+    else onFilterChange({ status: searchParams?.status.filter((option) => type.name !== option.name) });
   };
 
   const clearAll = () => {
-    onFilterChange({ applicationStatus: [] });
+    onFilterChange({ status: [] });
     props?.onClose?.();
   };
 

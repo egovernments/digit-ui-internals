@@ -5,17 +5,13 @@ import StatusCount from "./StatusCount";
 
 const Status = ({ onAssignmentChange, searchParams, businessServices }) => {
   const { t } = useTranslation();
-
-  const [moreStatus, showMoreStatus] = useState(false);
-
-  const { data: statusData, isLoading } = Digit.Hooks.useApplicationStatusGeneral({ businessServices }, {});
-
-  const { userRoleStates, otherRoleStates } = statusData || {};
-
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const stateId = tenantId.split(".")[0];
+  const { data, isLoading } = Digit.Hooks.mcollect.useMCollectMDMS(stateId, "mCollect", "applcationStatus");
+  const applicationStatus = data?.mCollect?.applcationStatus || [];
   const translateState = (state) => {
-    return `ES_PT_STATUS_${state.state || "CREATED"}`;
+    return `${state.code || "ACTIVE"}`;
   };
-
   if (isLoading) {
     return <Loader />;
   }
@@ -25,33 +21,16 @@ const Status = ({ onAssignmentChange, searchParams, businessServices }) => {
       <div className="filter-label" style={{ fontWeight: "normal" }}>
         {t("ES_INBOX_STATUS")}
       </div>
-      {userRoleStates?.map((option, index) => {
+      {applicationStatus?.map((option, index) => {
         return (
           <StatusCount
-            businessServices={businessServices}
             key={index}
             onAssignmentChange={onAssignmentChange}
-            status={{ name: translateState(option), code: option.applicationStatus }}
+            status={{ name: translateState(option), code: option.code }}
             searchParams={searchParams}
           />
-        );
+        )
       })}
-      {moreStatus &&
-        otherRoleStates?.map((option, index) => {
-          return (
-            <StatusCount
-              businessServices={businessServices}
-              key={index}
-              onAssignmentChange={onAssignmentChange}
-              status={{ name: translateState(option), code: option.applicationStatus }}
-              searchParams={searchParams}
-            />
-          );
-        })}
-      <div className="filter-button" onClick={() => showMoreStatus(!moreStatus)}>
-        {" "}
-        {moreStatus ? t("ES_COMMON_LESS") : t("ES_COMMON_MORE")}{" "}
-      </div>
     </div>
   );
 };

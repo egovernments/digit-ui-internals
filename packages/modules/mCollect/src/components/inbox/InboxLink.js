@@ -33,9 +33,9 @@ const InboxLinks = ({ parentRoute, businessService }) => {
 
   useEffect(() => {
     let linksToShow = allLinks
-      .filter((e) => e.businessService === businessService)
-      .filter(({ roles }) => roles.some((e) => userRoles.map(({ code }) => code).includes(e)) || !roles.length);
-    console.log(linksToShow, "inside the links");
+      // .filter((e) => e.businessService === businessService)
+      // .filter(({ roles }) => roles.some((e) => userRoles.map(({ code }) => code).includes(e)) || !roles.length);
+    // console.log(linksToShow, "inside the links");
     setLinks(linksToShow);
   }, []);
 
@@ -44,7 +44,7 @@ const InboxLinks = ({ parentRoute, businessService }) => {
       <span className="logo">
         <PropertyHouse />
       </span>{" "}
-      <span className="text">{t("ES_TITLE_PROPERTY_TAX")}</span>
+      <span className="text">{t("mCollect")}</span>
     </div>
   );
 
