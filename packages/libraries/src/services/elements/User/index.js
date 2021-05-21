@@ -13,7 +13,7 @@ export const UserService = {
       url: Urls.Authenticate,
       data,
       headers: {
-        authorization: "Basic ZWdvdi11c2VyLWNsaWVudDplZ292LXVzZXItc2VjcmV0",
+        authorization: "Basic ZWdvdi11c2VyLWNsaWVudDo=",
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
