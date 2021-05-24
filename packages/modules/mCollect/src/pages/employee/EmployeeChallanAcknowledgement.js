@@ -5,28 +5,33 @@ import { useTranslation } from "react-i18next";
 import * as func from "./Utils/getQueryParams";
 import { downloadAndPrintChallan } from "../../utils";
 
-
 const MCollectAcknowledgement = () => {
   const location = useLocation();
   const [params, setParams] = useState({});
+  const { isEdit } = Digit.Hooks.useQueryParams();
   useEffect(() => {
     // console.log(location.pathname); // result: '/secondpage'
     setParams(func.getQueryStringParams(location.search)); // result: '?query=abc'
     // console.log(location); // result: 'some_value'
   }, [location]);
   const { t } = useTranslation();
-  function proceedToPayment() { }
+  function proceedToPayment() {}
 
-const printReciept = async () => {
+  const printReciept = async () => {
     const challanNo = params?.challanNumber;
     downloadAndPrintChallan(challanNo, "print");
-}
+  };
 
   return (
     <div>
-      {params?.applicationStatus === "CANCELLED" ?
+      {params?.applicationStatus === "CANCELLED" ? (
         <Card>
-          <Banner message={t("UC_BILL_CANCELLED_SUCCESS_MESSAGE")} applicationNumber={params?.challanNumber} info={t("UC_CHALLAN_NO")} successful={true} />
+          <Banner
+            message={t("UC_BILL_CANCELLED_SUCCESS_MESSAGE")}
+            applicationNumber={params?.challanNumber}
+            info={t("UC_CHALLAN_NO")}
+            successful={true}
+          />
           <CardText>{t("UC_BILL_CANCELLED_SUCCESS_SUB_MESSAGE")}</CardText>
           {"generatePdfKey" ? (
             <div className="primary-label-btn d-grid" style={{ marginLeft: "unset" }} onClick={printReciept}>
@@ -37,24 +42,30 @@ const printReciept = async () => {
               {t("CS_COMMON_PRINT_RECEIPT")}
             </div>
           ) : null}
-          <ActionBar style={{display: "flex", justifyContent: "flex-end", alignItems: "baseline",}}>
+          <ActionBar style={{ display: "flex", justifyContent: "flex-end", alignItems: "baseline" }}>
             <Link to={`/digit-ui/employee`} style={{ marginRight: "1rem" }}>
               <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
             </Link>
           </ActionBar>
-        </Card> :
+        </Card>
+      ) : (
         <Card>
-          <Banner message={t("UC_BILL_GENERATED_SUCCESS_MESSAGE")} applicationNumber={params.billNumber} info={t("UC_BILL_NO_LABEL")} successful={true} />
+          <Banner
+            message={!isEdit ? t("UC_BILL_GENERATED_SUCCESS_MESSAGE") : t("UC_BILL_UPDATED_SUCCESS_MESSAGE")}
+            applicationNumber={params.billNumber}
+            info={t("UC_BILL_NO_LABEL")}
+            successful={true}
+          />
           <CardText>{t("UC_BILL_GENERATION_MESSAGE_SUB")}</CardText>
-          <ActionBar style={{ display: "flex", justifyContent: "flex-end", alignItems: "baseline",}}>
+          <ActionBar style={{ display: "flex", justifyContent: "flex-end", alignItems: "baseline" }}>
             <Link to={`/digit-ui/employee`} style={{ marginRight: "1rem" }}>
               <LinkButton label={t("CORE_COMMON_GO_TO_HOME")} />
             </Link>
-            <SubmitBar label={t("UC_BUTTON_PAY")} onClick={proceedToPayment} />
+            {!isEdit && <SubmitBar label={t("UC_BUTTON_PAY")} onClick={proceedToPayment} />}
           </ActionBar>
-        </Card>}
+        </Card>
+      )}
     </div>
-
   );
 };
 export default MCollectAcknowledgement;

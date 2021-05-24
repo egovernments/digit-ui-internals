@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Dropdown, DatePicker } from "@egovernments/digit-ui-react-components";
+import { Dropdown, DatePicker, Toast } from "@egovernments/digit-ui-react-components";
 import * as func from "./Utils/Category";
 import { FormComposer } from "../../components/FormComposer";
 import { useParams, useHistory, useRouteMatch } from "react-router-dom";
-const CreateChallen = ({ parentUrl }) => {
+const CreateChallen = ({ ChallanData }) => {
+  //console.log(ChallanData);
+  const childRef = useRef();
   const history = useHistory();
   const { url } = useRouteMatch();
-  const childRef = useRef();
+  let defaultval;
+  let isEdit = false;
+  //console.log(url);
+  if (url.includes("modify-challan")) {
+    isEdit = true;
+  }
+
+  const { data: fetchBillData } = ChallanData
+    ? Digit.Hooks.useFetchBillsForBuissnessService({
+        businessService: ChallanData[0].businessService,
+        consumerCode: ChallanData[0].challanNo,
+      })
+    : {};
+  //console.log(fetchBillData);
+
   const cities = Digit.Hooks.mcollect.usemcollectTenants();
   const getCities = () => cities?.filter((e) => e.code === Digit.ULBService.getCurrentTenantId()) || [];
   const { t } = useTranslation();
@@ -53,6 +69,7 @@ const CreateChallen = ({ parentUrl }) => {
     }
     return frags.join("_");
   }
+  const [showToast, setShowToast] = useState(null);
   const [canSubmit, setSubmitValve] = useState(true);
   const [localities, setLocalities] = useState(fetchedLocalities);
   const [categoires, setAPIcategories] = useState([]);
@@ -73,21 +90,92 @@ const CreateChallen = ({ parentUrl }) => {
     return;
   };
 
+  if (isEdit == true && fetchBillData && ChallanData[0]) {
+    defaultval = {
+      name: fetchBillData.Bill[0].payerName,
+      mobileNumber: fetchBillData.Bill[0].mobileNumber,
+      doorNo: ChallanData[0].address.doorNo,
+      buildingName: ChallanData[0].address.buildingName,
+      street: ChallanData[0].address.street,
+      pincode: ChallanData[0].address.pincode,
+      //Mohalla : ChallanData[0].address.locality,
+      ADVT_HOARDINGS_CGST: "10",
+      comments: ChallanData[0].description,
+    };
+    if (fetchBillData.Bill[0].billDetails[0].billAccountDetails.length > 0) {
+      fetchBillData.Bill[0].billDetails[0].billAccountDetails.map(
+        (ele) => (defaultval[`${ele.taxHeadCode.replaceAll(".", "_").toUpperCase()}`] = `${ele.amount}`)
+      );
+    }
+  }
+  //console.log(defaultval);
+
+  useEffect(() => {
+    if (isEdit && ChallanData[0] && fetchBillData) {
+      let setlocalit =
+        localities &&
+        localities.filter((el) => {
+          return el["code"] == ChallanData[0].address.locality.code;
+        });
+      localities && setSelectedLocality(setlocalit[0]);
+      let setcategory = categoires.filter((el) => {
+        return el["code"] == ChallanData[0].businessService.split(".")[0];
+      });
+      setSelectedcategories(setcategory[0]);
+      let setcategorytype = categoiresType.filter((el) => {
+        return el["code"] == `BILLINGSERVICE_BUSINESSSERVICE_${ChallanData[0].businessService.replaceAll(".", "_").toUpperCase()}`;
+      });
+      //setselectedCategoryType({businessService: "Advertisement Tax.Hoardings", code: "BILLINGSERVICE_BUSINESSSERVICE_ADVT_HOARDINGS", collectionModesNotAllowed: Array(1), partPaymentAllowed: false, isAdvanceAllowed: false, isVoucherCreationEnabled: false,partPaymentAllowed: false,type: "Adhoc"});
+      setselectedCategoryType(setcategorytype[0]);
+    }
+  }, [fetchBillData, ChallanData, categoires]);
+
+  useEffect(() => {
+    if (isEdit && ChallanData[0] && fetchBillData) {
+      //console.log(categoiresType);
+      let setcategorytype = categoiresType.filter((el) => {
+        return el["code"] == `BILLINGSERVICE_BUSINESSSERVICE_${ChallanData[0].businessService.replaceAll(".", "_").toUpperCase()}`;
+      });
+      //setselectedCategoryType({businessService: "Advertisement Tax.Hoardings", code: "BILLINGSERVICE_BUSINESSSERVICE_ADVT_HOARDINGS", collectionModesNotAllowed: Array(1), partPaymentAllowed: false, isAdvanceAllowed: false, isVoucherCreationEnabled: false,partPaymentAllowed: false,type: "Adhoc"});
+      setselectedCategoryType(setcategorytype[0]);
+    }
+  }, [categoiresType]);
+
+  useEffect(() => {
+    if (isEdit && ChallanData[0] && fetchBillData && !fromDate && !toDate) {
+      let fromdate = ChallanData[0]
+        ? new Date(ChallanData[0].taxPeriodFrom).getFullYear().toString() +
+          "-" +
+          new Date(ChallanData[0].taxPeriodFrom).getMonth() +
+          "-" +
+          new Date(ChallanData[0].taxPeriodFrom).getDate()
+        : null;
+      ChallanData[0] && setFromDate(fromdate);
+      let todate = ChallanData[0]
+        ? new Date(ChallanData[0].taxPeriodTo).getFullYear().toString() +
+          "-" +
+          new Date(ChallanData[0].taxPeriodTo).getMonth().toString() +
+          "-" +
+          new Date(ChallanData[0].taxPeriodTo).getDate()
+        : null;
+      ChallanData[0] && setToDate(todate);
+    }
+  });
+
   useEffect(() => {
     setAPIcategoriesType(
       selectedCategory?.child
         ? selectedCategory.child.map((ele) => {
-            ele.code = ele.code.includes("BILLINGSERVICE_BUSINESSSERVICE_")
-              ? ele.code
-              : "BILLINGSERVICE_BUSINESSSERVICE_" + ele.code.split(".").join("_").toUpperCase();
+            ele.code = "BILLINGSERVICE_BUSINESSSERVICE_" + ele.code.split(".").join("_").toUpperCase();
             return ele;
           })
         : []
     );
-    setselectedCategoryType(null);
+    //setselectedCategoryType(null);
   }, [selectedCategory]);
 
   useEffect(() => {
+    //childRef.current.setValues({});
     setTaxHeadMasterFields(
       TaxHeadMaster.filter((ele) => {
         return (
@@ -139,46 +227,106 @@ const CreateChallen = ({ parentUrl }) => {
     TaxHeadMasterFields.map((ele) => {
       return { taxHeadCode: ele.code, amount: data[ele] };
     });
-    const Challan = {
-      citizen: {
+    let Challan = {};
+    if (!isEdit) {
+      Challan = {
+        citizen: {
+          name: data.name,
+          mobileNumber: data.mobileNumber,
+        },
+        businessService: selectedCategoryType
+          ? selectedCategory.code + "." + humanize(selectedCategoryType.code.split(selectedCategory.code + "_")[1].toLowerCase())
+          : "",
+        consumerType: selectedCategory.code,
+        description: data.comments,
+        taxPeriodFrom: Date.parse(fromDate),
+        taxPeriodTo: Date.parse(toDate),
+        tenantId: tenantId,
+        address: {
+          buildingName: data.buildingName,
+          doorNo: data.doorNo,
+          street: data.street,
+          locality: { code: selectedLocality.code },
+        },
+        amount: TaxHeadMasterFields.map((ele) => {
+          return {
+            taxHeadCode: ele.code,
+            amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : undefined,
+          };
+        }),
+      };
+    } else {
+      Challan = {
+        /* citizen: {
         name: data.name,
         mobileNumber: data.mobileNumber,
-      },
-      businessService: selectedCategoryType
+      }, */
+        accountId: ChallanData[0].accountId,
+        citizen: ChallanData[0].citizen,
+        applicationStatus: ChallanData[0].applicationStatus,
+        auditDetails: ChallanData[0].auditDetails,
+        id: ChallanData[0].id,
+        /* businessService: selectedCategoryType
         ? selectedCategory.code + "." + humanize(selectedCategoryType.code.split(selectedCategory.code + "_")[1].toLowerCase())
-        : "",
-      consumerType: selectedCategory.code,
-      description: data.comments,
-      taxPeriodFrom: Date.parse(fromDate),
-      taxPeriodTo: Date.parse(toDate),
-      tenantId: tenantId,
-      address: {
+        : "", */
+        businessService: ChallanData[0].businessService,
+        challanNo: ChallanData[0].challanNo,
+        consumerType: selectedCategory.code,
+        description: data.comments,
+        taxPeriodFrom: Date.parse(fromDate),
+        taxPeriodTo: Date.parse(toDate),
+        tenantId: tenantId,
+        /* address: {
         buildingName: data.buildingName,
         doorNo: data.doorNo,
         street: data.street,
         locality: { code: selectedLocality.code },
-      },
-      amount: TaxHeadMasterFields.map((ele) => {
-        return {
-          taxHeadCode: ele.code,
-          amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : undefined,
-        };
-      }),
-    };
+      }, */
+        address: ChallanData[0].address,
+        amount: TaxHeadMasterFields.map((ele) => {
+          return {
+            taxHeadCode: ele.code,
+            amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : undefined,
+          };
+        }),
+      };
+    }
     console.log(Challan);
-    Digit.MCollectService.create({ Challan: Challan }, tenantId).then((result) => {
-      if (result.challans && result.challans.length > 0) {
-        const challan = result.challans[0];
-        Digit.MCollectService.generateBill(challan.challanNo, tenantId, challan.businessService, "challan").then((response) => {
-          if (response.Bill && response.Bill.length > 0) {
-            history.push(
-              `/digit-ui/employee/mcollect/acknowledgement?purpose=challan&status=success&tenantId=${tenantId}&billNumber=${response.Bill[0].billNumber}&serviceCategory=${response.Bill[0].businessService}&challanNumber=${response.Bill[0].consumerCode}`,
-              { from: url }
-            );
+    if (isEdit) {
+      Digit.MCollectService.update({ Challan: Challan }, tenantId).then((result) => {
+        if (result.challans && result.challans.length > 0) {
+          const challan = result.challans[0];
+          Digit.MCollectService.generateBill(challan.challanNo, tenantId, challan.businessService, "challan").then((response) => {
+            if (response.Bill && response.Bill.length > 0) {
+              history.push(
+                `/digit-ui/employee/mcollect/acknowledgement?purpose=challan&status=success&tenantId=${tenantId}&billNumber=${
+                  response.Bill[0].billNumber
+                }&serviceCategory=${response.Bill[0].businessService}&challanNumber=${response.Bill[0].consumerCode}&isEdit=${true}`,
+                { from: url }
+              );
+            }
+          });
+        }
+      });
+    } else {
+      try {
+        Digit.MCollectService.create({ Challan: Challan }, tenantId).then((result) => {
+          if (result.challans && result.challans.length > 0) {
+            const challan = result.challans[0];
+            Digit.MCollectService.generateBill(challan.challanNo, tenantId, challan.businessService, "challan").then((response) => {
+              if (response.Bill && response.Bill.length > 0) {
+                history.push(
+                  `/digit-ui/employee/mcollect/acknowledgement?purpose=challan&status=success&tenantId=${tenantId}&billNumber=${response.Bill[0].billNumber}&serviceCategory=${response.Bill[0].businessService}&challanNumber=${response.Bill[0].consumerCode}`,
+                  { from: url }
+                );
+              }
+            });
           }
         });
+      } catch (e) {
+        setShowToast({ key: true, label: e?.response?.data?.Errors[0].message });
       }
-    });
+    }
   };
 
   function setconfig() {
@@ -190,8 +338,10 @@ const CreateChallen = ({ parentUrl }) => {
             label: t("UC_CONS_NAME_LABEL"),
             isMandatory: true,
             type: "text",
+            //isDisabled : {isEdit},
             populators: {
               name: "name",
+              disable: isEdit,
               validation: {
                 required: true,
                 pattern: /^[A-Za-z]/,
@@ -205,6 +355,7 @@ const CreateChallen = ({ parentUrl }) => {
             type: "text",
             populators: {
               name: "mobileNumber",
+              disable: isEdit,
               validation: {
                 required: true,
                 pattern: /^[6-9]\d{9}$/,
@@ -218,6 +369,7 @@ const CreateChallen = ({ parentUrl }) => {
             type: "text",
             populators: {
               name: "doorNo",
+              disable: isEdit,
             },
           },
           {
@@ -225,6 +377,7 @@ const CreateChallen = ({ parentUrl }) => {
             type: "text",
             populators: {
               name: "buildingName",
+              disable: isEdit,
             },
           },
           {
@@ -232,6 +385,7 @@ const CreateChallen = ({ parentUrl }) => {
             type: "text",
             populators: {
               name: "street",
+              disable: isEdit,
             },
           },
           {
@@ -239,6 +393,7 @@ const CreateChallen = ({ parentUrl }) => {
             type: "text",
             populators: {
               name: "pincode",
+              disable: isEdit,
               validation: { pattern: /^[1-9][0-9]{5}$/, validate: isPincodeValid },
               error: t("CORE_COMMON_PINCODE_INVALID"),
               onChange: handlePincode,
@@ -251,7 +406,16 @@ const CreateChallen = ({ parentUrl }) => {
             name: "Mohalla",
             dependency: localities ? true : false,
             populators: (
-              <Dropdown isMandatory selected={selectedLocality} optionKey="i18nkey" id="locality" option={localities} select={selectLocality} t={t} />
+              <Dropdown
+                isMandatory
+                selected={selectedLocality}
+                disable={isEdit}
+                optionKey="i18nkey"
+                id="locality"
+                option={localities}
+                select={selectLocality}
+                t={t}
+              />
             ),
           },
         ],
@@ -288,6 +452,7 @@ const CreateChallen = ({ parentUrl }) => {
                 isMandatory
                 selected={selectedCategory}
                 optionKey="code"
+                disable={isEdit}
                 id="businessService"
                 option={categoires}
                 select={setcategories}
@@ -305,6 +470,7 @@ const CreateChallen = ({ parentUrl }) => {
               <Dropdown
                 isMandatory
                 selected={selectedCategoryType}
+                disable={isEdit}
                 optionKey="code"
                 id="businessService"
                 option={categoiresType}
@@ -318,7 +484,14 @@ const CreateChallen = ({ parentUrl }) => {
             type: "date",
             name: "fromDate",
             isMandatory: true,
-            populators: <DatePicker date={fromDate ? fromDate : ""} onChange={setFromDate} />,
+            populators: (
+              <DatePicker
+                date={fromDate ? fromDate : ""}
+                onChange={
+                  setFromDate
+                } /* defaultValue={ChallanData ? new Date(ChallanData[0].taxPeriodFrom).getFullYear().toString()+"/"+ new Date(ChallanData[0].taxPeriodFrom).getMonth().toString()+"/"+new Date(ChallanData[0].taxPeriodFrom).getDate() : null} */
+              />
+            ),
           },
           {
             label: t("UC_TO_DATE_LABEL"),
@@ -327,7 +500,7 @@ const CreateChallen = ({ parentUrl }) => {
             disable: fromDate == "" ? true : false,
             isMandatory: true,
             dependency: fromDate ? true : false,
-            populators: <DatePicker date={toDate ? toDate : ""} min={fromDate} onChange={ChangesetToDate} />,
+            populators: <DatePicker date={toDate ? toDate : ""} min={fromDate} onChange={ChangesetToDate} /* defaultValue="2021-05-30" */ />,
           },
           {
             label: t("UC_COMMENT_LABEL"),
@@ -360,12 +533,26 @@ const CreateChallen = ({ parentUrl }) => {
           tempConfig[1].body = [...tempConfig[1].body, ...temp];
         }
       }
+      //console.log(tempConfig);
       return tempConfig;
     } else {
       return config;
     }
   }
 
-  return <FormComposer heading={t("UC_COMMON_HEADER")} config={setconfig()} onSubmit={onSubmit} isDisabled={!canSubmit} label={t("UC_ECHALLAN")} />;
+  return (
+    <div>
+      <FormComposer
+        ref={childRef}
+        heading={t("UC_COMMON_HEADER")}
+        config={setconfig()}
+        onSubmit={onSubmit}
+        setFormData={defaultval}
+        isDisabled={!canSubmit}
+        label={isEdit ? t("UC_UPDATE_CHALLAN") : t("UC_ECHALLAN")}
+      />
+      {showToast && <Toast error={showToast.key} label={t(showToast.label)} />}
+    </div>
+  );
 };
 export default CreateChallen;
