@@ -72,7 +72,7 @@ const Urls = {
     search_bill_pt: "/egov-searcher/bill-genie/billswithaddranduser/_get",
     update: "/echallan-services/eChallan/v1/_update",
     download_pdf: "/egov-pdf/download/UC/mcollect-challan",
-    receipt_download: "/egov-pdf/download/PAYMENT/consolidatedreceipt"
+    receipt_download: "/egov-pdf/download/PAYMENT/consolidatedreceipt",
   },
 };
 

@@ -28,19 +28,19 @@ const ActionModal = ({ t, action, tenantId, closeModal, submitAction, applicatio
 
   function submit(data) {
     let bdata = [];
-    billData?.map(bill => {
+    billData?.map((bill) => {
       bdata.push({
         taxHeadCode: bill?.taxHeadCode,
-        amount: bill?.amount
-      })
-    })
+        amount: bill?.amount,
+      });
+    });
     debugger;
     submitAction({
       Challan: {
         ...applicationData,
         applicationStatus: "CANCELLED",
-        amount: bdata
-      }
+        amount: bdata,
+      },
     });
   }
   useEffect(() => {
@@ -49,7 +49,7 @@ const ActionModal = ({ t, action, tenantId, closeModal, submitAction, applicatio
         return setConfig(
           configMCollectRejectApplication({
             t,
-            action
+            action,
           })
         );
       default:
@@ -66,7 +66,7 @@ const ActionModal = ({ t, action, tenantId, closeModal, submitAction, applicatio
       actionCancelLabel={t(config.label.cancel)}
       actionCancelOnSubmit={closeModal}
       actionSaveLabel={t(config.label.submit)}
-      actionSaveOnSubmit={() => { }}
+      actionSaveOnSubmit={() => {}}
       formId="modal-action"
     >
       <FormComposer

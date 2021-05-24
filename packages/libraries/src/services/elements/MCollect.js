@@ -47,7 +47,7 @@ export const MCollectService = {
       data: details,
       useCache: true,
       method: "POST",
-      params: { tenantId },
+      //params: { tenantId },
       auth: true,
       userService: true,
     }),
@@ -60,7 +60,7 @@ export const MCollectService = {
       params: { challanNo, tenantId },
       auth: true,
       userService: true,
-      userDownload: true
+      userDownload: true,
     }),
   receipt_download: (bussinessService, consumerCode, tenantId) =>
     Request({
@@ -71,6 +71,6 @@ export const MCollectService = {
       params: { bussinessService, consumerCode, tenantId },
       auth: true,
       userService: true,
-      userDownload: true
+      userDownload: true,
     }),
 };

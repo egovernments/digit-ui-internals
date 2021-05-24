@@ -32,9 +32,9 @@ const InboxLinks = ({ parentRoute, businessService }) => {
   const { roles: userRoles } = Digit.UserService.getUser().info;
 
   useEffect(() => {
-    let linksToShow = allLinks
-      // .filter((e) => e.businessService === businessService)
-      // .filter(({ roles }) => roles.some((e) => userRoles.map(({ code }) => code).includes(e)) || !roles.length);
+    let linksToShow = allLinks;
+    // .filter((e) => e.businessService === businessService)
+    // .filter(({ roles }) => roles.some((e) => userRoles.map(({ code }) => code).includes(e)) || !roles.length);
     // console.log(linksToShow, "inside the links");
     setLinks(linksToShow);
   }, []);

@@ -16,7 +16,7 @@ export const configMCollectRejectApplication = ({ t, action }) => {
             populators: {
               name: "comments",
             },
-          }
+          },
         ],
       },
     ],
