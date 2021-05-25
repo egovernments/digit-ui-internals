@@ -8,7 +8,7 @@ const ChangeLanguage = (prop) => {
   console.log({ isDropdown });
   const commonState = useSelector((state) => state.common);
   const { languages, selectedLanguage, stateInfo } = commonState;
-  const [selected, setselected] = useState(selectedLanguage);
+  const [selected, setselected] = useState(Digit.SessionStorage.get("locale") || selectedLanguage);
   const handleChangeLanguage = (language) => {
     console.log("changing language", language);
     setselected(language.value);

@@ -16,6 +16,25 @@ pdfMake.fonts = {
   },
 };
 
+const downloadPDFFileUsingBase64 = (receiptPDF, filename) => {
+  if (
+    window &&
+    window.mSewaApp &&
+    window.mSewaApp.isMsewaApp &&
+    window.mSewaApp.isMsewaApp() &&
+    window.mSewaApp.downloadBase64File &&
+    window.Digit.Utils.browser.isMobile()
+  ) {
+    // we are running under webview
+    receiptPDF.getBase64((data) => {
+      window.mSewaApp.downloadBase64File(data, filename);
+    });
+  } else {
+    // we are running in browser
+    receiptPDF.download(filename);
+  }
+};
+
 function getBase64Image(tenantId) {
   try {
     const img = document.getElementById(`logo-${tenantId}`);
@@ -119,7 +138,8 @@ const jsPdfGenerator = async ({ tenantId, logo, name, email, phoneNumber, headin
       font: "Hind",
     },
   };
-  pdfMake.createPdf(dd).download();
+  const generatedPDF = pdfMake.createPdf(dd);
+  downloadPDFFileUsingBase64(generatedPDF, "acknowledgement.pdf");
 };
 
 export default { generate: jsPdfGenerator };
