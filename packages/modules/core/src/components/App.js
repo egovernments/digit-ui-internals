@@ -1,14 +1,11 @@
+import { Dropdown, LogoutIcon, TopBar as TopBarComponent } from "@egovernments/digit-ui-react-components";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, Redirect, Route, Switch, useHistory } from "react-router-dom";
-import { TopBar as TopBarComponent, Dropdown, LogoutIcon, HomeIcon, Hamburger } from "@egovernments/digit-ui-react-components";
-import ChangeLanguage from "./ChangeLanguage";
 import { useSelector } from "react-redux";
+import { Link, Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { AppModules } from "./AppModules";
+import ChangeLanguage from "./ChangeLanguage";
 import { CitizenSidebar } from "./Sidebar";
-import { useLocation } from "react-router-dom";
-import { digitImg } from "../Images/digit";
-import { powered } from "../Images/powered";
 
 const TextToImg = (props) => (
   <span className="user-img-txt" onClick={props.toggleMenu} title={props.name}>
@@ -43,7 +40,7 @@ export const DigitApp = ({ stateCode, modules, appTenants, logoUrl }) => {
   const mobileView = innerWidth <= 640;
 
   const sideBarOpenStyles = { width: "100%", position: "fixed" };
-
+  let sourceUrl = `${window.location.origin}/citizen`;
   return (
     <Switch>
       <Route path="/digit-ui/employee">
@@ -63,8 +60,9 @@ export const DigitApp = ({ stateCode, modules, appTenants, logoUrl }) => {
               <AppModules stateCode={stateCode} userType="employee" modules={modules} appTenants={appTenants} />
             </div>
             <div class="employee-home-footer">
-              <img src={powered} />
-              <img src={digitImg} />
+              <img src={`${sourceUrl}/digit-footer.png`} style={{ height: '1.1em', cursor: 'pointer' }} onClick={() => {
+                window.open('https://www.digit.org/', '_blank').focus();
+              }} />
             </div>
           </div>
         </div>
@@ -84,8 +82,9 @@ export const DigitApp = ({ stateCode, modules, appTenants, logoUrl }) => {
           <div className={`main center-container mb-50`}>
             <AppModules stateCode={stateCode} userType="citizen" modules={modules} appTenants={appTenants} />
             <div class="citizen-home-footer">
-              <img src={powered} />
-              <img src={digitImg} />
+              <img src={`${sourceUrl}/digit-footer.png`} style={{ height: '1.2em', cursor: 'pointer' }} onClick={() => {
+                window.open('https://www.digit.org/', '_blank').focus();
+              }} />
             </div>
           </div>
         </div>
