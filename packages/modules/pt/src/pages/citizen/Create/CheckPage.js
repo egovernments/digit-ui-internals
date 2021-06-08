@@ -531,6 +531,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
         <CheckBox
           label={t("PT_FINAL_DECLARATION_MESSAGE")}
           onChange={setdeclarationhandler}
+          styles={{height:"auto"}}
           //disabled={!agree}
         />
       </div>
