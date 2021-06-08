@@ -166,7 +166,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
 
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!ownershipCategory}>
-      <div style={cardBodyStyle}>
+      <div >
         <RadioButtons
           isMandatory={config.isMandatory}
           options={getDropdwonForProperty(ownerShipdropDown) || []}

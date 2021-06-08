@@ -92,7 +92,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
       onSelect={goNext}
       isDisabled={!inistitutionName || !inistitutetype || !name || !designation || !mobileNumber || !altContactNumber}
     >
-      <div style={cardBodyStyle}>
+      <div >
         <CardLabel>{`${t("PT_COMMON_INSTITUTION_NAME")}`}</CardLabel>
         <TextInput
           isMandatory={false}

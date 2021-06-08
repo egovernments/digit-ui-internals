@@ -101,7 +101,7 @@ const PropertyInformation = () => {
   return (
     <React.Fragment>
       <Header>{t("PT_PROPERTY_INFORMATION")}</Header>
-      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 12em)" }}>
+      <div >
         <Card>
           <StatusTable>
             <Row label={t("PT_PROPERTY_PTUID")} text={`${property.propertyId || "NA"}`} textStyle={{ whiteSpace: "pre" }} />

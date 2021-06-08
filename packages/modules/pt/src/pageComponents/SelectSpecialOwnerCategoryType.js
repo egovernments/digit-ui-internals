@@ -67,7 +67,7 @@ const SelectSpecialOwnerCategoryType = ({ t, config, onSelect, userType, formDat
 
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!ownerType}>
-      <div style={{ ...cardBodyStyle, maxHeight: "calc(100vh - 22em)" }}>
+      <div >
         <RadioButtons
           t={t}
           optionsKey="i18nKey"

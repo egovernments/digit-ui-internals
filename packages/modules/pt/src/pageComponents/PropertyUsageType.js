@@ -124,7 +124,7 @@ const PropertyUsageType = ({ t, config, onSelect, userType, formData, formState,
   return (
     <React.Fragment>
       <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!usageCategoryMajor}>
-        <div style={{ ...cardBodyStyle, maxHeight: "calc(100vh - 30em)" }}>
+        <div >
           <RadioButtons
             t={t}
             optionsKey="i18nKey"

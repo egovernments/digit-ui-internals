@@ -83,7 +83,7 @@ const propertyOwnerHistory = () => {
     <React.Fragment>
       <Card>
         <Header>{t("PT_OWNER_HISTORY")}</Header>
-        <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 13em)" }}>
+        <div >
           {Object.keys(ownershipInfo).map((key) => {
             const date = convertEpochToDate(Number(key));
             return (

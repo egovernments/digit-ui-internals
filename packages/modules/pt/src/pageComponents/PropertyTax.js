@@ -19,7 +19,7 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
     <React.Fragment>
       <Card>
         <CardHeader>{t("PT_DOC_REQ_SCREEN_HEADER")}</CardHeader>
-        <div style={{ ...cardBodyStyle }}>
+        <div >
           <CardText>{t("PT_DOC_REQ_SCREEN_SUB_HEADER")}</CardText>
           <CardText>{t("PT_DOC_REQ_SCREEN_TEXT")}</CardText>
           <CardText>{t("PT_DOC_REQ_SCREEN_SUB_TEXT")}</CardText>

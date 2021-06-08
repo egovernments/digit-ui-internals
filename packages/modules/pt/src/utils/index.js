@@ -67,13 +67,13 @@ export const shouldHideBackButton = (config = []) => {
 
 /*   style to keep the body height fixed across screens */
 export const cardBodyStyle = {
-  maxHeight: "calc(100vh - 20em)",
-  overflowY: "auto",
+  // maxHeight: "calc(100vh - 20em)",
+  // overflowY: "auto",
 };
 
 export const propertyCardBodyStyle = {
-  maxHeight: "calc(100vh - 10em)",
-  overflowY: "auto",
+  // maxHeight: "calc(100vh - 10em)",
+  // overflowY: "auto",
 };
 
 export const setAddressDetails = (data) => {

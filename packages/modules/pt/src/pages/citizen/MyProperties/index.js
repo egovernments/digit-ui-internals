@@ -32,7 +32,7 @@ export const MyProperties = () => {
   return (
     <React.Fragment>
       <Header>{`${t("PT_MY_PROPERTIES_HEADER")} ${applicationsList ? `(${applicationsList.length})` : ""}`}</Header>
-      <div style={{ ...propertyCardBodyStyle, maxHeight: "calc(100vh - 14em)" }}>
+      <div >
         {applicationsList?.length > 0 &&
           applicationsList.map((application, index) => (
             <div key={index}>

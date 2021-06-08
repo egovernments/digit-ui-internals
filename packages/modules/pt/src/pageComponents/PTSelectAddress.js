@@ -186,7 +186,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData, setError, cl
   }
   return (
     <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>
-      <div style={{ ...cardBodyStyle, maxHeight: "calc(100vh - 27em)" }}>
+      <div >
         <CardLabel>{`${t("MYCITY_CODE_LABEL")} `}</CardLabel>
         <span className={"form-pt-dropdown-only"}>
           <RadioOrSelect
