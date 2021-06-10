@@ -1,7 +1,7 @@
+import { CardLabel, CardLabelError, CitizenInfoLabel, Dropdown, FormStep, LabelFieldPair, Loader, RadioButtons } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
-import { FormStep, RadioButtons, CardLabel, LabelFieldPair, Dropdown, Loader, CardLabelError } from "@egovernments/digit-ui-react-components";
-import { stringReplaceAll } from "../utils";
 import { useLocation } from "react-router-dom";
+import { stringReplaceAll } from "../utils";
 
 const PropertyType = ({ t, config, onSelect, userType, formData, setError, clearErrors, formState, onBlur }) => {
   const [BuildingType, setBuildingType] = useState(formData?.PropertyType);
@@ -101,17 +101,20 @@ const PropertyType = ({ t, config, onSelect, userType, formData, setError, clear
   }
 
   return (
-    <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!BuildingType}>
-      <RadioButtons
-        t={t}
-        optionsKey="i18nKey"
-        isMandatory={config.isMandatory}
-        //options={menu}
-        options={getPropertyTypeMenu(proptype) || {}}
-        selectedOption={BuildingType}
-        onSelect={selectBuildingType}
-      />
-    </FormStep>
+    <React.Fragment>
+      <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!BuildingType}>
+        <RadioButtons
+          t={t}
+          optionsKey="i18nKey"
+          isMandatory={config.isMandatory}
+          //options={menu}
+          options={getPropertyTypeMenu(proptype) || {}}
+          selectedOption={BuildingType}
+          onSelect={selectBuildingType}
+        />
+      </FormStep>
+      {<CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("PT_PROPERTY_TYPE_INFO_MSG")} />}
+    </React.Fragment>
   );
 };
 export default PropertyType;

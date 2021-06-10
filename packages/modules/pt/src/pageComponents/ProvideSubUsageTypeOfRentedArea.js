@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FormStep, CardLabel, RadioButtons, RadioOrSelect } from "@egovernments/digit-ui-react-components";
-import { cardBodyStyle } from "../utils";
+import { CardLabel, CitizenInfoLabel, FormStep, RadioOrSelect } from "@egovernments/digit-ui-react-components";
+import React, { useState } from "react";
 
 const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formData }) => {
   //let index = window.location.href.charAt(window.location.href.length - 1);
@@ -119,21 +118,24 @@ const ProvideSubUsageTypeOfRentedArea = ({ t, config, onSelect, userType, formDa
     }
   }
   return (
-    <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!SubUsageTypeOfRentedArea}>
-      <CardLabel>{t("PT_SUB_USAGE_TYPE_LABEL")}</CardLabel>
-      <div  className={"form-pt-dropdown-only"}>
-        {getSubUsagedata(subusageoption) && (
-          <RadioOrSelect
-            t={t}
-            optionKey="i18nKey"
-            isMandatory={config.isMandatory}
-            options={data || []}
-            selectedOption={SubUsageTypeOfRentedArea}
-            onSelect={selectSelfOccupied}
-          />
-        )}
-      </div>
-    </FormStep>
+    <React.Fragment>
+      <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!SubUsageTypeOfRentedArea}>
+        <CardLabel>{t("PT_SUB_USAGE_TYPE_LABEL")}</CardLabel>
+        <div className={"form-pt-dropdown-only"}>
+          {getSubUsagedata(subusageoption) && (
+            <RadioOrSelect
+              t={t}
+              optionKey="i18nKey"
+              isMandatory={config.isMandatory}
+              options={data || []}
+              selectedOption={SubUsageTypeOfRentedArea}
+              onSelect={selectSelfOccupied}
+            />
+          )}
+        </div>
+      </FormStep>
+      {<CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("PT_FLOOR_AREA_INFO_MSG")} />}
+    </React.Fragment>
   );
 };
 
