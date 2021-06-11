@@ -49,6 +49,10 @@ const SelectEmployeeGender = ({ t, config, onSelect, formData = {}, userType, re
                                     {
                                         code: "TRANSGENDER",
                                         name: "COMMON_GENDER_TRANSGENDER"
+                                    },
+                                    {
+                                        code: "OTHERS",
+                                        name: "COMMON_GENDER_OTHERS"
                                     }
                                 ]}
                                 key={input.name}

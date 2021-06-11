@@ -283,6 +283,7 @@ const OwnerForm = (_props) => {
                         { i18nKey: "PT_FORM3_MALE", code: "Male" },
                         { i18nKey: "PT_FORM3_FEMALE", code: "Female" },
                         { i18nKey: "PT_FORM3_TRANSGENDER", code: "Transgender" },
+                        { i18nKey: "COMMON_GENDER_OTHERS", code: "OTHERS" },
                       ]}
                       optionKey="i18nKey"
                       t={t}
