@@ -85,6 +85,16 @@ const mCollectAccess = () => {
   return MCOLLECT_ACCESS.length > 0;
 };
 
+const receiptsAccess = () => {
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
+  const mCollectRoles = ["PT_CEMP"];
+
+  const MCOLLECT_ACCESS = userRoles.filter((role) => mCollectRoles.includes(role));
+
+  return MCOLLECT_ACCESS.length > 0;
+};
+
 export default {
   pdf: PDFUtil,
   browser: BrowserUtil,
@@ -99,4 +109,5 @@ export default {
   dss,
   ptAccess,
   mCollectAccess,
+  receiptsAccess,
 };

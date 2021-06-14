@@ -31,7 +31,6 @@ const CheckPage = ({ onSubmit, value }) => {
   const { t } = useTranslation();
   const history = useHistory();
   console.log(value);
-  debugger;
 
   const { TradeDetails, address, owners, propertyType, subtype, pitType, pitDetail } = value;
   // console.log("find values here ", value)
