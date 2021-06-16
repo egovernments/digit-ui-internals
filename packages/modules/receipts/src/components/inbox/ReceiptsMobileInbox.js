@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ApplicationCard } from "./ApplicationCard";
 // import { ApplicationLinks } from "@egovernments/digit-ui-react-components";
 
-const MobileInbox = ({
+const ReceiptsMobileInbox = ({
   data,
   isLoading,
   isSearch,
@@ -22,7 +22,7 @@ const MobileInbox = ({
   console.log(data);
   const { t } = useTranslation();
   const getData = () => {
-    return data?.Employees?.map((dataObj) => {
+    return data?.Payments?.map((dataObj) => {
       const obj = {};
       const columns = isSearch ? tableConfig.searchColumns() : tableConfig.inboxColumns();
       columns.forEach((el) => {
@@ -57,4 +57,4 @@ const MobileInbox = ({
   );
 };
 
-export default MobileInbox;
+export default ReceiptsMobileInbox;

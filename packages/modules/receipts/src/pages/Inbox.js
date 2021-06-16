@@ -1,8 +1,8 @@
 import { Header, Loader } from "@egovernments/digit-ui-react-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import DesktopInbox from "../components/inbox/DesktopInbox";
-import MobileInbox from "../components/inbox/MobileInbox";
+import ReceiptsDesktopInbox from "../components/inbox/ReceiptsDesktopInbox";
+import ReceiptsMobileInbox from "../components/inbox/ReceiptsMobileInbox";
 
 const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filterComponent, isInbox }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -22,7 +22,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
   const isupdate = Digit.SessionStorage.get("isupdate")
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.hrms.useHRMSSearch(searchParams, tenantId, paginationParams, isupdate);
+  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, paginationParams, isupdate,'PT');
   let isLoading = false;
   // useEffect(() => {
   //   // setTotalReacords(res?.EmployeCount?.totalEmployee);
@@ -80,6 +80,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
         maxlength: 10,
         pattern: "[6-9][0-9]{9}",
         title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
+        componentInFront: "+91",
       },
     ];
   };
@@ -93,7 +94,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
   if (data?.length !== null) {
     if (isMobile) {
       return (
-        <MobileInbox
+        <ReceiptsMobileInbox
           businessService={businessService}
           data={data}
           isLoading={hookLoading}
@@ -121,7 +122,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
       return (
         <div>
           {isInbox && <Header>{t("CR_HOME_SEARCH_RESULTS_HEADING")}</Header>}
-          <DesktopInbox
+          <ReceiptsDesktopInbox
             businessService={businessService}
             data={data}
             isLoading={hookLoading}

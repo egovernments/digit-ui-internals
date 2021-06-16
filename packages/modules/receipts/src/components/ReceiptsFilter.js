@@ -13,7 +13,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
     "ReceiptsBusinessServices"
   );
 
-  const mdmsStatus = ["APPROVED", "REMITTED", "CANCELLED"];
+  const mdmsStatus = ["NEW","DEPOSITED", "CANCELLED"];
   console.log(dataReceipts, rest1, 'mdms');
   const [status, setStatus] = useState([]);
 

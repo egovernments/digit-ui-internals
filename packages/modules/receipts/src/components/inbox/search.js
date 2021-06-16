@@ -71,7 +71,15 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
                     <Label>{input.label}</Label>
                     {input.type !== "date" ? (
-                      <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
+                        <div className="field-container">
+                        {input?.componentInFront ? (
+                          <span className="citizen-card-input citizen-card-input--front" style={{ flex: "none" }}>
+                            {input?.componentInFront}
+                          </span>
+                        ) : null}
+                        <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
+                      </div>
+                      
                     ) : (
                       <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}

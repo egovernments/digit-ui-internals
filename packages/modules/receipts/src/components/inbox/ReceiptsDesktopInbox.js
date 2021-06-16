@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import ApplicationTable from "../inbox/ApplicationTable";
 import { Card, Loader } from "@egovernments/digit-ui-react-components";
-import InboxLinks from "../inbox/ApplicationLinks";
-import SearchApplication from "./search";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import InboxLinks from "./ApplicationLinks";
+import ApplicationTable from "./ApplicationTable";
+import SearchApplication from "./search";
 
-const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
+const ReceiptsDesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
   const { t } = useTranslation();
   const tenantIds = Digit.SessionStorage.get("HRMS_TENANTS");
   const GetCell = (value) => <span className="cell-text">{t(value)}</span>;
-  const GetSlaCell = (value) => {
-    return value == "INACTIVE" ? <span className="sla-cell-error">{value || ""}</span> : <span className="sla-cell-success">{value || ""}</span>;
+  const GetDateCell = (value) => {
+    const date = new Date(value);
+    return <span className="cell-text">{date?.toLocaleDateString()}</span>
   };
-  const data = props?.data?.Employees;
+  const GetSlaCell = (value, t, prefix = '') => {
+    return value == "CANCELLED" ? <span className="sla-cell-error">{t(`${prefix}${value}`) || ""}</span> : <span className="sla-cell-success">{t(`${prefix}${value}`) || ""}</span>;
+  };
+  const data = props?.data?.Payments;
 
   const [FilterComponent, setComp] = useState(() => Digit.ComponentRegistryService?.getComponent(filterComponent));
 
@@ -25,7 +29,7 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
         Cell: ({ row }) => {
           return (
             <span className="link">
-              <Link to={`/digit-ui/employee/receipts/details/${row.original.code}`}>{row.original.code}</Link>
+              <Link to={`/digit-ui/employee/receipts/details/${row.original?.paymentDetails[0]?.receiptNumber}`}>{row.original?.paymentDetails[0]?.receiptNumber}</Link>
             </span>
           );
         },
@@ -34,38 +38,38 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
         Header: t("CR_COMMON_TABLE_COL_DATE"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetCell(`${row.original?.user?.name}`);
+          return GetDateCell(row.original?.transactionDate);
         },
       },
       {
         Header: t("CR_COMMON_TABLE_CONSUMERCODE"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetCell(`${t("COMMON_MASTERS_DESIGNATION_" + row.original?.assignments?.sort((a, b) => new Date(a.fromDate) - new Date(b.fromDate))[0]?.designation) || ""}`);
+          return GetCell(`${row.original?.paymentDetails[0]?.bill?.consumerCode}`);
         },
       },
       {
         Header: t("CR_COMMON_TABLE_COL_PAYEE_NAME"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetCell(`${t("COMMON_MASTERS_DESIGNATION_" + row.original?.assignments?.sort((a, b) => new Date(a.fromDate) - new Date(b.fromDate))[0]?.designation) || ""}`);
+          return GetCell(`${row.original?.payerName}`);
         },
       },
       {
         Header: t("CR_SERVICE_TYPE_LABEL"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetSlaCell(`${row.original?.isActive ? "ACTIVE" : "INACTIVE"}`);
+          return GetCell(`${t("BILLINGSERVICE_BUSINESSSERVICE_" + row.original?.paymentDetails[0]?.businessService)}`);
         },
       },
       {
         Header: t("CR_COMMON_TABLE_COL_STATUS"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetSlaCell(`${row.original?.isActive ? "ACTIVE" : "INACTIVE"}`);
+          return GetSlaCell(`${row.original?.paymentStatus}`, t, 'RC_');
         },
       },
-      
+
     ];
   }, []);
 
@@ -168,4 +172,4 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
   );
 };
 
-export default DesktopInbox;
+export default ReceiptsDesktopInbox;
