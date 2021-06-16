@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Link, Switch, useLocation, useRouteMatch } from "react-router-dom";
 import ReceiptsCard from "./receiptHomeCard";
 import Inbox from "./pages/Inbox";
-import InboxFilter from "./components/InboxFilter";
+import ReceiptsFilter from "./components/ReceiptsFilter";
 import Response from "./pages/Response";
 import Banner from "./components/pageComponents/Banner";
 import Details from "./pages/ReceiptDetails";
@@ -38,21 +38,21 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
               <Link to="/digit-ui/employee" style={{ cursor: "pointer", color: "#666" }}>
                 {t("HR_COMMON_BUTTON_HOME")}
               </Link>{" "}
-              / <span>{location.pathname === "/digit-ui/employee/hrms/inbox" ? t("HR_COMMON_HEADER") : t("HR_COMMON_HEADER")}</span>
+              / <span>{location.pathname === "/digit-ui/employee/receipts/inbox" ? t("CR_COMMON_HEADER") : t("CR_COMMON_HEADER")}</span>
             </p>
             <PrivateRoute
               path={`${path}/inbox`}
               component={() => (
-                  <Inbox
-                parentRoute={path}
-                businessService="hrms"
-                filterComponent="RECEIPTS_INBOX_FILTER"
-                initialStates={inboxInitialState}
-                isInbox={true}
-              />
+                <Inbox
+                  parentRoute={path}
+                  businessService="receipts"
+                  filterComponent="RECEIPTS_INBOX_FILTER"
+                  initialStates={inboxInitialState}
+                  isInbox={true}
+                />
               )}
             />
-             <PrivateRoute path={`${path}/response`} component={(props) => <Response {...props} parentRoute={path} />} />
+            <PrivateRoute path={`${path}/response`} component={(props) => <Response {...props} parentRoute={path} />} />
             <PrivateRoute path={`${path}/details/:id`} component={() => <Details />} />
           </div>
         </React.Fragment>
@@ -67,7 +67,7 @@ const componentsToRegister = {
   Details,
   ActionModal,
   Banner,
-  RECEIPTS_INBOX_FILTER: (props) => <InboxFilter {...props} />,
+  RECEIPTS_INBOX_FILTER: (props) => <ReceiptsFilter {...props} />,
 };
 
 export const initReceiptsComponents = () => {

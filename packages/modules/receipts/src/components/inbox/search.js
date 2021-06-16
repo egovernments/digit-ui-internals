@@ -46,7 +46,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     const mobileViewStyles = mobileView ? { margin: 0 } : {};
     return (
       <LinkLabel style={{ display: "inline", ...mobileViewStyles }} onClick={clearSearch}>
-        {t("HR_COMMON_CLEAR_SEARCH")}
+        {t("CR_RESET_BUTTON")}
       </LinkLabel>
     );
   };
@@ -82,7 +82,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                     )}{" "}
                   </span>
                 ))}
-              {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("HR_COMMON_SEARCH")} submit />}
+              {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("CR_SEARCH_BUTTON")} submit />}
             </div>
             {type === "desktop" && !mobileView && <span className="clear-search">{clearAll()}</span>}
           </div>
@@ -92,7 +92,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
             <button className="clear-search" style={{ flex: 1 }}>
               {clearAll(mobileView)}
             </button>
-            <SubmitBar label={t("HR_COMMON_SEARCH")} style={{ flex: 1 }} submit={true} />
+            <SubmitBar label={t("CR_SEARCH_BUTTON")} style={{ flex: 1 }} submit={true} />
           </ActionBar>
         )}
       </React.Fragment>

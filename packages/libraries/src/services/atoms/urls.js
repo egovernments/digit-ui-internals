@@ -84,6 +84,10 @@ const Urls = {
   tl: {
     create: "/tl-services/v1/_create",
   },
+  receipts: {
+    payments: "/collection-services/payments",
+    count: "/egov-hrms/employees/_count"
+  },
 };
 
 export default Urls;

@@ -20,48 +20,52 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
   const columns = React.useMemo(() => {
     return [
       {
-        Header: t("HR_EMP_ID_LABEL"),
+        Header: t("CR_COMMON_TABLE_COL_RECEIPT_NO"),
         disableSortBy: true,
         Cell: ({ row }) => {
           return (
             <span className="link">
-              <Link to={`/digit-ui/employee/hrms/details/${row.original.code}`}>{row.original.code}</Link>
+              <Link to={`/digit-ui/employee/receipts/details/${row.original.code}`}>{row.original.code}</Link>
             </span>
           );
         },
       },
       {
-        Header: t("HR_EMP_NAME_LABEL"),
+        Header: t("CR_COMMON_TABLE_COL_DATE"),
         disableSortBy: true,
         Cell: ({ row }) => {
           return GetCell(`${row.original?.user?.name}`);
         },
       },
       {
-        Header: t("HR_ROLE_LABEL"),
-        Cell: ({ row }) => {
-          return <div className="tooltip">    {GetCell(`${row.original?.user?.roles.length}`)}
-              <span className="tooltiptext">{(row.original?.user?.roles.map(ele => t(`ACCESSCONTROL_ROLES_ROLES_${ele.code}`) +'\n'))}</span>
-
-               </div>
-
-        },
-        disableSortBy: true,
-      },
-      {
-        Header: t("HR_DESG_LABEL"),
+        Header: t("CR_COMMON_TABLE_CONSUMERCODE"),
         disableSortBy: true,
         Cell: ({ row }) => {
           return GetCell(`${t("COMMON_MASTERS_DESIGNATION_" + row.original?.assignments?.sort((a, b) => new Date(a.fromDate) - new Date(b.fromDate))[0]?.designation) || ""}`);
         },
       },
       {
-        Header: t("HR_STATUS_LABEL"),
+        Header: t("CR_COMMON_TABLE_COL_PAYEE_NAME"),
+        disableSortBy: true,
+        Cell: ({ row }) => {
+          return GetCell(`${t("COMMON_MASTERS_DESIGNATION_" + row.original?.assignments?.sort((a, b) => new Date(a.fromDate) - new Date(b.fromDate))[0]?.designation) || ""}`);
+        },
+      },
+      {
+        Header: t("CR_SERVICE_TYPE_LABEL"),
         disableSortBy: true,
         Cell: ({ row }) => {
           return GetSlaCell(`${row.original?.isActive ? "ACTIVE" : "INACTIVE"}`);
         },
       },
+      {
+        Header: t("CR_COMMON_TABLE_COL_STATUS"),
+        disableSortBy: true,
+        Cell: ({ row }) => {
+          return GetSlaCell(`${row.original?.isActive ? "ACTIVE" : "INACTIVE"}`);
+        },
+      },
+      
     ];
   }, []);
 
@@ -118,13 +122,19 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
             parentRoute={props.parentRoute}
             allLinks={[
               {
-                text: "HR_COMMON_CREATE_EMPLOYEE_HEADER",
-                link: "/digit-ui/employee/hrms/create",
-                businessService: "hrms",
-                roles: ["HRMS_ADMIN"],
+                text: "CR_COMMON_DASHBOARD_HEADER",
+                link: "/digit-ui/employee/receipts/inprogress",
+                businessService: "receipts",
+                roles: ["PT_CEMP"],
+              },
+              {
+                text: "CR_COMMON_REPORTS_HEADER",
+                link: "/digit-ui/employee/receipts/inprogress",
+                businessService: "receipts",
+                roles: ["PT_CEMP"],
               }
             ]}
-            headerText={"HRMS"}
+            headerText={"RECEIPTS"}
             businessService={props.businessService}
           />
           <div>

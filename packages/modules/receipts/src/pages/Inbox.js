@@ -6,7 +6,7 @@ import MobileInbox from "../components/inbox/MobileInbox";
 
 const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filterComponent, isInbox }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const { isLoading: isLoading, Errors, data: res } = Digit.Hooks.hrms.useHRMSCount(tenantId);
+  // const { isLoading: isLoading, Errors, data: res } = Digit.Hooks.hrms.useHRMSCount(tenantId);
 
   const { t } = useTranslation();
   const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
@@ -21,14 +21,14 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
-    const isupdate= Digit.SessionStorage.get("isupdate")
+  const isupdate = Digit.SessionStorage.get("isupdate")
   const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.hrms.useHRMSSearch(searchParams, tenantId, paginationParams, isupdate);
+  let isLoading = false;
+  // useEffect(() => {
+  //   // setTotalReacords(res?.EmployeCount?.totalEmployee);
+  // }, [res]);
 
-  useEffect(() => {
-    // setTotalReacords(res?.EmployeCount?.totalEmployee);
-  }, [res]);
-
-  useEffect(() => {}, [hookLoading, rest]);
+  useEffect(() => { }, [hookLoading, rest]);
 
   useEffect(() => {
     setPageOffset(0);
@@ -62,20 +62,24 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
 
   const getSearchFields = () => {
     return [
+      // {
+      //   label: t("CR_SERVICE_CATEGORY_LABEL"),
+      //   name: "service",
+      // },
       {
-        label: t("HR_NAME_LABEL"),
-        name: "names",
+        label: t("CR_CONSUMER_NO_LABEL"),
+        name: "consumerCodes",
       },
       {
-        label: t("HR_MOB_NO_LABEL"),
-        name: "phone",
+        label: t("CR_RECEPIT_NO_LABEL"),
+        name: "receiptNumbers",
+      },
+      {
+        label: t("CR_MOBILE_NO_LABEL"),
+        name: "mobileNumber",
         maxlength: 10,
         pattern: "[6-9][0-9]{9}",
         title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
-      },
-      {
-        label: t("HR_EMPLOYEE_ID_LABEL"),
-        name: "codes",
       },
     ];
   };
@@ -116,7 +120,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
     } else {
       return (
         <div>
-          {isInbox && <Header>{t("HR_HOME_SEARCH_RESULTS_HEADING")}</Header>}
+          {isInbox && <Header>{t("CR_HOME_SEARCH_RESULTS_HEADING")}</Header>}
           <DesktopInbox
             businessService={businessService}
             data={data}

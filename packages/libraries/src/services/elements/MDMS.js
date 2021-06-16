@@ -635,6 +635,18 @@ const getFSTPPlantCriteria = (tenantId, moduleCode, type) => ({
     ],
   },
 });
+const getCancelReceiptReason = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "CancelReceiptReason" }],
+      },
+    ],
+  },
+});
 
 const GetEgovLocations = (MdmsRes) => {
   return MdmsRes["egov-location"].TenantBoundary[0].boundary.children.map((obj) => ({
@@ -1162,4 +1174,8 @@ export const MdmsService = {
   getFSTPPlantInfo: (tenantId, moduleCode, types) => {
     return MdmsService.getDataByCriteria(tenantId, getFSTPPlantCriteria(tenantId, moduleCode, types), moduleCode);
   },
+  getCancelReceiptReason: (tenantId,moduleCode) => {
+    return MdmsService.getDataByCriteria(tenantId, getCancelReceiptReason(tenantId, moduleCode), moduleCode);
+  },
+  
 };

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { Card, DetailsCard, Loader, PopUp, SearchAction } from "@egovernments/digit-ui-react-components";
 import { FilterAction } from "@egovernments/digit-ui-react-components";
-import Filter from "../InboxFilter";
+import Filter from "../ReceiptsFilter";
 import SearchApplication from "./search";
 
 export const ApplicationCard = ({
