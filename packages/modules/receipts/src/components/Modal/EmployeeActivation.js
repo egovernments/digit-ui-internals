@@ -1,18 +1,18 @@
+import { Dropdown } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { UploadFile, Dropdown } from "@egovernments/digit-ui-react-components";
 
 export const configEmployeeActiveApplication = ({ t, action, selectFile, uploadedFile, setUploadedFile, selectedReason, Reasons, selectReason }) => {
 
     return {
         label: {
-            heading: `HR_ACTIVATE_EMPLOYEE_HEAD`,
-            submit: `HR_ACTIVATE_EMPLOYEE_LABEL`,
+            heading: `CR_COMMON_HEADER`,
+            submit: `CR_CANCEL_RECEIPT_BUTTON`,
         },
         form: [
             {
                 body: [
                     {
-                        label: t("HR_ACTIVATION_REASON"),
+                        label: t("CR_RECEIPT_CANCELLATION_REASON_LABEL "),
                         type: "dropdown",
                         isMandatory: true,
                         name: "reasonForDeactivation",
@@ -21,41 +21,14 @@ export const configEmployeeActiveApplication = ({ t, action, selectFile, uploade
                         ),
                     },
                     {
-                        label: t("HR_ORDER_NO"),
+                        label: t("CR_MORE_DETAILS_LABEL"),
                         type: "text",
                         populators: {
                             name: "orderNo",
                         },
                     },
-
                     {
-                        label: t("HR_EFFECTIVE_DATE"),
-                        type: "date",
-                        isMandatory: true,
-                        populators: {
-                            error: t("HR_EFFECTIVE_DATE_INVALID"),
-                            name: "effectiveFrom",
-                        },
-                    },
-                    {
-                        label: t("HR_APPROVAL_UPLOAD_HEAD"),
-                        populators: (
-                            <div style={{marginBottom:'2rem'}}>
-                            <span>{t("TL_APPROVAL_UPLOAD_SUBHEAD")}</span>
-                                <UploadFile
-                                    accept="image/*, .pdf, .png, .jpeg"
-                                    onUpload={selectFile}
-                                    onDelete={() => {
-                                        setUploadedFile(null);
-                                    }}
-                                    message={uploadedFile ? `1 ${t(`HR_ACTION_FILEUPLOADED`)}` : t(`HR_ACTION_NO_FILEUPLOADED`)}
-                                />
-                                </div>
-                        ),
-                    },
-
-                    {
-                        label: t("HR_REMARKS"),
+                        label: t("CR_ADDITIONAL_PENALTY"),
                         type: "text",
                         populators: {
                             name: "remarks",

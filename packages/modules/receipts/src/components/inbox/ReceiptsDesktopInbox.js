@@ -29,7 +29,7 @@ const ReceiptsDesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
         Cell: ({ row }) => {
           return (
             <span className="link">
-              <Link to={`/digit-ui/employee/receipts/details/${row.original?.paymentDetails[0]?.receiptNumber}`}>{row.original?.paymentDetails[0]?.receiptNumber}</Link>
+              <Link to={`/digit-ui/employee/receipts/details/${row.original?.paymentDetails[0]?.businessService}/${encodeURIComponent(row.original?.paymentDetails[0]?.receiptNumber)}`}>{row.original?.paymentDetails[0]?.receiptNumber}</Link>
             </span>
           );
         },

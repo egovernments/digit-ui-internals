@@ -19,13 +19,13 @@ const ReceiptsCard = () => {
     return null;
   }
   return (
-    <div className="employeeCard card-home">
+    <div className="employeeCard card-home-receipts">
       <div className="complaint-links-container">
         <div className="header">
           <span className="logo">
             <Person />
           </span>
-          <span className="text">{t("RECEIPTS")}</span>
+          <span className="text">{t("CR_RECEIPTS_HOME_LINK")}</span>
         </div>
         <div className="body">
           <div className="flex-fit">
@@ -35,18 +35,18 @@ const ReceiptsCard = () => {
                 <span>40(temp)</span>
               </div>
               <div>
-                <Link to={`/digit-ui/employee/receipts/inbox`}>{t("TOTAL_RECEIPTS")}</Link>
+                <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_TOTAL_RECEIPTS")}</Link>
               </div>
             </div>
           </div>
           <span className="link">
-            <Link to={`/digit-ui/employee/receipts/search`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
+            <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
           </span>
           <span className="link">
-            <Link to={`/digit-ui/employee/receipts/dashboard`}>{t("RECEIPT_HOME_HEADER_DASHBOARD")}</Link>
+            <Link to={`/digit-ui/employee/receipts/dashboard`}>{t("CR_HOME_HEADER_DASHBOARD")}</Link>
           </span>
           <span className="link">
-            <Link to={`/digit-ui/employee/receipts/reports`}>{t("RECEIPT_HOME_HEADER_REPORT")}</Link>
+            <Link to={`/digit-ui/employee/receipts/reports`}>{t("CR_HOME_HEADER_REPORT")}</Link>
           </span>
         </div>
       </div>

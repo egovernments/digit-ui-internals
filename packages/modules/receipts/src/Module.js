@@ -3,13 +3,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, Switch, useLocation, useRouteMatch } from "react-router-dom";
-import ReceiptsCard from "./receiptHomeCard";
-import Inbox from "./pages/Inbox";
-import ReceiptsFilter from "./components/ReceiptsFilter";
-import Response from "./pages/Response";
-import Banner from "./components/pageComponents/Banner";
-import Details from "./pages/ReceiptDetails";
 import ActionModal from "./components/Modal";
+import Banner from "./components/pageComponents/Banner";
+import ReceiptsFilter from "./components/ReceiptsFilter";
+import Inbox from "./pages/Inbox";
+import ReceiptDetails from "./pages/ReceiptDetails";
+import Response from "./pages/Response";
+import ReceiptsCard from "./receiptHomeCard";
 
 export const ReceiptsModule = ({ stateCode, userType }) => {
   const moduleCode = "RECEIPTS";
@@ -36,7 +36,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
           <div className="ground-container">
             <p className="breadcrumb" style={{ marginLeft: mobileView ? "2vw" : "revert" }}>
               <Link to="/digit-ui/employee" style={{ cursor: "pointer", color: "#666" }}>
-                {t("HR_COMMON_BUTTON_HOME")}
+                {t("CR_COMMON_BUTTON_HOME")}
               </Link>{" "}
               / <span>{location.pathname === "/digit-ui/employee/receipts/inbox" ? t("CR_COMMON_HEADER") : t("CR_COMMON_HEADER")}</span>
             </p>
@@ -53,7 +53,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
               )}
             />
             <PrivateRoute path={`${path}/response`} component={(props) => <Response {...props} parentRoute={path} />} />
-            <PrivateRoute path={`${path}/details/:id`} component={() => <Details />} />
+            <PrivateRoute path={`${path}/details/:service/:id`} component={() => <ReceiptDetails />} />
           </div>
         </React.Fragment>
       </Switch>
@@ -64,7 +64,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
 const componentsToRegister = {
   ReceiptsModule,
   ReceiptsCard,
-  Details,
+  ReceiptDetails,
   ActionModal,
   Banner,
   RECEIPTS_INBOX_FILTER: (props) => <ReceiptsFilter {...props} />,
