@@ -4,12 +4,13 @@ import { useTranslation } from "react-i18next";
 
 const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
   // const tenantId = );
-
+const tenantId=Digit.ULBService.getCurrentTenantId()||'';
+const tenant=tenantId.split&&tenantId.split('.')[0]||'';
   const [_searchParams, setSearchParams] = useState(() => searchParams);
   const { t } = useTranslation();
 
   const { data: dataReceipts, ...rest1 } = Digit.Hooks.receipts.useReceiptsMDMS(
-    Digit.ULBService.getCurrentTenantId(),
+    tenant,
     "ReceiptsBusinessServices"
   );
 

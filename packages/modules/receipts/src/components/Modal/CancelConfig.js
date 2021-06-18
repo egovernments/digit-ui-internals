@@ -1,7 +1,7 @@
 import { Dropdown } from "@egovernments/digit-ui-react-components";
 import React from "react";
 
-export const configEmployeeActiveApplication = ({ t, action, selectFile, uploadedFile, setUploadedFile, selectedReason, Reasons, selectReason }) => {
+export const configCancelConfig = ({ t, selectedReason, Reasons, selectReason }) => {
 
     return {
         label: {

@@ -19,7 +19,7 @@ const ReceiptsCard = () => {
     return null;
   }
   return (
-    <div className="employeeCard card-home-receipts">
+    <div className="employeeCard card-home card-home-receipts">
       <div className="complaint-links-container">
         <div className="header">
           <span className="logo">
