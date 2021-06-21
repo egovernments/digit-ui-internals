@@ -46,7 +46,7 @@ const tenant=tenantId.split&&tenantId.split('.')[0]||'';
       <div className="filter">
         <div className="filter-card">
           <div className="heading">
-            <div className="filter-label">{t("CR_COMMON_FILTER")}:</div>
+            <div className="filter-label">{t("COMMON_TABLE_FILTERS")}:</div>
             <div className="clearAll" onClick={clearAll}>
               {t("CR_COMMON_CLEAR_ALL")}
             </div>
@@ -81,14 +81,14 @@ const tenant=tenantId.split&&tenantId.split('.')[0]||'';
               )}
               <div>
 
-                <div className="filter-label">{t("CR_SERVICE_CATEGORY_LABEL ")}</div>
+                <div className="filter-label">{t("CR_SERVICE_CATEGORY_LABEL")}</div>
                 <Dropdown t={t} option={dataReceipts?.dropdownData || null} selected={service} select={setService} optionKey={"name"} />
               </div>
               <div>
                 <SubmitBar
                   // disabled={_.isEqual(_searchParams, searchParams)}
                   onSubmit={() => onFilterChange(_searchParams)}
-                  label={t("ES_COMMON_APPLY")}
+                  label={t("ACTION_TEST_APPLY")}
                 />
               </div>
             </div>

@@ -24,18 +24,11 @@ const ReceiptsCard = () => {
           </span>
           <span className="text">{t("ACTION_TEST_RECEIPTS")}</span>
         </div>
+        <div className="header" style={{flexFlow:"column"}}>
+        <span className="text" style={{display:"block",marginLeft:"-8em",fontWeight:"400"}}>  40()</span>
+          <span className="text" style={{display:"block",marginLeft:"-4em",fontWeight:"400"}}> <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_TOTAL_RECEIPTS")}</Link></span>
+        </div>
         <div className="body">
-          <div className="flex-fit">
-            <div className="card-count">
-              <div>
-                {/* <span>{" " + data?.EmployeCount?.totalEmployee ? data?.EmployeCount?.totalEmployee : 0 || "-"}</span> */}
-                <span>40(temp)</span>
-              </div>
-              <div>
-                <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_TOTAL_RECEIPTS")}</Link>
-              </div>
-            </div>
-          </div>
           <span className="link">
             <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
           </span>
