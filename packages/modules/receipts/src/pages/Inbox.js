@@ -121,7 +121,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
     } else {
       return (
         <div>
-          {isInbox && <Header>{t("CR_HOME_SEARCH_RESULTS_HEADING")}</Header>}
+          {isInbox && <Header>{t("CR_SEARCH_COMMON_HEADER")}</Header>}
           <ReceiptsDesktopInbox
             businessService={businessService}
             data={data}

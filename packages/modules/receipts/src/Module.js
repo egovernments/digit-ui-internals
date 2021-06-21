@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, Switch, useLocation, useRouteMatch } from "react-router-dom";
 import ActionModal from "./components/Modal";
-import Banner from "./components/pageComponents/Banner";
+import Banner from "./components/Banner";
 import ReceiptsFilter from "./components/ReceiptsFilter";
 import Inbox from "./pages/Inbox";
 import ReceiptDetails from "./pages/ReceiptDetails";
