@@ -16,7 +16,17 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
     return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_SERVICES", tenantId]) };
   };
   const useCancelReceiptReason = () => {
-    return useQuery(["RECEIPTS_CANCEL_REASON", tenantId], () => MdmsService.getCancelReceiptReason(tenantId, 'common-masters'), config);
+    const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_REASON", tenantId], () => MdmsService.getCancelReceiptReason(tenantId, 'common-masters'), config);
+    if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.CancelReceiptReason && Array.isArray(data[`common-masters`].CancelReceiptReason)) {
+      data[`common-masters`].CancelReceiptReason = data[`common-masters`].CancelReceiptReason.filter((unit) => unit.active) || [];
+      data.dropdownData = [...data[`common-masters`].CancelReceiptReason.map(config => {
+        return {
+          code: config.code,
+          name: `CR_REASON_${config.code}`
+        }
+      })] || []
+    }
+    return  { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_REASON", tenantId]) }; 
   };
 
   switch (type) {

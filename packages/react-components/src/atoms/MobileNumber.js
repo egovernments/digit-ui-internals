@@ -40,6 +40,7 @@ const MobileNumber = (props) => {
             step={props.step}
             autoFocus={props.autoFocus}
             onBlur={props.onBlur}
+            autocomplete="off"
           />
         </div>
       </div>

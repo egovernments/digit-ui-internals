@@ -25,7 +25,7 @@ const ReceiptsCard = () => {
           <span className="logo">
             <Person />
           </span>
-          <span className="text">{t("CR_RECEIPTS_HOME_LINK")}</span>
+          <span className="text">{t("ACTION_TEST_RECEIPTS")}</span>
         </div>
         <div className="body">
           <div className="flex-fit">

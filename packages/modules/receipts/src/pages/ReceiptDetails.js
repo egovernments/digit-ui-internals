@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import ActionModal from "../components/Modal";
+import { convertEpochToDate, convertToLocale } from "../utils";
 
 const ReceiptDetails = () => {
 
@@ -39,19 +40,19 @@ const ReceiptDetails = () => {
         <div >
           <Card>
             <StatusTable>
-              <Row label={t("CR_RECEIPT_NUMBER")} text={PaymentReceipt.paymentDetails[0].receiptNumber} textStyle={{ whiteSpace: "pre" }} />
-              <Row label={t("CR_RECEIPT_CONSUMER_NUMBER")} text={PaymentReceipt.paymentDetails[0].bill.consumerCode} textStyle={{ whiteSpace: "pre" }} />
-              <Row label={t("CR_RECEIPT_PAYMENT_DATE")} text={PaymentReceipt.paymentDetails[0].receiptDate} />
-              <Row label={t("CR_RECEIPT_PAYER_NAME")} text={PaymentReceipt.payerName} />
-              <Row label={t("CR_RECEIPT_PAYER_NUMBER")} text={PaymentReceipt.mobileNumber} />
-              <Row label={t("CR_RECEIPT_SERVICE_TYPE")} text={PaymentReceipt.paymentDetails[0].businessService} />
-              <Row label={t("CR_RECEIPT_BILL_PERIOD")} text={PaymentReceipt.paymentDetails[0].bill.billDetails[0].fromPeriod} />
-              <Row label={t("CR_RECEIPT_AMOUNT")} text={PaymentReceipt.totalAmountPaid} />
-              <Row label={t("CR_RECEIPT_PENDING_AMOUNT")} text={PaymentReceipt.totalDue} />
-              <Row label={t("CR_RECEIPT_PAYMENT_MODE")} text={PaymentReceipt.paymentMode} />
-              <Row label={t("CR_RECEIPT_TXN_ID")} text={PaymentReceipt.transactionNumber} />
-              <Row label={t("CR_RECEIPT_G8_RECEIPT_NO")} text={PaymentReceipt.paymentDetails[0].manualReceiptNumber} />
-              <Row label={t("CR_RECEIPT_G8_RECEIPT_DATE")} text={PaymentReceipt.paymentDetails[0].manualReceiptDate} />
+              <Row label={t("CR_RECEIPT_NUMBER")} text={PaymentReceipt?.paymentDetails[0]?.receiptNumber || "NA"} textStyle={{ whiteSpace: "pre" }} />
+              <Row label={t("CR_RECEIPT_CONSUMER_NUMBER")} text={PaymentReceipt?.paymentDetails[0]?.bill?.consumerCode || "NA"} textStyle={{ whiteSpace: "pre" }} />
+              <Row label={t("CR_RECEIPT_PAYMENT_DATE")} text={convertEpochToDate(PaymentReceipt?.paymentDetails[0]?.receiptDate) || "NA"} />
+              <Row label={t("CR_RECEIPT_PAYER_NAME")} text={PaymentReceipt?.payerName || "NA"} />
+              <Row label={t("CR_RECEIPT_PAYER_NUMBER")} text={PaymentReceipt?.mobileNumber || "NA"} />
+              <Row label={t("CR_RECEIPT_SERVICE_TYPE")} text={t(convertToLocale(PaymentReceipt?.paymentDetails[0]?.businessService,'BILLINGSERVICE_BUSINESSSERVICE' ))|| "NA"} />
+              <Row label={t("CR_RECEIPT_BILL_PERIOD")} text={PaymentReceipt?.paymentDetails[0]?.bill?.billDetails[0]?.fromPeriod || "NA"} />
+              <Row label={t("CR_RECEIPT_AMOUNT")} text={'₹'+PaymentReceipt?.totalAmountPaid || "NA"} />
+              <Row label={t("CR_RECEIPT_PENDING_AMOUNT")} text={'₹'+PaymentReceipt?.totalDue || "₹0"} />
+              <Row label={t("CR_RECEIPT_PAYMENT_MODE")} text={PaymentReceipt?.paymentMode ? t(`COMMON_MASTERS_PAYMENTMODE_${PaymentReceipt?.paymentMode}`) || "NA" : "NA"} />
+              <Row label={t("CR_RECEIPT_TXN_ID")} text={PaymentReceipt?.transactionNumber|| "NA"} />
+              <Row label={t("CR_RECEIPT_G8_RECEIPT_NO")} text={PaymentReceipt?.paymentDetails[0]?.manualReceiptNumber || "NA"} />
+              <Row label={t("CR_RECEIPT_G8_RECEIPT_DATE")} text={convertEpochToDate(PaymentReceipt?.paymentDetails[0]?.manualReceiptDate) || "NA"} />
             </StatusTable>
           </Card>
         </div>

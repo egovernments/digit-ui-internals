@@ -8,7 +8,7 @@ import Banner from "./components/pageComponents/Banner";
 import ReceiptsFilter from "./components/ReceiptsFilter";
 import Inbox from "./pages/Inbox";
 import ReceiptDetails from "./pages/ReceiptDetails";
-import Response from "./pages/Response";
+import ReceiptAcknowledgement from "./pages/ReceiptAcknowledgement";
 import ReceiptsCard from "./receiptHomeCard";
 
 export const ReceiptsModule = ({ stateCode, userType }) => {
@@ -36,7 +36,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
           <div className="ground-container">
             <p className="breadcrumb" style={{ marginLeft: mobileView ? "2vw" : "revert" }}>
               <Link to="/digit-ui/employee" style={{ cursor: "pointer", color: "#666" }}>
-                {t("CR_COMMON_BUTTON_HOME")}
+                {t("ES_COMMON_HOME")}
               </Link>{" "}
               / <span>{location.pathname === "/digit-ui/employee/receipts/inbox" ? t("CR_COMMON_HEADER") : t("CR_COMMON_HEADER")}</span>
             </p>
@@ -52,7 +52,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
                 />
               )}
             />
-            <PrivateRoute path={`${path}/response`} component={(props) => <Response {...props} parentRoute={path} />} />
+            <PrivateRoute path={`${path}/response`} component={(props) => <ReceiptAcknowledgement {...props} parentRoute={path} />} />
             <PrivateRoute path={`${path}/details/:service/:id`} component={() => <ReceiptDetails />} />
           </div>
         </React.Fragment>

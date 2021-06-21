@@ -2,7 +2,7 @@ import { FormComposer, Loader, Modal } from "@egovernments/digit-ui-react-compon
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { configCancelConfig } from "./Modal/CancelConfig";
-// t={t} tenantId={tenantId} applicationData={data} closeModal={closeModal} submitAction={submitAction}
+
 const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, applicationData, billData }) => {
   const history = useHistory();
   const [config, setConfig] = useState({});
@@ -26,7 +26,7 @@ const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, app
       })
     );
 
-  }, []);
+  }, [Reasons, selectedReason]);
 
   const Heading = (props) => {
     return <h1 className="heading-m">{props.label}</h1>;
@@ -52,19 +52,21 @@ const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, app
 
 
   useEffect(() => {
-    setReasons(data?.["common-masters"]?.CancelReceiptReason);
+    setReasons(data?.dropdownData);
   }, [data]);
 
 
   function submit(data) {
-    // useHRMSUpdate
-    data.effectiveFrom = new Date(data.effectiveFrom).getTime();
-    data.reasonForDeactivation = selectedReason.code;
 
-    Employees[0]["reactivationDetails"].push(data);
-    Employees[0].isActive = true;
-
-    history.push("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "ACTIVATION" });
+    history.push("/digit-ui/employee/receipts/response", {
+      paymentWorkflow: {
+        action: "CANCEL",
+        additionalDetails: data.otherDetails,
+        paymentId: applicationData?.Payments[0]?.id,
+        reason: selectedReason.code,
+        tenantId: applicationData?.Payments[0]?.tenantId,
+      }, key: "UPDATE", action: "CANCELLATION", businessService: applicationData?.Payments[0]?.paymentDetails[0]?.businessService
+    });
 
   }
 
