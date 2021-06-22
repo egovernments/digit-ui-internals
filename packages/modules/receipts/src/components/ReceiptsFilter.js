@@ -19,25 +19,25 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   );
 
   if (isLoading || isLoading1) {
-   return <Loader></Loader>
+    return <Loader />
   }
 
 
-  const mdmsStatus = data?.dropdownData||[];
+  const mdmsStatus = data?.dropdownData || [];
   const [status, setStatus] = useState(mdmsStatus?.map(c => c.code));
 
   const [service, setService] = useState(null);
 
   useEffect(() => {
     if (service) {
-      // setSearchParams({ status: instrumentStatus.code });
+      setSearchParams({ businessServices: service });
     }
   }, [service]);
 
 
   useEffect(() => {
     if (status) {
-      // setSearchParams({ status: instrumentStatus.code });
+      setSearchParams({ status: status.join(',') });
     }
   }, [status]);
   const onCheckBoxClick = (value) => {
@@ -52,7 +52,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
 
   const clearAll = () => {
     onFilterChange({ delete: Object.keys(searchParams) });
-    setStatus([]);
+    setStatus(mdmsStatus?.map(c => c.code));
     setService(null);
     props?.onClose?.();
   };
@@ -102,7 +102,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
               </div>
               <div>
                 <SubmitBar
-                  // disabled={_.isEqual(_searchParams, searchParams)}
+                  disabled={status?.length == mdmsStatus?.length && service == null}
                   onSubmit={() => onFilterChange(_searchParams)}
                   label={t("ACTION_TEST_APPLY")}
                 />

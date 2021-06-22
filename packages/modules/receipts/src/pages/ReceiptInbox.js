@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import ReceiptsDesktopInbox from "../components/inbox/ReceiptsDesktopInbox";
 import ReceiptsMobileInbox from "../components/inbox/ReceiptsMobileInbox";
 
-const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filterComponent, isInbox }) => {
+const ReceiptInbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filterComponent, isInbox }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   // const { isLoading: isLoading, Errors, data: res } = Digit.Hooks.hrms.useHRMSCount(tenantId);
   const isupdate = Digit.SessionStorage.get("isupdate");
@@ -156,4 +156,4 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
   }
 };
 
-export default Inbox;
+export default ReceiptInbox;

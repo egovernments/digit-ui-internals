@@ -6,7 +6,7 @@ import { Link, Switch, useLocation, useRouteMatch } from "react-router-dom";
 import ActionModal from "./components/Modal";
 import Banner from "./components/Banner";
 import ReceiptsFilter from "./components/ReceiptsFilter";
-import Inbox from "./pages/Inbox";
+import ReceiptInbox from "./pages/ReceiptInbox";
 import ReceiptDetails from "./pages/ReceiptDetails";
 import ReceiptAcknowledgement from "./pages/ReceiptAcknowledgement";
 import ReceiptsCard from "./receiptHomeCard";
@@ -43,7 +43,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
             <PrivateRoute
               path={`${path}/inbox`}
               component={() => (
-                <Inbox
+                <ReceiptInbox
                   parentRoute={path}
                   businessService="receipts"
                   filterComponent="RECEIPTS_INBOX_FILTER"
