@@ -1,22 +1,30 @@
-import { ActionBar, ApplyFilterBar, CheckBox, CloseSvg, Dropdown, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { ActionBar, ApplyFilterBar, CheckBox, CloseSvg, Dropdown, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
   // const tenantId = );
-const tenantId=Digit.ULBService.getCurrentTenantId()||'';
-const tenant=tenantId.split&&tenantId.split('.')[0]||'';
+  const tenantId = Digit.ULBService.getCurrentTenantId() || '';
+  const tenant = tenantId.split && tenantId.split('.')[0] || '';
   const [_searchParams, setSearchParams] = useState(() => searchParams);
   const { t } = useTranslation();
 
-  const { data: dataReceipts, ...rest1 } = Digit.Hooks.receipts.useReceiptsMDMS(
+  const { data: dataReceipts, isLoading, ...rest1 } = Digit.Hooks.receipts.useReceiptsMDMS(
     tenant,
     "ReceiptsBusinessServices"
   );
+  const { data, isLoading: isLoading1, ...rest2 } = Digit.Hooks.receipts.useReceiptsMDMS(
+    tenant,
+    "CancelReceiptStatus"
+  );
 
-  const mdmsStatus = ["NEW","DEPOSITED", "CANCELLED"];
-  console.log(dataReceipts, rest1, 'mdms');
-  const [status, setStatus] = useState([]);
+  if (isLoading || isLoading1) {
+   return <Loader></Loader>
+  }
+
+
+  const mdmsStatus = data?.dropdownData||[];
+  const [status, setStatus] = useState(mdmsStatus?.map(c => c.code));
 
   const [service, setService] = useState(null);
 
@@ -32,12 +40,19 @@ const tenant=tenantId.split&&tenantId.split('.')[0]||'';
       // setSearchParams({ status: instrumentStatus.code });
     }
   }, [status]);
+  const onCheckBoxClick = (value) => {
+    if (status.includes(value)) {
+      status.splice(status.findIndex((x) => x == value), 1)
+    } else {
+      status.push(value)
+    }
+    setStatus([...status])
+  }
+
 
   const clearAll = () => {
     onFilterChange({ delete: Object.keys(searchParams) });
-
-
-    setStatus(null);
+    setStatus([]);
     setService(null);
     props?.onClose?.();
   };
@@ -73,10 +88,11 @@ const tenant=tenantId.split&&tenantId.split('.')[0]||'';
               {mdmsStatus.map((sta, index) =>
                 <CheckBox
                   key={index + "service"}
-                  label={t(`RC_${sta}`)}
-                  value={sta}
-                  checked={status}
-                  onChange={(event) => setStatus(event, e.value)}
+                  label={t(sta?.name)}
+                  value={sta?.code}
+                  checked={status.includes(sta?.code)}
+                  onChange={(event) =>
+                    onCheckBoxClick(event.target.value)}
                 />
               )}
               <div>

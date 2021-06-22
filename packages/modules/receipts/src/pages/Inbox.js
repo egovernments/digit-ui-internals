@@ -7,12 +7,18 @@ import ReceiptsMobileInbox from "../components/inbox/ReceiptsMobileInbox";
 const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filterComponent, isInbox }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   // const { isLoading: isLoading, Errors, data: res } = Digit.Hooks.hrms.useHRMSCount(tenantId);
-
+  const isupdate = Digit.SessionStorage.get("isupdate");
+  const searchParamsCount = {
+    tenantId: tenantId,
+    businessServices: 'PT',
+    isCountRequest: true
+  };
+  const { isLoading: countLoading, data: countData, ...rest1 } = Digit.Hooks.receipts.useReceiptsSearch(searchParamsCount, tenantId, [], isupdate, searchParamsCount.businessServices);
   const { t } = useTranslation();
   const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
   const [pageSize, setPageSize] = useState(initialStates.pageSize || 10);
   const [sortParams, setSortParams] = useState(initialStates.sortParams || [{ id: "createdTime", desc: false }]);
-  const [totalRecords, setTotalReacords] = useState(undefined);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [searchParams, setSearchParams] = useState(() => {
     return initialStates.searchParams || {};
   });
@@ -21,15 +27,15 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
-  const isupdate = Digit.SessionStorage.get("isupdate")
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, paginationParams, isupdate,'PT');
+
+  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, paginationParams, isupdate, searchParamsCount.businessServices);
   let isLoading = false;
   // useEffect(() => {
   //   // setTotalReacords(res?.EmployeCount?.totalEmployee);
   // }, [res]);
 
   useEffect(() => { }, [hookLoading, rest]);
-
+  useEffect(( ) => { setTotalRecords(countData?.Count) }, [countData])
   useEffect(() => {
     setPageOffset(0);
   }, [searchParams]);
