@@ -16,7 +16,6 @@ const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, app
   );
 
   useEffect(() => {
-
     return setConfig(
       configCancelConfig({
         t,
@@ -25,7 +24,6 @@ const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, app
         selectReason,
       })
     );
-
   }, [Reasons, selectedReason]);
 
   const Heading = (props) => {
@@ -50,14 +48,12 @@ const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, app
     );
   };
 
-
   useEffect(() => {
     setReasons(data?.dropdownData);
   }, [data]);
 
 
   function submit(data) {
-
     history.push("/digit-ui/employee/receipts/response", {
       paymentWorkflow: {
         action: "CANCEL",

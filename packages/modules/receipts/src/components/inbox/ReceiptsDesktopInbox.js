@@ -18,9 +18,7 @@ const ReceiptsDesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
     return value == "CANCELLED" ? <span className="sla-cell-error">{t(`${prefix}${value}`) || ""}</span> : <span className="sla-cell-success">{t(`${prefix}${value}`) || ""}</span>;
   };
   const data = props?.data?.Payments;
-
   const [FilterComponent, setComp] = useState(() => Digit.ComponentRegistryService?.getComponent(filterComponent));
-
   const columns = React.useMemo(() => {
     return [
       {

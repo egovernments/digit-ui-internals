@@ -1,8 +1,7 @@
+import { ActionBar, CloseSvg, DatePicker, Label, LinkLabel, SubmitBar, TextInput } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
-import { TextInput, Label, SubmitBar, LinkLabel, ActionBar, CloseSvg, DatePicker } from "@egovernments/digit-ui-react-components";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-// import _ from "lodash";
 
 const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams }) => {
   const { t } = useTranslation();
@@ -10,20 +9,14 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     defaultValues: searchParams,
   });
   const mobileView = innerWidth <= 640;
-
-  // console.log(_.isEqual(defaultSearchParams, searchParams), { defaultSearchParams, searchParams }, "params are defaulted");
-
   const onSubmitInput = (data) => {
     if (!data.mobileNumber) {
       delete data.mobileNumber;
     }
-
     data.delete = [];
-
     searchFields.forEach((field) => {
       if (!data[field.name]) data.delete.push(field.name);
     });
-
     onSearch(data);
     if (type === "mobile") {
       onClose();
@@ -71,7 +64,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
                     <Label>{input.label}</Label>
                     {input.type !== "date" ? (
-                        <div className="field-container">
+                      <div className="field-container">
                         {input?.componentInFront ? (
                           <span className="citizen-card-input citizen-card-input--front" style={{ flex: "none" }}>
                             {input?.componentInFront}
@@ -79,7 +72,6 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                         ) : null}
                         <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
                       </div>
-                      
                     ) : (
                       <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}

@@ -3,12 +3,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, Switch, useLocation, useRouteMatch } from "react-router-dom";
-import ActionModal from "./components/Modal";
 import Banner from "./components/Banner";
+import ActionModal from "./components/Modal";
 import ReceiptsFilter from "./components/ReceiptsFilter";
-import ReceiptInbox from "./pages/ReceiptInbox";
-import ReceiptDetails from "./pages/ReceiptDetails";
 import ReceiptAcknowledgement from "./pages/ReceiptAcknowledgement";
+import ReceiptDetails from "./pages/ReceiptDetails";
+import ReceiptInbox from "./pages/ReceiptInbox";
 import ReceiptsCard from "./receiptHomeCard";
 import { getDefaultReceiptService } from "./utils";
 
@@ -24,11 +24,9 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
   const inboxInitialState = {
     searchParams: {
       tenantId: tenantId,
-      businessServices:getDefaultReceiptService()
+      businessServices: getDefaultReceiptService()
     },
   };
-
-
   const { path, url } = useRouteMatch();
 
   if (userType === "employee") {

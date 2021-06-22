@@ -10,7 +10,6 @@ export const printReciept = async (businessService, receiptNumber) => {
   const state = tenantId?.split(".")[0];
   const payments = await Digit.PaymentService.getReciept(tenantId, businessService, { receiptNumbers: receiptNumber });
   let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
-
   if (!payments.Payments[0]?.fileStoreId) {
     response = await Digit.PaymentService.generatePdf(state, { Payments: payments.Payments }, "consolidatedreceipt");
   }
@@ -32,7 +31,6 @@ const GetLabel = (action, isSuccess, isEmployee, t) => {
   }
 };
 
-
 const BannerPicker = (props) => {
   return (
     <Banner
@@ -49,7 +47,6 @@ const ReceiptAcknowledgement = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { state } = props.location;
   const mutation = Digit.Hooks.receipts.useReceiptsUpdate(tenantId, state?.businessService);
-
   useEffect(() => {
     const onSuccess = () => {
     };
@@ -65,12 +62,10 @@ const ReceiptAcknowledgement = (props) => {
     }
   }, []);
 
-
   const DisplayText = (action, isSuccess, isEmployee, t) => {
     if (!isSuccess) {
       return mutation?.error?.response?.data?.Errors[0].code
     } else {
-
       Digit.SessionStorage.set("isupdate", Math.floor(100000 + Math.random() * 900000));
       return t('CR_APPLY_FORWARD_SUCCESS');
     }
@@ -79,7 +74,7 @@ const ReceiptAcknowledgement = (props) => {
   if (mutation.isLoading || mutation.isIdle) {
     return <Loader />;
   }
-  debugger;
+
   return (
     <Card>
       <BannerPicker

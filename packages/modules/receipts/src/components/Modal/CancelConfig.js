@@ -26,16 +26,16 @@ export const configCancelConfig = ({ t, selectedReason, Reasons, selectReason })
                             name: "otherDetails",
                         },
                         // isMandatory:selectedReason?.code=="OTHER"?true:false,
-                        disable:selectedReason?.code=="OTHER"?false:true,
+                        disable: selectedReason?.code == "OTHER" ? false : true,
                     },
                     {
                         label: t("CR_ADDITIONAL_PENALTY"),
                         type: "text",
                         populators: {
                             name: "penalty",
-                            disable:true
+                            disable: true
                         },
-                        disable:true
+                        disable: true
                     }
                 ],
             },

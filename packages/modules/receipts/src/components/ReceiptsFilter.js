@@ -4,12 +4,11 @@ import { useTranslation } from "react-i18next";
 import { getDefaultReceiptService } from "../utils";
 
 const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
-  // const tenantId = );
+
   const tenantId = Digit.ULBService.getCurrentTenantId() || '';
   const tenant = tenantId.split && tenantId.split('.')[0] || '';
   const [_searchParams, setSearchParams] = useState(() => searchParams);
   const { t } = useTranslation();
-
   const { data: dataReceipts, isLoading, ...rest1 } = Digit.Hooks.receipts.useReceiptsMDMS(
     tenant,
     "ReceiptsBusinessServices"
@@ -18,16 +17,13 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
     tenant,
     "CancelReceiptStatus"
   );
-
   if (isLoading || isLoading1) {
     return <Loader />
   }
-
   const mdmsStatus = data?.dropdownData || [];
   const [status, setStatus] = useState(mdmsStatus?.map(c => c.code));
-const defaultService =getDefaultReceiptService();
-
-  const [service, setService] = useState({name:`BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`,code:defaultService});
+  const defaultService = getDefaultReceiptService();
+  const [service, setService] = useState({ name: `BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`, code: defaultService });
 
   useEffect(() => {
     if (service) {
@@ -35,12 +31,12 @@ const defaultService =getDefaultReceiptService();
     }
   }, [service]);
 
-
   useEffect(() => {
     if (status) {
       setSearchParams({ status: status.join(',') });
     }
   }, [status]);
+
   const onCheckBoxClick = (value) => {
     if (status.includes(value)) {
       status.splice(status.findIndex((x) => x == value), 1)
@@ -50,13 +46,13 @@ const defaultService =getDefaultReceiptService();
     setStatus([...status])
   }
 
-
   const clearAll = () => {
     onFilterChange({ delete: Object.keys(searchParams) });
     setStatus(mdmsStatus?.map(c => c.code));
-    setService({name:`BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`,code:defaultService});
+    setService({ name: `BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`, code: defaultService });
     props?.onClose?.();
   };
+
   return (
     <React.Fragment>
       <div className="filter">
@@ -97,7 +93,6 @@ const defaultService =getDefaultReceiptService();
                 />
               )}
               <div>
-
                 <div className="filter-label">{t("CR_SERVICE_CATEGORY_LABEL")}</div>
                 <Dropdown t={t} option={dataReceipts?.dropdownData || null} value={service} selected={service} select={setService} optionKey={"name"} />
               </div>

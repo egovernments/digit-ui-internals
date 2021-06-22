@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ApplicationCard } from "./ApplicationCard";
-// import { ApplicationLinks } from "@egovernments/digit-ui-react-components";
 
 const ReceiptsMobileInbox = ({
   data,
@@ -23,7 +22,6 @@ const ReceiptsMobileInbox = ({
   const { t } = useTranslation();
   const getData = () => {
     return data?.Payments?.map((dataObj) => {
-     
     });
   };
 

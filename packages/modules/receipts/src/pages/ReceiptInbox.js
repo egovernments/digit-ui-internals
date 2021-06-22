@@ -3,11 +3,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReceiptsDesktopInbox from "../components/inbox/ReceiptsDesktopInbox";
 import ReceiptsMobileInbox from "../components/inbox/ReceiptsMobileInbox";
-import { getDefaultReceiptService } from "../utils";
 
 const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates = {}, filterComponent, isInbox }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const isupdate = Digit.SessionStorage.get("isupdate");  
+  const isupdate = Digit.SessionStorage.get("isupdate");
   const { t } = useTranslation();
   const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
   const [pageSize, setPageSize] = useState(initialStates.pageSize || 10);
@@ -16,9 +15,9 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
   const [searchParams, setSearchParams] = useState(() => {
     return initialStates.searchParams || {};
   });
-  const { isLoading: countLoading, data: countData, ...rest1 } = Digit.Hooks.receipts.useReceiptsSearch({...searchParams,    isCountRequest: true}, tenantId, [], isupdate);
+  const { isLoading: countLoading, data: countData, ...rest1 } = Digit.Hooks.receipts.useReceiptsSearch({ ...searchParams, isCountRequest: true }, tenantId, [], isupdate);
   let isMobile = window.Digit.Utils.browser.isMobile();
-  isMobile=false;
+  isMobile = false;
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
@@ -27,7 +26,7 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
   let isLoading = false;
 
   useEffect(() => { }, [hookLoading, rest]);
-  useEffect(( ) => { setTotalRecords(countData?.Count) }, [countData])
+  useEffect(() => { setTotalRecords(countData?.Count) }, [countData])
   useEffect(() => {
     setPageOffset(0);
   }, [searchParams]);
