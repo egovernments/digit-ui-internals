@@ -52,6 +52,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
                 />
               )}
             />
+            <PrivateRoute path={`${path}/inprogress`} component={(props) => <h2>{t("CR_RECEIPTS_SCREENS_UNDER_CONSTRUCTION")}</h2>} />
             <PrivateRoute path={`${path}/response`} component={(props) => <ReceiptAcknowledgement {...props} parentRoute={path} />} />
             <PrivateRoute path={`${path}/details/:service/:id`} component={() => <ReceiptDetails />} />
           </div>

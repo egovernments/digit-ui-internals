@@ -77,7 +77,6 @@ const ReceiptsDesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
   } else if (data?.length === 0) {
     result = (
       <Card style={{ marginTop: 20 }}>
-        {/* TODO Change localization key */}
         {t("CS_MYAPPLICATIONS_NO_APPLICATION")
           .split("\\n")
           .map((text, index) => (

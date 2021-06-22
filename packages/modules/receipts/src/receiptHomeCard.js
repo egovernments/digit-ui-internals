@@ -42,10 +42,10 @@ const ReceiptsCard = () => {
             <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
           </span>
           <span className="link">
-            <Link to={`/digit-ui/employee/receipts/dashboard`}>{t("CR_HOME_HEADER_DASHBOARD")}</Link>
+            <Link to={`/digit-ui/employee/receipts/inprogress`}>{t("CR_HOME_HEADER_DASHBOARD")}</Link>
           </span>
           <span className="link">
-            <Link to={`/digit-ui/employee/receipts/reports`}>{t("CR_HOME_HEADER_REPORT")}</Link>
+            <Link to={`/digit-ui/employee/receipts/inprogress`}>{t("CR_HOME_HEADER_REPORT")}</Link>
           </span>
         </div>
       </div>

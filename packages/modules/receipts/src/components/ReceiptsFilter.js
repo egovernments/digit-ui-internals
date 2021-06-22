@@ -47,7 +47,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   }
 
   const clearAll = () => {
-    onFilterChange({ delete: Object.keys(searchParams) });
+    onFilterChange({ delete: Object.keys(searchParams) },true);
     setStatus(mdmsStatus?.map(c => c.code));
     setService({ name: `BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`, code: defaultService });
     props?.onClose?.();
@@ -70,7 +70,6 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
                     fill="#505A5F"
                   />
                 </svg>
-                {/* {t("ES_COMMON_CLEAR_ALL")} */}
               </span>
             )}
             {props.type === "mobile" && (

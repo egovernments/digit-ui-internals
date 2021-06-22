@@ -39,13 +39,18 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
     setPageOffset((prevState) => prevState - pageSize);
   };
 
-  const handleFilterChange = (filterParam) => {
-    let keys_to_delete = filterParam.delete;
-    let _new = { ...searchParams, ...filterParam };
-    if (keys_to_delete) keys_to_delete.forEach((key) => delete _new[key]);
-    filterParam.delete;
-    delete _new.delete;
-    setSearchParams({ ..._new });
+  const handleFilterChange = (filterParam, reset = false) => {
+    if (!reset) {
+      let keys_to_delete = filterParam.delete;
+      let _new = { ...searchParams, ...filterParam };
+      if (keys_to_delete) keys_to_delete.forEach((key) => delete _new[key]);
+      filterParam.delete;
+      delete _new.delete;
+      setSearchParams({ ..._new });
+    } else {
+      setSearchParams({ ...initialStates.searchParams });
+    }
+
   };
 
   const handleSort = useCallback((args) => {

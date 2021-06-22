@@ -32,7 +32,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
       _newParams.delete.push(e?.name);
     });
 
-    onSearch({ ..._newParams });
+    onSearch({ ..._newParams }, true);
   }
 
   const clearAll = (mobileView) => {
