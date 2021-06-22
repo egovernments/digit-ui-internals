@@ -3,17 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReceiptsDesktopInbox from "../components/inbox/ReceiptsDesktopInbox";
 import ReceiptsMobileInbox from "../components/inbox/ReceiptsMobileInbox";
+import { getDefaultReceiptService } from "../utils";
 
-const ReceiptInbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filterComponent, isInbox }) => {
+const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates = {}, filterComponent, isInbox }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  // const { isLoading: isLoading, Errors, data: res } = Digit.Hooks.hrms.useHRMSCount(tenantId);
-  const isupdate = Digit.SessionStorage.get("isupdate");
-  const searchParamsCount = {
-    tenantId: tenantId,
-    businessServices: 'PT',
-    isCountRequest: true
-  };
-  const { isLoading: countLoading, data: countData, ...rest1 } = Digit.Hooks.receipts.useReceiptsSearch(searchParamsCount, tenantId, [], isupdate, searchParamsCount.businessServices);
+  const isupdate = Digit.SessionStorage.get("isupdate");  
   const { t } = useTranslation();
   const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
   const [pageSize, setPageSize] = useState(initialStates.pageSize || 10);
@@ -22,17 +16,15 @@ const ReceiptInbox = ({ parentRoute, businessService = "HRMS", initialStates = {
   const [searchParams, setSearchParams] = useState(() => {
     return initialStates.searchParams || {};
   });
-
-  let isMobile = false;
+  const { isLoading: countLoading, data: countData, ...rest1 } = Digit.Hooks.receipts.useReceiptsSearch({...searchParams,    isCountRequest: true}, tenantId, [], isupdate);
+  let isMobile = window.Digit.Utils.browser.isMobile();
+  isMobile=false;
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
 
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, paginationParams, isupdate, searchParamsCount.businessServices);
+  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, paginationParams, isupdate);
   let isLoading = false;
-  // useEffect(() => {
-  //   // setTotalReacords(res?.EmployeCount?.totalEmployee);
-  // }, [res]);
 
   useEffect(() => { }, [hookLoading, rest]);
   useEffect(( ) => { setTotalRecords(countData?.Count) }, [countData])
@@ -91,8 +83,6 @@ const ReceiptInbox = ({ parentRoute, businessService = "HRMS", initialStates = {
     ];
   };
 
-
-
   if (isLoading) {
     return <Loader />;
   }
@@ -103,6 +93,7 @@ const ReceiptInbox = ({ parentRoute, businessService = "HRMS", initialStates = {
         <ReceiptsMobileInbox
           businessService={businessService}
           data={data}
+          tableConfig={rest?.tableConfig}
           isLoading={hookLoading}
           defaultSearchParams={initialStates.searchParams}
           isSearch={!isInbox}
@@ -122,7 +113,6 @@ const ReceiptInbox = ({ parentRoute, businessService = "HRMS", initialStates = {
           totalRecords={totalRecords}
           filterComponent={filterComponent}
         />
-        // <div></div>
       );
     } else {
       return (

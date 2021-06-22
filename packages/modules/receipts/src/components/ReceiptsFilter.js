@@ -1,6 +1,7 @@
 import { ActionBar, ApplyFilterBar, CheckBox, CloseSvg, Dropdown, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getDefaultReceiptService } from "../utils";
 
 const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
   // const tenantId = );
@@ -22,15 +23,15 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
     return <Loader />
   }
 
-
   const mdmsStatus = data?.dropdownData || [];
   const [status, setStatus] = useState(mdmsStatus?.map(c => c.code));
+const defaultService =getDefaultReceiptService();
 
-  const [service, setService] = useState(null);
+  const [service, setService] = useState({name:`BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`,code:defaultService});
 
   useEffect(() => {
     if (service) {
-      setSearchParams({ businessServices: service });
+      setSearchParams({ businessServices: service?.code });
     }
   }, [service]);
 
@@ -53,7 +54,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   const clearAll = () => {
     onFilterChange({ delete: Object.keys(searchParams) });
     setStatus(mdmsStatus?.map(c => c.code));
-    setService(null);
+    setService({name:`BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`,code:defaultService});
     props?.onClose?.();
   };
   return (
@@ -98,7 +99,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
               <div>
 
                 <div className="filter-label">{t("CR_SERVICE_CATEGORY_LABEL")}</div>
-                <Dropdown t={t} option={dataReceipts?.dropdownData || null} selected={service} select={setService} optionKey={"name"} />
+                <Dropdown t={t} option={dataReceipts?.dropdownData || null} value={service} selected={service} select={setService} optionKey={"name"} />
               </div>
               <div>
                 <SubmitBar

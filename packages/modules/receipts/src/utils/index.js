@@ -39,3 +39,9 @@ export const convertToLocale = (value = "", key = "") => {
     }
     return `${key}_${convertedValue}`;
 };
+
+ const RECEIPTS_DEFAULT_SERVICE="PT";
+
+export const getDefaultReceiptService =()=>{
+    return RECEIPTS_DEFAULT_SERVICE;
+}

@@ -10,6 +10,7 @@ import ReceiptInbox from "./pages/ReceiptInbox";
 import ReceiptDetails from "./pages/ReceiptDetails";
 import ReceiptAcknowledgement from "./pages/ReceiptAcknowledgement";
 import ReceiptsCard from "./receiptHomeCard";
+import { getDefaultReceiptService } from "./utils";
 
 export const ReceiptsModule = ({ stateCode, userType }) => {
   const moduleCode = "RECEIPTS";
@@ -23,6 +24,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
   const inboxInitialState = {
     searchParams: {
       tenantId: tenantId,
+      businessServices:getDefaultReceiptService()
     },
   };
 

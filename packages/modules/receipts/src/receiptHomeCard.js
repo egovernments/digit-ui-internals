@@ -2,6 +2,7 @@ import { Loader } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { getDefaultReceiptService } from "./utils";
 
 
 const ReceiptsCard = () => {
@@ -10,11 +11,10 @@ const ReceiptsCard = () => {
   const isupdate = Digit.SessionStorage.get("isupdate");
   const searchParams = {
     tenantId: tenantId,
-    businessServices: 'PT',
+    businessServices: getDefaultReceiptService(),
     isCountRequest: true
   };
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], isupdate, searchParams.businessServices);
-  // const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.hrms.useHRMSCount(tenantId);
+  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], isupdate);
   if (hookLoading) {
     return <Loader></Loader>
   }

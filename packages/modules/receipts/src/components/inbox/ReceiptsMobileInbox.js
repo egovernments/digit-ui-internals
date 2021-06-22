@@ -23,12 +23,7 @@ const ReceiptsMobileInbox = ({
   const { t } = useTranslation();
   const getData = () => {
     return data?.Payments?.map((dataObj) => {
-      const obj = {};
-      const columns = isSearch ? tableConfig.searchColumns() : tableConfig.inboxColumns();
-      columns.forEach((el) => {
-        if (el.mobileCell) obj[el.Header] = el.mobileCell(dataObj);
-      });
-      return obj;
+     
     });
   };
 

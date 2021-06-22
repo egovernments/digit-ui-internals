@@ -13,7 +13,7 @@ const ReceiptDetails = () => {
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const isupdate = Digit.SessionStorage.get("isupdate")
-  const { isLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch({ receiptNumbers: decodeURIComponent(receiptId) }, tenantId, {}, isupdate, businessService);
+  const { isLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch({ receiptNumbers: decodeURIComponent(receiptId),businessServices:businessService }, tenantId, {}, isupdate);
 
 
   const cancelReceipt = () => {
