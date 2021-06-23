@@ -88,11 +88,11 @@ const mCollectAccess = () => {
 const receiptsAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
-  const mCollectRoles = ["PT_CEMP"];
+  const receiptsRoles = ["CR_PT"];
 
-  const MCOLLECT_ACCESS = userRoles.filter((role) => mCollectRoles.includes(role));
+  const RECEIPTS_ACCESS = userRoles.filter((role) => receiptsRoles.includes(role));
 
-  return MCOLLECT_ACCESS.length > 0;
+  return RECEIPTS_ACCESS.length > 0;
 };
 
 export default {

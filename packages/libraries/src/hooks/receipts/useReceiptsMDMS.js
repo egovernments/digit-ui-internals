@@ -36,7 +36,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
       data.dropdownData = [...data[`common-masters`].ReceiptStatus.map(config => {
         return {
           code: config.code,
-          name: `CR_${config.code}`
+          name: `RC_${config.code}`
         }
       })] || []
     }
@@ -44,12 +44,12 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
   };
   const useCancelReceiptReasonAndStatus= () => {
     const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_REASON_STATUS", tenantId], () => MdmsService.getCancelReceiptReasonAndStatus(tenantId, 'common-masters'), config);
-    if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.CancelReceiptReason && Array.isArray(data[`common-masters`].CancelReceiptReason)) {
-      data[`common-masters`].CancelReceiptReason = data[`common-masters`].CancelReceiptReason.filter((unit) => unit.active) || [];
-      data.dropdownData = [...data[`common-masters`].CancelReceiptReason.map(config => {
+    if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.uiCommonPay && Array.isArray(data[`common-masters`].uiCommonPay)) {
+      data[`common-masters`].uiCommonPay = data[`common-masters`].uiCommonPay.filter((unit) => unit.cancelReceipt) || [];
+      data.dropdownData = [...data[`common-masters`].uiCommonPay.map(config => {
         return {
           code: config.code,
-          name: `CR_REASON_${config.code}`
+          name: `BILLINGSERVICE_BUSINESSSERVICE_${config.code}`
         }
       })] || []
       if(data[`common-masters`]?.ReceiptStatus && Array.isArray(data[`common-masters`].ReceiptStatus)){
@@ -57,7 +57,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
         data.dropdownDataStatus = [...data[`common-masters`].ReceiptStatus.map(config => {
           return {
             code: config.code,
-            name: `CR_${config.code}`
+            name: `RC_${config.code}`
           }
         })] || []
       }

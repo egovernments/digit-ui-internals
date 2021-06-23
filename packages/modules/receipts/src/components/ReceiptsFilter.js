@@ -22,10 +22,8 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   }
   const mdmsStatus = data?.dropdownDataStatus || [];
   
-  useEffect(() => {
-    setStatus(mdmsStatus?.map(c => c?.code))
-  }, [data]);
-  
+
+
   useEffect(() => {
     if (service) {
       setSearchParams({ businessServices: service?.code });
@@ -49,7 +47,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
 
   const clearAll = () => {
     onFilterChange({ delete: Object.keys(searchParams) },true);
-    setStatus(mdmsStatus?.map(c => c.code));
+    setStatus([]);
     setService({ name: `BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`, code: defaultService });
     props?.onClose?.();
   };
@@ -98,7 +96,7 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
               </div>
               <div>
                 <SubmitBar
-                  disabled={status?.length == mdmsStatus?.length && service == defaultService}
+                  disabled={status?.length == 0&& service?.code == defaultService}
                   onSubmit={() => onFilterChange(_searchParams)}
                   label={t("ACTION_TEST_APPLY")}
                 />

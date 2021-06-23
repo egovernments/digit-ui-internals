@@ -666,7 +666,7 @@ const getCancelReceiptReasonAndStatus = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: "CancelReceiptReason" },{ name: "ReceiptStatus" }],
+        masterDetails: [{ name: "ReceiptStatus" },{ name: "uiCommonPay" }],
       },
     ],
   },
