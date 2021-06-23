@@ -17,7 +17,7 @@ const TextArea = (props) => {
       }`}
       minLength={props.minLength}
       maxLength={props.maxLength} 
-      autocomplete="off"
+      autoComplete="off"
     ></textarea>
   );
 };

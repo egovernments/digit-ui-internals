@@ -48,7 +48,7 @@ const TextInput = (props) => {
             step={props.step}
             autoFocus={props.autoFocus}
             onBlur={props.onBlur}
-            autocomplete="off"
+            autoComplete="off"
           />
         ) : (
           <input
@@ -80,7 +80,7 @@ const TextInput = (props) => {
             step={props.step}
             autoFocus={props.autoFocus}
             onBlur={props.onBlur}
-            autocomplete="off"
+            autoComplete="off"
           />
         )}
         {props.type === "date" && <DatePicker {...props} date={date} setDate={setDate} data={data} />}

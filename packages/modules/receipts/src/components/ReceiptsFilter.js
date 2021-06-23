@@ -9,22 +9,23 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   const tenant = tenantId.split && tenantId.split('.')[0] || '';
   const [_searchParams, setSearchParams] = useState(() => searchParams);
   const { t } = useTranslation();
-  const { data: dataReceipts, isLoading, ...rest1 } = Digit.Hooks.receipts.useReceiptsMDMS(
-    tenant,
-    "ReceiptsBusinessServices"
-  );
-  const { data, isLoading: isLoading1, ...rest2 } = Digit.Hooks.receipts.useReceiptsMDMS(
-    tenant,
-    "CancelReceiptStatus"
-  );
-  if (isLoading || isLoading1) {
-    return <Loader />
-  }
-  const mdmsStatus = data?.dropdownData || [];
-  const [status, setStatus] = useState(mdmsStatus?.map(c => c.code));
   const defaultService = getDefaultReceiptService();
+  const [status, setStatus] = useState([]);
   const [service, setService] = useState({ name: `BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`, code: defaultService });
 
+  const { data, isLoading, ...rest } = Digit.Hooks.receipts.useReceiptsMDMS(
+    tenant,
+    "CancelReceiptReasonAndStatus"
+  );
+  if (isLoading) {
+    return <Loader />
+  }
+  const mdmsStatus = data?.dropdownDataStatus || [];
+  
+  useEffect(() => {
+    setStatus(mdmsStatus?.map(c => c?.code))
+  }, [data]);
+  
   useEffect(() => {
     if (service) {
       setSearchParams({ businessServices: service?.code });
@@ -93,11 +94,11 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
               )}
               <div>
                 <div className="filter-label">{t("CR_SERVICE_CATEGORY_LABEL")}</div>
-                <Dropdown t={t} option={dataReceipts?.dropdownData || null} value={service} selected={service} select={setService} optionKey={"name"} />
+                <Dropdown t={t} option={data?.dropdownData || null} value={service} selected={service} select={setService} optionKey={"name"} />
               </div>
               <div>
                 <SubmitBar
-                  disabled={status?.length == mdmsStatus?.length && service == null}
+                  disabled={status?.length == mdmsStatus?.length && service == defaultService}
                   onSubmit={() => onFilterChange(_searchParams)}
                   label={t("ACTION_TEST_APPLY")}
                 />

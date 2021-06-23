@@ -15,14 +15,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
     }
     return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_SERVICES", tenantId]) };
   };
-  const useCancelReceiptStatus = () => {
-    const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_STATUS", tenantId], () => MdmsService.getCancelReceiptReason(tenantId, 'common-masters'), config);
-    if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.CancelReceiptReason && Array.isArray(data[`common-masters`].CancelReceiptReason)) {
-      data[`common-masters`].CancelReceiptReason = data[`common-masters`].CancelReceiptReason.filter((unit) => unit.active) || [];
-      data.dropdownData = [{ code: "NEW", name: `CR_REASON_${'NEW'}` }, { code: "CANCELLED", name: `CR_REASON_${'CANCELLED'}` }, { code: "DEPOSITED", name: `CR_REASON_${'DEPOSITED'}` }]
-    }
-    return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_STATUS", tenantId]) };
-  };
+ 
   const useCancelReceiptReason = () => {
     const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_REASON", tenantId], () => MdmsService.getCancelReceiptReason(tenantId, 'common-masters'), config);
     if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.CancelReceiptReason && Array.isArray(data[`common-masters`].CancelReceiptReason)) {
@@ -36,6 +29,42 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
     }
     return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_REASON", tenantId]) };
   };
+  const useCancelReceiptStatus = () => {
+    const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_STATUS", tenantId], () => MdmsService.getReceiptStatus(tenantId, 'common-masters'), config);
+    if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.ReceiptStatus && Array.isArray(data[`common-masters`].ReceiptStatus)) {
+      data[`common-masters`].ReceiptStatus = data[`common-masters`].ReceiptStatus.filter((unit) => unit.active) || [];
+      data.dropdownData = [...data[`common-masters`].ReceiptStatus.map(config => {
+        return {
+          code: config.code,
+          name: `CR_${config.code}`
+        }
+      })] || []
+    }
+    return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_STATUS", tenantId]) };
+  };
+  const useCancelReceiptReasonAndStatus= () => {
+    const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_REASON_STATUS", tenantId], () => MdmsService.getCancelReceiptReasonAndStatus(tenantId, 'common-masters'), config);
+    if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.CancelReceiptReason && Array.isArray(data[`common-masters`].CancelReceiptReason)) {
+      data[`common-masters`].CancelReceiptReason = data[`common-masters`].CancelReceiptReason.filter((unit) => unit.active) || [];
+      data.dropdownData = [...data[`common-masters`].CancelReceiptReason.map(config => {
+        return {
+          code: config.code,
+          name: `CR_REASON_${config.code}`
+        }
+      })] || []
+      if(data[`common-masters`]?.ReceiptStatus && Array.isArray(data[`common-masters`].ReceiptStatus)){
+        data[`common-masters`].ReceiptStatus = data[`common-masters`].ReceiptStatus.filter((unit) => unit.active) || [];
+        data.dropdownDataStatus = [...data[`common-masters`].ReceiptStatus.map(config => {
+          return {
+            code: config.code,
+            name: `CR_${config.code}`
+          }
+        })] || []
+      }
+     
+    }
+    return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_REASON_STATUS", tenantId]) };
+  };
 
   switch (type) {
     case "ReceiptsBusinessServices":
@@ -44,6 +73,8 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
       return useCancelReceiptReason();
     case "CancelReceiptStatus":
       return useCancelReceiptStatus();
+    case "CancelReceiptReasonAndStatus":
+      return useCancelReceiptReasonAndStatus();
   }
 };
 export default useReceiptsMDMS;

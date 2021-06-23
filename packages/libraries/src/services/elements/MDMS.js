@@ -647,6 +647,30 @@ const getCancelReceiptReason = (tenantId, moduleCode, type) => ({
     ],
   },
 });
+const getReceiptStatus = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "ReceiptStatus" }],
+      },
+    ],
+  },
+});
+const getCancelReceiptReasonAndStatus = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "CancelReceiptReason" },{ name: "ReceiptStatus" }],
+      },
+    ],
+  },
+});
 
 const GetEgovLocations = (MdmsRes) => {
   return MdmsRes["egov-location"].TenantBoundary[0].boundary.children.map((obj) => ({
@@ -1176,6 +1200,12 @@ export const MdmsService = {
   },
   getCancelReceiptReason: (tenantId,moduleCode) => {
     return MdmsService.getDataByCriteria(tenantId, getCancelReceiptReason(tenantId, moduleCode), moduleCode);
+  },
+  getReceiptStatus: (tenantId,moduleCode) => {
+    return MdmsService.getDataByCriteria(tenantId, getReceiptStatus(tenantId, moduleCode), moduleCode);
+  },
+  getCancelReceiptReasonAndStatus: (tenantId,moduleCode) => {
+    return MdmsService.getDataByCriteria(tenantId, getCancelReceiptReasonAndStatus(tenantId, moduleCode), moduleCode);
   },
   
 };

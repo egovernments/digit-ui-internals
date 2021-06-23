@@ -2,6 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ApplicationCard } from "./ApplicationCard";
 
+const GetDateCell = (value) => {
+  const date = new Date(value);
+  return <span className="sla-cell">{date?.toLocaleDateString()}</span>
+};
+const GetCell = (value) => <span className="sla-cell">{value}</span>;
+
 const ReceiptsMobileInbox = ({
   data,
   isLoading,
@@ -21,10 +27,16 @@ const ReceiptsMobileInbox = ({
   console.log(data);
   const { t } = useTranslation();
   const getData = () => {
-    return data?.Payments?.map((dataObj) => {
-    });
+    return data?.Payments?.map((original) => ({
+      [t("CR_COMMON_TABLE_COL_RECEIPT_NO")]: original?.paymentDetails[0]?.receiptNumber,
+      [t("CR_COMMON_TABLE_COL_DATE")]: GetDateCell(original?.transactionDate || ""),
+      [t("CR_COMMON_TABLE_CONSUMERCODE")]: GetCell(original?.paymentDetails[0]?.bill?.consumerCode || ""),
+      [t("CR_COMMON_TABLE_COL_PAYEE_NAME")]: GetCell(original?.payerName),
+      [t("CR_SERVICE_TYPE_LABEL")]: GetCell(t(`BILLINGSERVICE_BUSINESSSERVICE_${original?.paymentDetails[0]?.businessService}`)),
+      [t("CR_COMMON_TABLE_COL_STATUS")]: GetCell(t(`RC_${original?.paymentStatus}`)),
+    }));
   };
-
+  const serviceRequestIdKey = t("CR_COMMON_TABLE_COL_RECEIPT_NO");
   return (
     <div style={{ padding: 0 }}>
       <div className="inbox-container">
@@ -43,6 +55,7 @@ const ReceiptsMobileInbox = ({
             linkPrefix={linkPrefix}
             sortParams={sortParams}
             filterComponent={filterComponent}
+            serviceRequestIdKey={serviceRequestIdKey}
           />
         </div>
       </div>

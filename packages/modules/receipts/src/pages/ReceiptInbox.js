@@ -17,7 +17,7 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
   });
   const { isLoading: countLoading, data: countData, ...rest1 } = Digit.Hooks.receipts.useReceiptsSearch({ ...searchParams, isCountRequest: true }, tenantId, [], isupdate);
   let isMobile = window.Digit.Utils.browser.isMobile();
-  isMobile = false;
+
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
@@ -115,6 +115,7 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
           searchParams={searchParams}
           sortParams={sortParams}
           totalRecords={totalRecords}
+          linkPrefix={'/digit-ui/employee/receipts/details/'}
           filterComponent={filterComponent}
         />
       );

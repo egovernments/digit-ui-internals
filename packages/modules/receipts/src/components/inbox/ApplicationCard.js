@@ -18,6 +18,7 @@ export const ApplicationCard = ({
   linkPrefix,
   removeParam,
 }) => {
+
   const [type, setType] = useState(isSearch ? "SEARCH" : "");
   const [popup, setPopup] = useState(isSearch ? true : false);
   const [params, setParams] = useState(searchParams);
