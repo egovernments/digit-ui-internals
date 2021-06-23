@@ -1,4 +1,4 @@
-import { ActionBar, ApplyFilterBar, CheckBox, CloseSvg, Dropdown, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { CheckBox, CloseSvg, Dropdown, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getDefaultReceiptService } from "../utils";
@@ -17,13 +17,17 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
     tenant,
     "CancelReceiptReasonAndStatus"
   );
-  if (isLoading) {
-    return <Loader />
-  }
+
   const mdmsStatus = data?.dropdownDataStatus || [];
 
   useEffect(() => {
-    if (service?.code!=_searchParams.businessServices) {
+    if (data?.dropdownDataStatus) {
+      setStatus(mdmsStatus?.map(mdms=>mdms?.code));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (service?.code != _searchParams.businessServices) {
       setSearchParams({ businessServices: service?.code });
     }
   }, [service]);
@@ -44,12 +48,14 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   }
 
   const clearAll = () => {
-    onFilterChange({ delete: Object.keys(searchParams) },true);
-    setStatus([]);
+    onFilterChange({ delete: Object.keys(searchParams) }, true);
+    setStatus(mdmsStatus?.map(mdms=>mdms?.code));
     setService({ name: `BILLINGSERVICE_BUSINESSSERVICE_${defaultService}`, code: defaultService });
     props?.onClose?.();
   };
-
+  if (isLoading) {
+    return <Loader />
+  }
   return (
     <React.Fragment>
       <div className="filter">
@@ -94,29 +100,20 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
               </div>
               <div>
                 <SubmitBar
-                  disabled={status?.length == 0&& service?.code == defaultService}
+                  disabled={status?.length == mdmsStatus?.length&& service?.code == defaultService}
                   onSubmit={() => onFilterChange(_searchParams)}
                   label={t("ACTION_TEST_APPLY")}
                 />
               </div>
+              {props.type === "mobile" && <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <button type={"button"} style={{ flex: 1 }} className="button-clear" onClick={clearAll}>
+                  <header>{t("ES_COMMON_CLEAR_ALL")}</header>
+                </button>
+              </div>}
             </div>
           </div>
         </div>
       </div>
-      {props.type === "mobile" && (
-        <ActionBar>
-          <ApplyFilterBar
-            submit={false}
-            labelLink={t("ES_COMMON_CLEAR_ALL")}
-            buttonLink={t("ES_COMMON_FILTER")}
-            onClear={clearAll}
-            onSubmit={() => {
-              onSearch();
-            }}
-            style={{ flex: 1 }}
-          />
-        </ActionBar>
-      )}
     </React.Fragment>
   );
 };

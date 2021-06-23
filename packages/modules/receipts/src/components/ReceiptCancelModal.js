@@ -65,7 +65,9 @@ const ReceiptCancelModal = ({ t, action, tenantId, closeModal, submitAction, app
     });
 
   }
-
+  if (isLoading) {
+    return <Loader></Loader>
+  }
   return config?.form ? (
     <Modal
       headerBarMain={<Heading label={t(config?.label?.heading)} />}

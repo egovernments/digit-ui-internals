@@ -1,6 +1,6 @@
 import { Card, DetailsCard, FilterAction, Loader, PopUp, SearchAction } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
-import Filter from "../ReceiptsFilter";
+import ReceiptsFilter from "../ReceiptsFilter";
 import SearchApplication from "./search";
 export const ApplicationCard = ({
   t,
@@ -100,13 +100,13 @@ export const ApplicationCard = ({
             }}
           />
         )}
-        <FilterAction
+        {/* <FilterAction
           text="SORT"
           handleActionClick={() => {
             setType("SORT");
             setPopup(true);
           }}
-        />
+        /> */}
       </div>
       {result}
       {popup && (
@@ -114,7 +114,7 @@ export const ApplicationCard = ({
           {type === "FILTER" && (
             <div className="popup-module">
               {
-                <Filter
+                <ReceiptsFilter
                   onFilterChange={selectParams}
                   onClose={handlePopupClose}
                   onSearch={onSearchPara}
