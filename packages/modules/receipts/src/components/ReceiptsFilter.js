@@ -21,11 +21,9 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
     return <Loader />
   }
   const mdmsStatus = data?.dropdownDataStatus || [];
-  
-
 
   useEffect(() => {
-    if (service) {
+    if (service?.code!=_searchParams.businessServices) {
       setSearchParams({ businessServices: service?.code });
     }
   }, [service]);

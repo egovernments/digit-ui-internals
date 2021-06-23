@@ -65,7 +65,7 @@ export const ReceiptsModule = ({ stateCode, userType }) => {
 const componentsToRegister = {
   ReceiptsModule,
   ReceiptsCard,
-  ReceiptDetails,
+
   ActionModal,
   Banner,
   RECEIPTS_INBOX_FILTER: (props) => <ReceiptsFilter {...props} />,

@@ -24,7 +24,7 @@ const ReceiptsMobileInbox = ({
   filterComponent,
   allLinks,
 }) => {
-  console.log(data);
+  
   const { t } = useTranslation();
   const getData = () => {
     return data?.Payments?.map((original) => ({
@@ -36,7 +36,7 @@ const ReceiptsMobileInbox = ({
       [t("CR_COMMON_TABLE_COL_STATUS")]: GetCell(t(`RC_${original?.paymentStatus}`)),
     }));
   };
-  const serviceRequestIdKey = t("CR_COMMON_TABLE_COL_RECEIPT_NO");
+  const serviceRequestIdKey = (original) => {return `${searchParams?.businessServices}/${encodeURIComponent(original?.[t("CR_COMMON_TABLE_COL_RECEIPT_NO")])}`};
   return (
     <div style={{ padding: 0 }}>
       <div className="inbox-container">
