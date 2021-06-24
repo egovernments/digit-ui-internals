@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import ActionModal from "../components/Modal";
-import { convertEpochToDate, convertToLocale } from "../utils";
+import { convertEpochToDate, convertToLocale, getFinancialYears } from "../utils";
 
 const ReceiptDetails = () => {
 
@@ -49,7 +49,7 @@ const ReceiptDetails = () => {
               <Row label={t("CR_RECEIPT_PAYER_NAME")} text={PaymentReceipt?.payerName || "NA"} />
               <Row label={t("CR_RECEIPT_PAYER_NUMBER")} text={PaymentReceipt?.mobileNumber || "NA"} />
               <Row label={t("CR_RECEIPT_SERVICE_TYPE")} text={t(convertToLocale(PaymentReceipt?.paymentDetails[0]?.businessService, 'BILLINGSERVICE_BUSINESSSERVICE')) || "NA"} />
-              <Row label={t("CR_RECEIPT_BILL_PERIOD")} text={PaymentReceipt?.paymentDetails[0]?.bill?.billDetails[0]?.fromPeriod || "NA"} />
+              <Row label={t("CR_RECEIPT_BILL_PERIOD")} text={getFinancialYears(PaymentReceipt?.paymentDetails[0]?.bill?.billDetails[0]?.fromPeriod,PaymentReceipt?.paymentDetails[0]?.bill?.billDetails[0]?.toPeriod) || "NA"} />
               <Row label={t("CR_RECEIPT_AMOUNT")} text={'₹' + PaymentReceipt?.totalAmountPaid || "NA"} />
               <Row label={t("CR_RECEIPT_PENDING_AMOUNT")} text={'₹' + PaymentReceipt?.totalDue || "₹0"} />
               <Row label={t("CR_RECEIPT_PAYMENT_MODE")} text={PaymentReceipt?.paymentMode ? t(`COMMON_MASTERS_PAYMENTMODE_${PaymentReceipt?.paymentMode}`) || "NA" : "NA"} />

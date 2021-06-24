@@ -45,3 +45,13 @@ const RECEIPTS_DEFAULT_SERVICE = "PT";
 export const getDefaultReceiptService = () => {
     return RECEIPTS_DEFAULT_SERVICE;
 }
+
+export const getFinancialYears = (from, to) => {
+    console.log(from,to);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    if (toDate.getYear() - fromDate.getYear() != 0) {
+      return `FY${fromDate.getYear() + 1900}-${toDate.getYear() - 100}`;
+    }
+    return `${fromDate.toLocaleDateString()}-${toDate.toLocaleDateString()}`;
+  }
