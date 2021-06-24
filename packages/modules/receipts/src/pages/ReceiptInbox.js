@@ -25,7 +25,11 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
   const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, paginationParams, isupdate);
   let isLoading = false;
 
-  useEffect(() => { }, [hookLoading, rest]);
+  useEffect(() => {
+    return () => {
+      rest?.revalidate();
+    }
+  }, [])
   useEffect(() => { setTotalRecords(countData?.Count) }, [countData])
   useEffect(() => {
     setPageOffset(0);

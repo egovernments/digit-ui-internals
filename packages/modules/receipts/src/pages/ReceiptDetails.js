@@ -1,5 +1,5 @@
 import { ActionBar, Card, Header, Loader, Row, StatusTable, SubmitBar } from "@egovernments/digit-ui-react-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import ActionModal from "../components/Modal";
@@ -23,7 +23,12 @@ const ReceiptDetails = () => {
   };
 
   const submitAction = (data) => { };
+  useEffect(() => {
 
+    return () => {
+      rest?.revalidate();
+    }
+  }, [])
   if (isLoading) {
     return <Loader />;
   }

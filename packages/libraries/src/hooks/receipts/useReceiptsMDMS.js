@@ -15,7 +15,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
     }
     return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_SERVICES", tenantId]) };
   };
- 
+
   const useCancelReceiptReason = () => {
     const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_REASON", tenantId], () => MdmsService.getCancelReceiptReason(tenantId, 'common-masters'), config);
     if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.CancelReceiptReason && Array.isArray(data[`common-masters`].CancelReceiptReason)) {
@@ -42,7 +42,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
     }
     return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_STATUS", tenantId]) };
   };
-  const useCancelReceiptReasonAndStatus= () => {
+  const useCancelReceiptReasonAndStatus = () => {
     const { isLoading, error, data } = useQuery(["RECEIPTS_CANCEL_REASON_STATUS", tenantId], () => MdmsService.getCancelReceiptReasonAndStatus(tenantId, 'common-masters'), config);
     if (!isLoading && data && data[`common-masters`] && data[`common-masters`]?.uiCommonPay && Array.isArray(data[`common-masters`].uiCommonPay)) {
       data[`common-masters`].uiCommonPay = data[`common-masters`].uiCommonPay.filter((unit) => unit.cancelReceipt) || [];
@@ -52,7 +52,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
           name: `BILLINGSERVICE_BUSINESSSERVICE_${config.code}`
         }
       })] || []
-      if(data[`common-masters`]?.ReceiptStatus && Array.isArray(data[`common-masters`].ReceiptStatus)){
+      if (data[`common-masters`]?.ReceiptStatus && Array.isArray(data[`common-masters`].ReceiptStatus)) {
         data[`common-masters`].ReceiptStatus = data[`common-masters`].ReceiptStatus.filter((unit) => unit.active) || [];
         data.dropdownDataStatus = [...data[`common-masters`].ReceiptStatus.map(config => {
           return {
@@ -61,7 +61,7 @@ const useReceiptsMDMS = (tenantId, type, config = {}) => {
           }
         })] || []
       }
-     
+
     }
     return { isLoading, error, data, revalidate: () => client.invalidateQueries(["RECEIPTS_CANCEL_REASON_STATUS", tenantId]) };
   };
