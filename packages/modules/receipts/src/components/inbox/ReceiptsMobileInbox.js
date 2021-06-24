@@ -23,6 +23,7 @@ const ReceiptsMobileInbox = ({
   tableConfig,
   filterComponent,
   allLinks,
+  defaultSearchParams
 }) => {
   
   const { t } = useTranslation();
@@ -50,6 +51,7 @@ const ReceiptsMobileInbox = ({
             isSearch={isSearch}
             onSearch={onSearch}
             onSort={onSort}
+            defaultSearchParams={defaultSearchParams}
             searchParams={searchParams}
             searchFields={searchFields}
             linkPrefix={linkPrefix}

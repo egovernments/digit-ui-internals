@@ -17,6 +17,7 @@ export const ApplicationCard = ({
   sortParams,
   linkPrefix,
   removeParam,
+  defaultSearchParams
 }) => {
 
   const [type, setType] = useState(isSearch ? "SEARCH" : "");
@@ -115,12 +116,11 @@ export const ApplicationCard = ({
             <div className="popup-module">
               {
                 <ReceiptsFilter
-                  onFilterChange={selectParams}
-                  onClose={handlePopupClose}
-                  onSearch={onSearchPara}
+                  defaultSearchParams={defaultSearchParams}
+                  onFilterChange={onFilterChange}
+                  searchParams={searchParams}
                   type="mobile"
-                  searchParams={params}
-                  removeParam={removeParam}
+                  onClose={handlePopupClose}
                 />
               }
             </div>

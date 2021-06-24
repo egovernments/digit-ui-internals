@@ -101,12 +101,14 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
               <div>
                 <SubmitBar
                   disabled={status?.length == mdmsStatus?.length&& service?.code == defaultService}
-                  onSubmit={() => onFilterChange(_searchParams)}
+                  onSubmit={() => {onFilterChange(_searchParams)
+                    props.onClose()}}
                   label={t("ACTION_TEST_APPLY")}
                 />
               </div>
               {props.type === "mobile" && <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <button type={"button"} style={{ flex: 1 }} className="button-clear" onClick={clearAll}>
+                <button type={"button"} style={{ flex: 1 }} className="button-clear" onClick={()=>{clearAll()
+                 props.onClose()}}>
                   <header>{t("ES_COMMON_CLEAR_ALL")}</header>
                 </button>
               </div>}
