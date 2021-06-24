@@ -126,16 +126,16 @@ const ReceiptsDesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
                 text: "CR_COMMON_DASHBOARD_HEADER",
                 link: "/digit-ui/employee/receipts/inprogress",
                 businessService: "receipts",
-                roles: ["PT_CEMP"],
+                roles: ["CR_PT"],
               },
               {
                 text: "CR_COMMON_REPORTS_HEADER",
                 link: "/digit-ui/employee/receipts/inprogress",
                 businessService: "receipts",
-                roles: ["PT_CEMP"],
+                roles: ["CR_PT"],
               }
             ]}
-            headerText={"RECEIPTS"}
+            headerText={t("ACTION_TEST_RECEIPTS")}
             businessService={props.businessService}
           />
           <div>

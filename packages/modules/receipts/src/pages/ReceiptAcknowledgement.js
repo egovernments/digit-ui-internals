@@ -36,7 +36,7 @@ const BannerPicker = (props) => {
     <Banner
       message={(GetActionMessage(props.action, props.isSuccess, props.isEmployee, props.t))}
       applicationNumber={props.data?.Payments[0]?.paymentDetails[0].receiptNumber}
-      info={GetLabel(props.action, props.isSuccess, props.isEmployee, props.t)}
+      info={props.t("CR_RECEIPT_NUMBER")}
       successful={props.isSuccess}
     />
   );
