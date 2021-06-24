@@ -32,9 +32,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
     { statuses: [] }
   );
 
-  // const localities = useSelector((state) => state.common.revenue_localities[tenantId]);
   // console.log("find use query localities here", localities)
-  // debugger
   const selectLocality = (d) => {
     onFilterChange({ locality: [...searchParams?.locality, d] });
   };
@@ -89,7 +87,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
                   return (
                     <RemoveableTag
                       key={index}
-                      text={locality.name}
+                      text={locality.i18nkey}
                       onClick={() => {
                         onFilterChange({ locality: searchParams?.locality.filter((loc) => loc.code !== locality.code) });
                       }}

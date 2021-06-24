@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { FormComposer, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { newConfig } from "../../../config/Create/config";
@@ -8,10 +8,19 @@ import _ from "lodash";
 const EditForm = ({ applicationData }) => {
   const { t } = useTranslation();
   const history = useHistory();
+  const { state } = useLocation();
   const [canSubmit, setSubmitValve] = useState(false);
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_SUCCESS_DATA", {});
+
+  useEffect(() => {
+    setMutationHappened(false);
+    clearSuccessData();
+  }, []);
 
   const defaultValues = {
     originalData: applicationData,
+    address: applicationData?.address,
     // address: {
     //   pincode: applicationData.address.pincode || "",
     //   locality: {
@@ -83,51 +92,25 @@ const EditForm = ({ applicationData }) => {
   const onSubmit = (data) => {
     const formData = {
       ...applicationData,
-      id: applicationData?.id,
-      propertyId: applicationData?.propertyId,
-      accountId: applicationData?.accountId,
-      acknowldgementNumber: applicationData?.acknowldgementNumber,
-      surveyId: applicationData?.surveyId || null,
-      linkedProperties: applicationData?.linkedProperties || null,
-      tenantId: applicationData?.tenantId || tenantId,
-      oldPropertyId: applicationData?.oldPropertyId || null,
-      status: applicationData?.status,
       address: {
         ...applicationData?.address,
         ...data?.address,
         city: data?.address?.city?.name,
       },
       propertyType: data?.PropertyType?.code,
-      ownershipCategory: data?.ownershipCategory?.code,
-      owners: applicationData?.owners,
-      creationReason: "UPDATE", // required
+      creationReason: state.workflow?.businessService === "PT.CREATE" ? "CREATE" : "UPDATE",
       usageCategory: data?.usageCategoryMinor?.subuagecode ? data?.usageCategoryMinor?.subuagecode : data?.usageCategoryMajor?.code,
-      usageCategoryMinor: data?.usageCategoryMinor?.subuagecode,
-      usageCategoryMajor: data?.usageCategoryMajor?.code,
+      usageCategoryMajor: data?.usageCategoryMajor?.code.split(".")[0],
+      usageCategoryMinor: data?.usageCategoryMajor?.code.split(".")[1] || null,
+      propertyType: data?.PropertyType?.code,
       noOfFloors: Number(data?.noOfFloors),
-      landArea: data?.landarea?.floorarea,
-      superBuiltUpArea: applicationData?.superBuiltUpArea || null,
+      landArea: Number(data?.landarea),
+      propertyType: data?.PropertyType?.code,
       source: "MUNICIPAL_RECORDS", // required
       channel: "CFC_COUNTER", // required
       documents: data?.documents?.documents,
-      units: data?.units?.[0]?.usageCategory ? data?.units : applicationData?.units,
-      additionalDetails: applicationData?.additionalDetails || null,
-      auditDetails: applicationData?.auditDetails,
-      workflow: {
-        businessService: "PT.UPDATE",
-        action: "OPEN",
-        moduleName: "PT",
-      },
-      occupancyDate: applicationData?.occupancyDate || null,
-      usage: applicationData?.usage || null,
-      financialYear: applicationData?.financialYear || null,
-      assessmentNumber: applicationData?.assessmentNumber || null,
-      assessmentDate: applicationData?.assessmentDate || "0",
-      adhocExemption: applicationData?.adhocExemption || null,
-      adhocPenalty: applicationData?.adhocPenalty || null,
-      adhocExemptionReason: applicationData?.adhocExemptionReason || null,
-      adhocPenaltyReason: applicationData?.adhocPenaltyReason || null,
-      calculation: applicationData?.calculation || null,
+      units: data?.units,
+      workflow: state.workflow,
       applicationStatus: "UPDATE",
     };
 
@@ -138,7 +121,7 @@ const EditForm = ({ applicationData }) => {
         unequalKeys.push({ key, app: applicationData[key], form: formData[key] });
     });
 
-    console.log(unequalKeys, "inside submit ");
+    console.log(unequalKeys, "inside submit edit");
 
     history.push("/digit-ui/employee/pt/response", { Property: formData, key: "UPDATE", action: "SUBMIT" });
   };
@@ -147,9 +130,9 @@ const EditForm = ({ applicationData }) => {
 
   return (
     <FormComposer
-      heading={t("ES_TITLE_MODIFY_DESULDGING_APPLICATION")}
+      heading={t("PT_UPDATE_PROPERTY")}
       isDisabled={!canSubmit}
-      label={t("ES_FSM_APPLICATION_UPDATE")}
+      label={t("ES_COMMON_APPLICATION_SUBMIT")}
       config={configs.map((config) => {
         return {
           ...config,

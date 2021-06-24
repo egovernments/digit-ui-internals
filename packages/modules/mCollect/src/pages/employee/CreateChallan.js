@@ -15,11 +15,15 @@ const CreateChallen = ({ ChallanData }) => {
     isEdit = true;
   }
 
+  let lastModTime = ChallanData ? ChallanData[0].auditDetails.lastModifiedTime : null;
   const { data: fetchBillData } = ChallanData
-    ? Digit.Hooks.useFetchBillsForBuissnessService({
-        businessService: ChallanData[0].businessService,
-        consumerCode: ChallanData[0].challanNo,
-      })
+    ? Digit.Hooks.useFetchBillsForBuissnessService(
+        {
+          businessService: ChallanData[0].businessService,
+          consumerCode: ChallanData[0].challanNo,
+        },
+        { lastModTime }
+      )
     : {};
 
   const cities = Digit.Hooks.mcollect.usemcollectTenants();
@@ -296,6 +300,7 @@ const CreateChallen = ({ ChallanData }) => {
         .then((result, err) => {
           if (result.challans && result.challans.length > 0) {
             const challan = result.challans[0];
+            let LastModifiedTime = Digit.SessionStorage.set("isMcollectAppChanged", challan.auditDetails.lastModifiedTime);
             Digit.MCollectService.generateBill(challan.challanNo, tenantId, challan.businessService, "challan").then((response) => {
               if (response.Bill && response.Bill.length > 0) {
                 history.push(
@@ -546,4 +551,3 @@ const CreateChallen = ({ ChallanData }) => {
   );
 };
 export default CreateChallen;
-

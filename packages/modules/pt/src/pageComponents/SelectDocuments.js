@@ -170,7 +170,7 @@ function SelectDocument({
       const docType = dropDownData
         .filter((e) => e.code === originalDoc?.documentType)
         .map((e) => ({ ...e, i18nKey: e?.code?.replaceAll(".", "_") }))[0];
-      console.log(dropDownData, docType, doc?.code, "inside update docs");
+      // console.log(dropDownData, docType, doc?.code, "inside update docs");
       if (!docType) setHidden(true);
       else {
         setSelectedDocument(docType);
@@ -205,6 +205,10 @@ function SelectDocument({
     })();
   }, [file]);
 
+  useEffect(() => {
+    if (isHidden) setUploadedFile(null);
+  }, [isHidden]);
+
   if (filterCondition) {
     const { filterValue, jsonPath, onArray, arrayAttribute, formDataPath, formArrayAttrPath } = filterCondition;
     if (action === "create") {
@@ -213,7 +217,6 @@ function SelectDocument({
         return acc?.[key];
       }, formData);
 
-      // console.log(value, onArray, "find value here");
       let hideInput;
       if (value) {
         if (onArray) {
@@ -232,10 +235,27 @@ function SelectDocument({
       const a = fromRawData ? jsonPath : jsonPath?.split("Properties[0].propertyDetails[0].")[1];
       const keyArr = a?.split(".")?.map((e) => (e.includes("[") ? e.split("[")[1]?.split("]")[0] : e));
       const value = keyArr.reduce((acc, curr) => acc[curr], formData?.originalData);
+      const formDataValue = formDataPath.reduce((acc, key) => {
+        if (key.charAt(0).toUpperCase() + key.slice(1) === "PropertyType") return acc["PropertyType"];
+        return acc?.[key];
+      }, formData);
       let hideInput;
       if (value) {
         if (onArray) {
-          hideInput = value?.every((e) => filterValue?.includes(e[arrayAttribute]));
+          if (enabledActions?.[action].disableUpload) {
+            hideInput = value?.every((e) => filterValue?.includes(e[arrayAttribute]));
+            if (doc?.code === "OWNER.SPECIALCATEGORYPROOF") {
+              // console.log(
+              //   hideInput,
+              //   value.map((e) => e[arrayAttribute]),
+              //   filterValue,
+              //   "here find the trueth"
+              // );
+            }
+          } else {
+            const valueArr = formDataValue?.map((e) => formArrayAttrPath.reduce((acc, f) => acc?.[f], e) || e);
+            hideInput = valueArr?.every((e) => filterValue?.includes(e));
+          }
         } else hideInput = filterValue?.includes(value);
         if (hideInput !== isHidden) setHidden(hideInput);
         if (hideInput) return null;
@@ -244,17 +264,31 @@ function SelectDocument({
   }
 
   if (dropdownFilter) {
-    const { formDataPath, formArrayAttrPath, onArray, parentJsonpath, arrayAttribute } = dropdownFilter;
+    const { formDataPath, formArrayAttrPath, onArray, parentJsonpath, arrayAttribute, parentArrayJsonPath } = dropdownFilter;
     // console.log(dropdownFilter, doc?.code);
     if (["create", "update"].includes(action)) {
-      const arr = formDataPath;
-      const value = arr.reduce((acc, key) => acc?.[key], formData);
-      const attrForFormArray = formArrayAttrPath;
-      if (value) {
-        if (!onArray) dropDownData = dropdownData.filter((e) => e.parentValue.includes(value));
-        else {
-          const valueMap = value.map((e) => attrForFormArray?.reduce((acc, key) => acc[key], e) || e);
+      if (enabledActions?.[action].disableUpload) {
+        if (onArray) {
+          const keyForArr = parentArrayJsonPath?.split("Properties[0].propertyDetails[0].")[1].split(".");
+          const arr = keyForArr.reduce((acc, key) => acc[key], formData?.originalData);
+          const valueMap = arr.map((val) => parentJsonpath.split(".").reduce((acc, key) => acc[key], val));
           dropDownData = dropdownData.filter((e) => e.parentValue.some((val) => valueMap.includes(val)));
+        } else {
+          const keyForArr = parentJsonpath?.split("Properties[0].propertyDetails[0].")[1].split(".");
+          const value = keyForArr.reduce((acc, key) => acc[key], formData?.originalData);
+          dropDownData = dropdownData.filter((e) => e.parentValue.includes(value));
+        }
+      } else {
+        const arr = formDataPath;
+        const value = arr.reduce((acc, key) => acc?.[key], formData);
+        const attrForFormArray = formArrayAttrPath;
+        if (value) {
+          if (!onArray) {
+            dropDownData = dropdownData.filter((e) => e.parentValue.includes(value));
+          } else {
+            const valueMap = value.map((e) => attrForFormArray?.reduce((acc, key) => acc[key], e) || e);
+            dropDownData = dropdownData.filter((e) => e.parentValue.some((val) => valueMap.includes(val)));
+          }
         }
       }
     }
@@ -264,7 +298,7 @@ function SelectDocument({
     return null;
   }
 
-  console.log(dropDownData, "dropdown data");
+  // console.log(dropDownData, "dropdown data");
 
   return (
     <div style={{ marginBottom: "24px" }}>
@@ -292,7 +326,9 @@ function SelectDocument({
             }}
             message={uploadedFile ? `1 ${t(`CS_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
             textStyles={{ width: "100%" }}
+            inputStyles={{ width: "280px" }}
             disabled={enabledActions?.[action].disableUpload || !selectedDocument?.code}
+            buttonType="button"
           />
         </div>
       </LabelFieldPair>

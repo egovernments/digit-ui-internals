@@ -11,7 +11,8 @@ const PTApplicationDetails = () => {
   const { t } = useTranslation();
   const { acknowledgementIds } = useParams();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const coreData = Digit.Hooks.useCoreData();
+  const { data: storeData } = Digit.Hooks.useStore.getInitData();
+  const { tenants } = storeData || {};
   const { isLoading, isError, error, data } = Digit.Hooks.pt.usePropertySearch(
     { filters: { acknowledgementIds } },
     { filters: { acknowledgementIds } }
@@ -50,7 +51,7 @@ const PTApplicationDetails = () => {
   flrno = units && units[0]?.floorNo;
   const handleDownloadPdf = async () => {
     const applications = application || {};
-    const tenantInfo = coreData.tenants.find((tenant) => tenant.code === applications.tenantId);
+    const tenantInfo = tenants.find((tenant) => tenant.code === applications.tenantId);
     const pdfData = await getPTAcknowledgementData({ ...applications }, tenantInfo, t);
     Digit.Utils.pdf.generate(pdfData);
   };
@@ -58,7 +59,7 @@ const PTApplicationDetails = () => {
   return (
     <React.Fragment>
       <Header>{t("PT_MUTATION_APPLICATION_DETAILS")}</Header>
-      <div >
+      <div>
         <div>
           <LinkButton label={t("CS_COMMON_DOWNLOAD")} className="check-page-link-button pt-application-download-btn" onClick={handleDownloadPdf} />
         </div>

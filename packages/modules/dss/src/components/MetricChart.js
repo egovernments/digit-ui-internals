@@ -10,7 +10,7 @@ const MetricData = ({ t, data, code }) => {
     <div>
       <p className="heading-m" style={{ textAlign: "right", paddingTop: "0px" }}>
         {code === "citizenAvgRating" ? (
-          <Rating currentRating={Math.round(data?.headerValue)} styles={{ width: "unset" }} starStyles={{ width: "25px" }} />
+          <Rating currentRating={Math.round(data?.headerValue * 10) / 10} styles={{ width: "unset" }} starStyles={{ width: "25px" }} />
         ) : (
           `${Digit.Utils.dss.formatter(data?.headerValue, data?.headerSymbol, value?.denomination, true)} ${
             code === "totalSludgeTreated" ? t(`DSS_KL`) : ""

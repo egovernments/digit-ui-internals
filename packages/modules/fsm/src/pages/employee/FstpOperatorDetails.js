@@ -88,7 +88,7 @@ const FstpOperatorDetails = () => {
     const d = new Date();
     const timeStamp = Date.parse(new Date(d.toString().split(":")[0].slice(0, -2) + tripTime)) / 1000;
     const tripStartTimestamp = Date.parse(new Date(d.toString().split(":")[0].slice(0, -2) + tripStartTime)) / 1000;
-    vehicle.tripStartTime = tripStartTimestamp
+    vehicle.tripStartTime = tripStartTimestamp;
     vehicle.fstpEntryTime = tripStartTimestamp;
     vehicle.tripEndTime = timeStamp;
     vehicle.fstpExitTime = timeStamp;
@@ -176,7 +176,7 @@ const FstpOperatorDetails = () => {
               label={`${t("ES_VEHICLE_SEPTAGE_DUMPED")} * `}
               text={
                 <div>
-                  <TextInput name="wasteRecieved" value={wasteCollected} onChange={handleChange} style={{ width: "100%", maxWidth: "200px" }} />
+                  <TextInput type="number" name="wasteRecieved" value={wasteCollected} onChange={handleChange} style={{ width: "100%", maxWidth: "200px" }} />
                 </div>
               }
             />

@@ -19,16 +19,21 @@ const CreateEmployee = () => {
       Digit.HRMSService.search(tenantId, null, { phone: mobileNumber }).then((result, err) => {
         if (result.Employees.length > 0) {
           setShowToast({ key: true, label: "ERR_HRMS_USER_EXIST_MOB" });
+          setPhonecheck(false);
         } else {
           setPhonecheck(true);
         }
       });
+    } else {
+      setPhonecheck(false);
     }
   }, [mobileNumber]);
 
   const onFormValueChange = (setValue = true, formData) => {
     if (/^[6-9]\d{9}$/.test(formData?.SelectEmployeePhoneNumber?.mobileNumber)) {
       setMobileNumber(formData?.SelectEmployeePhoneNumber?.mobileNumber);
+    } else {
+      setPhonecheck(false);
     }
     let setcheck = false;
     for (let i = 0; i < formData?.Jurisdictions?.length; i++) {
@@ -62,6 +67,7 @@ const CreateEmployee = () => {
       formData?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress &&
       formData?.SelectEmployeeGender?.gender.code &&
       formData?.SelectEmployeeName?.employeeName &&
+      formData?.SelectEmployeeType?.code &&
       formData?.SelectEmployeePhoneNumber?.mobileNumber &&
       setcheck &&
       setassigncheck &&
@@ -92,7 +98,7 @@ const CreateEmployee = () => {
         user: {
           mobileNumber: data?.SelectEmployeePhoneNumber?.mobileNumber,
           name: data?.SelectEmployeeName?.employeeName,
-          correspondenceAddres: data?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress,
+          correspondenceAddress: data?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress,
           emailId: data?.SelectEmployeeEmailId?.emailId ? data?.SelectEmployeeEmailId?.emailId : undefined,
           gender: data?.SelectEmployeeGender?.gender.code,
           dob: new Date(data?.SelectDateofBirthEmployment?.dob).getTime(),

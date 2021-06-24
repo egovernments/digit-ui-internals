@@ -11,29 +11,33 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger } = useForm();
   const formValue = watch();
   const { errors } = localFormState;
-
-  const inputs = [
-    {
-      label: "PT_PROPERTY_ADDRESS_STREET_NAME",
-      type: "text",
-      name: "street",
-      validation: {
-        // pattern: "[a-zA-Z0-9]{1,255}",
-        maxlength: 256,
-        title: t("CORE_COMMON_STREET_INVALID"),
+  let inputs;
+  if (window.location.href.includes("tl")) {
+    inputs = config.inputs;
+  } else {
+    inputs = [
+      {
+        label: "PT_PROPERTY_ADDRESS_STREET_NAME",
+        type: "text",
+        name: "street",
+        validation: {
+          pattern: "[a-zA-Z0-9 ]{1,255}",
+          // maxlength: 256,
+          title: t("CORE_COMMON_STREET_INVALID"),
+        },
       },
-    },
-    {
-      label: "PT_PROPERTY_ADDRESS_HOUSE_NO",
-      type: "text",
-      name: "doorNo",
-      validation: {
-        // pattern: "([A-z0-9À-ž@#$&()\\-`.+,/s ]){1,63}",
-        maxlength: 256,
-        title: t("CORE_COMMON_DOOR_INVALID"),
+      {
+        label: "PT_PROPERTY_ADDRESS_HOUSE_NO",
+        type: "text",
+        name: "doorNo",
+        validation: {
+          pattern: "[A-Za-z0-9#,\/ \-]{1,63}",
+          // maxlength: 256,
+          title: t("CORE_COMMON_DOOR_INVALID"),
+        },
       },
-    },
-  ];
+    ];
+  }
 
   const convertValidationToRules = ({ validation, name, messages }) => {
     if (validation) {

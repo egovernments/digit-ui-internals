@@ -38,11 +38,6 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
   }, [formData?.ownershipCategory, SubOwnerShipCategoryOb]);
 
   useEffect(() => {
-    console.log(
-      editScreen && !isLoading && !ownerShipCatLoading && SubOwnerShipCategoryOb && OwnerShipCategoryOb,
-      { editScreen, isLoading, ownerShipCatLoading, SubOwnerShipCategoryOb, OwnerShipCategoryOb },
-      "inside useEffect"
-    );
     if (userType === "employee" && editScreen && !isLoading && !ownerShipCatLoading && OwnerShipCategoryOb) {
       const arr = getDropdwonForProperty(ownerShipdropDown);
       const defaultValue = arr.filter((e) => e.code === formData?.originalData?.ownershipCategory)[0];
@@ -166,7 +161,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
 
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!ownershipCategory}>
-      <div >
+      <div>
         <RadioButtons
           isMandatory={config.isMandatory}
           options={getDropdwonForProperty(ownerShipdropDown) || []}

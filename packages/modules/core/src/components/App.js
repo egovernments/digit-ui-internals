@@ -1,7 +1,6 @@
 import { Dropdown, LogoutIcon, TopBar as TopBarComponent } from "@egovernments/digit-ui-react-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { AppModules } from "./AppModules";
 import ChangeLanguage from "./ChangeLanguage";
@@ -25,9 +24,24 @@ export const DigitApp = ({ stateCode, modules, appTenants, logoUrl }) => {
   const innerWidth = window.innerWidth;
   const cityDetails = Digit.ULBService.getCurrentUlb();
   const userDetails = Digit.UserService.getUser();
-  const { stateInfo } = useSelector((state) => state.common);
+  const { data: storeData } = Digit.Hooks.useStore.getInitData();
+  const { stateInfo } = storeData || {};
   const CITIZEN = userDetails?.info?.type === "CITIZEN" || !window.location.pathname.split("/").includes("employee") ? true : false;
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]);
+
+  useEffect(() => {
+    if (!pathname?.includes("application-details")) {
+      if (!pathname?.includes("inbox")) {
+        Digit.SessionStorage.del("fsm/inbox/searchParams");
+      }
+      if (pathname?.includes("search")) {
+        Digit.SessionStorage.del("fsm/search/searchParams");
+      }
+    }
+    if (!pathname?.includes("dss")) {
+      Digit.SessionStorage.del("DSS_FILTERS");
+    }
+  }, [pathname]);
 
   history.listen(() => {
     window?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -185,7 +199,7 @@ function TopBar(props) {
   return (
     <div className="topbar">
       <img className="city" src={cityDetails?.logoId} />
-      <p className="ulb" style={mobileView ? { fontSize: "14px", width: "50%", display: "inline-block", marginTop: "15px" } : {}}>
+      <p className="ulb" style={mobileView ? { fontSize: "14px", width: "49%", display: "inline-block", marginTop: "15px" } : {}}>
         {t(cityDetails?.i18nKey).toUpperCase()}{" "}
         {t(`ULBGRADE_${cityDetails?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`).toUpperCase()}
       </p>

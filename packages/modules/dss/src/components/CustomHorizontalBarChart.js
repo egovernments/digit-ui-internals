@@ -65,6 +65,13 @@ const CustomHorizontalBarChart = ({
 
   const renderLegend = (value) => <span style={{ fontSize: "14px", color: "#505A5F" }}>{value}</span>;
 
+  const tickFormatter = (value) => {
+    if (typeof value === "string") {
+      return value.replace("-", ", ");
+    }
+    return value;
+  }
+
   if (isLoading) {
     return <Loader />;
   }
@@ -78,10 +85,11 @@ const CustomHorizontalBarChart = ({
   return (
     <Fragment>
       <ResponsiveContainer width="99%" height={300}>
-        {chartData?.length === 0 ? 
+        {chartData?.length === 0 ? (
           <div className="no-data">
-            <p>{t('DSS_NO_DATA')}</p>
-          </div> :
+            <p>{t("DSS_NO_DATA")}</p>
+          </div>
+        ) : (
           <BarChart width="100%" height="100%" layout={layout} data={chartData} barGap={14} barSize={15}>
             <CartesianGrid />
             <YAxis
@@ -99,17 +107,17 @@ const CustomHorizontalBarChart = ({
               unit={id === "fsmCapacityUtilization" ? "%" : ""}
               // tick={{ fontSize: "14px", fill: "#505A5F" }}
             />
-            <XAxis dataKey={xDataKey} type={xAxisType} tick={{ fontSize: "14px", fill: "#505A5F" }} />
+            <XAxis dataKey={xDataKey} type={xAxisType} tick={{ fontSize: "14px", fill: "#505A5F" }} tickFormatter={tickFormatter} />
             {bars?.map((bar, id) => (
               <Bar key={id} dataKey={bar} fill={barColors[id]} stackId={id > 1 ? 1 : id} />
             ))}
             <Legend formatter={renderLegend} iconType="circle" />
             <Tooltip cursor={false} formatter={tooltipFormatter} />
           </BarChart>
-        }
+        )}
       </ResponsiveContainer>
       {showDrillDown && (
-        <p style={{ textAlign: "right", color: "#F47738" }} onClick={goToDrillDownCharts}>
+        <p className="showMore" onClick={goToDrillDownCharts}>
           {t("DSS_SHOW_MORE")}
         </p>
       )}

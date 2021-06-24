@@ -65,10 +65,10 @@ const CustomBarChart = ({
   if (chartData?.length === 0) {
     return (
       <div className="no-data">
-        <p>{t('DSS_NO_DATA')}</p>
+        <p>{t("DSS_NO_DATA")}</p>
       </div>
     );
-  } 
+  }
   return (
     <Fragment>
       <ResponsiveContainer width="99%" height={320}>
@@ -86,7 +86,7 @@ const CustomBarChart = ({
         </BarChart>
       </ResponsiveContainer>
       {showDrillDown && (
-        <p style={{ textAlign: "right", color: "#F47738" }} onClick={goToDrillDownCharts}>
+        <p className="showMore" onClick={goToDrillDownCharts}>
           {t("DSS_SHOW_MORE")}
         </p>
       )}

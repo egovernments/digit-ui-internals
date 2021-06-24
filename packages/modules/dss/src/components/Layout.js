@@ -71,10 +71,19 @@ const Layout = ({ rowData }) => {
           </GenericChart>
         );
       case "performing-metric":
-        if (value?.filters?.tenantId?.length > 0 && (visualizer?.charts?.[0].id === "fsmTopUlbByPerformance" || visualizer?.charts?.[0].id === "fsmBottomUlbByPerformance")) return null;
+        if (
+          value?.filters?.tenantId?.length > 0 &&
+          (visualizer?.charts?.[0].id === "fsmTopUlbByPerformance" || visualizer?.charts?.[0].id === "fsmBottomUlbByPerformance")
+        )
+          return null;
         return (
           <GenericChart header={visualizer.name} subHeader={`(${t(`DSS_SLA_ACHIEVED`)})`} key={key}>
-            <CustomBarChart data={visualizer?.charts?.[0]} fillColor={index++ % 2 ? "#00703C" : "#D4351C"} title={visualizer.name} showDrillDown={true} />
+            <CustomBarChart
+              data={visualizer?.charts?.[0]}
+              fillColor={index++ % 2 ? "#00703C" : "#D4351C"}
+              title={visualizer.name}
+              showDrillDown={true}
+            />
           </GenericChart>
         );
       case "collection":

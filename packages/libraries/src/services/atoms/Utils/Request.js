@@ -37,11 +37,13 @@ export const Request = async ({
   useCache = false,
   params = {},
   auth,
+  urlParams = {},
   userService,
   reciept = false,
   authHeader = false,
   setTimeParam = true,
   userDownload = false,
+  noRequestInfo = false,
 }) => {
   // console.log("params:", params);
   // console.log("in request", method);
@@ -50,6 +52,9 @@ export const Request = async ({
     data.RequestInfo = {
       apiId: "Rainmaker",
     };
+    if (noRequestInfo) {
+      delete data.RequestInfo;
+    }
     if (auth) {
       data.RequestInfo = { ...data.RequestInfo, ...requestInfo() };
     }
@@ -57,7 +62,7 @@ export const Request = async ({
       data.RequestInfo = { ...data.RequestInfo, ...userServiceData() };
     }
     if (reciept) {
-      data.RequestInfo = { ...data.RequestInfo, msgId: `string|${Digit.SessionStorage.get("locale") || `en_IN`}` };
+      data.RequestInfo = { ...data.RequestInfo, msgId: `string|${Digit.StoreData.getCurrentLanguage()}` };
     }
   }
 
@@ -83,9 +88,17 @@ export const Request = async ({
     params._ = Date.now();
   }
 
+  let _url = url
+    .split("/")
+    .map((path) => {
+      let key = path.split(":")?.[1];
+      return urlParams[key] ? urlParams[key] : path;
+    })
+    .join("/");
+
   const res = userDownload
-    ? await Axios({ method, url, data, params, headers, responseType: "arraybuffer" })
-    : await Axios({ method, url, data, params, headers });
+    ? await Axios({ method, url: _url, data, params, headers, responseType: "arraybuffer" })
+    : await Axios({ method, url: _url, data, params, headers });
 
   if (userDownload) return res;
 

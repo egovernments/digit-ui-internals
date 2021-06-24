@@ -15,6 +15,7 @@ import { PGRService } from "./services/elements/PGR";
 import { FSMService } from "./services/elements/FSM";
 import { PaymentService } from "./services/elements/Payment";
 import * as dateUtils from "./services/atoms/Utils/Date";
+import Download from "./services/atoms/Download";
 import { WorkflowService } from "./services/elements/WorkFlow";
 import { MdmsService } from "./services/elements/MDMS";
 import { Complaint } from "./services/elements/Complaint";
@@ -22,12 +23,14 @@ import { UserService } from "./services/elements/User";
 import { PTService } from "./services/elements/PT";
 import { TLService } from "./services/elements/TL";
 import { MCollectService } from "./services/elements/MCollect";
+import HrmsService from "./services/elements/HRMS";
 
+import ShareFiles from "./services/molecules/ShareFiles";
 import { GetServiceDefinitions } from "./services/molecules/ServiceDefinitions";
 import { ULBService } from "./services/molecules/Ulb";
 import { FileDesludging } from "./services/molecules/FSM/FileDesludging";
 import { ComponentRegistryService } from "./services/elements/ComponentRegistry";
-import HrmsService from "./services/elements/HRMS";
+import StoreData from "./services/molecules/StoreData";
 
 import Contexts from "./contexts";
 import Hooks from "./hooks";
@@ -70,11 +73,14 @@ const initLibraries = () => {
   setupLibraries("Complaint", Complaint);
   setupLibraries("FileDesludging", FileDesludging);
   setupLibraries("ComponentRegistryService", ComponentRegistryService);
+  setupLibraries("StoreData", StoreData);
 
+  setupLibraries("ShareFiles", ShareFiles);
   setupLibraries("Contexts", Contexts);
   setupLibraries("Hooks", Hooks);
   setupLibraries("Customizations", {});
   setupLibraries("Utils", Utils);
+  setupLibraries("Download", Download);
 
   return new Promise((resolve) => {
     initI18n(resolve);

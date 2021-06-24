@@ -72,6 +72,7 @@ const UploadFile = (props) => {
           label={t("CS_COMMON_CHOOSE_FILE")}
           style={{ ...(extraStyles ? extraStyles?.buttonStyles : {}), ...(props.disabled ? { display: "none" } : {}) }}
           textStyles={props?.textStyles}
+          type={props.buttonType}
         />
         {!hasFile ? (
           <h2 className="file-upload-status">{props.message}</h2>
@@ -96,7 +97,7 @@ const UploadFile = (props) => {
       </div>
       <input
         className={props.disabled ? "disabled" : ""}
-        style={extraStyles ? extraStyles?.inputStyles : null}
+        style={extraStyles ? { ...extraStyles?.inputStyles, ...props?.inputStyles } : { ...props?.inputStyles }}
         ref={inpRef}
         type="file"
         name="file"

@@ -26,7 +26,7 @@ export const PTSearch = {
             value: `${response?.tenantId?.toUpperCase()?.split(".")?.join("_")}_REVENUE_${response?.address?.locality?.code}`,
           },
           { title: "PT_PROPERTY_ADDRESS_STREET_NAME", value: response?.address?.street },
-          { title: "PT_PROPERTY_ADDRESS_HOUSE_NO", value: response?.address?.buildingName },
+          { title: "PT_PROPERTY_ADDRESS_HOUSE_NO", value: response?.address?.doorNo },
         ],
       },
       {
@@ -45,7 +45,9 @@ export const PTSearch = {
               const values = [
                 {
                   title: "PT_ASSESSMENT_UNIT_USAGE_TYPE",
-                  value: unit?.usageCategory,
+                  value: `PROPERTYTAX_BILLING_SLAB_${
+                    unit?.usageCategory != "RESIDENTIAL" ? unit?.usageCategory?.split(".")[1] : unit?.usageCategory
+                  }`,
                 },
                 {
                   title: "PT_ASSESMENT_INFO_OCCUPLANCY",
@@ -56,6 +58,8 @@ export const PTSearch = {
                   value: unit?.constructionDetail?.builtUpArea,
                 },
               ];
+
+              if (unit.occupancyType === "RENTED") values.push({ title: "PT_FORM2_TOTAL_ANNUAL_RENT", value: unit.arv });
 
               return {
                 title: floorName,

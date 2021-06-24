@@ -1,6 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Switch, useRouteMatch, useLocation, Link, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { BackButton, BreadCrumb, Header, Loader, PrivateRoute, CitizenHomeCard, DropIcon } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 
@@ -149,15 +148,14 @@ const CitizenApp = ({ path }) => {
 const FSMModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "FSM";
   const { path, url } = useRouteMatch();
-  const state = useSelector((state) => state);
-  const language = state?.common?.selectedLanguage;
+  const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
 
   if (isLoading) {
     return <Loader />;
   }
 
-  console.log("fsm", userType, path, state, store);
+  console.log("fsm", userType, path, store);
   Digit.SessionStorage.set("FSM_TENANTS", tenants);
 
   if (userType === "citizen") {

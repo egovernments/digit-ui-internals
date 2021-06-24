@@ -8,7 +8,7 @@ const Menu = (props) => {
       {props.options.map((option, index) => {
         return (
           <div key={index} onClick={() => props.onSelect(option)}>
-            <p>{props.t ? props.t(`${keyPrefix}_${option}`) : option}</p>
+            <p>{props.t ? props.t(`${keyPrefix}_${props.optionKey ? option[props.optionKey] : option}`) : option}</p>
           </div>
         );
       })}

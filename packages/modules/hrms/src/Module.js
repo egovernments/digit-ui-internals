@@ -22,12 +22,10 @@ import Response from "./pages/Response";
 import Banner from "./components/pageComponents/Banner";
 import Details from "./pages/EmployeeDetails";
 import ActionModal from "./components/Modal";
-import { useSelector } from "react-redux";
 
 export const HRMSModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "HR";
-  const state = useSelector((state) => state);
-  const language = state?.common?.selectedLanguage;
+  const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
   const mobileView = innerWidth <= 640;
   const location = useLocation();
@@ -42,6 +40,9 @@ export const HRMSModule = ({ stateCode, userType, tenants }) => {
 
   const { path, url } = useRouteMatch();
 
+  if (!Digit.Utils.hrmsAccess()) {
+    return null;
+  }
   if (userType === "employee") {
     return (
       <Switch>

@@ -37,8 +37,7 @@ const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => 
           name="TradeName"
           value={TradeName}
           onChange={setSelectTradeName}
-          /*         {...(validation = { pattern: "^([0-9]){0,8}$", type: "number", title: t("PT_RENT_AREA_ERROR_MESSAGE") })}
-           */
+          {...(validation = { pattern: "^[a-zA-Z-.`' ]*$", isRequired: true, type: "text", title: t("TL_INVALID_TRADE_NAME") })}
         />
       </FormStep>
       {<CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("TL_LICENSE_ISSUE_YEAR_INFO_MSG")} />}

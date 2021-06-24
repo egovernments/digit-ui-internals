@@ -102,7 +102,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   useEffect(() => {
     if (isSuccess && isDsoSuccess && applicationData.dsoId) {
       const [dso] = dsoData.filter((dso) => dso.id === applicationData.dsoId);
-      const vehicleNoList = dso.vehicles.filter((vehicle) => vehicle.type === applicationData.vehicleType);
+      const vehicleNoList = dso?.vehicles?.filter((vehicle) => vehicle.type === applicationData.vehicleType);
       setVehicleNoList(vehicleNoList);
     }
   }, [isSuccess, isDsoSuccess]);

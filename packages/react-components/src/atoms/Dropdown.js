@@ -193,7 +193,7 @@ const Dropdown = (props) => {
                 })}
           </div>
         ) : (
-          <div className="options-card" style={props.optionCardStyles}>
+          <div className="options-card" style={props.optionCardStyles} ref={optionRef}>
             {props.option
               .filter((option) => option.toUpperCase().indexOf(filterVal.toUpperCase()) > -1)
               .map((option, index) => {

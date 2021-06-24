@@ -1,7 +1,6 @@
 import { Header, CitizenHomeCard, RupeeIcon, HomeLink } from "@egovernments/digit-ui-react-components";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 import TradeLicense from "../src/pageComponents/TradeLicense";
 import TLSelectGeolocation from "../src/pageComponents/TLSelectGeolocation";
@@ -24,6 +23,7 @@ import SelectAccessoriesDetails from "./pageComponents/SelectAccessoriesDetails"
 import CheckPage from "./pages/citizen/Create/CheckPage";
 import TLDocument from "./pageComponents/TLDocumets";
 import TLAcknowledgement from "./pages/citizen/Create/TLAcknowledgement";
+import MyApplications from "./pages/citizen/Applications/Application";
 
 import CitizenApp from "./pages/citizen";
 
@@ -31,8 +31,7 @@ export const TLModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
 
   const moduleCode = "TL";
-  const state = useSelector((state) => state);
-  const language = state?.common?.selectedLanguage;
+  const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
 
   //addComponentsToRegistry();
@@ -55,6 +54,10 @@ export const TLLinks = ({ matchPath, userType }) => {
     {
       link: `${matchPath}/tradelicence/new-application`,
       i18nKey: t("TL_CREATE_TRADE"),
+    },
+    {
+      link: `${matchPath}/tradelicence/my-application`,
+      i18nKey: t("TL_MY_APPLICATIONS_HEADER"),
     },
   ];
 
@@ -85,6 +88,7 @@ const componentsToRegister = {
   CheckPage,
   TLDocument,
   TLAcknowledgement,
+  MyApplications,
 };
 
 export const initTLComponents = () => {

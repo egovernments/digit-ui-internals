@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 import ReactPostprocessor from "i18next-react-postprocessor";
 
 const i18nextConfig = () => ({
-  lng: Digit.SessionStorage.get("locale") || "en_IN",
+  lng: Digit.StoreData.getCurrentLanguage(),
   fallbackLng: "en_IN",
   debug: false,
   ns: ["translations"],

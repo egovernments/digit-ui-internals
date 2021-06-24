@@ -6,17 +6,19 @@ function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSel
   const { t } = useTranslation();
   return (
     <React.Fragment>
-      {!workflowDetails?.isLoading && workflowDetails?.data?.nextActions?.length > 0 && (
+      {!workflowDetails?.isLoading && workflowDetails?.data?.actionState?.nextActions?.length > 0 && (
         <ActionBar>
-          {displayMenu && workflowDetails?.data?.nextActions ? (
+          {displayMenu && workflowDetails?.data?.actionState?.nextActions ? (
             <Menu
-              localeKeyPrefix={businessService === "PT" ? "WF_EMPLOYEE_PT.CREATE" : "ES_FSM"}
-              options={workflowDetails?.data?.nextActions.map((action) => action.action)}
+              localeKeyPrefix={`WF_EMPLOYEE_${businessService}`}
+              // options={workflowDetails?.data?.actionState?.nextActions.map((action) => action?.action)}
+              options={workflowDetails?.data?.actionState?.nextActions}
+              optionKey={"action"}
               t={t}
               onSelect={onActionSelect}
             />
           ) : null}
-          <SubmitBar label={t(businessService === "PT" ? "WF_TAKE_ACTION" : "ES_COMMON_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+          <SubmitBar label={t("WF_TAKE_ACTION")} onSubmit={() => setDisplayMenu(!displayMenu)} />
         </ActionBar>
       )}
     </React.Fragment>

@@ -14,7 +14,7 @@ const ButtonSelector = (props) => {
   return (
     <button
       className={props.isDisabled ? "selector-button-primary-disabled" : theme}
-      type="submit"
+      type={props.type || "submit"}
       form={props.formId}
       onClick={props.onSubmit}
       disabled={props.isDisabled}

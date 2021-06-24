@@ -30,7 +30,7 @@ export const WorkflowService = {
     const businessServiceResponse = (await Digit.WorkflowService.init(tenantId, moduleCode))?.BusinessServices[0]?.states;
     if (workflow && workflow.ProcessInstances) {
       const processInstances = workflow.ProcessInstances;
-      const nextStates = processInstances[0]?.nextActions.map((action) => ({ action: action.action, nextState: action.nextState }));
+      const nextStates = processInstances[0]?.nextActions.map((action) => ({ action: action?.action, nextState: action.nextState }));
       const nextActions = nextStates.map((id) => ({
         action: id.action,
         state: businessServiceResponse?.find((state) => state.uuid === id.nextState),
@@ -43,8 +43,24 @@ export const WorkflowService = {
         else nextActions.push({ action: "EDIT", state: currentState });
       }
 
+      const getStateForUUID = (uuid) => businessServiceResponse?.find((state) => state.uuid === uuid);
+
+      const actionState = businessServiceResponse
+        ?.filter((state) => state.uuid === processInstances[0]?.state.uuid)
+        .map((state) => {
+          console.log(state, "inside workflow call");
+          let _nextActions = state.actions?.map?.((ac) => {
+            let actionResultantState = getStateForUUID(ac.nextState);
+            let assignees = actionResultantState?.actions?.reduce?.((acc, act) => {
+              return [...acc, ...act.roles];
+            }, []);
+            return { ...actionResultantState, assigneeRoles: assignees, action: ac.action };
+          });
+          return { ...state, nextActions: _nextActions };
+        })?.[0];
+
       const actionRolePair = nextActions?.map((action) => ({
-        action: action.action,
+        action: action?.action,
         roles: action.state?.actions?.map((action) => action.roles).join(","),
       }));
 
@@ -65,7 +81,7 @@ export const WorkflowService = {
                 lastModified: Digit.DateUtils.ConvertTimestampToDate(instance.auditDetails.lastModifiedTime),
               },
               timeLineActions: instance.nextActions
-                ? instance.nextActions.filter((action) => action.roles.includes(role)).map((action) => action.action)
+                ? instance.nextActions.filter((action) => action.roles.includes(role)).map((action) => action?.action)
                 : null,
             };
             return checkPoint;
@@ -84,7 +100,7 @@ export const WorkflowService = {
             status: "CREATED",
           });
 
-        const details = { timeline, nextActions };
+        const details = { timeline, nextActions, actionState, applicationBusinessService: workflow?.ProcessInstances?.[0]?.businessService };
         return details;
       }
     } else {

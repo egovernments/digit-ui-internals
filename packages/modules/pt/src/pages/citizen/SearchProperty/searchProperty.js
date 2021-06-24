@@ -18,12 +18,14 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
   const [formValue, setFormValue] = useState();
 
   useLayoutEffect(() => {
+    //Why do we need this? !!!!!
     const getActionBar = () => {
       let el = document.querySelector("div.action-bar-wrap");
       if (el) {
         el.style.position = "static";
         el.style.padding = "8px 0";
         el.style.boxShadow = "none";
+        el.style.marginBottom = "16px";
       } else {
         setTimeout(() => {
           getActionBar();
@@ -34,7 +36,7 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
   }, []);
 
   // moduleCode, type, config = {}, payload = []
-  const { data: propertyIdFormat, isLoading } = Digit.Hooks.pt.useMDMS(tenantId, "DIGIT-UI", "HelpText", {
+  const { data: propertyIdFormat, isLoading } = Digit.Hooks.pt.useMDMS(tenantId.split(".")[0], "DIGIT-UI", "HelpText", {
     select: (data) => {
       return data?.["DIGIT-UI"]?.["HelpText"]?.[0]?.PT?.propertyIdFormat;
     },
@@ -92,7 +94,7 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
             component: (props, customProps) => (
               <Localities
                 selectLocality={(d) => {
-                  console.log(d, "locality changed");
+                  // console.log(d, "locality changed");
                   props.onChange(d);
                 }}
                 tenantId={cityCode}
@@ -101,6 +103,7 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
                 optionCardStyles={{ height: "600px", overflow: "auto", zIndex: "10" }}
                 selected={formValue?.locality}
                 disable={!cityCode}
+                disableLoader={true}
               />
             ),
           },
@@ -147,8 +150,6 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
       setCityCode(city?.code);
     }
 
-    let { errors } = formState;
-
     if (!_.isEqual(data, formValue)) {
       // if (data?.city.code !== formValue?.city?.code) setValue("locality", null);
       setFormValue(data);
@@ -169,7 +170,7 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
   }
 
   return (
-    <div style={{ marginTop: "16px" }}>
+    <div style={{ marginTop: "16px", marginBottom: "16px" }}>
       <FormComposer
         onSubmit={onPropertySearch}
         noBoxShadow

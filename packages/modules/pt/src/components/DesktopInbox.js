@@ -12,9 +12,10 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
   const [FilterComponent, setComp] = useState(() => Digit.ComponentRegistryService?.getComponent(filterComponent));
   const [EmptyInboxComp, setEmptyInboxComp] = useState(() => {
     const com = Digit.ComponentRegistryService?.getComponent(props.EmptyResultInboxComp);
-    // console.log("here is the empty component", com, props.EmptyResultInboxComp);
     return com;
   });
+
+  const [clearSearchCalled, setClearSearchCalled] = useState(false);
 
   // searchData, workFlowData
 
@@ -27,20 +28,24 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
   let result;
   if (props.isLoading) {
     result = <Loader />;
+  } else if (clearSearchCalled) {
+    result = null;
   } else if (!data || data?.length === 0) {
-    result = (EmptyInboxComp && <EmptyInboxComp data={data} />) || (
-      <Card style={{ marginTop: 20 }}>
-        {/* TODO Change localization key */}
-
-        {t("CS_MYAPPLICATIONS_NO_APPLICATION")
-          .split("\\n")
-          .map((text, index) => (
-            <p key={index} style={{ textAlign: "center" }}>
-              {text}
-            </p>
-          ))}
-      </Card>
-    );
+    result =
+      (EmptyInboxComp && <EmptyInboxComp data={data} />) ||
+      (data?.length === 0 ? (
+        <Card style={{ marginTop: 20 }}>
+          {t("CS_MYAPPLICATIONS_NO_APPLICATION")
+            .split("\\n")
+            .map((text, index) => (
+              <p key={index} style={{ textAlign: "center" }}>
+                {text}
+              </p>
+            ))}
+        </Card>
+      ) : (
+        <Loader />
+      ));
   } else if (data?.length > 0) {
     result = (
       <ApplicationTable
@@ -90,11 +95,15 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
       <div style={{ flex: 1 }}>
         <SearchApplication
           defaultSearchParams={props.defaultSearchParams}
-          onSearch={props.onSearch}
+          onSearch={(d) => {
+            props.onSearch(d);
+            setClearSearchCalled(false);
+          }}
           type="desktop"
           searchFields={props.searchFields}
           isInboxPage={!props?.isSearch}
           searchParams={props.searchParams}
+          clearSearch={() => setClearSearchCalled(true)}
         />
         <div className="result" style={{ marginLeft: !props?.isSearch ? "24px" : "", flex: 1 }}>
           {result}

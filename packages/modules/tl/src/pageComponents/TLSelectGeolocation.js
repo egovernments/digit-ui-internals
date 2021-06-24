@@ -17,7 +17,7 @@ const TLSelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
     setPincodeServicability(null);
     const foundValue = tenants?.find((obj) => obj.pincode?.find((item) => item == code));
     if (!foundValue) {
-      setPincodeServicability("PT_COMMON_PINCODE_NOT_SERVICABLE");
+      setPincodeServicability("TL_COMMON_PINCODE_NOT_SERVICABLE");
       setPincode("");
       setGeoLocation({});
     } else {
@@ -28,9 +28,9 @@ const TLSelectGeolocation = ({ t, config, onSelect, formData = {} }) => {
 
   return (
     <LocationSearchCard
-      header={t("TL_GEOLOCATON_HEADER")}
+      header={t("TL_GEOLOCATION_HEADER")}
       cardText={t("TL_GEOLOCATION_TEXT")}
-      nextText={t("PT_COMMON_NEXT")}
+      nextText={t("CS_COMMON_NEXT")}
       skipAndContinueText={t("CORE_COMMON_SKIP_CONTINUE")}
       skip={onSkip}
       t={t}

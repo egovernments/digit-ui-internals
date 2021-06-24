@@ -192,7 +192,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
       t={t}
       isDisabled={!name || !mobileNumber || !gender || !relationship || !fatherOrHusbandName}
     >
-      <div >
+      <div>
         <CardLabel>{`${t("PT_OWNER_NAME")}`}</CardLabel>
         <TextInput
           t={t}

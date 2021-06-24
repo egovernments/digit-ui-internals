@@ -20,7 +20,7 @@ import PropertyFloors from "./PropertyFloors";
 import PropertyEstimates from "./PropertyEstimates";
 import PropertyOwners from "./PropertyOwners";
 
-function ApplicationDetailsContent({ applicationDetails, workflowDetails, isDataLoading, applicationData, businessService }) {
+function ApplicationDetailsContent({ applicationDetails, workflowDetails, isDataLoading, applicationData, businessService, timelineStatusPrefix }) {
   const { t } = useTranslation();
 
   const getTimelineCaptions = (checkpoint) => {
@@ -32,36 +32,13 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
         source: applicationData.source || "",
       };
       return <TLCaption data={caption} />;
-    } else if (
-      checkpoint.status === "PENDING_APPL_FEE_PAYMENT"
-      // ||
-      // checkpoint.status === "ASSING_DSO" ||
-      // checkpoint.status === "PENDING_DSO_APPROVAL"
-    ) {
+    } else if (checkpoint.status === "PENDING_APPL_FEE_PAYMENT") {
       const caption = {
         date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails.createdTime),
         name: checkpoint.assigner.name,
       };
       return <TLCaption data={caption} />;
-    }
-
-    //  else if (checkpoint.status === "DSO_REJECTED") {
-    //   const caption = {
-    //     date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails.createdTime),
-    //     name: checkpoint?.assigner?.name,
-    //     comment: checkpoint?.comment ? t(`ES_ACTION_REASON_${checkpoint?.comment}`) : null,
-    //     otherComment: applicationDetails?.additionalDetails?.comments?.DSO_REJECT,
-    //   };
-    //   return <TLCaption data={caption} />;
-    // } else if (checkpoint.status === "DSO_INPROGRESS") {
-    //   const caption = {
-    //     name: `${checkpoint?.assigner?.name} (${t("ES_FSM_DSO")})`,
-    //     mobileNumber: checkpoint?.assigner?.mobileNumber,
-    //     date: `${t("CS_FSM_EXPECTED_DATE")} ${Digit.DateUtils.ConvertTimestampToDate(applicationData?.possibleServiceDate)}`,
-    //   };
-    //   return <TLCaption data={caption} />;
-    // }
-    else if (checkpoint.status === "COMPLETED") {
+    } else if (checkpoint.status === "COMPLETED") {
       return (
         <div>
           <Rating withText={true} text={t(`ES_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
@@ -119,7 +96,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
           {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
             <CheckPoint
               isCompleted={true}
-              label={t(`${businessService === "PT" ? "ES_PT_COMMON_STATUS_" : "CS_COMMON_"}${workflowDetails?.data?.timeline[0]?.state}`)}
+              label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
               customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
             />
           ) : (
@@ -131,7 +108,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                       <CheckPoint
                         keyValue={index}
                         isCompleted={index === 0}
-                        label={t(`${businessService === "PT" ? "ES_PT_COMMON_STATUS_" : "CS_COMMON_FSM_"}${checkpoint.state}`)}
+                        label={t(`${timelineStatusPrefix}${checkpoint.state}`)}
                         customChild={getTimelineCaptions(checkpoint)}
                       />
                     </React.Fragment>

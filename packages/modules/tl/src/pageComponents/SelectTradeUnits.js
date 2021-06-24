@@ -9,7 +9,9 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
   const [TradeSubType, setTradeSubType] = useState(formData?.TadeDetails?.Units?.TradeSubType || "");
   const [UnitOfMeasure, setUnitOfMeasure] = useState(formData?.TadeDetails?.Units?.UnitOfMeasure || "");
   const [UomValue, setUomValue] = useState(formData?.TadeDetails?.Units?.UomValue || "");
-  const [fields, setFeilds] = useState([{ tradecategory: "", tradetype: "", tradesubtype: "", unit: null, uom: null }]);
+  const [fields, setFeilds] = useState(
+    (formData?.TradeDetails && formData?.TradeDetails?.units) || [{ tradecategory: "", tradetype: "", tradesubtype: "", unit: null, uom: null }]
+  );
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
@@ -49,7 +51,8 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
 
   function getTradeSubTypeMenu(TradeType) {
     let TradeSubTypeMenu = [];
-    Data &&
+    TradeType &&
+      Data &&
       Data.TradeLicense &&
       Data.TradeLicense.TradeType.map((ob) => {
         if (ob.code.split(".")[1] === TradeType.code && !TradeSubTypeMenu.some((TradeSubTypeMenu) => TradeSubTypeMenu.code === `${ob.code}`)) {
@@ -68,6 +71,8 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
     let units = [...fields];
     units[i].tradecategory = value;
     setTradeCategory(value);
+    selectTradeType(i, null);
+    selectTradeSubType(i, null);
     setFeilds(units);
   }
   function selectTradeType(i, value) {
@@ -80,6 +85,21 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
     let units = [...fields];
     units[i].tradesubtype = value;
     setTradeSubType(value);
+    if (value == null) {
+      units[i].unit = null;
+      setUnitOfMeasure(null);
+    }
+    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+    value &&
+      Data &&
+      Data.TradeLicense &&
+      Data.TradeLicense.TradeType.map((ob) => {
+        if (value.code === ob.code) {
+          units[i].unit = ob.uom;
+          setUnitOfMeasure(ob.uom);
+          // setFeilds(units);
+        }
+      });
     setFeilds(units);
   }
   function selectUnitOfMeasure(i, e) {
@@ -172,7 +192,7 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
               //value={UnitOfMeasure}
               value={field?.unit}
               onChange={(e) => selectUnitOfMeasure(index, e)}
-              //disable={isUpdateProperty || isEditProperty}
+              disable={true}
               /* {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
@@ -190,13 +210,13 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
               //value={UomValue}
               value={field?.uom}
               onChange={(e) => selectUomValue(index, e)}
-              //disable={isUpdateProperty || isEditProperty}
-              /* {...(validation = {
-            isRequired: true,
-            pattern: "^[a-zA-Z-.`' ]*$",
-            type: "text",
-            title: t("PT_NAME_ERROR_MESSAGE"),
-          })} */
+              disable={!field.unit}
+              {...(validation = {
+                isRequired: true,
+                pattern: "[0-9]+",
+                type: "text",
+                title: t("TL_WRONG_UOM_VALUE_ERROR"),
+              })}
             />
           </div>
         );

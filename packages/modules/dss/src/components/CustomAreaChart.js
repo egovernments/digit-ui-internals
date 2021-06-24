@@ -26,7 +26,9 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [totalWaste, setTotalWaste] = useState(0);
   const stateTenant = tenantId.split(".")[0];
-  const { isMdmsLoading, data: mdmsData } = Digit.Hooks.useCommonMDMS(stateTenant, "FSM", "FSTPPlantInfo", { enabled: id === "fsmCapacityUtilization" });
+  const { isMdmsLoading, data: mdmsData } = Digit.Hooks.useCommonMDMS(stateTenant, "FSM", "FSTPPlantInfo", {
+    enabled: id === "fsmCapacityUtilization",
+  });
   const { isLoading, data: response } = Digit.Hooks.dss.useGetChart({
     key: id,
     type: "metric",
@@ -39,7 +41,7 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
     if (mdmsData) {
       let fstpPlants = mdmsData;
       if (value?.filters?.tenantId.length > 0) {
-        fstpPlants = mdmsData.filter(plant => value?.filters?.tenantId?.some(tenant => plant?.ULBS.includes(tenant)));
+        fstpPlants = mdmsData.filter((plant) => value?.filters?.tenantId?.some((tenant) => plant?.ULBS.includes(tenant)));
       }
       const totalCapacity = fstpPlants.reduce((acc, plant) => acc + Number(plant?.PlantOperationalCapacityKLD), 0);
       setTotalCapacity(totalCapacity);
@@ -48,21 +50,22 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
 
   useEffect(() => {
     if (response) {
-      const totalWaste = response?.responseData?.data?.[0]?.plots.reduce((acc, plot) => acc + plot?.value, 0);
+      const totalWaste = response?.responseData?.data?.[0]?.plots[response?.responseData?.data?.[0]?.plots.length - 1]?.value;
       setTotalWaste(totalWaste);
     }
-  }, [response])
+  }, [response]);
 
   const chartData = useMemo(() => {
     if (id !== "fsmCapacityUtilization") {
       return response?.responseData?.data?.[0]?.plots;
     }
     return response?.responseData?.data?.[0]?.plots.map((plot) => {
-      const totalDays = getDaysInMonth(new Date(plot?.name));
+      const [month, year] = plot?.name.split("-");
+      const totalDays = getDaysInMonth(Date.parse(`${month} 1, ${year}`));
       const value = (plot?.value / (totalCapacity * totalDays)) * 100;
       return { ...plot, value };
-    })
-  }, [response, totalCapacity])
+    });
+  }, [response, totalCapacity]);
 
   const renderPlot = (plot) => {
     if (id === "fsmCapacityUtilization") {
@@ -81,7 +84,12 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
 
   const renderLegend = (value) => <span>{value}</span>;
 
-  const tickFormatter = (value) => (value && value !== "auto" ? format(new Date(value), "MMM, yy") : "");
+  const tickFormatter = (value) => {
+    if (typeof value === "string") {
+      return value.replace("-", ", ");
+    }
+    return value;
+  };
 
   const renderTooltip = ({ payload, label, unit }) => {
     return (
@@ -94,9 +102,9 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
           whiteSpace: "nowrap",
         }}
       >
-        <p>{`${(label !== undefined && label !== "auto") ? format(new Date(label), "MMM, yy") : ""} :${id === "fsmTotalCumulativeCollection" ? " ₹" : ""}${
-          payload?.[0]?.value
-        }${id === "fsmTotalCumulativeCollection" ? (value?.denomination !== "Unit" ? value?.denomination : "") : `%`}`}</p>
+        <p>{`${tickFormatter(label)} :${id === "fsmTotalCumulativeCollection" ? " ₹" : ""}${payload?.[0]?.value}${
+          id === "fsmTotalCumulativeCollection" ? (value?.denomination !== "Unit" ? value?.denomination : "") : `%`
+        }`}</p>
       </div>
     );
   };
@@ -107,12 +115,17 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "85%" }}>
-      {id === "fsmCapacityUtilization" && <p>{t("DSS_FSM_TOTAL_SLUDGE_TREATED")} - {totalWaste} {t("DSS_KL")}</p>}
+      {id === "fsmCapacityUtilization" && (
+        <p>
+          {t("DSS_FSM_TOTAL_SLUDGE_TREATED")} - {totalWaste} {t("DSS_KL")}
+        </p>
+      )}
       <ResponsiveContainer width="99%" height={id === "fsmTotalCumulativeCollection" ? 400 : 300}>
-        {(!chartData || chartData?.length === 0) ?
+        {!chartData || chartData?.length === 0 ? (
           <div className="no-data">
-            <p>{t('DSS_NO_DATA')}</p>
-          </div> :
+            <p>{t("DSS_NO_DATA")}</p>
+          </div>
+        ) : (
           <AreaChart width="100%" height="100%" data={chartData} margin={{ left: 30, top: 10 }}>
             <defs>
               <linearGradient id="colorUv" x1=".5" x2=".5" y2="1">
@@ -125,7 +138,9 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
             <XAxis dataKey={xDataKey} tick={{ fontSize: "14px", fill: "#505A5F" }} tickFormatter={tickFormatter} />
             <YAxis
               label={{
-                value: `${response?.responseData?.data?.[0]?.headerName} ${id === "fsmTotalCumulativeCollection" ? renderUnits(t, value.denomination) : `(%)`}`,
+                value: `${response?.responseData?.data?.[0]?.headerName} ${
+                  id === "fsmTotalCumulativeCollection" ? renderUnits(t, value.denomination) : `(%)`
+                }`,
                 angle: -90,
                 position: "insideLeft",
                 dy: 40,
@@ -136,7 +151,8 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
               tick={{ fontSize: "14px", fill: "#505A5F" }}
             />
             <Area type="monotone" dataKey={renderPlot} stroke="#048BD0" fill="url(#colorUv)" dot={true} />
-          </AreaChart>}
+          </AreaChart>
+        )}
       </ResponsiveContainer>
     </div>
   );

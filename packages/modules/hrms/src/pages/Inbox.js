@@ -21,8 +21,13 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
-    const isupdate= Digit.SessionStorage.get("isupdate")
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.hrms.useHRMSSearch(searchParams, tenantId, paginationParams, isupdate);
+  const isupdate = Digit.SessionStorage.get("isupdate");
+  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.hrms.useHRMSSearch(
+    searchParams,
+    tenantId,
+    paginationParams,
+    isupdate
+  );
 
   useEffect(() => {
     // setTotalReacords(res?.EmployeCount?.totalEmployee);
@@ -72,6 +77,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
         maxlength: 10,
         pattern: "[6-9][0-9]{9}",
         title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
+        componentInFront: "+91",
       },
       {
         label: t("HR_EMPLOYEE_ID_LABEL"),
@@ -79,8 +85,6 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
       },
     ];
   };
-
-
 
   if (isLoading) {
     return <Loader />;

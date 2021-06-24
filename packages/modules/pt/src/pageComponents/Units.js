@@ -79,7 +79,7 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
           arv,
         };
       });
-      setUnits(defaultUnits);
+      setUnits(defaultUnits || []);
       setLoader(false);
     }
   }, [isLoading]);
@@ -200,7 +200,7 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
 
   if (loader && presentInModifyApplication) return <Loader />;
 
-  return formData?.PropertyType?.code === "VACANT" || !formData?.PropertyType?.code ? null : (
+  return formData?.PropertyType?.code === "VACANT" || !formData?.PropertyType?.code || !formData?.usageCategoryMajor?.code ? null : (
     <div>
       {units?.map((unit, index) => (
         <Unit
@@ -221,7 +221,13 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
           {...{ formState, setError, clearErrors, usageCategoryMajorMenu, subUsageCategoryMenu }}
         />
       ))}
-      <LinkButton label="Add Unit" onClick={handleAddUnit} style={{ color: "orange", width: "fit-content" }}></LinkButton>
+      <LinkButton label={t("PT_ADD_UNIT")} onClick={handleAddUnit} style={{ color: "orange", width: "175px" }}></LinkButton>
+      {formState.errors?.[config.key]?.type === "units_missing" ? (
+        <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
+          {`${formState.errors?.[config.key].message.split(".")[0]} -
+           ${formState.errors?.[config.key].message.split(".")[1]}`}
+        </CardLabelError>
+      ) : null}
     </div>
   );
 };
@@ -304,7 +310,7 @@ function Unit({
 
     for (let key in formValue) {
       if (!formValue[key] && !localFormState.errors[key]) {
-        setLocalError(key, { type: `${key.toUpperCase()}_REQUIRED`, message: `${key.toUpperCase()}_REQUIRED` });
+        setLocalError(key, { type: `${key.toUpperCase()}_REQUIRED`, message: `COMMON_ERROR_REQUIRED` });
       } else if (formValue[key] && localFormState.errors[key]) {
         clearLocalErrors([key]);
       }

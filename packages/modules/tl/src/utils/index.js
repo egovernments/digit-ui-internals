@@ -530,7 +530,7 @@ export const getownerarray = (data) => {
 export const gettradeunits = (data) => {
   let tradeunits = [];
   data?.TradeDetails?.units.map((ob) => {
-    tradeunits.push({ tradeType: ob.tradesubtype.code, uom: null, uomValue: null });
+    tradeunits.push({ tradeType: ob.tradesubtype.code, uom: ob.unit, uomValue: ob.uom });
   });
   return tradeunits;
 };
@@ -551,7 +551,7 @@ export const convertToTrade = (data = {}) => {
         action: "INITIATE",
         applicationType: "NEW",
         commencementDate: Date.parse(data?.TradeDetails?.CommencementDate),
-        financialYear: "2020-21",
+        financialYear: "2021-22",
         licenseType: "PERMANENT",
         tenantId: data?.address?.city?.code,
         tradeLicenseDetail: {

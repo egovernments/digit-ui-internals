@@ -43,7 +43,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   }
 
   const clearAll = (mobileView) => {
-    const mobileViewStyles = mobileView ? { margin: 0 } : {};
+    const mobileViewStyles = mobileView ? { margin: 0 } : { marginRight: "80px" };
     return (
       <LinkLabel style={{ display: "inline", ...mobileViewStyles }} onClick={clearSearch}>
         {t("UC_CLEAR_SEARCH_LABEL")}

@@ -1,6 +1,7 @@
 import React from "react";
 import { LabelFieldPair, CardLabel, TextInput, CardLabelError, DatePicker } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
+import { convertEpochToDate } from "../Utils/index";
 
 const SelectDateofEmployment = ({ t, config, onSelect, formData = {}, userType, register, errors }) => {
   const { pathname: url } = useLocation();
@@ -15,7 +16,7 @@ const SelectDateofEmployment = ({ t, config, onSelect, formData = {}, userType, 
         title: t("CORE_COMMON_APPLICANT_NAME_INVALID"),
       },
       isMandatory: true,
-    }
+    },
   ];
 
   function setValue(value, input) {
@@ -35,6 +36,8 @@ const SelectDateofEmployment = ({ t, config, onSelect, formData = {}, userType, 
             <div className="field">
               <DatePicker
                 key={input.name}
+                min={formData?.SelectDateofBirthEmployment?.dob}
+                max={convertEpochToDate(new Date())}
                 date={formData && formData[config.key] ? formData[config.key][input.name] : undefined}
                 onChange={(e) => setValue(e, input.name)}
                 disable={false}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormComposer, Toast } from "@egovernments/digit-ui-react-components";
 import { newConfig } from "../../../config/Create/config";
@@ -10,10 +10,22 @@ const NewApplication = () => {
   const [canSubmit, setSubmitValve] = useState(false);
   const defaultValues = {};
   const history = useHistory();
+  // delete
+  // const [_formData, setFormData,_clear] = Digit.Hooks.useSessionStorage("store-data",null);
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_SUCCESS_DATA", {});
+
+  useEffect(() => {
+    setMutationHappened(false);
+    clearSuccessData();
+  }, []);
 
   const onFormValueChange = (setValue, formData, formState) => {
     console.log(formData, formState.errors, "in new application");
     setSubmitValve(!Object.keys(formState.errors).length);
+    if (Object.keys(formState.errors).length === 1 && formState.errors?.units?.message === "arv") {
+      setSubmitValve(!formData?.units.some((unit) => unit.occupancyType === "RENTED" && !unit.arv));
+    }
   };
 
   const onSubmit = (data) => {
@@ -74,7 +86,7 @@ const NewApplication = () => {
       creationReason: "CREATE", // required
       source: "MUNICIPAL_RECORDS", // required
       superBuiltUpArea: null,
-      units: data?.units[0]?.usageCategory ? data?.units : [],
+      units: data?.PropertyType?.code !== "VACANT" ? data?.units : [],
       documents: data?.documents?.documents,
       applicationStatus: "CREATE",
     };
@@ -90,8 +102,11 @@ const NewApplication = () => {
     }
 
     // console.log(formData, "new application created");
+    // setFormData(formData)
 
-    history.push("/digit-ui/employee/pt/response", { Property: formData });
+    history.replace("/digit-ui/employee/pt/response", { Property: formData });
+    // history.push("/digit-ui/employee/pt/response", { Property: formData });
+    // history.push("/digit-ui/employee/pt/response", { Property: _formData });
   };
   const configs = newConfig;
 

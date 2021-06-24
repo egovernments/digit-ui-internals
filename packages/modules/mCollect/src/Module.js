@@ -6,12 +6,10 @@ import EmployeeApp from "./pages/employee";
 import MCollectCard from "./components/MCollectCard";
 import InboxFilter from "./components/inbox/NewInboxFilter";
 import CitizenApp from "./pages/citizen";
-import { useSelector } from "react-redux";
 
 export const MCollectModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "UC";
-  const state = useSelector((state) => state);
-  const language = state?.common?.selectedLanguage;
+  const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
   Digit.SessionStorage.set("MCollect_TENANTS", tenants);
   if (isLoading) {

@@ -97,6 +97,11 @@
   }
 }
 
+.showMore {
+  @apply text-right cursor-pointer;
+  color: #F47738;
+}
+
 @media print{
   .page-break {
     margin-top: 1rem;

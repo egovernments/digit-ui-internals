@@ -10,7 +10,7 @@ const fieldComponents = {
   mobileNumber: MobileNumber,
 };
 
-const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams }) => {
+const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams, clearSearch: _clearSearch }) => {
   const { t } = useTranslation();
   const { register, handleSubmit, reset, watch, control, setError, clearErrors, formState } = useForm({
     defaultValues: searchParams,
@@ -22,7 +22,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
 
   useEffect(() => {
     // setError("mobileNumber", { type: "maxLength", message: "new" });
-    console.log(formState?.dirtyFields, "inside form");
+    console.log(formState.errors, "inside form");
   }, [formState, form]);
 
   useEffect(() => {
@@ -69,13 +69,16 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   function clearSearch() {
     const resetValues = searchFields.reduce((acc, field) => ({ ...acc, [field?.name]: "" }), {});
     reset(resetValues);
-    const _newParams = { ...searchParams };
-    _newParams.delete = [];
-    searchFields.forEach((e) => {
-      _newParams.delete.push(e?.name);
-    });
-
-    onSearch({ ..._newParams });
+    if (isInboxPage) {
+      const _newParams = { ...searchParams };
+      _newParams.delete = [];
+      searchFields.forEach((e) => {
+        _newParams.delete.push(e?.name);
+      });
+      onSearch({ ..._newParams });
+    } else {
+      _clearSearch();
+    }
   }
 
   const clearAll = (mobileView) => {
@@ -129,21 +132,31 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                       )}
                     </span>
                     {formState?.dirtyFields?.[input.name] ? (
-                      <span style={{ fontWeight: "700", color: "rgba(212, 53, 28)", paddingLeft: "8px" }} className="inbox-search-form-error">
+                      <span
+                        style={{ fontWeight: "700", color: "rgba(212, 53, 28)", paddingLeft: "8px", marginTop: "-20px", fontSize: "12px" }}
+                        className="inbox-search-form-error"
+                      >
                         {formState?.errors?.[input.name]?.message}
                       </span>
                     ) : null}
                   </div>
                 ))}
-              {type === "desktop" && !mobileView && !isInboxPage && <SubmitBar className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />}
+              {type === "desktop" && !mobileView && !isInboxPage && (
+                <div>
+                  <SubmitBar
+                    className="submit-bar-search"
+                    label={t("ES_COMMON_SEARCH")}
+                    disabled={!!Object.keys(formState.errors).length || Object.keys(form).every((key) => !form?.[key])}
+                    submit
+                  />
+                  {/* style={{ paddingTop: "16px", textAlign: "center" }} className="clear-search" */}
+                  <div style={{ width: "100%", textAlign: "right", width: "240px", textAlign: "right", marginLeft: "96px", marginTop: "8px" }}>
+                    {clearAll()}
+                  </div>
+                </div>
+              )}
             </div>
-            {type === "desktop" && !mobileView && !isInboxPage && (
-              <div style={{ width: "100%", textAlign: "right" }}>
-                <span style={{ paddingRight: "60px" }} className="clear-search">
-                  {clearAll()}
-                </span>
-              </div>
-            )}
+
             {isInboxPage && (
               <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
                 {type === "desktop" && !mobileView && (
@@ -152,7 +165,13 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </span>
                 )}
                 {type === "desktop" && !mobileView && (
-                  <SubmitBar style={{ marginTop: "unset" }} className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />
+                  <SubmitBar
+                    disabled={!!Object.keys(formState.errors).length}
+                    style={{ marginTop: "unset" }}
+                    className="submit-bar-search"
+                    label={t("ES_COMMON_SEARCH")}
+                    submit
+                  />
                 )}
               </div>
             )}
@@ -163,7 +182,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
             <button className="clear-search" style={{ flex: 1 }}>
               {clearAll(mobileView)}
             </button>
-            <SubmitBar label={t("ES_COMMON_SEARCH")} style={{ flex: 1 }} submit={true} />
+            <SubmitBar disabled={!!Object.keys(formState.errors).length} label={t("ES_COMMON_SEARCH")} style={{ flex: 1 }} submit={true} />
           </ActionBar>
         )}
       </React.Fragment>

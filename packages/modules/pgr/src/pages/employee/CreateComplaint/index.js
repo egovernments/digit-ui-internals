@@ -12,8 +12,6 @@ export const CreateComplaint = ({ parentUrl }) => {
   const cities = Digit.Hooks.pgr.useTenants();
   const { t } = useTranslation();
 
-  // const localitiesObj = useSelector((state) => state.common.localities);
-
   const getCities = () => cities?.filter((e) => e.code === Digit.ULBService.getCurrentTenantId()) || [];
 
   const [complaintType, setComplaintType] = useState({});

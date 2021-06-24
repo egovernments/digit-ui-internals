@@ -9,13 +9,14 @@ import {
   CardLabelDesc,
   CardSectionHeader,
   InfoBanner,
+  Loader,
 } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
 
 export const SelectPaymentType = (props) => {
-  const { state } = useLocation();
+  const { state = {} } = useLocation();
   const userInfo = Digit.UserService.getUser();
 
   const { tenantId: __tenantId, authorization } = Digit.Hooks.useQueryParams();
@@ -29,8 +30,8 @@ export const SelectPaymentType = (props) => {
   const tenantId = state?.tenantId || __tenantId || Digit.ULBService.getCurrentTenantId();
   const stateTenant = tenantId.split(".")[0];
   const { control, handleSubmit } = useForm();
-  const { data: menu } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
-  const { data: paymentdetails } = Digit.Hooks.useFetchPayment({ tenantId: tenantId, consumerCode, businessService }, {});
+  const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
+  const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment({ tenantId: tenantId, consumerCode, businessService }, {});
 
   const { name, mobileNumber } = state;
 
@@ -91,6 +92,10 @@ export const SelectPaymentType = (props) => {
     // console.log("find query params", __tenantId, authorization, authorization === "true",!userInfo.access_token, authorization === "true" && !userInfo.access_token)
     // console.log("find encoded url",encodeURI(pathname))
     return <Redirect to={`/digit-ui/citizen/login?from=${encodeURIComponent(pathname + search)}`} />;
+  }
+
+  if (isLoading || paymentLoading) {
+    return <Loader />;
   }
 
   return (

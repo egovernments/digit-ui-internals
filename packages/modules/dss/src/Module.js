@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 // import { useRouteMatch } from "react-router";
 import { BackButton, Loader, PrivateRoute, BreadCrumb } from "@egovernments/digit-ui-react-components";
@@ -48,9 +47,8 @@ const Routes = ({ path, stateCode }) => {
 const DSSModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "DSS";
   // const { path, url } = useRouteMatch();
-  const state = useSelector((state) => state);
   const { path, url } = useRouteMatch();
-  const language = state?.common?.selectedLanguage;
+  const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
 
   if (isLoading) {

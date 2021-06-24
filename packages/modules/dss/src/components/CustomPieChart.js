@@ -23,15 +23,13 @@ const CustomPieChart = ({ dataKey = "value", data }) => {
   const chartData = useMemo(() => {
     if (!response) return null;
     const compareFn = (a, b) => b.value - a.value;
-    return response?.responseData?.data?.[0]?.plots
-      .sort(compareFn)
-      .reduce((acc, plot, index) => {
-        if (index < 4) acc = acc.concat(plot);
-        else if (index === 4) acc = acc.concat({ label: null, name: "DSS.OTHERS", value: plot?.value, symbol: "number" });
-        else acc[4].value += plot?.value;
-        return acc;
-      }, [])
-  }, [response])
+    return response?.responseData?.data?.[0]?.plots.sort(compareFn).reduce((acc, plot, index) => {
+      if (index < 4) acc = acc.concat(plot);
+      else if (index === 4) acc = acc.concat({ label: null, name: "DSS.OTHERS", value: plot?.value, symbol: "amount" });
+      else acc[4].value += plot?.value;
+      return acc;
+    }, []);
+  }, [response]);
 
   const renderLegend = (value) => <span style={{ fontSize: "14px", color: "#505A5F" }}>{t(`PROPERTYTYPE_MASTERS_${value}`)}</span>;
 
@@ -53,11 +51,26 @@ const CustomPieChart = ({ dataKey = "value", data }) => {
         alignmentBaseline="middle"
         className="recharts-pie-label-text"
         fontSize="14px"
+        textAnchor={x > cx ? "start" : "end"}
       >
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
   };
+
+  const renderTooltip = ({ payload, label }) => {
+    return (
+      <div style={{
+        margin: "0px",
+        padding: "10px",
+        backgroundColor: "rgb(255, 255, 255)",
+        border: "1px solid rgb(204, 204, 204)",
+        whiteSpace: "nowrap",
+      }}>
+        <p className="recharts-tooltip-label">{`${t(`PROPERTYTYPE_MASTERS_${payload?.[0]?.name}`)}: ${Digit.Utils.dss.formatter(payload?.[0]?.value, payload?.[0]?.payload?.payload?.symbol, value?.denomination, false)}`}</p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <Loader />;
@@ -65,7 +78,7 @@ const CustomPieChart = ({ dataKey = "value", data }) => {
   if (chartData?.length === 0) {
     return (
       <div className="no-data">
-        <p>{t('DSS_NO_DATA')}</p>
+        <p>{t("DSS_NO_DATA")}</p>
       </div>
     );
   }
@@ -82,12 +95,13 @@ const CustomPieChart = ({ dataKey = "value", data }) => {
           fill="#8884d8"
           label={renderCustomLabel}
           labelLine={false}
+          isAnimationActive={false}
         >
           {response?.responseData?.data?.[0]?.plots.map((entry, index) => (
             <Cell key={`cell-`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value, name) => [`₹ ${value}`, t(name)]} />
+        <Tooltip content={renderTooltip} />
         <Legend layout="horizontal" align="bottom" iconType="circle" formatter={renderLegend} />
       </PieChart>
     </ResponsiveContainer>

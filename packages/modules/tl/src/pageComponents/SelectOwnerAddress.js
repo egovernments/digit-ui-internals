@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, TextInput, CheckBox, CardLabel, LabelFieldPair, TextArea } from "@egovernments/digit-ui-react-components";
+import { FormStep, TextInput, CheckBox, CardLabel, LabelFieldPair, TextArea, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
 
 const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
@@ -9,6 +9,7 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   let isEditProperty = formData?.isEditProperty || false;
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
+  let ismultiple = formData?.ownershipCategory?.code.includes("SINGLEOWNER") ? false : true;
 
   function setOwnerPermanentAddress(e) {
     setPermanentAddress(e.target.value);
@@ -66,26 +67,29 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData }) => {
   }
 
   return (
-    <FormStep config={config} t={t} onSelect={goNext} isDisabled={!permanentAddress}>
-      <TextArea
-        isMandatory={false}
-        optionKey="i18nKey"
-        t={t}
-        name="address"
-        onChange={setOwnerPermanentAddress}
-        value={permanentAddress}
-        disable={isUpdateProperty || isEditProperty}
-      />
-      {/* <CardLabel>{t("PT_OWNER_S_ADDRESS")}</CardLabel> */}
-      <CheckBox
-        label={t("PT_COMMON_SAME_AS_PROPERTY_ADDRESS")}
-        onChange={setCorrespondenceAddress}
-        value={isCorrespondenceAddress}
-        checked={isCorrespondenceAddress || false}
-        style={{ paddingTop: "10px" }}
-        disable={isUpdateProperty || isEditProperty}
-      />
-    </FormStep>
+    <React.Fragment>
+      <FormStep config={config} t={t} onSelect={goNext} isDisabled={!permanentAddress}>
+        <TextArea
+          isMandatory={false}
+          optionKey="i18nKey"
+          t={t}
+          name="address"
+          onChange={setOwnerPermanentAddress}
+          value={permanentAddress}
+          disable={isUpdateProperty || isEditProperty}
+        />
+        {/* <CardLabel>{t("PT_OWNER_S_ADDRESS")}</CardLabel> */}
+        <CheckBox
+          label={t("TL_COMMON_SAME_AS_TRADE_ADDRESS")}
+          onChange={setCorrespondenceAddress}
+          value={isCorrespondenceAddress}
+          checked={isCorrespondenceAddress || false}
+          style={{ paddingTop: "10px" }}
+          disable={isUpdateProperty || isEditProperty}
+        />
+      </FormStep>
+      {ismultiple ? <CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("TL_PRIMARY_ADDR_INFO_MSG")} /> : ""}
+    </React.Fragment>
   );
 };
 

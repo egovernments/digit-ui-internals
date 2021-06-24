@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import PGRCard from "./components/PGRCard";
 
 import getRootReducer from "./redux/reducers";
@@ -14,8 +13,7 @@ export const PGRReducers = getRootReducer;
 
 const PGRModule = ({ stateCode, userType, tenants }) => {
   const moduleCode = "PGR";
-  const state = useSelector((state) => state["pgr"]);
-  const language = state?.common?.selectedLanguage;
+  const language = Digit.StoreData.getCurrentLanguage();
   const { isLoading, data: store } = Digit.Services.useStore({ stateCode, moduleCode, language });
 
   if (isLoading) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormComposer } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -9,7 +9,17 @@ const EditForm = ({ tenantId, data }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [canSubmit, setSubmitValve] = useState(false);
-console.log(convertEpochToDate(data?.dateOfAppointment))
+  const [mobileNumber, setMobileNumber] = useState(null);
+  const [phonecheck, setPhonecheck] = useState(false);
+
+  useEffect(() => {
+    if (/^[6-9]\d{9}$/.test(mobileNumber)) {
+      setPhonecheck(true);
+    } else {
+      setPhonecheck(false);
+    }
+  }, [mobileNumber]);
+
   const defaultValues = {
     tenantId: tenantId,
     employeeStatus: "EMPLOYED",
@@ -19,7 +29,7 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
     SelectEmployeeName: { employeeName: data?.user?.name },
     SelectEmployeeEmailId: { emailId: data?.user?.emailId },
     SelectEmployeeCorrespondenceAddress: { correspondenceAddress: data?.user?.correspondenceAddress },
-    SelectDateofEmployment: { dateOfAppointment: convertEpochToDate(1578268800000) },
+    SelectDateofEmployment: { dateOfAppointment: convertEpochToDate(data?.dateOfAppointment) },
     SelectEmployeeType: { code: data?.employeeType, active: true },
     SelectEmployeeGender: {
       gender: {
@@ -29,8 +39,9 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
     },
 
     SelectDateofBirthEmployment: { dob: convertEpochToDate(data?.user?.dob) },
-    Jurisdictions: data?.jurisdictions.map((ele) => {
+    Jurisdictions: data?.jurisdictions.map((ele, index) => {
       return Object.assign({}, ele, {
+        key: index,
         hierarchy: {
           code: ele.hierarchy,
           name: ele.hierarchy,
@@ -40,10 +51,12 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
         roles: data?.user?.roles.filter((item) => item.tenantId == ele.boundary),
       });
     }),
-    Assignments: data?.assignments.map((ele) => {
+    Assignments: data?.assignments.map((ele, index) => {
       return Object.assign({}, ele, {
+        key: index,
         fromDate: convertEpochToDate(ele.fromDate),
         toDate: convertEpochToDate(ele.toDate),
+        isCurrentAssignment: ele.isCurrentAssignment,
         designation: {
           code: ele.designation,
           i18key: "COMMON_MASTERS_DESIGNATION_" + ele.designation,
@@ -58,6 +71,21 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
 
   const onFormValueChange = (setValue = true, formData) => {
     let setcheck = false;
+    if (/^[6-9]\d{9}$/.test(formData?.SelectEmployeePhoneNumber?.mobileNumber)) {
+      setMobileNumber(formData?.SelectEmployeePhoneNumber?.mobileNumber);
+    } else {
+      setPhonecheck(false);
+    }
+    for (let i = 0; i < formData?.Jurisdictions?.length; i++) {
+      let key = formData?.Jurisdictions[i];
+      if (!(key?.boundary && key?.boundaryType && key?.hierarchy && key?.tenantId && key?.roles?.length > 0)) {
+        setcheck = false;
+        break;
+      } else {
+        setcheck = true;
+      }
+    }
+
     if (formData?.Jurisdictions?.length > 0) {
       setcheck = formData?.Jurisdictions?.reduce((acc, key) => {
         if (!(key?.boundary && key?.boundaryType && key?.hierarchy && key?.tenantId && key?.roles?.length > 0)) {
@@ -89,6 +117,7 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
       formData?.SelectEmployeeName?.employeeName &&
       formData?.SelectEmployeePhoneNumber?.mobileNumber &&
       setcheck &&
+      phonecheck &&
       setassigncheck
     ) {
       setSubmitValve(true);
@@ -98,15 +127,16 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
   };
 
   const onSubmit = (input) => {
-    console.log( Date.parse(input?.SelectDateofEmployment?.dateOfAppointment))
     let roles = input?.Jurisdictions?.map((ele) => {
-      return ele.roles;
+      return ele.roles?.map((item) => {
+        item["tenantId"] = ele.boundary;
+        return item;
+      });
     });
-    let requestdata= Object.assign({},data,)
+    let requestdata = Object.assign({}, data);
     roles = [].concat.apply([], roles);
-
     requestdata.assignments = input?.Assignments;
-    requestdata.dateOfAppointment =  Date.parse(input?.SelectDateofEmployment?.dateOfAppointment)
+    requestdata.dateOfAppointment = Date.parse(input?.SelectDateofEmployment?.dateOfAppointment);
     requestdata.code = input?.SelectEmployeeId?.code ? input?.SelectEmployeeId?.code : undefined;
     requestdata.jurisdictions = input?.Jurisdictions;
     requestdata.user.emailId = input?.SelectEmployeeEmailId?.emailId ? input?.SelectEmployeeEmailId?.emailId : undefined;
@@ -121,21 +151,23 @@ console.log(convertEpochToDate(data?.dateOfAppointment))
   };
   const configs = newConfig;
   return (
-    <FormComposer
-      heading={t("HR_COMMON_EDIT_EMPLOYEE_HEADER")}
-      isDisabled={!canSubmit}
-      label={t("HR_COMMON_BUTTON_SUBMIT")}
-      config={configs.map((config) => {
-        return {
-          ...config,
-          body: config.body.filter((a) => !a.hideInEmployee),
-        };
-      })}
-      fieldStyle={{ marginRight: 0 }}
-      onSubmit={onSubmit}
-      defaultValues={defaultValues}
-      onFormValueChange={onFormValueChange}
-    />
+    <div>
+      <FormComposer
+        heading={t("HR_COMMON_EDIT_EMPLOYEE_HEADER")}
+        isDisabled={!canSubmit}
+        label={t("HR_COMMON_BUTTON_SUBMIT")}
+        config={configs.map((config) => {
+          return {
+            ...config,
+            body: config.body.filter((a) => !a.hideInEmployee),
+          };
+        })}
+        fieldStyle={{ marginRight: 0 }}
+        onSubmit={onSubmit}
+        defaultValues={defaultValues}
+        onFormValueChange={onFormValueChange}
+      />
+    </div>
   );
 };
 export default EditForm;

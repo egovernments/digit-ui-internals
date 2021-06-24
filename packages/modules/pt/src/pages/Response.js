@@ -24,7 +24,7 @@ const DisplayText = (action, isSuccess, isEmployee, t) => {
 const BannerPicker = (props) => {
   return (
     <Banner
-      message={GetActionMessage(props.data?.Properties[0].applicationStatus || props.action, props.isSuccess, props.isEmployee, props.t)}
+      message={GetActionMessage(props.data?.Properties?.[0].applicationStatus || props.action, props.isSuccess, props.isEmployee, props.t)}
       applicationNumber={props.data?.Properties[0].acknowldgementNumber}
       info={GetLabel(props.data?.Properties[0].applicationStatus || props.action, props.isSuccess, props.isEmployee, props.t)}
       successful={props.isSuccess}
@@ -38,6 +38,9 @@ const Response = (props) => {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [showToast, setShowToast] = useState(null);
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_SUCCESS_DATA", false);
+
   const closeToast = () => {
     setShowToast(null);
     setError(null);
@@ -48,10 +51,16 @@ const Response = (props) => {
 
   const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId, state.key !== "UPDATE");
 
-  const coreData = Digit.Hooks.useCoreData();
+  const { data: storeData } = Digit.Hooks.useStore.getInitData();
+  const { tenants } = storeData || {};
+
+  useEffect(() => {
+    if (mutation.data) setsuccessData(mutation.data);
+  }, [mutation.data]);
 
   useEffect(() => {
     const onSuccess = () => {
+      setMutationHappened(true);
       queryClient.clear();
     };
     const onError = (error, variables) => {
@@ -59,31 +68,32 @@ const Response = (props) => {
       setError(error?.response?.data?.Errors[0]?.message || null);
     };
 
-    mutation.mutate(
-      {
-        Property: state?.Property,
-      },
-      {
-        onError,
-        onSuccess,
-      }
-    );
-    window.addEventListener("beforeunload", () => {
-      history.replace({ ...history.location, state: {} });
-    });
+    if (!mutationHappened && state?.Property?.channel === "CFC_COUNTER") {
+      mutation.mutate(
+        {
+          Property: state?.Property,
+        },
+        {
+          onError,
+          onSuccess,
+        }
+      );
+    }
 
-    return window.removeEventListener("beforeunload", this);
+    return () => {
+      console.log("unmounted respone");
+    };
   }, []);
 
   const handleDownloadPdf = async () => {
-    const { Properties = [] } = mutation.data;
+    const { Properties = [] } = mutation.data || successData;
     const Property = (Properties && Properties[0]) || {};
-    const tenantInfo = coreData.tenants.find((tenant) => tenant.code === Property.tenantId);
+    const tenantInfo = tenants.find((tenant) => tenant.code === Property.tenantId);
     const data = await getPTAcknowledgementData({ ...Property }, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
   };
 
-  if (mutation.isLoading || mutation.isIdle) {
+  if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;
   }
 
@@ -92,14 +102,16 @@ const Response = (props) => {
       <Card>
         <BannerPicker
           t={t}
-          data={mutation?.data}
+          data={mutation?.data || successData}
           action={state?.action}
-          isSuccess={mutation?.isSuccess}
-          isLoading={mutation?.isIdle || mutation?.isLoading}
+          isSuccess={!successData ? mutation?.isSuccess : true}
+          isLoading={(mutation.isIdle && !mutationHappened) || mutation?.isLoading}
           isEmployee={props.parentRoute.includes("employee")}
         />
-        <CardText>{DisplayText(state.action, mutation.isSuccess, props.parentRoute.includes("employee"), t)}</CardText>
-        {mutation.isSuccess && <SubmitBar style={{ overflow: "hidden" }} label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />}
+        <CardText>{DisplayText(state.action, mutation.isSuccess || !!successData, props.parentRoute.includes("employee"), t)}</CardText>
+        {(mutation.isSuccess || !!successData) && (
+          <SubmitBar style={{ overflow: "hidden" }} label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />
+        )}
       </Card>
       {showToast && <Toast error={showToast.key === "error" ? true : false} label={error} onClose={closeToast} />}
       <ActionBar>

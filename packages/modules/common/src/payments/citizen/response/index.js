@@ -20,14 +20,34 @@ export const SuccessfulPayment = (props) => {
 
   const { label } = Digit.Hooks.useApplicationsForBusinessServiceSearch({ businessService: business_service }, { enabled: false });
 
-  const { data: demand } = Digit.Hooks.useDemandSearch(
-    { consumerCode, businessService: business_service },
-    { enabled: !isLoading, retry: false, staleTime: Infinity, refetchOnWindowFocus: false }
-  );
+  // const { data: demand } = Digit.Hooks.useDemandSearch(
+  //   { consumerCode, businessService: business_service },
+  //   { enabled: !isLoading, retry: false, staleTime: Infinity, refetchOnWindowFocus: false }
+  // );
 
-  const { data: billData, isLoading: isBillDataLoading } = Digit.Hooks.useFetchPayment(
-    { tenantId, consumerCode, businessService: business_service },
-    { enabled: allowFetchBill, retry: false, staleTime: Infinity, refetchOnWindowFocus: false }
+  // const { data: billData, isLoading: isBillDataLoading } = Digit.Hooks.useFetchPayment(
+  //   { tenantId, consumerCode, businessService: business_service },
+  //   { enabled: allowFetchBill, retry: false, staleTime: Infinity, refetchOnWindowFocus: false }
+  // );
+
+  const { data: reciept_data, isLoading: recieptDataLoading } = Digit.Hooks.useRecieptSearch(
+    {
+      tenantId,
+      businessService: business_service,
+      receiptNumbers: data?.payments?.Payments[0].paymentDetails[0].receiptNumber,
+      // receiptNumbers: "PT/107/2021-22/224890",
+      // receiptNumbers: "PT/107/2021-22/224891",
+    },
+    {
+      retry: false,
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+      select: (dat) => {
+        console.log(dat, "from reciept search");
+        return dat.Payments[0];
+      },
+      enabled: allowFetchBill,
+    }
   );
 
   const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
@@ -47,12 +67,13 @@ export const SuccessfulPayment = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log(data, "inside data useEffect");
     if (data && data.txnStatus && data.txnStatus !== "FAILURE") {
       setallowFetchBill(true);
     }
   }, [data]);
 
-  if (isLoading) {
+  if (isLoading || recieptDataLoading) {
     return <Loader />;
   }
 
@@ -89,7 +110,7 @@ export const SuccessfulPayment = (props) => {
   }
 
   const paymentData = data?.payments?.Payments[0];
-  const amount = paymentData.totalAmountPaid;
+  const amount = reciept_data?.paymentDetails?.[0]?.totalAmountPaid;
   const transactionDate = paymentData.transactionDate;
 
   const printReciept = async () => {
@@ -127,8 +148,6 @@ export const SuccessfulPayment = (props) => {
   } else {
     bannerText = `CITIZEN_SUCCESS_${paymentData?.paymentDetails[0].businessService.replace(/\./g, "_")}_PAYMENT_MESSAGE`;
   }
-
-  const loggedOut = !Digit.UserService.getUser()?.access_token;
 
   // https://dev.digit.org/collection-services/payments/FSM.TRIP_CHARGES/_search?tenantId=pb.amritsar&consumerCodes=107-FSM-2021-02-18-063433
 
@@ -175,28 +194,25 @@ export const SuccessfulPayment = (props) => {
             rowContainerStyle={rowContainerStyle}
             last
             label={t("CS_PAYMENT_BILLING_PERIOD")}
-            text={!loggedOut ? getBillingPeriod(demand?.Demands?.[0]) : getBillingPeriod(billData?.Bill?.[0]?.billDetails)}
+            text={getBillingPeriod(reciept_data?.paymentDetails[0]?.bill?.billDetails[0])}
           />
         )}
 
-        {(business_service === "PT" || workflw) &&
-          (isBillDataLoading ? (
-            <Loader />
-          ) : (
-            <Row
-              rowContainerStyle={rowContainerStyle}
-              last
-              label={t("CS_PAYMENT_AMOUNT_PENDING")}
-              text={demand?.Demands?.some((e) => !e?.isPaymentCompleted) || loggedOut ? "₹ " + (billData?.Bill[0]?.totalAmount || 0) : "₹ " + 0}
-            />
-          ))}
+        {(business_service === "PT" || workflw) && (
+          <Row
+            rowContainerStyle={rowContainerStyle}
+            last
+            label={t("CS_PAYMENT_AMOUNT_PENDING")}
+            text={reciept_data?.paymentDetails?.[0]?.totalDue - reciept_data?.paymentDetails?.[0]?.totalAmountPaid}
+          />
+        )}
 
         <Row rowContainerStyle={rowContainerStyle} last label={t("CS_PAYMENT_TRANSANCTION_ID")} text={egId} />
         <Row
           rowContainerStyle={rowContainerStyle}
           last
           label={t(ommitRupeeSymbol ? "CS_PAYMENT_AMOUNT_PAID_WITHOUT_SYMBOL" : "CS_PAYMENT_AMOUNT_PAID")}
-          text={"₹ " + amount}
+          text={"₹ " + reciept_data?.paymentDetails?.[0]?.totalAmountPaid}
         />
         {(business_service !== "PT" || workflw) && (
           <Row

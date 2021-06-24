@@ -32,7 +32,11 @@ const ApplicationDetails = (props) => {
     workflowDetails,
     businessService,
     closeToast,
+    moduleCode,
+    timelineStatusPrefix,
   } = props;
+
+  console.log(workflowDetails.data, "inside applicaiondetails Template");
 
   useEffect(() => {
     if (showToast) {
@@ -41,6 +45,17 @@ const ApplicationDetails = (props) => {
   }, [showToast]);
 
   function onActionSelect(action) {
+    if (action) {
+      if (!action?.redirectionUrl) {
+        setShowModal(true);
+      } else {
+        history.push({
+          pathname: action.redirectionUrl?.pathname,
+          state: { ...action.redirectionUrl?.state },
+        });
+      }
+    } else console.log("no action found");
+
     setSelectedAction(action);
     setDisplayMenu(false);
   }
@@ -48,42 +63,7 @@ const ApplicationDetails = (props) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    switch (selectedAction) {
-      case "DSO_ACCEPT":
-      case "ACCEPT":
-      case "ASSIGN":
-      case "GENERATE_DEMAND":
-      case "FSM_GENERATE_DEMAND":
-      case "REASSIGN":
-      case "COMPLETE":
-      case "COMPLETED":
-      case "CANCEL":
-      case "SENDBACK":
-      case "DSO_REJECT":
-      case "REJECT":
-      case "DECLINE":
-      case "REASSING":
-      case "SENDBACKTOCITIZEN":
-      case "VERIFY":
-      case "FORWARD":
-      case "APPROVE":
-      case "ASSESS_PROPERTY":
-        return setShowModal(true);
-      case "SUBMIT":
-      case "FSM_SUBMIT":
-        return history.push("/digit-ui/employee/fsm/modify-application/" + applicationNumber);
-      case "PAY":
-      case "FSM_PAY":
-      case "ADDITIONAL_PAY_REQUEST":
-        return history.push(`/digit-ui/employee/payment/collect/FSM.TRIP_CHARGES/${applicationNumber}`);
-      case "VIEW_DETAILS":
-        return history.push(`/digit-ui/employee/pt/property-details/${applicationNumber}`);
-      case "UPDATE":
-        return history.push(`/digit-ui/employee/pt/modify-application/${applicationNumber}`);
-      default:
-        console.log("default case");
-        break;
-    }
+    console.log(selectedAction, "here is selected action");
   }, [selectedAction]);
 
   const closeModal = () => {
@@ -92,24 +72,38 @@ const ApplicationDetails = (props) => {
   };
 
   const submitAction = (data) => {
-    if (selectedAction === "ASSESS_PROPERTY") {
-      history.push({
-        pathname: `/digit-ui/employee/pt/assessment-details/${applicationNumber}`,
-        state: data,
-      });
-    } else {
+    // if (selectedAction === "ASSESS_PROPERTY") {
+    //   history.push({
+    //     pathname: `/digit-ui/employee/pt/assessment-details/${applicationNumber}`,
+    //     state: data,
+    //   });
+    // }
+    // if (selectedAction?.redirectionUrl) {
+    //   history.push({
+    //     pathname: selectedAction.redirectionUrl?.pathname,
+    //     state: { ...selectedAction.redirectionUrl?.state, data },
+    //   });
+    // } else {
+
+    if (typeof data?.customFunctionToExecute === "function") {
+      data?.customFunctionToExecute({ ...data });
+    }
+
+    if (mutate) {
       mutate(data, {
         onError: (error, variables) => {
-          setShowToast({ key: "error", action: error });
+          setShowToast({ key: "error", error });
           setTimeout(closeToast, 5000);
         },
         onSuccess: (data, variables) => {
           setShowToast({ key: "success", action: selectedAction });
           setTimeout(closeToast, 5000);
+          queryClient.clear();
           queryClient.refetchQueries("APPLICATION_SEARCH");
         },
       });
     }
+
     closeModal();
   };
 
@@ -127,6 +121,7 @@ const ApplicationDetails = (props) => {
             isDataLoading={isDataLoading}
             applicationData={applicationData}
             businessService={businessService}
+            timelineStatusPrefix={timelineStatusPrefix}
           />
           {showModal ? (
             <ActionModal
@@ -140,6 +135,8 @@ const ApplicationDetails = (props) => {
               submitAction={submitAction}
               actionData={workflowDetails?.data?.timeline}
               businessService={businessService}
+              workflowDetails={workflowDetails}
+              moduleCode={moduleCode}
             />
           ) : null}
           <ApplicationDetailsToast t={t} showToast={showToast} closeToast={closeToast} businessService={businessService} />

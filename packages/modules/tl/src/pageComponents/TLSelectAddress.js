@@ -112,7 +112,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData }) => {
     return (
       <div>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{t("MYCITY_CODE_LABEL")}</CardLabel>
+          <CardLabel className="card-label-smaller">{`${t("MYCITY_CODE_LABEL")}*`}</CardLabel>
           <Controller
             name={"city"}
             defaultValue={cities?.length === 1 ? cities[0] : selectedCity}
@@ -133,7 +133,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData }) => {
         </LabelFieldPair>
         <CardLabelError style={errorStyle}>{localFormState.touched.city ? errors?.city?.message : ""}</CardLabelError>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{t("PT_LOCALITY_LABEL")}</CardLabel>
+          <CardLabel className="card-label-smaller">{t("TL_LOCALIZATION_LOCALITY")}</CardLabel>
           <Controller
             name="locality"
             defaultValue={null}
@@ -158,7 +158,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData }) => {
   }
   return (
     <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>
-      <CardLabel>{`${t("MYCITY_CODE_LABEL")} `}</CardLabel>
+      <CardLabel>{`${t("MYCITY_CODE_LABEL")}*`}</CardLabel>
       <span className={"form-pt-dropdown-only"}>
         <RadioOrSelect
           options={cities.sort((a, b) => a.name.localeCompare(b.name))}
@@ -171,7 +171,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData }) => {
           disabled={isEditProperty}
         />
       </span>
-      {selectedCity && localities && <CardLabel>{`${t("PT_LOCALITY_LABEL")} `}</CardLabel>}
+      {selectedCity && localities && <CardLabel>{`${t("TL_LOCALIZATION_LOCALITY")} `}</CardLabel>}
       {selectedCity && localities && (
         <span className={"form-pt-dropdown-only"}>
           <RadioOrSelect

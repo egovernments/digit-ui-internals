@@ -30,7 +30,6 @@ const ActionButton = ({ jumpTo }) => {
 const CheckPage = ({ onSubmit, value }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  console.log(value);
 
   const { TradeDetails, address, owners, propertyType, subtype, pitType, pitDetail } = value;
   // console.log("find values here ", value)
@@ -44,6 +43,12 @@ const CheckPage = ({ onSubmit, value }) => {
   //       return previous + current + "m x ";
   //     }
   //   }, "");
+  function getdate(date) {
+    let newdate = Date.parse(date);
+    return `${
+      new Date(newdate).getDate().toString() + "/" + (new Date(newdate).getMonth() + 1).toString() + "/" + new Date(newdate).getFullYear().toString()
+    }`;
+  }
 
   return (
     <Card>
@@ -54,22 +59,30 @@ const CheckPage = ({ onSubmit, value }) => {
         <Row
           label={t("TL_LOCALIZATION_TRADE_NAME")}
           text={t(TradeDetails?.TradeName)}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/TradeName" />}
         />
         <Row
           label={t("TL_STRUCTURE_TYPE")}
           text={t(`TL_${TradeDetails?.StructureType.code}`)}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/structure-type" />}
         />
         <Row
           label={t("TL_STRUCTURE_SUB_TYPE")}
           text={t(TradeDetails?.VehicleType ? TradeDetails?.VehicleType.i18nKey : TradeDetails?.BuildingType.i18nKey)}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+          actionButton={
+            <ActionButton
+              jumpTo={
+                TradeDetails?.VehicleType
+                  ? "/digit-ui/citizen/tl/tradelicence/new-application/vehicle-type"
+                  : "/digit-ui/citizen/tl/tradelicence/new-application/Building-type"
+              }
+            />
+          }
         />
         <Row
           label={t("TL_NEW_TRADE_DETAILS_TRADE_COMM_DATE_LABEL")}
-          text={t(TradeDetails?.CommencementDate)}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+          text={t(getdate(TradeDetails?.CommencementDate))}
+          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/commencement-date" />}
         />
         {TradeDetails.units.map((unit, index) => (
           <div key={index}>
@@ -79,27 +92,27 @@ const CheckPage = ({ onSubmit, value }) => {
             <Row
               label={t("TL_NEW_TRADE_DETAILS_TRADE_CAT_LABEL")}
               text={t(unit?.tradecategory.i18nKey)}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/units-details" />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_TRADE_TYPE_LABEL")}
               text={t(unit?.tradetype.i18nKey)}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/units-details" />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_TRADE_SUBTYPE_LABEL")}
               text={t(unit?.tradesubtype.i18nKey)}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/units-details" />}
             />
             <Row
               label={t("TL_UNIT_OF_MEASURE_LABEL")}
               text={t(unit?.unit)}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/units-details" />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")}
               text={t(unit?.uom)}
-              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+              actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/units-details" />}
             />
           </div>
         ))}
@@ -112,32 +125,32 @@ const CheckPage = ({ onSubmit, value }) => {
               <Row
                 label={t("TL_TRADE_ACC_HEADER")}
                 text={t(acc?.accessory.i18nKey)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/accessories-details" />}
               />
               <Row
                 label={t("TL_NEW_TRADE_ACCESSORY_COUNT")}
                 text={t(acc?.accessorycount)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/accessories-details" />}
               />
               <Row
                 label={t("TL_ACC_UOM_LABEL")}
                 text={t(acc?.unit)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/accessories-details" />}
               />
               <Row
                 label={t("TL_ACC_UOM_VALUE_LABEL")}
                 text={t(acc?.uom)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/accessories-details" />}
               />
             </div>
           ))}
         <CardSubHeader>{t("TL_NEW_TRADE_DETAILS_HEADER_TRADE_LOC_DETAILS")}</CardSubHeader>
         <Row
-          label={t("CS_CHECK_ADDRESS")}
+          label={t("TL_CHECK_ADDRESS")}
           text={`${address?.doorNo?.trim() ? `${address?.doorNo?.trim()}, ` : ""} ${address?.street?.trim() ? `${address?.street?.trim()}, ` : ""}${t(
             address?.locality?.i18nkey
           )}, ${t(address?.city.code)} ${address?.pincode?.trim() ? `,${address?.pincode?.trim()}` : ""}`}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+          actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/map" />}
         />
         <CardSubHeader>{t("TL_NEW_OWNER_DETAILS_HEADER")}</CardSubHeader>
         {owners.owners &&
@@ -149,27 +162,27 @@ const CheckPage = ({ onSubmit, value }) => {
               <Row
                 label={t("TL_COMMON_TABLE_COL_OWN_NAME")}
                 text={t(owner?.name)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/owner-details" />}
               />
               <Row
                 label={t("TL_NEW_OWNER_DETAILS_GENDER_LABEL")}
                 text={t(owner?.gender?.name)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/owner-details" />}
               />
               <Row
                 label={t("TL_MOBILE_NUMBER_LABEL")}
                 text={t(owner?.mobilenumber)}
-                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/info" />}
+                actionButton={<ActionButton jumpTo="/digit-ui/citizen/tl/tradelicence/new-application/owner-details" />}
               />
             </div>
           ))}
-        <CardSubHeader>{t("COMMON_DOCS")}</CardSubHeader>
+        <CardSubHeader>{t("TL_COMMON_DOCS")}</CardSubHeader>
         <div>
           {owners?.documents["OwnerPhotoProof"] ? (
             <TLDocument value={value}></TLDocument>
           ) : (
             <StatusTable>
-              <Row text="PT_NO_DOCUMENTS_MSG" />
+              <Row text="TL_NO_DOCUMENTS_MSG" />
             </StatusTable>
           )}
         </div>

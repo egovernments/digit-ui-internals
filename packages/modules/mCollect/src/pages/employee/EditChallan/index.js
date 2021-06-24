@@ -15,8 +15,8 @@ const EditChallan = () => {
   console.log(challanNo);
   //if (challanNo) filters.challanNo = challanNo;
   //if (businesService) filters.businesService = businesService;
-
-  const { isLoading, data: result } = Digit.Hooks.mcollect.useMCollectSearch({ tenantId, filters: { challanNo } });
+  let isMcollectAppChanged = Digit.SessionStorage.get("isMcollectAppChanged");
+  const { isLoading, data: result } = Digit.Hooks.mcollect.useMCollectSearch({ tenantId, filters: { challanNo }, isMcollectAppChanged });
   console.log("result");
   console.log(result);
   //return;

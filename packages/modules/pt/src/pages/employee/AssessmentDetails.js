@@ -2,18 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
 
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useHistory } from "react-router-dom";
 import { ActionBar, Header, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { useQueryClient } from "react-query";
 
 const AssessmentDetails = () => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const { id: applicationNumber } = useParams();
+  const { id: propertyId } = useParams();
   const location = useLocation();
   const AssessmentData = location?.state?.Assessment;
   const [showToast, setShowToast] = useState(null);
+  const queryClient = useQueryClient();
+  const history = useHistory();
 
-  let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, applicationNumber);
+  let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, propertyId);
   const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantId);
   const {
     isLoading: ptCalculationEstimateLoading,
@@ -22,16 +25,17 @@ const AssessmentDetails = () => {
   } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
 
   useEffect(() => {
+    // estimate calculation
     ptCalculationEstimateMutate({ Assessment: AssessmentData });
   }, []);
 
-  const {
-    isLoading: updatingApplication,
-    isError: updateApplicationError,
-    data: updateResponse,
-    error: updateError,
-    mutate,
-  } = Digit.Hooks.pt.useApplicationActions(tenantId);
+  // const {
+  //   isLoading: updatingApplication,
+  //   isError: updateApplicationError,
+  //   data: updateResponse,
+  //   error: updateError,
+  //   mutate,
+  // } = Digit.Hooks.pt.useApplicationActions(tenantId);
 
   let workflowDetails = Digit.Hooks.useWorkflowDetails({
     tenantId: applicationDetails?.tenantId || tenantId,
@@ -47,7 +51,7 @@ const AssessmentDetails = () => {
     values: [
       {
         title: "PT_TITLE_UNIQUE_PROPERTY_ID",
-        value: applicationNumber,
+        value: propertyId,
       },
       {
         title: "ES_PT_TITLE_BILLING_PERIOD",
@@ -64,19 +68,26 @@ const AssessmentDetails = () => {
   };
 
   const handleAssessment = () => {
-    assessmentMutate(
-      { Assessment: AssessmentData },
-      {
-        onError: (error, variables) => {
-          setShowToast({ key: "error", action: error?.response?.data?.Errors[0]?.message || error });
-          setTimeout(closeToast, 5000);
-        },
-        onSuccess: (data, variables) => {
-          setShowToast({ key: "success", action: "ASSESSMENT" });
-          setTimeout(closeToast, 5000);
-        },
-      }
-    );
+    if (!queryClient.getQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear])) {
+      assessmentMutate(
+        { Assessment: AssessmentData },
+        {
+          onError: (error, variables) => {
+            setShowToast({ key: "error", action: error?.response?.data?.Errors[0]?.message || error.message });
+            setTimeout(closeToast, 5000);
+          },
+          onSuccess: (data, variables) => {
+            setShowToast({ key: "success", action: "ASSESSMENT" });
+            setTimeout(closeToast, 5000);
+            queryClient.setQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear], true);
+          },
+        }
+      );
+    }
+  };
+
+  const proceeedToPay = () => {
+    history.push(`/digit-ui/employee/payment/collect/PT/${propertyId}`);
   };
 
   if (ptCalculationEstimateLoading || assessmentLoading) {
@@ -91,18 +102,29 @@ const AssessmentDetails = () => {
         isLoading={isLoading}
         isDataLoading={isLoading}
         applicationData={applicationDetails?.applicationData}
-        mutate={mutate}
-        workflowDetails={workflowDetails}
+        mutate={null}
+        workflowDetails={
+          queryClient.getQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear])
+            ? { ...workflowDetails, data: { ...workflowDetails.data, nextActions: [] } }
+            : workflowDetails
+        }
         businessService="PT"
         assessmentMutate={assessmentMutate}
         ptCalculationEstimateMutate={ptCalculationEstimateMutate}
         showToast={showToast}
         setShowToast={setShowToast}
         closeToast={closeToast}
+        timelineStatusPrefix={"ES_PT_COMMON_STATUS_"}
       />
-      <ActionBar>
-        <SubmitBar label={t("ES_PT_TITLE_ASSESS_PROPERTY")} onSubmit={handleAssessment} />
-      </ActionBar>
+      {!queryClient.getQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear]) ? (
+        <ActionBar>
+          <SubmitBar label={t("ES_PT_TITLE_ASSESS_PROPERTY")} onSubmit={handleAssessment} />
+        </ActionBar>
+      ) : (
+        <ActionBar>
+          <SubmitBar label={t("PROCEED_TO_PAY")} onSubmit={proceeedToPay} />
+        </ActionBar>
+      )}
     </div>
   );
 };

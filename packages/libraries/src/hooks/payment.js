@@ -40,7 +40,7 @@ export const useFetchBillsForBuissnessService = ({ tenantId, businessService, ..
   const _tenantId = tenantId || Digit.UserService.getUser()?.info?.tenantId;
 
   const { isLoading, error, isError, data, status } = useQuery(
-    ["billsForBuisnessService", businessService, { ...filters }],
+    ["billsForBuisnessService", businessService, { ...filters }, config],
     () => Digit.PaymentService.fetchBill(_tenantId, params),
     {
       retry: (count, err) => {
@@ -101,4 +101,15 @@ export const useDemandSearch = ({ consumerCode, businessService, tenantId }, con
   const queryFn = () => Digit.PaymentService.demandSearch(tenantId, consumerCode, businessService);
   const queryData = useQuery(["demand_search", { consumerCode, businessService, tenantId }], queryFn, { refetchOnMount: "always", ...config });
   return queryData;
+};
+
+export const useRecieptSearch = ({ tenantId, businessService, ...params }, config = {}) => {
+  return useQuery(
+    ["reciept_search", { tenantId, businessService, params }],
+    () => Digit.PaymentService.recieptSearch(tenantId, businessService, params),
+    {
+      refetchOnMount: false,
+      ...config,
+    }
+  );
 };

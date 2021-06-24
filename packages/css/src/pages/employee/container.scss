@@ -16,8 +16,7 @@
 }
 
 .employee-home-footer{
-  width: calc( 100% - 72px);
-  @apply flex fixed bottom-0 h-10 bg-grey-bg pb-md pt-sm justify-center;
+  @apply flex fixed bottom-0 h-10 bg-grey-bg pb-md pt-sm justify-center w-full;
   img{
     @apply ml-sm
   }
@@ -36,5 +35,6 @@
     margin-bottom: 40px;
   }
   .employee-home-footer{
+    
   }
 }

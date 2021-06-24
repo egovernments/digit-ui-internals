@@ -10,21 +10,23 @@ export const configPTApproverApplication = ({
   selectFile,
   uploadedFile,
   setUploadedFile,
+  assigneeLabel,
+  businessService,
 }) => {
   return {
     label: {
-      heading: `WF_${action}_APPLICATION`,
-      submit: `WF_PT.CREATE_${action}`,
+      heading: `WF_${action?.action}_APPLICATION`,
+      submit: `WF_${businessService}_${action?.action}`,
       cancel: "ES_PT_COMMON_CANCEL",
     },
     form: [
       {
         body: [
           {
-            label: t("ES_PT_FIELD_INSPECTORS"),
-            isMandatory: true,
+            label: action.isTerminateState ? null : t(assigneeLabel || `WF_ROLE_${action.assigneeRoles?.[0]}`),
+            isMandatory: !action.isTerminateState,
             type: "dropdown",
-            populators: (
+            populators: action.isTerminateState ? null : (
               <Dropdown
                 option={approvers}
                 autoComplete="off"
@@ -43,8 +45,8 @@ export const configPTApproverApplication = ({
             },
           },
           {
-            label: t("ES_PT_UPLOAD_FILE"),
-            populators: (
+            label: action.docUploadRequired ? t("ES_PT_UPLOAD_FILE") : null,
+            populators: action.docUploadRequired ? (
               <UploadFile
                 // accept=".jpg"
                 onUpload={selectFile}
@@ -53,7 +55,7 @@ export const configPTApproverApplication = ({
                 }}
                 message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
               />
-            ),
+            ) : null,
           },
         ],
       },

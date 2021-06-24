@@ -14,7 +14,7 @@ const SelectEmployeeCorrespondenceAddress = ({ t, config, onSelect, formData = {
         title: t("CORE_COMMON_APPLICANT_NAME_INVALID"),
       },
       isMandatory: true,
-    }
+    },
   ];
 
   function setValue(value, input) {

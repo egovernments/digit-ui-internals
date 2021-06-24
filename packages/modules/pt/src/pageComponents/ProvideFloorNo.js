@@ -34,7 +34,7 @@ const ProvideFloorNo = ({ t, config, onSelect, userType, formData }) => {
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!Floorno}>
       <CardLabel>{t("PT_FLOOR_NUMBER_LABEL")}</CardLabel>
-      <div className={'form-pt-dropdown-only'}>
+      <div className={"form-pt-dropdown-only"}>
         {data && (
           <RadioOrSelect
             t={t}

@@ -21,7 +21,7 @@ const Inbox = ({
 }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
-  let isMcollectCancelled = Digit.SessionStorage.get("isMcollectCancelled");
+  let isMcollectAppChanged = Digit.SessionStorage.get("isMcollectAppChanged");
   const { t } = useTranslation();
   const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
   const [pageSize, setPageSize] = useState(initialStates.pageSize || 10);
@@ -54,7 +54,7 @@ const Inbox = ({
   const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.mcollect.useMCollectSearch({
     tenantId,
     filters: { ...searchParams, ...paginationParams },
-    isMcollectCancelled,
+    isMcollectAppChanged,
   });
 
   let formedData = [];

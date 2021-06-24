@@ -12,7 +12,7 @@ const useComplaintTypes = ({ stateCode }) => {
       menu.push({ key: "Others", name: t("SERVICEDEFS.OTHERS") });
       setComplaintTypes(menu);
     })();
-  }, [stateCode]);
+  }, [t, stateCode]);
 
   return complaintTypes;
 };

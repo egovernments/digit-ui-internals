@@ -48,6 +48,7 @@ export const TableConfig = (t) => ({
       {
         Header: t("ES_SEARCH_PROPERTY_STATUS"),
         Cell: ({ row }) => {
+          // console.log(row.original?.searchData?.status,">>>>>>>>>")
           return GetCell(row.original?.searchData?.status);
         },
         disableSortBy: true,
@@ -104,16 +105,31 @@ export const TableConfig = (t) => ({
       },
       {
         Header: t("ES_INBOX_APPLICATION_TYPE"),
-        Cell: ({ row }) => GetCell(`${row.original?.searchData["propertyType"]}`),
-        mobileCell: (original) => GetMobCell(original?.searchData?.["propertyType"]),
+        Cell: ({ row }) => {
+          const map = {
+            "PT.CREATE": "ES_PT_NEW_PROPERTY",
+            "PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
+            "PT.UPDATE": "ES_PT_UPDATE_PROPERTY",
+          };
+          return GetCell(t(`${map[row.original?.workflowData?.businessService]}`));
+        },
+        mobileCell: (original) => {
+          const map = {
+            "PT.CREATE": "ES_PT_NEW_PROPERTY",
+            "PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
+            "PT.UPDATE": "ES_PT_UPDATE_PROPERTY",
+          };
+
+          return GetMobCell(t(map[original?.workflowData?.businessService]));
+        },
       },
       {
         Header: t("ES_INBOX_STATUS"),
         Cell: ({ row }) => {
           const wf = row.original?.workflowData;
-          return GetCell(t(`PT_INBOX_STATUS_${wf?.state?.["state"]}`));
+          return GetCell(t(`ES_PT_COMMON_STATUS_${wf?.state?.["state"]}`));
         },
-        mobileCell: (original) => GetMobCell(original?.workflowData?.state?.["state"]),
+        mobileCell: (original) => GetMobCell(t(`ES_PT_COMMON_STATUS_${original?.workflowData?.state?.["state"]}`)),
       },
       {
         Header: t("ES_INBOX_SLA_DAYS_REMAINING"),

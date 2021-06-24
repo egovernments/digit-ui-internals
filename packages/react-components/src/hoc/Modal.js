@@ -26,7 +26,7 @@ const Modal = ({
         <div className="popup-module-main">
           {children}
           <div className="popup-module-action-bar">
-            { actionCancelLabel ? <ButtonSelector theme="border" label={actionCancelLabel} onSubmit={actionCancelOnSubmit} /> : null}
+            {actionCancelLabel ? <ButtonSelector theme="border" label={actionCancelLabel} onSubmit={actionCancelOnSubmit} /> : null}
             <ButtonSelector label={actionSaveLabel} onSubmit={actionSaveOnSubmit} formId={formId} isDisabled={isDisabled} />
           </div>
         </div>

@@ -8,7 +8,9 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   const [isPrimaryOwner, setisPrimaryOwner] = useState(false);
   const [gender, setGender] = useState(formData?.owners?.gender);
   const [mobileNumber, setMobileNumber] = useState(formData?.owners?.mobileNumber || "");
-  const [fields, setFeilds] = useState([{ name: "", gender: "", mobilenumber: null, isprimaryowner: false }]);
+  const [fields, setFeilds] = useState(
+    (formData?.owners && formData?.owners?.owners) || [{ name: "", gender: "", mobilenumber: null, isprimaryowner: false }]
+  );
   let ismultiple = formData?.ownershipCategory?.code.includes("SINGLEOWNER") ? false : true;
 
   const isUpdateProperty = formData?.isUpdateProperty || false;
@@ -43,6 +45,9 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   }
   function setPrimaryOwner(i, e) {
     let units = [...fields];
+    units.map((units) => {
+      units.isprimaryowner = false;
+    });
     units[i].isprimaryowner = ismultiple ? e.target.checked : true;
     setisPrimaryOwner(e.target.checked);
     setFeilds(units);
@@ -66,12 +71,12 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   ];
 
   return (
-    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={!name || !mobileNumber || !gender}>
+    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={!fields[0].name || !fields[0].mobilenumber || !fields[0].gender}>
       {fields.map((field, index) => {
         return (
           <div key={`${field}-${index}`}>
             {ismultiple && <hr color="#d6d5d4" className="break-line"></hr>}
-            <CardLabel>{`${t("TL_COMMON_TABLE_COL_OWN_NAME")}`}</CardLabel>
+            <CardLabel>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}</CardLabel>
             <TextInput
               t={t}
               type={"text"}
@@ -98,32 +103,37 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
               selectedOption={field.gender}
               onSelect={(e) => setGenderName(index, e)}
               isDependent={true}
-              labelKey="PT_COMMON_GENDER"
+              labelKey="TL_GENDER"
               disabled={isUpdateProperty || isEditProperty}
             />
             <CardLabel>{`${t("TL_MOBILE_NUMBER_LABEL")}`}</CardLabel>
-            <TextInput
-              type={"text"}
-              t={t}
-              isMandatory={false}
-              optionKey="i18nKey"
-              name="mobileNumber"
-              value={field.mobilenumber}
-              onChange={(e) => setMobileNo(index, e)}
-              //disable={isUpdateProperty || isEditProperty}
-              {...(validation = {
-                isRequired: true,
-                pattern: "[6-9]{1}[0-9]{9}",
-                type: "tel",
-                title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
-              })}
-            />
+            <div className="field-container">
+              <span className="employee-card-input employee-card-input--front" style={{ marginTop: "-1px" }}>
+                +91
+              </span>
+              <TextInput
+                type={"text"}
+                t={t}
+                isMandatory={false}
+                optionKey="i18nKey"
+                name="mobileNumber"
+                value={field.mobilenumber}
+                onChange={(e) => setMobileNo(index, e)}
+                //disable={isUpdateProperty || isEditProperty}
+                {...(validation = {
+                  isRequired: true,
+                  pattern: "[6-9]{1}[0-9]{9}",
+                  type: "tel",
+                  title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
+                })}
+              />
+            </div>
             {ismultiple && (
               <CheckBox
                 label={t("Primary Owner")}
                 onChange={(e) => setPrimaryOwner(index, e)}
-                value={isPrimaryOwner}
-                //checked={isCorrespondenceAddress || false}
+                value={field.isprimaryowner}
+                checked={field.isprimaryowner}
                 style={{ paddingTop: "10px" }}
                 //disable={isUpdateProperty || isEditProperty}
               />

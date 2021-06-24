@@ -85,14 +85,21 @@ const mCollectAccess = () => {
   return MCOLLECT_ACCESS.length > 0;
 };
 
+
 const receiptsAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
   const receiptsRoles = ["CR_PT"];
-
   const RECEIPTS_ACCESS = userRoles.filter((role) => receiptsRoles.includes(role));
-
   return RECEIPTS_ACCESS.length > 0;
+}
+
+const hrmsAccess = () => {
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
+  const hrmsRoles = ["HRMS_ADMIN"];
+  const HRMS_ACCESS = userRoles.filter((role) => hrmsRoles.includes(role));
+  return HRMS_ACCESS.length > 0;
 };
 
 export default {
@@ -110,4 +117,5 @@ export default {
   ptAccess,
   mCollectAccess,
   receiptsAccess,
+  hrmsAccess,
 };

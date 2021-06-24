@@ -26,6 +26,8 @@ const Urls = {
 
   UserSearch: "/user/_search",
 
+  Shortener: "/egov-url-shortening/shortener",
+
   fsm: {
     search: "/fsm/v1/_search",
     create: "/fsm/v1/_create",
@@ -47,6 +49,7 @@ const Urls = {
     create_citizen_reciept: "/pg-service/transaction/v1/_create",
     update_citizen_reciept: "/pg-service/transaction/v1/_update",
     search_bill: "/billing-service/bill/v2/_search",
+    reciept_search: "/collection-services/payments/:buisnessService/_search",
   },
 
   pt: {
@@ -83,6 +86,9 @@ const Urls = {
   },
   tl: {
     create: "/tl-services/v1/_create",
+    search: "/tl-services/v1/_search",
+    fetch_payment_details: "/billing-service/bill/v2/_fetchbill",
+    download_pdf: "/egov-pdf/download/TL/",
   },
   receipts: {
     payments: "/collection-services/payments",

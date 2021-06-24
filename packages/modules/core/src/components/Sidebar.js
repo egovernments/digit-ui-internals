@@ -2,7 +2,6 @@ import React from "react";
 import { NavBar, LogoutIcon } from "@egovernments/digit-ui-react-components";
 import SideBarMenu from "../config/sidebar-menu";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { digitImg } from "../Images/digit.js";
 import { powered } from "../Images/powered.js";
 
@@ -56,7 +55,8 @@ const PoweredBy = () => (
 );
 
 export const CitizenSidebar = ({ isOpen, isMobile, toggleSidebar, onLogout }) => {
-  const { stateInfo } = useSelector((state) => state.common);
+  const { data: storeData, isFetched } = Digit.Hooks.useStore.getInitData();
+  const { stateInfo } = storeData || {};
   const user = Digit.UserService.getUser();
   const { t } = useTranslation();
 
@@ -68,7 +68,7 @@ export const CitizenSidebar = ({ isOpen, isMobile, toggleSidebar, onLogout }) =>
 
   let menuItems = [...SideBarMenu(t, closeSidebar)];
   let profileItem;
-  if (user && user.access_token) {
+  if (isFetched && user && user.access_token) {
     profileItem = <Profile info={user.info} stateName={stateInfo.name} />;
     menuItems = [
       ...menuItems,

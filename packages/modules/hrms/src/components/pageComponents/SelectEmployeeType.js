@@ -12,12 +12,11 @@ const SelectEmployeeType = ({ t, config, onSelect, formData = {}, userType }) =>
   const [employeeType, setemployeeType] = useState(formData?.SelectEmployeeType);
   function SelectEmployeeType(value) {
     setemployeeType(value);
-
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     onSelect(config.key, employeeType);
-  },[employeeType])
+  }, [employeeType]);
   const inputs = [
     {
       label: "HR_EMPLOYMENT_TYPE_LABEL",
@@ -34,24 +33,25 @@ const SelectEmployeeType = ({ t, config, onSelect, formData = {}, userType }) =>
     return <Loader />;
   }
 
-    return inputs?.map((input, index) => {
-      return (
-        <LabelFieldPair key={index}>
-          <CardLabel className="card-label-smaller">{t(input.label)}
-          {input.isMandatory ? " * " : null}</CardLabel>
-          <Dropdown
-            className="form-field"
-            selected={employeeType}
-            option={EmployeeTypes?.["egov-hrms"]?.EmployeeType}
-            select={SelectEmployeeType}
-            optionKey="code"
-            defaultValue={undefined}
-            t={t}
-          />
-        </LabelFieldPair>
-      );
-    });
-
+  return inputs?.map((input, index) => {
+    return (
+      <LabelFieldPair key={index}>
+        <CardLabel className="card-label-smaller">
+          {t(input.label)}
+          {input.isMandatory ? " * " : null}
+        </CardLabel>
+        <Dropdown
+          className="form-field"
+          selected={employeeType}
+          option={EmployeeTypes?.["egov-hrms"]?.EmployeeType}
+          select={SelectEmployeeType}
+          optionKey="code"
+          defaultValue={undefined}
+          t={t}
+        />
+      </LabelFieldPair>
+    );
+  });
 };
 
 export default SelectEmployeeType;

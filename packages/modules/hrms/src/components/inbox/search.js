@@ -45,7 +45,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   const clearAll = (mobileView) => {
     const mobileViewStyles = mobileView ? { margin: 0 } : {};
     return (
-      <LinkLabel style={{ display: "inline", ...mobileViewStyles }} onClick={clearSearch}>
+      <LinkLabel style={{ display: "", ...mobileViewStyles }} onClick={clearSearch}>
         {t("HR_COMMON_CLEAR_SEARCH")}
       </LinkLabel>
     );
@@ -68,10 +68,21 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
-                  <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
+                  <span
+                    key={index}
+                    style={index != 0 ? { marginLeft: "2rem" } : { marginLeft: "0rem" }}
+                    className={index === 0 ? "complaint-input" : "mobile-input"}
+                  >
                     <Label>{input.label}</Label>
                     {input.type !== "date" ? (
-                      <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
+                      <div className="field-container">
+                        {input?.componentInFront ? (
+                          <span className="citizen-card-input citizen-card-input--front" style={{ flex: "none" }}>
+                            {input?.componentInFront}
+                          </span>
+                        ) : null}
+                        <TextInput {...input} inputRef={register} watch={watch} shouldUpdate={true} />
+                      </div>
                     ) : (
                       <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
@@ -82,9 +93,23 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                     )}{" "}
                   </span>
                 ))}
-              {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("HR_COMMON_SEARCH")} submit />}
             </div>
-            {type === "desktop" && !mobileView && <span className="clear-search">{clearAll()}</span>}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              {type === "desktop" && !mobileView && <div className="clear-search">{clearAll()}</div>}
+              {type === "desktop" && !mobileView && (
+                <SubmitBar
+                  style={{ marginTop: "0px", flex: 1, maxWidth: "290px", marginLeft: "35px" }}
+                  className="submit-bar-search"
+                  label={t("HR_COMMON_SEARCH")}
+                  submit
+                />
+              )}
+            </div>
           </div>
         </div>
         {(type === "mobile" || mobileView) && (

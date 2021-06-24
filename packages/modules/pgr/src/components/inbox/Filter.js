@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Dropdown, RadioButtons, ActionBar, RemoveableTag, RoundedLabel } from "@egovernments/digit-ui-react-components";
 import { ApplyFilterBar, CloseSvg } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
@@ -12,9 +12,19 @@ const Filter = (props) => {
   const { searchParams } = props;
   const { t } = useTranslation();
   const isAssignedToMe = searchParams?.filters?.wfFilters?.assignee && searchParams?.filters?.wfFilters?.assignee[0]?.code ? true : false;
-  const [selectAssigned, setSelectedAssigned] = useState(
-    isAssignedToMe ? { code: "ASSIGNED_TO_ME", name: t("ASSIGNED_TO_ME") } : { code: "ASSIGNED_TO_ALL", name: t("ASSIGNED_TO_ALL") }
+
+  const assignedToOptions = useMemo(
+    () => [
+      { code: "ASSIGNED_TO_ME", name: t("ASSIGNED_TO_ME") },
+      { code: "ASSIGNED_TO_ALL", name: t("ASSIGNED_TO_ALL") },
+    ],
+    [t]
   );
+
+  const [selectAssigned, setSelectedAssigned] = useState(isAssignedToMe ? assignedToOptions[0] : assignedToOptions[1]);
+
+  useEffect(() => setSelectedAssigned(isAssignedToMe ? assignedToOptions[0] : assignedToOptions[1]), [t]);
+
   const [selectedComplaintType, setSelectedComplaintType] = useState(null);
   const [selectedLocality, setSelectedLocality] = useState(null);
   const [pgrfilters, setPgrFilters] = useState(
@@ -181,15 +191,7 @@ const Filter = (props) => {
             )}
           </div>
           <div>
-            <RadioButtons
-              onSelect={onRadioChange}
-              selectedOption={selectAssigned}
-              optionsKey="name"
-              options={[
-                { code: "ASSIGNED_TO_ME", name: t("ASSIGNED_TO_ME") },
-                { code: "ASSIGNED_TO_ALL", name: t("ASSIGNED_TO_ALL") },
-              ]}
-            />
+            <RadioButtons onSelect={onRadioChange} selectedOption={selectAssigned} optionsKey="name" options={assignedToOptions} />
             <div>
               {GetSelectOptions(
                 t("CS_COMPLAINT_DETAILS_COMPLAINT_SUBTYPE"),

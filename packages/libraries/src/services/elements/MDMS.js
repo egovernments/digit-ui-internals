@@ -614,15 +614,16 @@ const getHrmsEmployeeRolesandDesignations = () => ({
       ],
     },
     {
-      moduleName: "tenant", masterDetails: [{name: "tenants"}]
+      moduleName: "tenant",
+      masterDetails: [{ name: "tenants" }],
     },
     {
       moduleName: "ACCESSCONTROL-ROLES",
       masterDetails: [{ name: "roles", filter: "$.[?(@.code!='CITIZEN')]" }],
     },
-    { moduleName: "egov-location", masterDetails: [{ name: "TenantBoundary" }] }
-  ]
-})
+    { moduleName: "egov-location", masterDetails: [{ name: "TenantBoundary" }] },
+  ],
+});
 const getFSTPPlantCriteria = (tenantId, moduleCode, type) => ({
   type,
   details: {
@@ -1055,10 +1056,10 @@ export const MdmsService = {
     );
   },
   getDataByCriteria: async (tenantId, mdmsDetails, moduleCode) => {
-    console.log("function")
+    console.log("function");
     const key = `MDMS.${tenantId}.${moduleCode}.${mdmsDetails.type}.${JSON.stringify(mdmsDetails.details)}`;
     const inStoreValue = PersistantStorage.get(key);
-    console.log(inStoreValue)
+    console.log(inStoreValue);
     if (inStoreValue) {
       return inStoreValue;
     }
@@ -1189,7 +1190,7 @@ export const MdmsService = {
   getHrmsEmployeeTypes: (tenantId, moduleCode, type, filter) => {
     return MdmsService.getDataByCriteria(tenantId, getGeneralCriteria(tenantId, moduleCode, type), moduleCode);
   },
-  getHrmsEmployeeReason:(tenantId, moduleCode, type) => {
+  getHrmsEmployeeReason: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getGeneralCriteria(tenantId, moduleCode, type), moduleCode);
   },
   getMultipleTypes: (tenantId, moduleCode, types) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MultiSelectDropdown, FilterIcon, RefreshIcon, CloseSvg } from "@egovernments/digit-ui-react-components";
 import Switch from "./Switch";
 import DateRange from "./DateRange";
@@ -8,18 +8,23 @@ const Filters = ({ t, ulbTenants, isOpen, closeFilters, showDateRange = true, sh
   const { value, setValue } = useContext(FilterContext);
 
   const [selected, setSelected] = useState(() =>
-    ulbTenants.filter((tenant) => value.filters.tenantId.find((selectedTenant) => selectedTenant === tenant.code))
+    ulbTenants?.ulb.filter((tenant) => value.filters.tenantId.find((selectedTenant) => selectedTenant === tenant.code))
   );
 
   useEffect(() => {
-    setSelected(ulbTenants.filter((tenant) => value.filters.tenantId.find((selectedTenant) => selectedTenant === tenant.code)));
+    setSelected(ulbTenants?.ulb.filter((tenant) => value.filters.tenantId.find((selectedTenant) => selectedTenant === tenant.code)));
   }, [value.filters.tenantId]);
 
   const selectULB = (data) => {
-    setValue({ ...value, filters: { tenantId: [...value?.filters?.tenantId, data] } });
+    const _data = Array.isArray(data) ? data : [data];
+    setValue({ ...value, filters: { tenantId: [...value?.filters?.tenantId, ..._data] } });
   };
   const removeULB = (data) => {
-    setValue({ ...value, filters: { ...value?.filters, tenantId: [...value?.filters?.tenantId].filter((tenant) => tenant !== data) } });
+    const _data = Array.isArray(data) ? data : [data];
+    setValue({
+      ...value,
+      filters: { ...value?.filters, tenantId: [...value?.filters?.tenantId].filter((tenant) => !_data.find((e) => e === tenant)) },
+    });
   };
   const handleFilterChange = (data) => {
     setValue({ ...value, ...data });
@@ -30,6 +35,20 @@ const Filters = ({ t, ulbTenants, isOpen, closeFilters, showDateRange = true, sh
     if (checked) selectULB(data.code);
     else removeULB(data.code);
   };
+
+  const selectDDR = (e, data) => {
+    const { checked } = e?.target;
+    if (checked) selectULB(ulbTenants.ulb.filter((ulb) => ulb.ddrKey === data.ddrKey).map((ulb) => ulb.code));
+    else removeULB(ulbTenants.ulb.filter((ulb) => ulb.ddrKey === data.ddrKey).map((ulb) => ulb.code));
+  };
+
+  const selectedDDRs = useMemo(
+    () =>
+      selected
+        .map((ulb) => ulbTenants.ulb.filter((e) => e.code === ulb.code)[0])
+        .filter((item, i, arr) => i === arr.findIndex((t) => t.ddrKey === item.ddrKey)),
+    [selected, ulbTenants]
+  );
 
   const handleClear = () => {
     setValue({
@@ -61,10 +80,10 @@ const Filters = ({ t, ulbTenants, isOpen, closeFilters, showDateRange = true, sh
         <div className="filters-input">
           <div>{t("ES_DSS_DDR")}</div>
           <MultiSelectDropdown
-            options={ulbTenants}
+            options={ulbTenants?.ddr}
             optionsKey="ddrKey"
-            onSelect={selectFilters}
-            selected={selected}
+            onSelect={selectDDR}
+            selected={selectedDDRs}
             defaultLabel={t("ES_DSS_ALL_DDR_SELECTED")}
             defaultUnit={t("ES_DSS_DDR_SELECTED")}
           />
@@ -74,7 +93,7 @@ const Filters = ({ t, ulbTenants, isOpen, closeFilters, showDateRange = true, sh
         <div className="filters-input">
           <div>{t("ES_DSS_ULB")}</div>
           <MultiSelectDropdown
-            options={ulbTenants}
+            options={ulbTenants?.ulb}
             optionsKey="ulbKey"
             onSelect={selectFilters}
             selected={selected}

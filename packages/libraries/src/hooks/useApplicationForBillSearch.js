@@ -14,6 +14,9 @@ const ptApplications = async (tenantId, filters) => {
 const advtApplications = async (tenantId, filters) => {
   return (await MCollectService.search_bill({ tenantId, filters })).Bills;
 };
+const tlApplications = async (tenantId, filters) => {
+  return (await TLService.search_bill({ tenantId, filters })).Bills;
+};
 
 const refObj = (tenantId, filters) => {
   let consumerCodes = filters?.consumerCodes;
@@ -35,6 +38,11 @@ const refObj = (tenantId, filters) => {
       key: "consumerCode",
       label: "UC_CHALLAN_NO",
     },
+    TL: {
+      searchFn: () => tlApplications(tenantId, filters),
+      key: "consumerCode",
+      label: "REFERENCE_NO",
+    },
   };
 };
 
@@ -43,6 +51,9 @@ export const useApplicationsForBusinessServiceSearch = ({ tenantId, businessServ
   //debugger;
   if (window.location.href.includes("mcollect")) {
     _key = "mcollect";
+  }
+  if (window.location.href.includes("TL")) {
+    _key = "TL";
   }
   /* key from application ie being used as consumer code in bill */
   const { searchFn, key, label } = refObj(tenantId, filters)[_key];

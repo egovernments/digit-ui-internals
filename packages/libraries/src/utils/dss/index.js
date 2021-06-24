@@ -8,13 +8,14 @@ const amountFormatter = (value, denomination) => {
     case "Cr":
       return `₹ ${currencyFormatter.format((value / 10000000).toFixed(2) || 0)} Cr`;
     case "Unit":
-      return `₹ ${currencyFormatter.format(value.toFixed(2) || 0)}`;
+      return `₹ ${currencyFormatter.format(value?.toFixed(2) || 0)}`;
     default:
       return "";
   }
 };
 
 export const formatter = (value, symbol, unit, commaSeparated = false) => {
+  if (!value) return "";
   switch (symbol) {
     case "amount":
       return amountFormatter(value, unit);

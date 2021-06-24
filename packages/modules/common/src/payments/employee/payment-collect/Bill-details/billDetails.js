@@ -71,7 +71,6 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
 
   const changeAmount = (value) => {
     setAmount(value);
-    onChange(value);
   };
 
   useEffect(() => {
@@ -94,6 +93,11 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
       changeAmount(getTotal());
     }
   }, [paymentType, bill]);
+
+  useEffect(() => {
+    if (paymentType !== t("CS_PAYMENT_FULL_AMOUNT")) onChange({ amount, paymentAllowed, error: formError, minAmountPayable });
+    else onChange({ amount: getTotal(), paymentAllowed: true, error: formError, minAmountPayable });
+  }, [paymentAllowed, formError, amount, paymentType]);
 
   // for setting error
   const onChangeAmount = (value) => {

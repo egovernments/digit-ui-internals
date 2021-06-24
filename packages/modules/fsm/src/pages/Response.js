@@ -73,7 +73,9 @@ const Response = (props) => {
   const { state } = props.location;
 
   const mutation = state.key === "update" ? Digit.Hooks.fsm.useApplicationActions(tenantId) : Digit.Hooks.fsm.useDesludging(tenantId);
-  const coreData = Digit.Hooks.useCoreData();
+  const { data: storeData } = Digit.Hooks.useStore.getInitData();
+  const { tenants } = storeData || {};
+
   const localityCode = mutation?.data?.fsm[0].address?.locality?.code;
   const slumCode = mutation?.data?.fsm[0].address?.slumName;
   // console.log("find mutation here", mutation);
@@ -89,7 +91,7 @@ const Response = (props) => {
   const handleDownloadPdf = () => {
     const { fsm } = mutation.data;
     const [applicationDetails, ...rest] = fsm;
-    const tenantInfo = coreData.tenants.find((tenant) => tenant.code === applicationDetails.tenantId);
+    const tenantInfo = tenants.find((tenant) => tenant.code === applicationDetails.tenantId);
 
     const data = getPDFData({ ...applicationDetails, slum, pdfVehicleType }, tenantInfo, t);
     Digit.Utils.pdf.generate(data);

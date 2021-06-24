@@ -8,7 +8,9 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
   const [AccessoryCount, setAccessoryCount] = useState(formData?.TadeDetails?.accessories?.AccessoryCount || "");
   const [UnitOfMeasure, setUnitOfMeasure] = useState(formData?.TadeDetails?.accessories?.UnitOfMeasure || "");
   const [UomValue, setUomValue] = useState(formData?.TadeDetails?.accessories?.UomValue || "");
-  const [fields, setFeilds] = useState([{ accessory: "", accessorycount: "", unit: null, uom: null }]);
+  const [fields, setFeilds] = useState(
+    (formData?.TradeDetails && formData?.TradeDetails?.accessories) || [{ accessory: "", accessorycount: "", unit: null, uom: null }]
+  );
 
   const isUpdateProperty = formData?.isUpdateProperty || false;
   let isEditProperty = formData?.isEditProperty || false;
@@ -38,6 +40,15 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
     acc[i].accessory = value;
     setAccessory(value);
     setFeilds(acc);
+    acc[i].unit = null;
+    Array.from(document.querySelectorAll("input")).forEach((input) => (input.value = ""));
+    setUnitOfMeasure(null);
+    Data?.TradeLicense?.AccessoriesCategory.map((ob) => {
+      if (value.code === ob.code && ob.uom != null) {
+        acc[i].unit = ob.uom;
+        setUnitOfMeasure(ob.uom);
+      }
+    });
   }
   function selectAccessoryCount(i, e) {
     let acc = [...fields];
@@ -117,7 +128,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
               name="UnitOfMeasure"
               value={field.unit}
               onChange={(e) => selectUnitOfMeasure(index, e)}
-              //disable={isUpdateProperty || isEditProperty}
+              disable={true}
               /* {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
@@ -134,13 +145,14 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
               name="UomValue"
               value={field.uom}
               onChange={(e) => selectUomValue(index, e)}
+              disable={field.unit}
               //disable={isUpdateProperty || isEditProperty}
-              /* {...(validation = {
-            isRequired: true,
-            pattern: "^[a-zA-Z-.`' ]*$",
-            type: "text",
-            title: t("PT_NAME_ERROR_MESSAGE"),
-          })} */
+              {...(validation = {
+                isRequired: true,
+                pattern: "[0-9]+",
+                type: "text",
+                title: t("TL_WRONG_UOM_VALUE_ERROR"),
+              })}
             />
           </div>
         );
