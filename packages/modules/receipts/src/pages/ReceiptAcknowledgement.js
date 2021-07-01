@@ -35,7 +35,7 @@ const BannerPicker = (props) => {
   return (
     <Banner
       message={(GetActionMessage(props.action, props.isSuccess, props.isEmployee, props.t))}
-      applicationNumber={props.data?.Payments[0]?.paymentDetails[0].receiptNumber}
+      applicationNumber={props?.data?.Payments?.[0]?.paymentDetails[0].receiptNumber}
       info={props.isSuccess?props.t("CR_RECEIPT_NUMBER"):""}
       successful={props.isSuccess}
     />
@@ -82,7 +82,7 @@ const ReceiptAcknowledgement = (props) => {
   if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;
   }
-  const Payment=mutation?.data?.Payments[0]||successData?.Payments[0];
+  const Payment=mutation?.data?.Payments[0]||successData?.Payments?.[0];
   const isSuccess=!successData ? mutation?.isSuccess : true;
   return (
     <Card>
