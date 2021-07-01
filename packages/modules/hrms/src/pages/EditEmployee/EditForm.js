@@ -13,6 +13,14 @@ const EditForm = ({tenantId, data }) => {
   const [phonecheck, setPhonecheck] = useState(false);
   const [checkfield, setcheck]= useState(false);
 
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_MUTATION_SUCCESS_DATA", {});
+
+  useEffect(() => {
+    setMutationHappened(false);
+    clearSuccessData();
+  }, []);
+  
   useEffect(() => {
     if (/^[6-9]\d{9}$/.test(mobileNumber)) {
       setPhonecheck(true);
@@ -139,7 +147,7 @@ const EditForm = ({tenantId, data }) => {
     requestdata.user.correspondenceAddress = input?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress;
     requestdata.user.roles = roles;
     const Employees = [requestdata];
-    history.push("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "UPDATE" });
+    history.replace("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "UPDATE" });
   };
   const configs = newConfig;
   return (

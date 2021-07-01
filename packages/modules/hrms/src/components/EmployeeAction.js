@@ -120,7 +120,7 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
       }
       Employees[0]["deactivationDetails"].push(data);
       Employees[0].isActive = false;
-      history.push("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "DEACTIVATION" });
+      history.replace("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "DEACTIVATION" });
     } else {
       if (file) {
         let documents = {
@@ -134,7 +134,7 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
       Employees[0]["reactivationDetails"].push(data);
       Employees[0].isActive = true;
 
-      history.push("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "ACTIVATION" });
+      history.replace("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "ACTIVATION" });
     }
   }
 
