@@ -24,11 +24,19 @@ const ReceiptDetails = () => {
 
   const submitAction = (data) => { };
   useEffect(() => {
-
     return () => {
       rest?.revalidate();
     }
   }, [])
+
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_MUTATION_SUCCESS_DATA", {});
+
+  useEffect(() => {
+    setMutationHappened(false);
+    clearSuccessData();
+  }, []);
+
   if (isLoading) {
     return <Loader />;
   }

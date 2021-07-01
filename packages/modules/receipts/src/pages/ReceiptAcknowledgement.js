@@ -36,7 +36,7 @@ const BannerPicker = (props) => {
     <Banner
       message={(GetActionMessage(props.action, props.isSuccess, props.isEmployee, props.t))}
       applicationNumber={props.data?.Payments[0]?.paymentDetails[0].receiptNumber}
-      info={props.t("CR_RECEIPT_NUMBER")}
+      info={props.isSuccess?props.t("CR_RECEIPT_NUMBER"):""}
       successful={props.isSuccess}
     />
   );
@@ -47,10 +47,18 @@ const ReceiptAcknowledgement = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { state } = props.location;
   const mutation = Digit.Hooks.receipts.useReceiptsUpdate(tenantId, state?.businessService);
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_MUTATION_SUCCESS_DATA", false);
+
+  useEffect(() => {
+    if (mutation.data) setsuccessData(mutation.data);
+  }, [mutation.data]);
+
   useEffect(() => {
     const onSuccess = () => {
+      setMutationHappened(true);
     };
-    if (state.key === "UPDATE") {
+    if (state.key === "UPDATE" && !mutationHappened ) {
       mutation.mutate(
         {
           paymentWorkflows: [state.paymentWorkflow]
@@ -71,22 +79,23 @@ const ReceiptAcknowledgement = (props) => {
     }
   };
 
-  if (mutation.isLoading || mutation.isIdle) {
+  if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;
   }
-
+  const Payment=mutation?.data?.Payments[0]||successData?.Payments[0];
+  const isSuccess=!successData ? mutation?.isSuccess : true;
   return (
     <Card>
       <BannerPicker
         t={t}
-        data={mutation.data}
+        data={mutation?.data|| successData}
         action={state.action}
-        isSuccess={mutation.isSuccess}
-        isLoading={mutation.isIdle || mutation.isLoading}
+        isSuccess={isSuccess}
+        isLoading={(mutation.isIdle && !mutationHappened) || mutation?.isLoading}
         isEmployee={props.parentRoute.includes("employee")}
       />
-      <CardText>{t(DisplayText(state.action, mutation.isSuccess, props.parentRoute.includes("employee"), t), t)}</CardText>
-      {mutation.isSuccess && (
+      <CardText>{t(DisplayText(state.action, isSuccess, props.parentRoute.includes("employee"), t), t)}</CardText>
+      {isSuccess && (
         <CardText>
           <LinkButton
             label={
@@ -100,7 +109,7 @@ const ReceiptAcknowledgement = (props) => {
               </div>
             }
             style={{ width: "100px" }}
-            onClick={() => { printReciept(mutation.data?.Payments[0]?.paymentDetails[0]?.businessService, mutation.data?.Payments[0]?.paymentDetails[0].receiptNumber) }}
+            onClick={() => { printReciept(Payment?.paymentDetails[0]?.businessService, Payment?.paymentDetails[0].receiptNumber) }}
           />
         </CardText>)}
       <ActionBar>
