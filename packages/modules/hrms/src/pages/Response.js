@@ -34,26 +34,34 @@ const Response = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
   const { state } = props.location;
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_MUTATION_HAPPENED", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_MUTATION_SUCCESS_DATA", false);
 
   const mutation = state.key === "UPDATE" ? Digit.Hooks.hrms.useHRMSUpdate(tenantId) : Digit.Hooks.hrms.useHRMSCreate(tenantId);
 
   useEffect(() => {
+    if (mutation.data) setsuccessData(mutation.data);
+  }, [mutation.data]);
+
+  useEffect(() => {
     const onSuccess = () => {
-      //   queryClient.clear();
+      setMutationHappened(true);
     };
-    if (state.key === "UPDATE") {
-      mutation.mutate(
-        {
-          Employees: state.Employees,
-        },
-        {
+    if (!mutationHappened ) {
+      if (state.key === "UPDATE") {
+        mutation.mutate(
+          {
+            Employees: state.Employees,
+          },
+          {
+            onSuccess,
+          }
+        );
+      } else {
+        mutation.mutate(state, {
           onSuccess,
-        }
-      );
-    } else {
-      mutation.mutate(state, {
-        onSuccess,
-      });
+        });
+      }
     }
   }, []);
 
@@ -65,7 +73,7 @@ const Response = (props) => {
     }
   };
 
-  if (mutation.isLoading || mutation.isIdle) {
+    if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;
   }
 
@@ -73,13 +81,13 @@ const Response = (props) => {
     <Card>
       <BannerPicker
         t={t}
-        data={mutation.data}
+        data={mutation?.data|| successData}
         action={state.action}
-        isSuccess={mutation.isSuccess}
-        isLoading={mutation.isIdle || mutation.isLoading}
+        isSuccess={!successData ? mutation?.isSuccess : true}
+        isLoading={(mutation.isIdle && !mutationHappened) || mutation?.isLoading}
         isEmployee={props.parentRoute.includes("employee")}
       />
-      <CardText>{t(DisplayText(state.action, mutation.isSuccess, props.parentRoute.includes("employee"), t), t)}</CardText>
+      <CardText>{t(DisplayText(state.action, mutation.isSuccess || !!successData, props.parentRoute.includes("employee"), t), t)}</CardText>
 
       <ActionBar>
         <Link to={`${props.parentRoute.includes("employee") ? "/digit-ui/employee" : "/digit-ui/citizen"}`}>
