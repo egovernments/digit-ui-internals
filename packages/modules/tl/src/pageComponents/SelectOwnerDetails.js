@@ -25,7 +25,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   let TLmenu = [];
     Menu &&
       Menu.map((genders) => {
-        TLmenu.push({i18nKey: `TL_GENDER_${genders.code}`, code: `${genders.code}`})
+        TLmenu.push({i18nKey: `TL_GENDER_${genders.code}`, code: `${genders.code}`, value: `${genders.code}`})
     });
 
   function handleAdd() {
@@ -106,7 +106,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
             <CardLabel>{`${t("TL_NEW_OWNER_DETAILS_GENDER_LABEL")}`}</CardLabel>
             <RadioButtons
               t={t}
-              options={options}
+              options={TLmenu}
               optionsKey="code"
               name="gender"
               value={gender}
