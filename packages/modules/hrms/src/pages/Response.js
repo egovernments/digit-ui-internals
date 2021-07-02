@@ -22,7 +22,7 @@ const BannerPicker = (props) => {
   return (
     <Banner
       message={GetActionMessage(props.action, props.isSuccess, props.isEmployee, props.t)}
-      applicationNumber={props.data?.Employees[0].code}
+      applicationNumber={props.isSuccess?props?.data?.Employees?.[0]?.code:''}
       info={GetLabel(props.action, props.isSuccess, props.isEmployee, props.t)}
       successful={props.isSuccess}
     />
@@ -36,8 +36,13 @@ const Response = (props) => {
   const { state } = props.location;
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_MUTATION_HAPPENED", false);
   const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_MUTATION_SUCCESS_DATA", false);
-
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("EMPLOYEE_HRMS_ERROR_DATA", false);
   const mutation = state.key === "UPDATE" ? Digit.Hooks.hrms.useHRMSUpdate(tenantId) : Digit.Hooks.hrms.useHRMSCreate(tenantId);
+
+  const onError = (error, variables) => {
+    setErrorInfo(error?.response?.data?.Errors[0]?.code || 'ERROR');
+    setMutationHappened(true);
+  };
 
   useEffect(() => {
     if (mutation.data) setsuccessData(mutation.data);
@@ -54,6 +59,7 @@ const Response = (props) => {
             Employees: state.Employees,
           },
           {
+            onError,
             onSuccess,
           }
         );
@@ -67,16 +73,14 @@ const Response = (props) => {
 
   const DisplayText = (action, isSuccess, isEmployee, t) => {
     if (!isSuccess) {
-      return mutation?.error?.response?.data?.Errors[0].code;
+      return mutation?.error?.response?.data?.Errors[0].code||errorInfo;
     } else {
       Digit.SessionStorage.set("isupdate", Math.floor(100000 + Math.random() * 900000));
     }
   };
-
     if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {
     return <Loader />;
   }
-
   return (
     <Card>
       <BannerPicker

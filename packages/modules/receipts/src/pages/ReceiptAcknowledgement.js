@@ -48,22 +48,29 @@ const ReceiptAcknowledgement = (props) => {
   const { state } = props.location;
   const mutation = Digit.Hooks.receipts.useReceiptsUpdate(tenantId, state?.businessService);
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_MUTATION_HAPPENED", false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_ERROR_DATA", false);
   const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_RECEIPT_MUTATION_SUCCESS_DATA", false);
 
   useEffect(() => {
     if (mutation.data) setsuccessData(mutation.data);
   }, [mutation.data]);
+  
+  const onError = (error, variables) => {
+    setErrorInfo(error?.response?.data?.Errors[0]?.code || 'ERROR');
+    setMutationHappened(true);
+  };
 
   useEffect(() => {
     const onSuccess = () => {
       setMutationHappened(true);
     };
-    if (state.key === "UPDATE" && !mutationHappened ) {
+    if (state.key === "UPDATE" && !mutationHappened &&!errorInfo) {
       mutation.mutate(
         {
           paymentWorkflows: [state.paymentWorkflow]
         },
         {
+          onError,
           onSuccess,
         }
       );
@@ -72,7 +79,7 @@ const ReceiptAcknowledgement = (props) => {
 
   const DisplayText = (action, isSuccess, isEmployee, t) => {
     if (!isSuccess) {
-      return mutation?.error?.response?.data?.Errors[0].code
+      return mutation?.error?.response?.data?.Errors[0].code||errorInfo
     } else {
       Digit.SessionStorage.set("isupdate", Math.floor(100000 + Math.random() * 900000));
       return t('CR_APPLY_FORWARD_SUCCESS');
