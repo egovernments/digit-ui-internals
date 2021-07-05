@@ -187,8 +187,8 @@ const Table = ({
 
           </span>
         </button> */}
-          {rows.length!=1&&canPreviousPage && <ArrowBack onClick={() => (manualPagination ? onPrevPage() : previousPage())} className={"cp"} />}
-          {rows.length!=1&&canNextPage && <ArrowForward onClick={() => (manualPagination ? onNextPage() : nextPage())} className={"cp"} />}
+          {rows.length==pageSizeLimit&&canPreviousPage && <ArrowBack onClick={() => (manualPagination ? onPrevPage() : previousPage())} className={"cp"} />}
+          {rows.length==pageSizeLimit&&canNextPage && <ArrowForward onClick={() => (manualPagination ? onNextPage() : nextPage())} className={"cp"} />}
         </div>
       }
     </React.Fragment>
