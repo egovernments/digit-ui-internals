@@ -1,0 +1,203 @@
+import React, { useEffect, useState } from "react";
+import { CardLabel, LabelFieldPair, Dropdown, UploadFile, Toast, Loader } from "@egovernments/digit-ui-react-components";
+import { useLocation } from "react-router-dom";
+
+const TLDocumentsEmployee = ({ t, config, onSelect, userType, formData, setError: setFormError, clearErrors: clearFormErrors, formState }) => {
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const stateId = tenantId.split(".")[0];
+  const [documents, setDocuments] = useState(formData?.documents?.documents || []);
+  const [error, setError] = useState(null);
+
+  let action = "create";
+
+  const { pathname } = useLocation();
+  const isEditScreen = pathname.includes("/modify-application/");
+
+  if (isEditScreen) action = "update";
+
+  const { isLoading, data: documentsData } = Digit.Hooks.pt.usePropertyMDMS(stateId, "TradeLicense", ["documentObj"]);
+
+
+
+  const tlDocuments = documentsData?.TradeLicense?.documentObj;
+  const tlDocumentsList = tlDocuments?.["0"]?.allowedDocs;
+
+  let finalTlDocumentsList = [];
+  if (tlDocumentsList && tlDocumentsList.length > 0) {
+    tlDocumentsList.map(data => {
+      if (data?.applicationType?.includes("NEW")) {
+        finalTlDocumentsList.push(data);
+      }
+    })
+  }
+
+  const goNext = () => {
+    onSelect(config.key, { documents });
+  };
+
+  useEffect(() => {
+    goNext();
+  }, [documents]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <div>
+      {finalTlDocumentsList?.map((document, index) => {
+        return (
+          <SelectDocument
+            key={index}
+            document={document}
+            action={action}
+            t={t}
+            error={error}
+            setError={setError}
+            setDocuments={setDocuments}
+            documents={documents}
+            formData={formData}
+            setFormError={setFormError}
+            clearFormErrors={clearFormErrors}
+            config={config}
+            formState={formState}
+          />
+        );
+      })}
+      {error && <Toast label={error} onClose={() => setError(null)} error />}
+    </div>
+  );
+};
+
+function SelectDocument({
+  t,
+  document: doc,
+  setDocuments,
+  error,
+  setError,
+  documents,
+  action,
+  formData,
+  setFormError,
+  clearFormErrors,
+  config,
+  formState,
+  fromRawData,
+  key
+}) {
+  const filteredDocument = documents?.filter((item) => item?.documentType);
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const [selectedDocument, setSelectedDocument] = useState("");
+  const [file, setFile] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(() => filteredDocument?.fileStoreId || null);
+
+  function selectfile(e, key) {
+    e.target.files[0].documentType = key;
+    setSelectedDocument({ documentType: key });
+    setFile(e.target.files[0]);
+  }
+
+  const [isHidden, setHidden] = useState(false);
+
+  const addError = () => {
+    let type = formState.errors?.[config.key]?.type;
+    if (!Array.isArray(type)) type = [];
+    if (!type.includes(doc.documentType)) {
+      type.push(doc.documentType);
+      setFormError(config.key, { type });
+    }
+  };
+
+  const removeError = () => {
+    let type = formState.errors?.[config.key]?.type;
+    if (!Array.isArray(type)) type = [];
+    if (type.includes(doc?.documentType)) {
+      type = type.filter((e) => e != doc?.documentType);
+      if (!type.length) {
+        clearFormErrors(config.key);
+      } else {
+        setFormError(config.key, { type });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDocument?.documentType) {
+      setDocuments((prev) => {
+        const filteredDocumentsByDocumentType = prev?.filter((item) => item?.documentType !== selectedDocument?.documentType);
+
+        if (uploadedFile?.length === 0 || uploadedFile === null) {
+          return filteredDocumentsByDocumentType;
+        }
+
+        const filteredDocumentsByFileStoreId = filteredDocumentsByDocumentType?.filter((item) => item?.fileStoreId !== uploadedFile);
+        return [
+          ...filteredDocumentsByFileStoreId,
+          {
+            documentType: selectedDocument?.documentType,
+            fileStoreId: uploadedFile,
+            documentUid: uploadedFile,
+          },
+        ];
+      });
+    }
+
+    if (!isHidden) {
+      if (!uploadedFile || !selectedDocument?.documentType) {
+        addError();
+      } else if (uploadedFile && selectedDocument?.documentType) {
+        removeError();
+      }
+    } else if (isHidden) {
+      removeError();
+    }
+  }, [uploadedFile, selectedDocument, isHidden]);
+
+  useEffect(() => {
+    (async () => {
+      setError(null);
+      if (file) {
+        if (file.size >= 5242880) {
+          setError(t("CS_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
+          // if (!formState.errors[config.key]) setFormError(config.key, { type: doc?.code });
+        } else {
+          try {
+            setUploadedFile(null);
+            const response = await Digit.UploadServices.Filestorage("TL", file, tenantId?.split(".")[0]);
+            if (response?.data?.files?.length > 0) {
+              setUploadedFile(response?.data?.files[0]?.fileStoreId);
+            } else {
+              setError(t("CS_FILE_UPLOAD_ERROR"));
+            }
+          } catch (err) {
+            console.error("Modal -> err ", err);
+            setError(t("CS_FILE_UPLOAD_ERROR"));
+          }
+        }
+      }
+    })();
+  }, [file]);
+
+  return (
+    <div style={{ marginBottom: "24px" }}>
+      <LabelFieldPair>
+        <CardLabel className="card-label-smaller">{`${t(`TL_NEW_${doc?.documentType.replaceAll(".", "_")}`)}:`}</CardLabel>
+        <div className="field">
+          <UploadFile
+            onUpload={(e) => { selectfile(e, doc?.documentType.replaceAll(".", "_")) }}
+            onDelete={() => {
+              setUploadedFile(null);
+            }}
+            message={uploadedFile ? `1 ${t(`CS_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
+            textStyles={{ width: "100%" }}
+            inputStyles={{ width: "280px" }}
+            // disabled={enabledActions?.[action].disableUpload || !selectedDocument?.code}
+            buttonType="button"
+          />
+        </div>
+      </LabelFieldPair>
+    </div>
+  );
+}
+
+export default TLDocumentsEmployee;
