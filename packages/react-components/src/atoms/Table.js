@@ -187,7 +187,7 @@ const Table = ({
 
           </span>
         </button> */}
-          {rows.length==pageSizeLimit&&canPreviousPage && <ArrowBack onClick={() => (manualPagination ? onPrevPage() : previousPage())} className={"cp"} />}
+          {canPreviousPage && <ArrowBack onClick={() => (manualPagination ? onPrevPage() : previousPage())} className={"cp"} />}
           {rows.length==pageSizeLimit&&canNextPage && <ArrowForward onClick={() => (manualPagination ? onNextPage() : nextPage())} className={"cp"} />}
         </div>
       }
