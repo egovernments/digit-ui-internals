@@ -598,6 +598,40 @@ const getTLGenderTypeList = (tenantId, moduleCode, type) => ({
   },
 });
 
+const getPTGenderTypeList = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "GenderType",
+          },
+        ],
+      },
+    ],
+  },
+});
+
+const getHRGenderTypeList = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "GenderType",
+          },
+        ],
+      },
+    ],
+  },
+});
+
 
 
 const getDssDashboardCriteria = (tenantId, moduleCode) => ({
@@ -942,6 +976,24 @@ const TLGenderType = (MdmsRes) => {
   });
 };
 
+const PTGenderType = (MdmsRes) => {
+  MdmsRes["common-masters"].GenderType.filter((GenderType) => GenderType.active).map((formGender) => {
+    return {
+      ...formGender,
+      i18nKey: `PT_FORM3_${formGender.code}`,
+    };
+  });
+};
+
+const HRGenderType = (MdmsRes) => {
+  MdmsRes["common-masters"].GenderType.filter((GenderType) => GenderType.active).map((comGender) => {
+    return {
+      ...comGender,
+      i18nKey: `COMMON_GENDER_${comGender.code}`,
+    };
+  });
+};
+
 const GetMCollectBusinessService = (MdmsRes) =>
   MdmsRes["BillingService"].BusinessService.map((businesServiceDetails) => {
     return {
@@ -1042,6 +1094,10 @@ const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
       return getGenderType(MdmsRes);
     case "TLGendertype":
       return TLGenderType(MdmsRes);
+    case "PTGenderType":
+      return PTGenderType(MdmsRes);
+    case "HRGenderType":
+      return HRGenderType(MdmsRes);
     default:
       return MdmsRes;
   }
@@ -1302,6 +1358,14 @@ export const MdmsService = {
 
   TLGenderType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getTLGenderTypeList(tenantId, moduleCode, type), moduleCode);
+  },
+
+  PTGenderType: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPTGenderTypeList(tenantId, moduleCode, type), moduleCode);
+  },
+
+  HRGenderType: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getHRGenderTypeList(tenantId, moduleCode, type), moduleCode);
   },
   
 };

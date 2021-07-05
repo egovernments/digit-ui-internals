@@ -71,6 +71,7 @@ import usePtMDMS from "./pt/useMDMS";
 import usePropertyAssessment from "./pt/usePropertyAssessment";
 import usePtCalculationEstimate from "./pt/usePtCalculationEstimate";
 import useGenderMDMS from "./pt/useGenderMDMS";
+import usePTGenderMDMS from "./pt/usePTGenderMDMS";
 
 import useDssMdms from "./dss/useMDMS";
 import useDashboardConfig from "./dss/useDashboardConfig";
@@ -100,6 +101,7 @@ import useHrmsMDMS from "./hrms/useHRMSMDMS";
 import useHRMSCreate from "./hrms/useHRMScreate";
 import useHRMSUpdate from "./hrms/useHRMSUpdate";
 import useHRMSCount from "./hrms/useHRMSCount";
+import useHRMSGenderMDMS from "./hrms/useHRMSGender";
 
 
 import useReceiptsSearch from "./receipts/useReceiptsSearch";
@@ -162,6 +164,7 @@ const pt = {
   usePropertyAssessment,
   usePtCalculationEstimate,
   useGenderMDMS,
+  usePTGenderMDMS,
 };
 
 const dss = {
@@ -184,6 +187,7 @@ const hrms = {
   useHRMSCreate,
   useHRMSUpdate,
   useHRMSCount,
+  useHRMSGenderMDMS
 };
 const tl = {
   useTenants: useTenantsTL,

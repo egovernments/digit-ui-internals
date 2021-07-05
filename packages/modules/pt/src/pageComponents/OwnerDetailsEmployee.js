@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { CardLabel, LabelFieldPair, Dropdown, TextInput, LinkButton, CardLabelError, MobileNumber } from "@egovernments/digit-ui-react-components";
+import { CardLabel, LabelFieldPair, Dropdown, TextInput, LinkButton, CardLabelError, MobileNumber, Menu } from "@egovernments/digit-ui-react-components";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
@@ -40,6 +40,15 @@ const PTEmployeeOwnershipDetails = ({ config, onSelect, userType, formData, setE
     "OwnerShipCategory",
   ]);
 
+  const { data: Menu} = Digit.Hooks.pt.usePTGenderMDMS("pb", "common-masters", "GenderType");
+
+  let menu = [];
+  
+  Menu &&
+    Menu.map((formGender) => {
+      menu.push({i18nKey: `PT_FORM3_${formGender.code}`, code: `${formGender.code}`, value: `${formGender.code}`})
+  });
+
   const addNewOwner = () => {
     const newOwner = createOwnerDetails();
     setOwners((prev) => [...prev, newOwner]);
@@ -73,6 +82,7 @@ const PTEmployeeOwnershipDetails = ({ config, onSelect, userType, formData, setE
     setError,
     clearErrors,
     config,
+    menu,
   };
 
   if (isEditScreen) {
@@ -107,6 +117,7 @@ const OwnerForm = (_props) => {
     setError,
     clearErrors,
     formState,
+    menu,
   } = _props;
 
   const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger } = useForm();
@@ -287,13 +298,14 @@ const OwnerForm = (_props) => {
                       selected={props.value}
                       select={props.onChange}
                       onBlur={props.onBlur}
-                      option={[
+                      /*option={[
                         { i18nKey: "PT_FORM3_MALE", code: "Male" },
                         { i18nKey: "PT_FORM3_FEMALE", code: "Female" },
                         { i18nKey: "PT_FORM3_TRANSGENDER", code: "Transgender" },
                         { i18nKey: "COMMON_GENDER_OTHERS", code: "OTHERS" },
-                      ]}
-                      optionKey="i18nKey"
+                      ]}*/
+                      option={menu}
+                      optionKey="code"
                       t={t}
                     />
                   )}
