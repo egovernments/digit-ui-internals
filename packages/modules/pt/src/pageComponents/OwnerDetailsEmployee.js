@@ -40,7 +40,7 @@ const PTEmployeeOwnershipDetails = ({ config, onSelect, userType, formData, setE
     "OwnerShipCategory",
   ]);
 
-  const { data: Menu} = Digit.Hooks.pt.usePTGenderMDMS("pb", "common-masters", "GenderType");
+  const { data: Menu} = Digit.Hooks.pt.usePTGenderMDMS(stateId, "common-masters", "GenderType");
 
   let menu = [];
   

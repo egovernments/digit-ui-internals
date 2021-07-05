@@ -581,59 +581,6 @@ const getGenderTypeList = (tenantId, moduleCode, type) => ({
 });
 
 
-const getTLGenderTypeList = (tenantId, moduleCode, type) => ({
-  type,
-  details: {
-    tenantId,
-    moduleDetails: [
-      {
-        moduleName: moduleCode,
-        masterDetails: [
-          {
-            name: "GenderType",
-          },
-        ],
-      },
-    ],
-  },
-});
-
-const getPTGenderTypeList = (tenantId, moduleCode, type) => ({
-  type,
-  details: {
-    tenantId,
-    moduleDetails: [
-      {
-        moduleName: moduleCode,
-        masterDetails: [
-          {
-            name: "GenderType",
-          },
-        ],
-      },
-    ],
-  },
-});
-
-const getHRGenderTypeList = (tenantId, moduleCode, type) => ({
-  type,
-  details: {
-    tenantId,
-    moduleDetails: [
-      {
-        moduleName: moduleCode,
-        masterDetails: [
-          {
-            name: "GenderType",
-          },
-        ],
-      },
-    ],
-  },
-});
-
-
-
 const getDssDashboardCriteria = (tenantId, moduleCode) => ({
   details: {
     tenantId,
@@ -1357,15 +1304,15 @@ export const MdmsService = {
   },
 
   TLGenderType: (tenantId, moduleCode, type) => {
-    return MdmsService.getDataByCriteria(tenantId, getTLGenderTypeList(tenantId, moduleCode, type), moduleCode);
+    return MdmsService.getDataByCriteria(tenantId, getGenderTypeList(tenantId, moduleCode, type), moduleCode);
   },
 
   PTGenderType: (tenantId, moduleCode, type) => {
-    return MdmsService.getDataByCriteria(tenantId, getPTGenderTypeList(tenantId, moduleCode, type), moduleCode);
+    return MdmsService.getDataByCriteria(tenantId, getGenderTypeList(tenantId, moduleCode, type), moduleCode);
   },
 
   HRGenderType: (tenantId, moduleCode, type) => {
-    return MdmsService.getDataByCriteria(tenantId, getHRGenderTypeList(tenantId, moduleCode, type), moduleCode);
+    return MdmsService.getDataByCriteria(tenantId, getGenderTypeList(tenantId, moduleCode, type), moduleCode);
   },
   
 };
