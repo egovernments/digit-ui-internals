@@ -6,6 +6,7 @@ const useTLGenderMDMS = (tenantId, moduleCode, type, config = {}) => {
     return useQuery("TL_GENDER_DETAILS", () => MdmsService.TLGenderType(tenantId, moduleCode ,type), config);
   };
   
+  
 
   switch (type) {
     case "GenderType":

@@ -22,6 +22,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
 
   const {data: Menu} = Digit.Hooks.tl.useTLGenderMDMS(tenantId, "common-masters", "GenderType");
 
+  
   let TLmenu = [];
     Menu &&
       Menu.map((genders) => {

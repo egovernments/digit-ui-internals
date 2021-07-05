@@ -5,6 +5,16 @@ import { useLocation } from "react-router-dom";
 const SelectEmployeeGender = ({ t, config, onSelect, formData = {}, userType, register, errors }) => {
   const { pathname: url } = useLocation();
   // console.log("find errors here", errors)
+
+  const { data: Menu} = Digit.Hooks.hrms.useHRMSGenderMDMS("pb", "common-masters", "GenderType");
+
+  let HRMenu = [];
+
+  Menu &&
+    Menu.map((comGender) => {
+      HRMenu.push({i18nKey: `COMMON_GENDER_${comGender.code}`, code: `${comGender.code}`})
+    }); 
+
   const inputs = [
     {
       label: "HR_GENDER_LABEL",
@@ -35,7 +45,7 @@ const SelectEmployeeGender = ({ t, config, onSelect, formData = {}, userType, re
             <div className="field">
               <RadioButtons
                 style={{ display: "flex", justifyContent: "space-between" }}
-                options={[
+                /*options={[
                   {
                     code: "MALE",
                     name: "COMMON_GENDER_MALE",
@@ -48,9 +58,10 @@ const SelectEmployeeGender = ({ t, config, onSelect, formData = {}, userType, re
                     code: "TRANSGENDER",
                     name: "COMMON_GENDER_TRANSGENDER",
                   },
-                ]}
+                ]}*/
+                options={HRMenu}
                 key={input.name}
-                optionsKey="name"
+                optionsKey="i18nKey"   //"name"
                 selectedOption={formData && formData[config.key] ? formData[config.key][input.name] : null}
                 onSelect={(e) => setValue(e, input.name)}
                 disable={false}
