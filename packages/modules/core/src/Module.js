@@ -40,14 +40,17 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: Infinity,
+        staleTime: 15 * 60 * 1000,
+        cacheTime: 30 * 60 * 1000,
       },
     },
   });
+
   const ComponentProvider = Digit.Contexts.ComponentProvider;
+  const DSO = Digit.UserService.hasAccess(["FSM_DSO"]);
 
   return (
-    <div className={userType}>
+    <div>
       <QueryClientProvider client={queryClient}>
         <ComponentProvider.Provider value={registry}>
           <DigitUIWrapper stateCode={stateCode} enabledModules={enabledModules} moduleReducers={moduleReducers} />

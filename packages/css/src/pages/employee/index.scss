@@ -1,12 +1,17 @@
 /* TODO: convert using tailwind */
 .employee {
+  .breadcrumb {
+    @apply ml-sm mb-lg;
+  }
+  .ground-container {
+    @apply flex flex-col;
+  }
   .card-home {
     font-size: 16px;
     padding: 0 0 16px 0;
-    width: 270px;
+    width: 92vw;
     display: inline-block;
-    margin-right: 16px;
-    margin-bottom: 16px;
+    margin: 8px auto;
   }
   .topbar {
     position: fixed;
@@ -27,7 +32,6 @@
       }
 
       &.state {
-        margin-left: 40px;
         height: 20px;
         max-height: 20px;
         width: auto;
@@ -52,6 +56,48 @@
     }
   }
 
+  .main {
+    padding-top: 88px;
+  }
+
+  .react-time-picker {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .react-time-picker__wrapper {
+    border: 1px solid #464646;
+  }
+
+  .react-time-picker__clock {
+    display: none;
+  }
+
+  .react-time-picker__inputGroup__leadingZero {
+    padding-right: 8px;
+    display: inline !important;
+  }
+
+  .react-time-picker__inputGroup__input {
+    padding: 0;
+    min-width: none;
+    outline: none !important;
+    border: none !important;
+  }
+
+  .react-time-picker__wrapper {
+    padding-left: 8px;
+  }
+}
+
+.citizen {
+  .main {
+    padding-top: 82px;
+  }
+}
+
+.citizen,
+.employee {
   .sidebar {
     position: fixed;
     left: 0;
@@ -60,7 +106,7 @@
     height: 100%;
     color: white;
     margin-top: 80px;
-    z-index: 9999;
+    z-index: 1000;
 
     .actions {
       cursor: pointer;
@@ -73,31 +119,98 @@
       }
     }
   }
-
-  .main {
-    padding-top: 88px;
-  }
 }
 
 .citizen {
-  .main {
-    padding-top: 82px;
+  .sidebar {
+    margin-top: 54px;
+    min-width: 200px;
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
   }
 }
 
 .link {
-  @apply text-link-normal;
+  @apply text-primary-main;
 
   :hover {
-    color: #003078;
+    @apply text-primary-dark;
   }
 }
 
 @media (min-width: 640px) {
   .employee {
+    .ground-container {
+      @apply block;
+    }
+    .breadcrumb {
+      @apply mb-lg;
+      margin-left: 0;
+    }
+    .card-home {
+      width: 270px;
+      margin-right: 16px;
+      margin-bottom: 16px;
+    }
+    .card-home-hrms {
+      width: 405px;
+      padding: 0px;
+      margin-right: 16px;
+      margin-bottom: 16px;
+    }
     .main {
       padding-top: 80px;
-      margin-left: 88px;
+      margin-left: 72px;
+      width: calc(100%-83px);
     }
   }
+
+  .citizen {
+    .main {
+      gap: 0.3rem;
+      width: 100%;
+      padding-top: 80px;
+      padding-left: 16px;
+    }
+
+    .center-container {
+      width: 70%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.multi-select-container {
+  .disposal-text {
+    @apply font-bold;
+  }
+
+  .disposal-info {
+    @apply my-md ml-sm;
+  }
+
+  .disposal-action-bar {
+    @apply flex justify-between items-center;
+  }
+}
+
+@screen dt {
+  .d-grid {
+    display: grid;
+    grid-template-columns: 250px 250px 250px 250px;
+    column-gap: 10px;
+    row-gap: 2px;
+    margin-left: -12px;
+  }
+}
+
+.m-auto {
+  margin: auto !important;
+}
+
+.mb-50{
+  margin-bottom: 50px;
 }
