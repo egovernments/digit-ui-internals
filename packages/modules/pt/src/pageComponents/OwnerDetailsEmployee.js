@@ -305,7 +305,7 @@ const OwnerForm = (_props) => {
                         { i18nKey: "COMMON_GENDER_OTHERS", code: "OTHERS" },
                       ]}*/
                       option={menu}
-                      optionKey="code"
+                      optionKey="i18nKey"
                       t={t}
                     />
                   )}

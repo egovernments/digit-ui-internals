@@ -12,7 +12,7 @@ const SelectEmployeeGender = ({ t, config, onSelect, formData = {}, userType, re
 
   Menu &&
     Menu.map((comGender) => {
-      HRMenu.push({i18nKey: `COMMON_GENDER_${comGender.code}`, code: `${comGender.code}`})
+      HRMenu.push({name: `COMMON_GENDER_${comGender.code}`, code: `${comGender.code}`})
     }); 
 
   const inputs = [
@@ -61,7 +61,7 @@ const SelectEmployeeGender = ({ t, config, onSelect, formData = {}, userType, re
                 ]}*/
                 options={HRMenu}
                 key={input.name}
-                optionsKey="i18nKey"   //"name"
+                optionsKey="name"
                 selectedOption={formData && formData[config.key] ? formData[config.key][input.name] : null}
                 onSelect={(e) => setValue(e, input.name)}
                 disable={false}
