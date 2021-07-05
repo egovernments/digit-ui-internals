@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormComposer } from "@egovernments/digit-ui-react-components";
+import { FormComposer ,Toast} from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import { newConfig } from "../../components/config/config";
@@ -9,6 +9,7 @@ const EditForm = ({tenantId, data }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [canSubmit, setSubmitValve] = useState(false);
+  const [showToast, setShowToast] = useState(null);
   const [mobileNumber, setMobileNumber] = useState(null);
   const [phonecheck, setPhonecheck] = useState(false);
   const [checkfield, setcheck]= useState(false);
@@ -128,6 +129,11 @@ const EditForm = ({tenantId, data }) => {
   };
 
   const onSubmit = (input) => {
+
+    if(input.Jurisdictions.filter(juris=>juris.tenantId==tenantId).length==0){
+      setShowToast({ key: true, label: "ERR_BASE_TENANT_MANDATORY" });
+      return;
+    }
     let roles = input?.Jurisdictions?.map((ele) => {
       return ele.roles?.map((item) => {
         item["tenantId"] = ele.boundary;
@@ -167,7 +173,15 @@ const EditForm = ({tenantId, data }) => {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onFormValueChange={onFormValueChange}
-      />
+      /> {showToast && (
+        <Toast
+          error={showToast.key}
+          label={t(showToast.label)}
+          onClose={() => {
+            setShowToast(null);
+          }}
+        />
+      )}
     </div>
   );
 };

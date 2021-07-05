@@ -24,6 +24,7 @@ const CreateEmployee = () => {
     clearError();
   }, []);
 
+
   useEffect(() => {
     if (/^[6-9]\d{9}$/.test(mobileNumber)) {
       Digit.HRMSService.search(tenantId, null, { phone: mobileNumber }).then((result, err) => {
@@ -105,6 +106,11 @@ const defaultValues = {
   };
 
   const onSubmit = (data) => {
+      if(data.Jurisdictions.filter(juris=>juris.tenantId==tenantId).length==0){
+        setShowToast({ key: true, label: "ERR_BASE_TENANT_MANDATORY" });
+        return;
+      }
+    
     let roles = data?.Jurisdictions?.map((ele) => {
       return ele.roles?.map((item) => {
         item["tenantId"] = ele.boundary;
