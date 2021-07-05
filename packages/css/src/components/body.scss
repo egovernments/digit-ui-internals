@@ -112,3 +112,7 @@ body {
     margin-left: 0;
   }
 }
+
+.body-container::-webkit-scrollbar {
+  display: none;
+}

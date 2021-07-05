@@ -47,7 +47,7 @@ const SelectEmployeePhoneNumber = ({ t, config, onSelect, formData = {}, userTyp
                     className="field desktop-w-full"
                     key={input.name}
                     value={formData && formData[config.key] ? formData[config.key][input.name] : undefined}
-                    onChange={(e) => setValue(e.target.value, input.name)}
+                    onChange={(e) =>{ setValue(e.target.value, input.name,validate(e.target.value, input))}}
                     disable={false}
                     defaultValue={undefined}
                     onBlur={(e) => validate(e.target.value, input)}
