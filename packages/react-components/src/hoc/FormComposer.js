@@ -129,7 +129,7 @@ export const FormComposer = (props) => {
                 return (
                   <React.Fragment key={index}>
                     {!field.withoutLabel && (
-                      <CardLabel style={{ marginBottom: props.inline ? "8px" : "revert" }}>
+                      <CardLabel style={{ marginBottom: props.inline ? "8px" : "revert" }} className={field?.disable?"disabled":""}>
                         {t(field.label)}
                         {field.isMandatory ? " * " : null}
                       </CardLabel>

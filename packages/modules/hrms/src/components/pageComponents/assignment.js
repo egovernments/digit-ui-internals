@@ -198,13 +198,14 @@ function Assignment({
         </LabelFieldPair>
 
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller"> {`${t("HR_ASMT_FROM_DATE_LABEL")} * `} </CardLabel>
+          <CardLabel className={assignment?.id?"card-label-smaller disabled":"card-label-smaller"}> {`${t("HR_ASMT_FROM_DATE_LABEL")} * `} </CardLabel>
           <div className="field">
             <DatePicker
               type="date"
               name="fromDate"
               max={currentassignemtDate ? currentassignemtDate : convertEpochToDate(new Date())}
               min={formData?.SelectDateofEmployment?.dateOfAppointment}
+              disabled={assignment?.id?true:false}
               onChange={(e) => {
                 setassignments((pre) => pre.map((item) => (item.key === assignment.key ? { ...item, fromDate: e } : item)));
                 setFocusIndex(index);
@@ -215,7 +216,7 @@ function Assignment({
           </div>
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">
+          <CardLabel className={assignment?.isCurrentAssignment?"card-label-smaller disabled":"card-label-smaller"}>
             {t("HR_ASMT_TO_DATE_LABEL")}
             {assignment?.isCurrentAssignment ? "" : " * "}{" "}
           </CardLabel>
@@ -249,11 +250,11 @@ function Assignment({
           </div>
         </LabelFieldPair>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller"> {`${t("HR_DEPT_LABEL")} * `}</CardLabel>
+          <CardLabel className={assignment?.id?"card-label-smaller disabled":"card-label-smaller"}> {`${t("HR_DEPT_LABEL")} * `}</CardLabel>
           <Dropdown
             className="form-field"
             selected={assignment?.department}
-            disable={false}
+            disable={assignment?.id?true:false}
             optionKey={"i18key"}
             option={getdepartmentdata(department) || []}
             select={selectDepartment}
@@ -262,11 +263,11 @@ function Assignment({
         </LabelFieldPair>
 
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{`${t("HR_DESG_LABEL")} * `}</CardLabel>
+          <CardLabel className={assignment?.id?"card-label-smaller disabled":"card-label-smaller"}>{`${t("HR_DESG_LABEL")} * `}</CardLabel>
           <Dropdown
             className="form-field"
             selected={assignment?.designation}
-            disable={false}
+            disable={assignment?.id?true:false}
             option={getdesignationdata(designation) || []}
             select={selectDesignation}
             optionKey={"i18key"}

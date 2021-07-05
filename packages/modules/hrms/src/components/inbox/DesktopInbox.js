@@ -86,7 +86,7 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
         Header: t("HR_STATUS_LABEL"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetSlaCell(`${row.original?.isActive ? "ACTIVE" : "INACTIVE"}`);
+          return GetSlaCell(`${row.original?.isActive ? t( "ACTIVE") :  t("INACTIVE")}`);
         },
       },
     ];
