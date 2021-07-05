@@ -102,7 +102,7 @@ const Jurisdictions = ({ t, config, onSelect, userType, formData }) => {
   }
 
   function getroledata() {
-    return data?.MdmsRes?.["ACCESSCONTROL-ROLES"].roles;
+    return data?.MdmsRes?.["ACCESSCONTROL-ROLES"].roles.map(role=>{return {code:role.code,name:'ACCESSCONTROL_ROLES_ROLES_'+role.code}});
   }
 
   if (isLoading) {

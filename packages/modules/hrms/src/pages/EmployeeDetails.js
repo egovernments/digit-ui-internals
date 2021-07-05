@@ -74,7 +74,7 @@ const Details = () => {
               <Row
                 label={<CardSubHeader className="card-section-header">{t("HR_EMP_STATUS_LABEL")} </CardSubHeader>}
                 text={
-                  data?.Employees?.[0]?.isActive ? <div className="sla-cell-success"> Active </div> : <div className="sla-cell-error">Inactive</div>
+                  data?.Employees?.[0]?.isActive ? <div className="sla-cell-success"> {t("ACTIVE")} </div> : <div className="sla-cell-error">{t("INACTIVE")}</div>
                 }
                 textStyle={{ fontWeight: "bold", maxWidth: "6.5rem" }}
               />
@@ -83,13 +83,13 @@ const Details = () => {
             <StatusTable>
               <Row label={t("HR_NAME_LABEL")} text={data?.Employees?.[0]?.user?.name || "NA"} textStyle={{ whiteSpace: "pre" }} />
               <Row label={t("HR_MOB_NO_LABEL")} text={data?.Employees?.[0]?.user?.mobileNumber || "NA"} textStyle={{ whiteSpace: "pre" }} />
-              <Row label={t("HR_GENDER_LABEL")} text={data?.Employees?.[0]?.user?.gender || "NA"} />
+              <Row label={t("HR_GENDER_LABEL")} text={t(data?.Employees?.[0]?.user?.gender) || "NA"} />
               <Row label={t("HR_EMAIL_LABEL")} text={data?.Employees?.[0]?.user?.emailId || "NA"} />
               <Row label={t("HR_CORRESPONDENCE_ADDRESS_LABEL")} text={data?.Employees?.[0]?.user?.correspondenceAddress || "NA"} />
             </StatusTable>
             <CardSubHeader className="card-section-header">{t("Employee Details")}</CardSubHeader>
             <StatusTable>
-              <Row label={t("HR_EMPLOYMENT_TYPE_LABEL")} text={data?.Employees?.[0]?.employeeType || "NA"} textStyle={{ whiteSpace: "pre" }} />
+              <Row label={t("HR_EMPLOYMENT_TYPE_LABEL")} text={t(data?.Employees?.[0]?.employeeType?`EGOV_HRMS_EMPLOYEETYPE_${data?.Employees?.[0]?.employeeType}`:"NA")} textStyle={{ whiteSpace: "pre" }} />
               <Row
                 label={t("HR_APPOINTMENT_DATE_LABEL")}
                 text={convertEpochFormateToDate(data?.Employees?.[0]?.dateOfAppointment) || "NA"}
@@ -155,12 +155,12 @@ const Details = () => {
                       {" "}
                       {t("HR_JURISDICTION")} {index + 1}
                     </div>
-                    <Row label={t("HR_HIERARCHY_LABEL")} text={element?.hierarchy} textStyle={{ whiteSpace: "pre" }} />
+                    <Row label={t("HR_HIERARCHY_LABEL")} text={t(element?.hierarchy?`EGOV_LOCATION_TENANTBOUNDARY_${element?.hierarchy}`:"NA")} textStyle={{ whiteSpace: "pre" }} />
                     <Row label={t("HR_BOUNDARY_TYPE_LABEL")} text={element?.boundaryType} textStyle={{ whiteSpace: "pre" }} />
                     <Row label={t("HR_BOUNDARY_LABEL")} text={t(element?.boundary)} />
                     <Row
                       label={t("HR_ROLE_LABEL")}
-                      text={data?.Employees?.[0]?.user.roles.filter((ele) => ele.tenantId == element?.boundary).map((ele) => ele.name)}
+                      text={data?.Employees?.[0]?.user.roles.filter((ele) => ele.tenantId == element?.boundary).map((ele) => t(`ACCESSCONTROL_ROLES_ROLES_`+ele?.code))}
                     />
                   </StatusTable>
                 );
