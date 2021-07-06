@@ -23,8 +23,9 @@ const SelectEmployeeEmailId = ({ t, config, onSelect, formData = {}, userType, r
 
   return (
     <div>
-      {inputs?.map((input, index) => (
-        <React.Fragment key={index}>
+      {inputs?.map((input, index) => {
+        let currentValue=formData && formData[config.key] && formData[config.key][input.name]||'';
+        return(<React.Fragment key={index}>
           {errors[input.name] && <CardLabelError>{t(input.error)}</CardLabelError>}
           <LabelFieldPair>
             <CardLabel className="card-label-smaller">
@@ -41,10 +42,11 @@ const SelectEmployeeEmailId = ({ t, config, onSelect, formData = {}, userType, r
                 defaultValue={undefined}
                 {...input.validation}
               />
+              {currentValue&&currentValue.length>0&&!currentValue.match(Digit.Utils.getPattern('Email'))&&<CardLabelError style={{ width: "100%", marginTop: '-15px', fontSize: '16px', marginBottom: '12px'}}>{t("CS_PROFILE_EMAIL_ERRORMSG")}</CardLabelError>}
             </div>
           </LabelFieldPair>
         </React.Fragment>
-      ))}
+      )})}
     </div>
   );
 };

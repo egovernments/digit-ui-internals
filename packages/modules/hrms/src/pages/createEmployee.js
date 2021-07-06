@@ -24,9 +24,16 @@ const CreateEmployee = () => {
     clearError();
   }, []);
 
-
+  const checkMailNameNum=(formData)=>
+  {
+    const email=formData?.SelectEmployeeEmailId?.emailId||'';
+    const name=formData?.SelectEmployeeName?.employeeName||'';
+    const validEmail=email.length==0?true:email.match(Digit.Utils.getPattern('Email'));
+  return validEmail&&name.match(Digit.Utils.getPattern('Name'));
+  }
   useEffect(() => {
-    if (/^[6-9]\d{9}$/.test(mobileNumber)) {
+    if (mobileNumber&&mobileNumber.length==10&&mobileNumber.match(Digit.Utils.getPattern('MobileNo'))) {
+      setShowToast(null);
       Digit.HRMSService.search(tenantId, null, { phone: mobileNumber }).then((result, err) => {
         if (result.Employees.length > 0) {
           setShowToast({ key: true, label: "ERR_HRMS_USER_EXIST_MOB" });
@@ -57,10 +64,10 @@ const defaultValues = {
 
 
   const onFormValueChange = (setValue = true, formData) => {
-    if (/^[6-9]\d{9}$/.test(formData?.SelectEmployeePhoneNumber?.mobileNumber)) {
+    if (formData?.SelectEmployeePhoneNumber?.mobileNumber) {
       setMobileNumber(formData?.SelectEmployeePhoneNumber?.mobileNumber);
     } else {
-      setPhonecheck(false);
+      setMobileNumber(formData?.SelectEmployeePhoneNumber?.mobileNumber);
     }
     for (let i = 0; i < formData?.Jurisdictions?.length; i++) {
       let key = formData?.Jurisdictions[i];
@@ -97,7 +104,8 @@ const defaultValues = {
       formData?.SelectEmployeePhoneNumber?.mobileNumber &&
       checkfield &&
       setassigncheck &&
-      phonecheck
+      phonecheck&&
+      checkMailNameNum(formData)
     ) {
       setSubmitValve(true);
     } else {

@@ -11,7 +11,7 @@ const SelectEmployeeName = ({ t, config, onSelect, formData = {}, userType, regi
       name: "employeeName",
       validation: {
         isRequired: true,
-        pattern: "^[a-zA-Z-.`' ]*$",
+        pattern: Digit.Utils.getPattern('Name'),
         title: t("CORE_COMMON_APPLICANT_NAME_INVALID"),
       },
       isMandatory: true,
@@ -24,8 +24,9 @@ const SelectEmployeeName = ({ t, config, onSelect, formData = {}, userType, regi
 
   return (
     <div>
-      {inputs?.map((input, index) => (
-        <React.Fragment key={index}>
+      {inputs?.map((input, index) => {
+        let currentValue=formData && formData[config.key] && formData[config.key][input.name]||'';
+        return(<React.Fragment key={index}>
           {errors[input.name] && <CardLabelError>{t(input.error)}</CardLabelError>}
           <LabelFieldPair>
             <CardLabel className="card-label-smaller">
@@ -41,10 +42,11 @@ const SelectEmployeeName = ({ t, config, onSelect, formData = {}, userType, regi
                 defaultValue={undefined}
                 {...input.validation}
               />
+            {currentValue&&currentValue.length>0&&!currentValue.match(Digit.Utils.getPattern('Name'))&&<CardLabelError style={{ width: "100%", marginTop: '-15px', fontSize: '16px', marginBottom: '12px'}}>{t("CORE_COMMON_APPLICANT_NAME_INVALID")}</CardLabelError>}
             </div>
           </LabelFieldPair>
         </React.Fragment>
-      ))}
+      )})}
     </div>
   );
 };
