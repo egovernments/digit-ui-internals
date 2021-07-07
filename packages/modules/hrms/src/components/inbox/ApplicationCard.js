@@ -38,6 +38,7 @@ export const ApplicationCard = ({
     onFilterChange({ ...params, ...param });
     setType("");
     setPopup(false);
+    onSearch()
   };
 
   useEffect(() => {
@@ -108,13 +109,13 @@ export const ApplicationCard = ({
             }}
           />
         )}
-        <FilterAction
+        {/* <FilterAction
           text="SORT"
           handleActionClick={() => {
             setType("SORT");
             setPopup(true);
           }}
-        />
+        /> */}
       </div>
       {result}
       {popup && (
@@ -123,7 +124,7 @@ export const ApplicationCard = ({
             <div className="popup-module">
               {
                 <Filter
-                  onFilterChange={selectParams}
+                  onFilterChange={onFilterChange}
                   onClose={handlePopupClose}
                   onSearch={onSearchPara}
                   type="mobile"

@@ -92,13 +92,15 @@ const EditForm = ({tenantId, data }) => {
     }),
   };
 
-const checkMailNameNum=(formData)=>
-{
-  const email=formData?.SelectEmployeeEmailId?.emailId||'';
-  const name=formData?.SelectEmployeeName?.employeeName||'';
-  const validEmail=email.length==0?true:email.match(Digit.Utils.getPattern('Email'));
-return validEmail&&name.match(Digit.Utils.getPattern('Name'));
-}
+  const checkMailNameNum=(formData)=>
+  {
+    
+    const email=formData?.SelectEmployeeEmailId?.emailId||'';
+    const name=formData?.SelectEmployeeName?.employeeName||'';
+    const address=formData?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress||'';
+    const validEmail=email.length==0?true:email.match(Digit.Utils.getPattern('Email'));
+   return validEmail&&name.match(Digit.Utils.getPattern('Name'))&&address.match(Digit.Utils.getPattern('Address'));
+  }
 
   const onFormValueChange = (setValue = true, formData) => {
     if (formData?.SelectEmployeePhoneNumber?.mobileNumber) {

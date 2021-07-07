@@ -191,9 +191,9 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
                   { code: false, name: t("HR_DEACTIVATE_HEAD") },
                 ]}
               />
-              <div>
+                 {props.type !== "mobile" && <div>
                 <SubmitBar onSubmit={() => onFilterChange(_searchParams)} label={t("HR_COMMON_APPLY")} />
-              </div>
+              </div>}
             </div>
           </div>
         </div>
@@ -206,7 +206,8 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
             buttonLink={t("ES_COMMON_FILTER")}
             onClear={clearAll}
             onSubmit={() => {
-              onSearch();
+              onFilterChange(_searchParams)
+                    props?.onClose?.()
             }}
             style={{ flex: 1 }}
           />
