@@ -72,7 +72,7 @@ if(window.location.href.includes("edit-application")||window.location.href.inclu
 routeLink=`${getPath(match.path,match.params)}`;
 routeLink=routeLink.replace('/check','');
 }
-debugger;
+
   return (
     <Card>
       <CardHeader>{t("CS_CHECK_CHECK_YOUR_ANSWERS")}</CardHeader>
