@@ -1,14 +1,14 @@
 import { AppContainer, BackButton, PrivateRoute } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { Redirect, Switch, useRouteMatch } from "react-router-dom";
+import { Switch, useRouteMatch } from "react-router-dom";
 import TradeLicense from "../../pageComponents/TradeLicense";
 import MyApplications from "../../pages/citizen/Applications/Application";
 import ApplicationDetails from "../../pages/citizen/Applications/ApplicationDetails";
-import SearchTradeComponent from "./SearchTrade";
 import CreateTradeLicence from "./Create";
 import EditTrade from "./EditTrade";
 import { TLList } from "./Renewal";
 import RenewTrade from "./Renewal/renewTrade";
+import SearchTradeComponent from "./SearchTrade";
 
 const App = () => {
   const { path, url, ...match } = useRouteMatch();
