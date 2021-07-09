@@ -182,7 +182,7 @@ const NewApplication = () => {
   }
 
   return (
-    <div>
+    <div style={{marginLeft:"30px"}}>
       <FormComposer
         heading={t("ES_TITLE_NEW_TRADE_LICESE_APPLICATION")}
         isDisabled={!canSubmit}

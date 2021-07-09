@@ -34,6 +34,7 @@ const ApplicationDetails = (props) => {
     closeToast,
     moduleCode,
     timelineStatusPrefix,
+    forcedActionPrefix,
   } = props;
 
   console.log(workflowDetails.data, "inside applicaiondetails Template");
@@ -74,19 +75,6 @@ const ApplicationDetails = (props) => {
   };
 
   const submitAction = (data) => {
-    // if (selectedAction === "ASSESS_PROPERTY") {
-    //   history.push({
-    //     pathname: `/digit-ui/employee/pt/assessment-details/${applicationNumber}`,
-    //     state: data,
-    //   });
-    // }
-    // if (selectedAction?.redirectionUrl) {
-    //   history.push({
-    //     pathname: selectedAction.redirectionUrl?.pathname,
-    //     state: { ...selectedAction.redirectionUrl?.state, data },
-    //   });
-    // } else {
-
     if (typeof data?.customFunctionToExecute === "function") {
       data?.customFunctionToExecute({ ...data });
     }
@@ -148,6 +136,7 @@ const ApplicationDetails = (props) => {
             onActionSelect={onActionSelect}
             setDisplayMenu={setDisplayMenu}
             businessService={businessService}
+            forcedActionPrefix={forcedActionPrefix}
           />
         </React.Fragment>
       ) : (

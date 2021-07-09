@@ -198,6 +198,7 @@ const PropertyDetails = () => {
         setShowToast={setShowToast}
         closeToast={closeToast}
         timelineStatusPrefix={"ES_PT_COMMON_STATUS_"}
+        forcedActionPrefix={"WF_EMPLOYEE_PT.CREATE"}
       />
       {showModal ? (
         <Modal

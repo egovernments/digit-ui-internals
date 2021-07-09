@@ -50,7 +50,7 @@ export const configTLApproverApplication = ({
             },
           },
           {
-            label: t("ES_PT_UPLOAD_FILE"),
+            label: t("TL_APPROVAL_CHECKLIST_BUTTON_UP_FILE"),
             populators:  (
               <UploadFile
                 // accept=".jpg"
@@ -58,7 +58,7 @@ export const configTLApproverApplication = ({
                 onDelete={() => {
                   setUploadedFile(null);
                 }}
-                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
+                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
               />
             )
           },

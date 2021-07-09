@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { startOfMonth, endOfMonth, getTime, subYears, differenceInDays } from "date-fns";
+import { startOfMonth, endOfMonth, getTime, subYears, differenceInCalendarDays } from "date-fns";
 import { UpwardArrow, TextInput, Loader, Table, RemoveableTag, Rating, DownwardArrow } from "@egovernments/digit-ui-react-components";
 import FilterContext from "./FilterContext";
 
@@ -124,21 +124,20 @@ const CustomTable = ({ data, onSearch, setChartData }) => {
   const accessData = (plot) => {
     const name = plot?.name.replaceAll(".", " ")
     return (originalRow, rowIndex, columns) => {
-      // console.log(originalRow, columns, 'row print');
       const cellValue = originalRow[name];
       if (name === "CapacityUtilization" && chartKey !== "fsmVehicleLogReportByVehicleNo") {
         const rowValue = typeof cellValue === 'object' ? cellValue?.value : cellValue;
         const { range } = value;
         const { startDate, endDate } = range;
-        const numberOfDays = Math.max(differenceInDays(endDate, startDate), 1);
+        const numberOfDays = differenceInCalendarDays(endDate, startDate) + 1;
         const ulbs  = dssTenants.filter((tenant) => tenant?.city?.ddrName === originalRow?.key || tenant?.code === originalRow?.key).map(tenant => tenant.code);
         const totalCapacity = fstpMdmsData?.filter(plant => ulbs.find(ulb => plant.ULBS.includes(ulb))).reduce((acc, plant) => acc + Number(plant.PlantOperationalCapacityKLD), 0)
-        const result = ((rowValue / (totalCapacity * numberOfDays)) * 100).toFixed(2) + "%";
+        const result = Math.round((((rowValue / (totalCapacity * numberOfDays)) * 100) + Number.EPSILON) * 100) / 100 + "%";
         return typeof cellValue === 'object' ? { insight: cellValue?.insight, value: result } : String(result);
       }
       if (name === "CapacityUtilization" && chartKey === "fsmVehicleLogReportByVehicleNo") {
         const rowValue = typeof cellValue === 'object' ? cellValue?.value : cellValue;
-        const result = ((rowValue / originalRow?.TankCapacity) * 100).toFixed(2) + "%";
+        const result = Math.round((((rowValue / originalRow?.TankCapacity) * 100) + Number.EPSILON) * 100) / 100 + "%";
         return typeof cellValue === 'object' ? { insight: cellValue?.insight, value: result } : String(result);
       }
       if (plot?.symbol === "amount") {

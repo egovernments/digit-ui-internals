@@ -37,16 +37,28 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
           <div>
             {isLoading && <Loader />}
             {Array.isArray(docs)
-              ? docs.map(({ code, dropdownData }, index) => (
-                  <div key={index}>
-                    <CardSubHeader>
-                      {index + 1}. {t("PROPERTYTAX_" + stringReplaceAll(code, ".", "_") + "_HEADING")}
-                    </CardSubHeader>
-                    {dropdownData.map((dropdownData) => (
-                      <CardText>{t("PROPERTYTAX_" + stringReplaceAll(dropdownData?.code, ".", "_") + "_LABEL")}</CardText>
-                    ))}
-                  </div>
-                ))
+              ? config?.isMutation ?
+                  docs.map(({ code, dropdownData }, index) => (
+                    <div key={index}>
+                      <CardSubHeader>
+                        {index + 1}. {t(code)}
+                      </CardSubHeader>
+                      {dropdownData.map((dropdownData) => (
+                        <CardText>{t(dropdownData?.code)}</CardText>
+                      ))}
+                      <CardText>{t(`${code.split('.')[0]}.${code.split('.')[1]}.${code.split('.')[1]}_DESCRIPTION`)}</CardText>
+                    </div>
+                  )) :
+                  docs.map(({ code, dropdownData }, index) => (
+                    <div key={index}>
+                      <CardSubHeader>
+                        {index + 1}. {t("PROPERTYTAX_" + stringReplaceAll(code, ".", "_") + "_HEADING")}
+                      </CardSubHeader>
+                      {dropdownData.map((dropdownData) => (
+                        <CardText>{t("PROPERTYTAX_" + stringReplaceAll(dropdownData?.code, ".", "_") + "_LABEL")}</CardText>
+                      ))}
+                    </div>
+                  ))
               : console.log("error")}
           </div>
         </div>

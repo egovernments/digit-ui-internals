@@ -41,7 +41,7 @@ const ReasonForTransfer = (props) => {
             {t("PT_MUTATION_TRANSFER_REASON") + " *"}
           </CardLabel>
           <div className="field">
-            <Dropdown option={menu} optionKey={"i18nKey"} select={setSelected} selected={reasonForTransfer} />
+            <Dropdown t={t} option={menu} optionKey={"i18nKey"} select={setSelected} selected={reasonForTransfer} />
           </div>
         </LabelFieldPair>
       </React.Fragment>

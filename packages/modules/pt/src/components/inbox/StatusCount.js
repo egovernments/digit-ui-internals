@@ -16,12 +16,9 @@ const StatusCount = ({ status, searchParams, onAssignmentChange, statusMap, busi
     <CheckBox
       onChange={(e) => onAssignmentChange(e, status)}
       checked={(() => {
-        //IIFE
-        // console.log(searchParams, searchParams?.applicationStatus, "inside application status");
-        // if (!searchParams?.applicationStatus || !searchParams?.applicationStatus.length) return true;
         return searchParams?.applicationStatus.some((e) => e.uuid === status.uuid);
       })()}
-      label={`${t(status.name)} (${statusMap?.find((e) => e.statusid === status.uuid)?.count || "-"})`}
+      label={`${status.name} (${statusMap?.find((e) => e.statusid === status.uuid)?.count || "-"})`}
     />
   );
 };

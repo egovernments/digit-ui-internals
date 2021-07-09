@@ -136,7 +136,7 @@ function SelectDocument({
           {
             documentType: selectedDocument?.documentType,
             fileStoreId: uploadedFile,
-            documentUid: uploadedFile,
+            tenantId: tenantId
           },
         ];
       });
@@ -193,6 +193,7 @@ function SelectDocument({
             inputStyles={{ width: "280px" }}
             // disabled={enabledActions?.[action].disableUpload || !selectedDocument?.code}
             buttonType="button"
+            accept= {doc?.documentType === "OWNERPHOTO" ? "image/*,.jpg,.png" : "image/*,.jpg,.png,.pdf"}   
           />
         </div>
       </LabelFieldPair>

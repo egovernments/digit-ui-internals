@@ -22,8 +22,6 @@ const TransferProof = ({ t, config, onSelect, userType, formData }) => {
   const docs = Documentsob?.PropertyTax?.MutationDocuments;
   const transferReason = Array.isArray(docs) && docs.filter((doc) => doc.code.includes("OWNER.TRANSFERREASONDOCUMENT"));
 
-  console.log(docs, "inside transferReason");
-  // formData?.additionalDetails?.reasonForTransfer?.code
   if (transferReason.length > 0) {
     dropdownData = transferReason[0]?.dropdownData.filter((e) => e.code.includes(formData?.additionalDetails?.reasonForTransfer?.code));
     dropdownData.forEach((data) => {

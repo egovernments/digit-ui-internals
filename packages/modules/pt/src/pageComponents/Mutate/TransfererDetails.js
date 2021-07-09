@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 const TransfererDetails = ({ userType, formData, config, onSelect }) => {
   const { t } = useTranslation();
-  console.log(formData, config, "inside transferer details");
   const propertyDetails = userType === "employee" ? formData.originalData : formData.searchResult.property;
   const ownershipType = propertyDetails?.ownershipCategory?.split?.(".");
 

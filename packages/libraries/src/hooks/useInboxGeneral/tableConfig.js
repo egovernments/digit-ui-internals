@@ -34,7 +34,13 @@ export const TableConfig = (t) => ({
         Header: t("ES_INBOX_OWNER_NAME"),
         disableSortBy: true,
         Cell: ({ row }) => {
-          return GetCell(`${row.original?.searchData["owners"]?.[0].name}`);
+          const owners = row.original?.searchData["owners"] || [];
+          const status = row.original?.searchData.status;
+          const creationReason = row.original?.searchData.creationReason;
+          const sortedOwners = [...owners.filter((a, b) => a.status === "ACTIVE"), ...owners.filter((a, b) => a.status !== "ACTIVE")];
+          const _owner = status === "INWORKFLOW" && creationReason === "MUTATION" ? sortedOwners.reverse() : sortedOwners;
+
+          return GetCell(`${_owner?.[0].name}`);
           return (
             <Link to={`${props.parentRoute}/property-mutate-docs-required/` + row.original?.searchData?.["propertyId"]}>
               {row.original?.searchData?.["propertyId"]}

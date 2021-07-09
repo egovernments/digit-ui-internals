@@ -14,8 +14,15 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
 
   const { userRoleStates, otherRoleStates } = statusData || {};
 
-  const translateState = (state) => {
-    return `ES_PT_COMMON_STATUS_${state.state || "CREATED"}`;
+  const map = {
+    "PT.CREATE": "ES_PT_NEW_PROPERTY",
+    "PT.MUTATION": "ES_PT_TRANSFER_OWNERSHIP",
+    "PT.UPDATE": "ES_PT_UPDATE_PROPERTY",
+  };
+
+  const translateState = (state, t) => {
+    // return `(${t(map[state.stateBusinessService])})` + " " + t(`ES_PT_COMMON_STATUS_${state.state || "CREATED"}`);
+    return t(`ES_PT_COMMON_STATUS_${state.state || "CREATED"}`);
   };
 
   console.log(statusData, "status data");
@@ -29,31 +36,36 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
       <div className="filter-label" style={{ fontWeight: "normal" }}>
         {t("ES_INBOX_STATUS")}
       </div>
-      {userRoleStates?.map((option, index) => {
-        return (
-          <StatusCount
-            businessServices={businessServices}
-            key={index}
-            onAssignmentChange={onAssignmentChange}
-            status={{ name: translateState(option), code: option.applicationStatus, ...option }}
-            searchParams={searchParams}
-            statusMap={statusMap}
-          />
-        );
-      })}
-      {moreStatus &&
-        otherRoleStates?.map((option, index) => {
+      {userRoleStates
+        ?.filter((e) => !e.isTerminateState)
+        ?.map((option, index) => {
           return (
             <StatusCount
               businessServices={businessServices}
-              key={option.uuid}
+              key={index}
               onAssignmentChange={onAssignmentChange}
-              status={{ name: translateState(option), code: option.applicationStatus, ...option }}
+              status={{ name: translateState(option, t), code: option.applicationStatus, ...option }}
               searchParams={searchParams}
               statusMap={statusMap}
             />
           );
         })}
+
+      {moreStatus &&
+        otherRoleStates
+          ?.filter((e) => !e.isTerminateState)
+          ?.map((option, index) => {
+            return (
+              <StatusCount
+                businessServices={businessServices}
+                key={option.uuid}
+                onAssignmentChange={onAssignmentChange}
+                status={{ name: translateState(option, t), code: option.applicationStatus, ...option }}
+                searchParams={searchParams}
+                statusMap={statusMap}
+              />
+            );
+          })}
       <div className="filter-button" onClick={() => showMoreStatus(!moreStatus)}>
         {" "}
         {moreStatus ? t("ES_COMMON_LESS") : t("ES_COMMON_MORE")}{" "}

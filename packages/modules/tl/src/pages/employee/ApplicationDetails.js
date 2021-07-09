@@ -76,7 +76,8 @@ const ApplicationDetails = () => {
               {
                 action: "RENEWAL_SUBMIT_BUTTON",
                 redirectionUrl: {
-                  pathname: `/digit-ui/employee/pt/property-details/${applicationNumber}`,
+                  pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
+                  state: applicationDetails
                 },
                 tenantId: stateId,
               }
@@ -115,8 +116,8 @@ const ApplicationDetails = () => {
 
 
   return (
-    <div>
-      <Header>{applicationDetails?.applicationData?.workflowCode == "NewTL" ? t("TL_APPLICATION_DETAILS_LABEL") : t("TL_COMMON_TR_DETAILS")}</Header>
+    <div style={{marginLeft: "30px"}}>
+      <Header>{(applicationDetails?.applicationData?.workflowCode == "NewTL" && applicationDetails?.applicationData?.status !== "APPROVED") ? t("TL_APPLICATION_DETAILS_LABEL") : t("TL_COMMON_TR_DETAILS")}</Header>
       <ApplicationDetailsTemplate
         applicationDetails={applicationDetails}
         isLoading={isLoading}

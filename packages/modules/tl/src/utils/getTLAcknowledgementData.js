@@ -19,18 +19,18 @@ const getOwnerDetails = (application, t) => {
         { title: t("TL_NEW_OWNER_DETAILS_ADDR_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.permanentAddress || "NA" },
       ],
     };
-  } else if (application?.ownershipCategory.includes("INDIVIDUAL")) {
+  } else { //if (application?.subOwnerShipCategory?.includes("INDIVIDUAL"))
     let values = [];
     application?.tradeLicenseDetail.owners.map((owner) => {
       let indOwner = [
-        { title: t("TL_OWNER_S_NAME_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.name || "NA" },
-        { title: t("TL_OWNER_S_MOBILE_NUM_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.mobileNumber || "NA" },
-        { title: t("TL_GUARDIAN_S_NAME_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.fatherOrHusbandName || "NA" },
-        { title: t("TL_RELATIONSHIP_WITH_GUARDIAN_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.relationship || "NA" },
-        { title: t("TL_NEW_OWNER_DETAILS_GENDER_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.gender || "NA" },
-        { title: t("TL_NEW_OWNER_DETAILS_EMAIL_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.emailId || "NA" },
-        { title: t("TL_OWNER_SPECIAL_CATEGORY"), value: application?.tradeLicenseDetail?.owners[0]?.ownerType ? t(`COMMON_MASTERS_OWNERTYPE_${application?.tradeLicenseDetail?.owners[0]?.ownerType}`) : "NA" },
-        { title: t("TL_NEW_OWNER_DETAILS_ADDR_LABEL"), value: application?.tradeLicenseDetail?.owners[0]?.permanentAddress || "NA" },
+        { title: t("TL_OWNER_S_NAME_LABEL"), value: owner?.name || "NA" },
+        { title: t("TL_OWNER_S_MOBILE_NUM_LABEL"), value: owner?.mobileNumber || "NA" },
+        { title: t("TL_GUARDIAN_S_NAME_LABEL"), value: owner?.fatherOrHusbandName || "NA" },
+        { title: t("TL_RELATIONSHIP_WITH_GUARDIAN_LABEL"), value: owner?.relationship || "NA" },
+        { title: t("TL_NEW_OWNER_DETAILS_GENDER_LABEL"), value: owner?.gender || "NA" },
+        { title: t("TL_NEW_OWNER_DETAILS_EMAIL_LABEL"), value: owner?.emailId || "NA" },
+        { title: t("TL_OWNER_SPECIAL_CATEGORY"), value: owner?.ownerType ? t(`COMMON_MASTERS_OWNERTYPE_${owner?.ownerType}`) : "NA" },
+        { title: t("TL_NEW_OWNER_DETAILS_ADDR_LABEL"), value: owner?.permanentAddress || "NA" },
       ];
       values.push(...indOwner);
     });
@@ -76,7 +76,7 @@ const getAccessoriesDetails = (application, t) => {
   });
 
   return {
-    title: t(""),
+    title: "",
     values: values,
   };
 };
@@ -92,12 +92,15 @@ const getTradeUnitsDetails = (application, t) => {
       { title: t("TL_NEW_TRADE_SUB_TYPE_LABEL"), value: tradeSubType ? t(`TRADELICENSE_TRADETYPE_${tradeSubType}`) : "NA" },
       { title: t("TL_NEW_TRADE_DETAILS_UOM_UOM_PLACEHOLDER"), value: unit?.uom || "NA" },
       { title: t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL"), value: unit?.uomValue || "NA" },
+      { title: "", value: ""},
+      { title: "", value: ""},
+      { title: "", value: ""}
     ];
     values.push(...value);
   });
 
   return {
-    title: t(""),
+    title: "",
     values: values,
   };
 };
@@ -125,21 +128,22 @@ const getPTAcknowledgementData = async (application, tenantInfo, t) => {
   return {
     t: t,
     tenantId: tenantInfo?.code,
+    title: `${t(tenantInfo?.i18nKey)} ${ulbCamel(t(`ULBGRADE_${tenantInfo?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`))}`,
     name: `${t(tenantInfo?.i18nKey)} ${ulbCamel(t(`ULBGRADE_${tenantInfo?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`))}`,
     email: "",
     phoneNumber: "",
     details: [
-      {
-        title: t("NOC_TASK_DETAILS_HEADER"),
-        values: [
-          { title: t("TL_COMMON_TABLE_COL_LIC_NO"), value: application?.licenseNumber || "NA" },
-          { title: t("TL_COMMON_TABLE_COL_APP_NO"), value: application?.applicationNumber },
-          {
-            title: t("TL_COMMON_TABLE_COL_APP_DATE"),
-            value: Digit.DateUtils.ConvertTimestampToDate(application?.applicationDate, "dd/MM/yyyy"),
-          },
-        ],
-      },
+      // {
+      //   title: t("NOC_TASK_DETAILS_HEADER"),
+      //   values: [
+      //     { title: t("TL_COMMON_TABLE_COL_LIC_NO"), value: application?.licenseNumber || "NA" },
+      //     { title: t("TL_COMMON_TABLE_COL_APP_NO"), value: application?.applicationNumber },
+      //     {
+      //       title: t("TL_COMMON_TABLE_COL_APP_DATE"),
+      //       value: Digit.DateUtils.ConvertTimestampToDate(application?.applicationDate, "dd/MM/yyyy"),
+      //     },
+      //   ],
+      // },
       getTradeDetails(application, t),
       getTradeUnitsDetails(application, t),
       getAccessoriesDetails(application, t),

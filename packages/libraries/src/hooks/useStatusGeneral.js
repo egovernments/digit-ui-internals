@@ -16,7 +16,7 @@ const useApplicationStatusGeneral = ({ businessServices = [], tenantId }, config
     let states = [];
     const filteredData = data.filter((e) => businessServices.includes(e.businessService));
     filteredData.forEach((service) => {
-      states = [...states, ...service.states];
+      states = [...states, ...service.states.map((e) => ({ ...e, stateBusinessService: service.businessService }))];
     });
 
     // console.log(JSON.stringify(data.filter((service) => service.business === "PT").map((e) => e.businessService)));

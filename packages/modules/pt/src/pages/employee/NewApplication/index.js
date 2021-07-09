@@ -26,6 +26,9 @@ const NewApplication = () => {
     if (Object.keys(formState.errors).length === 1 && formState.errors?.units?.message === "arv") {
       setSubmitValve(!formData?.units.some((unit) => unit.occupancyType === "RENTED" && !unit.arv));
     }
+    if (formData?.ownershipCategory?.code?.includes("MULTIPLEOWNERS") && formData?.owners?.length < 2) {
+      setSubmitValve(false);
+    }
   };
 
   const onSubmit = (data) => {

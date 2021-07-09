@@ -148,7 +148,7 @@ export const TLSearch = {
       },
     };
 
-    if(response?.workflowCode == "NewTL") {
+    if(response?.workflowCode == "NewTL" && response?.status !== "APPROVED") {
       const details = {
         title: "",
         values: [

@@ -274,7 +274,7 @@ const OwnerForm = (_props) => {
               render={(props) => (
                 <Dropdown
                   className="form-field"
-                  selected={licenseTypeList[0]}
+                  selected={licenseTypeList[1]}
                   disable={true}
                   option={licenseTypeList}
                   select={props.onChange}
@@ -292,7 +292,7 @@ const OwnerForm = (_props) => {
               <Controller
                 control={control}
                 name={"tradeName"}
-                defaultValue={tradedetail?.name}
+                defaultValue={tradedetail?.tradeName}
                 rules={{ required: "NAME_REQUIRED", validate: { pattern: (val) => (/^[-@.\/#&+\w\s]*$/.test(val) ? true : t("INVALID_NAME")) } }}
                 render={(props) => (
                   <TextInput
@@ -376,7 +376,7 @@ const OwnerForm = (_props) => {
               <Controller
                 name="commencementDate"
                 rules={{ required: t("ERR_DEFAULT_INPUT_FIELD_MSG") }}
-                // defaultValue={tradedetils?.[0]?.commencementDate}
+                defaultValue={tradedetail?.commencementDate}
                 control={control}
                 render={(props) => (
                   <DatePicker

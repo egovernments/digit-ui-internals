@@ -149,7 +149,7 @@ export const CollectPayment = (props) => {
     try {
       const resposne = await Digit.PaymentService.createReciept(tenantId, recieptRequest);
       queryClient.invalidateQueries();
-      history.push(`${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}`);
+      history.push(`${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode}`);
     } catch (error) {
       setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => e.message) })?.join(" , ");
       setTimeout(() => setToast(null), 5000);

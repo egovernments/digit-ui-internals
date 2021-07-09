@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { SubmitBar, ActionBar, Menu } from "@egovernments/digit-ui-react-components";
 
-function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSelect, setDisplayMenu, businessService }) {
+function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSelect, setDisplayMenu, businessService, forcedActionPrefix }) {
   const { t } = useTranslation();
   return (
     <React.Fragment>
@@ -10,8 +10,7 @@ function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSel
         <ActionBar>
           {displayMenu && workflowDetails?.data?.actionState?.nextActions ? (
             <Menu
-              localeKeyPrefix={`WF_EMPLOYEE_${businessService?.toUpperCase()}`}
-              // options={workflowDetails?.data?.actionState?.nextActions.map((action) => action?.action)}
+              localeKeyPrefix={forcedActionPrefix || `WF_EMPLOYEE_${businessService?.toUpperCase()}`}
               options={workflowDetails?.data?.actionState?.nextActions}
               optionKey={"action"}
               t={t}

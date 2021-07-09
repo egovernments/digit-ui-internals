@@ -113,6 +113,7 @@ const AssessmentDetails = () => {
         setShowToast={setShowToast}
         closeToast={closeToast}
         timelineStatusPrefix={"ES_PT_COMMON_STATUS_"}
+        forcedActionPrefix={"WF_EMPLOYEE_PT.CREATE"}
       />
       {!queryClient.getQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear]) ? (
         <ActionBar>
