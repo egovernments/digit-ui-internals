@@ -190,6 +190,17 @@ const ApplicationDetails = () => {
                   </div>
                 );
               })}
+              
+              {application?.status == "CITIZENACTIONREQUIRED" ? (
+                <Link
+                  to={{
+                    pathname: `/digit-ui/citizen/tl/tradelicence/edit-application/${application?.applicationNumber}/${application?.tenantId}`,
+                    state: { },
+                  }}
+                >
+                  <SubmitBar label={t("COMMON_EDIT")} />
+                </Link>
+              ) : null}
               {application?.status == "PENDINGPAYMENT" ? (
                 <Link
                   to={{

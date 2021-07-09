@@ -4,7 +4,7 @@ import { FormStep, RadioOrSelect, RadioButtons } from "@egovernments/digit-ui-re
 
 const SelectStructureType = ({ t, config, onSelect, userType, formData }) => {
   const [StructureType, setStructureType] = useState(formData?.TradeDetails?.StructureType);
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   const menu = [
     { i18nKey: "TL_COMMON_YES", code: "MOVABLE" },
     { i18nKey: "TL_COMMON_NO", code: "IMMOVABLE" },

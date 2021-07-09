@@ -8,6 +8,7 @@ import SearchTradeComponent from "./SearchTrade";
 import CreateTradeLicence from "./Create";
 import EditTrade from "./EditTrade";
 import { TLList } from "./Renewal";
+import RenewTrade from "./Renewal/renewTrade";
 
 const App = () => {
   const { path, url, ...match } = useRouteMatch();
@@ -17,7 +18,8 @@ const App = () => {
         <AppContainer>
           <BackButton /* style={{ position: "fixed", top: "55px" }} */>Back</BackButton>
           <PrivateRoute path={`${path}/tradelicence/new-application`} component={CreateTradeLicence} />
-          <PrivateRoute path={`${path}/tradelicence/edit-application`} component={EditTrade} />
+          <PrivateRoute path={`${path}/tradelicence/edit-application/:id/:tenantId`} component={EditTrade} />
+          <PrivateRoute path={`${path}/tradelicence/renew-trade/:id/:tenantId`} component={RenewTrade} />
           <PrivateRoute path={`${path}/tradelicence/my-application`} component={MyApplications} />
           <PrivateRoute path={`${path}/tradelicence/tl-info`} component={TradeLicense} />
           <PrivateRoute path={`${path}/tradelicence/application/:id/:tenantId`} component={ApplicationDetails} />

@@ -9,11 +9,11 @@ import getPDFData from "../../../utils/getTLAcknowledgementData";
 const GetActionMessage = (props) => {
   const { t } = useTranslation();
   if (props.isSuccess) {
-    return !window.location.href.includes("edit-application") ? t("CS_TRADE_APPLICATION_SUCCESS") : t("CS_TRADE_UPDATE_APPLICATION_SUCCESS");
+    return !window.location.href.includes("renew-trade") ? t("CS_TRADE_APPLICATION_SUCCESS") : t("CS_TRADE_UPDATE_APPLICATION_SUCCESS");
   } else if (props.isLoading) {
-    return !window.location.href.includes("edit-application") ? t("CS_TRADE_APPLICATION_SUCCESS") : t("CS_TRADE_UPDATE_APPLICATION_PENDING");
+    return !window.location.href.includes("renew-trade") ? t("CS_TRADE_APPLICATION_SUCCESS") : t("CS_TRADE_UPDATE_APPLICATION_PENDING");
   } else if (!props.isSuccess) {
-    return !window.location.href.includes("edit-application") ? t("CS_TRADE_APPLICATION_FAILED") : t("CS_TRADE_UPDATE_APPLICATION_FAILED");
+    return !window.location.href.includes("renew-trade") ? t("CS_TRADE_APPLICATION_FAILED") : t("CS_TRADE_UPDATE_APPLICATION_FAILED");
   }
 };
 
@@ -39,7 +39,7 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const mutation = Digit.Hooks.tl.useTradeLicenseAPI(
     data?.address?.city ? data.address?.city?.code : tenantId,
-    !window.location.href.includes("edit-application")
+    !window.location.href.includes("renew-trade")
   );
   const mutation1 = Digit.Hooks.tl.useTradeLicenseAPI(
     data?.address?.city ? data.address?.city?.code : tenantId,
@@ -53,7 +53,7 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
   //   data?.address?.city ? data.address?.city?.code : tenantId,
   //   false
   // );
-  const isEdit = window.location.href.includes("edit-application");
+  const isEdit = window.location.href.includes("renew-trade");
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
   const stateId = tenantId.split(".")[0];

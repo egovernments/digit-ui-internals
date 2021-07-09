@@ -30,14 +30,14 @@ const ActionButton = ({ jumpTo }) => {
 };
 
 const CheckPage = ({ onSubmit, value }) => {
-  let isEdit = window.location.href.includes("edit-application");
+  let isEdit = window.location.href.includes("renew-trade");
   const { t } = useTranslation();
   const history = useHistory();
 
   const { TradeDetails, address, owners, propertyType, subtype, pitType, pitDetail,isEditProperty } = value;
   console.log("find values here ", value);
 
-  const typeOfApplication = !isEditProperty ? `new-application` : `edit-application`;
+  const typeOfApplication = !isEditProperty ? `new-application` : `renew-trade`;
   //   const pitDetailValues = pitDetail ? Object.values(pitDetail).filter((value) => !!value) : null;
 
   //   const pitMeasurement = pitDetailValues?.reduce((previous, current, index, array) => {

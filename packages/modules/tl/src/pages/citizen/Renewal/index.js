@@ -36,7 +36,7 @@ export const TLList = () => {
     return <Loader />;
   }
   let { Licenses: applicationsList } = data|| {};
-  applicationsList = applicationsList.filter(a => a.status.includes("APPROVED"||"EXPIRED"));
+  applicationsList = applicationsList.filter(ele =>ele.financialYear!="2021-22"&&(ele.status=="EXPIRED"||ele.status=="APPROVED"));
 
   return (
     <React.Fragment>

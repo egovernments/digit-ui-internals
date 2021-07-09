@@ -112,7 +112,7 @@ const getTradeEditDetails = (data) => {
     return data;
 }
 
-const EditTrade = ({ parentRoute }) => {
+const RenewTrade = ({ parentRoute }) => {
   const queryClient = useQueryClient();
   const match = useRouteMatch();
   const { t } = useTranslation();
@@ -121,11 +121,11 @@ const EditTrade = ({ parentRoute }) => {
   const history = useHistory();
   let config = [];
   let application ={};
-  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("TL_EDIT_TRADE", {});
+  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("TL_RENEW_TRADE", {});
   
     let filter1={};
 
-  if(licenseNo) filter1.applicationNumber = licenseNo;
+  if(licenseNo) filter1.licenseNumbers = licenseNo;
   if(tenantId) filter1.tenantId = tenantId;
   const { isLoading, isError, error, data } = Digit.Hooks.tl.useTradeLicenseSearch({ filters: filter1 }, { filters: filter1 });
 
@@ -186,7 +186,7 @@ const EditTrade = ({ parentRoute }) => {
   const handleMultiple = () => {};
 
   const onSuccess = () => {
-    queryClient.invalidateQueries("TL_EDIT_TRADE");
+    queryClient.invalidateQueries("TL_RENEW_TRADE");
   };
   newConfig.forEach((obj) => {
     config = config.concat(obj.body.filter((a) => !a.hideInCitizen));
@@ -224,4 +224,4 @@ console.log(
   );
 };
 
-export default EditTrade;
+export default RenewTrade;

@@ -380,7 +380,14 @@ else
 }
 }
 
+
+//FinancialYear
 export const convertToEditTrade = (data,fy=[]) => {
+  const currrentFYending = fy.filter(item => item.code === data?.financialYear)[0]
+    .endingDate;
+    const nextFinancialYearForRenewal= fy.filter(item => item.startingDate === currrentFYending)[0].code;
+
+
   console.log("dataforedit",data);
   let isDirectrenewal = stringToBoolean(sessionStorage.getItem("isDirectRenewal"));
   let formdata = {
@@ -398,9 +405,9 @@ export const convertToEditTrade = (data,fy=[]) => {
         applicationDate:data?.applicationDate,
         commencementDate:data?.commencementDate,
         issuedDate:data?.issuedDate,
-        financialYear:getvalidfromdate(data?.validFrom,fy)?getvalidfromdate(data?.validFrom,fy).finYearRange:"2020-21",
-        validFrom:getvalidfromdate(data?.validFrom,fy)?getvalidfromdate(data?.validFrom,fy).startingDate:"",
-        validTo:getvalidTodate(data?.validTo,fy)?getvalidTodate(data?.validTo,fy).endingDate:"",
+        financialYear:nextFinancialYearForRenewal||"2020-21",
+        validFrom:data?.validFrom,
+        validTo:data?.validTo,
         action:"INITIATE",
         wfDocuments:data?.wfDocuments,
         status:data?.status,

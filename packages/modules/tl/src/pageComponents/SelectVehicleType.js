@@ -6,7 +6,7 @@ const SelectVehicleType = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
   const [VehicleType, setVehicleType] = useState(formData?.TradeDetails?.VehicleType);
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   const { isLoading, data: Menu = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", "StructureType");
   let menu = [];
   Menu &&

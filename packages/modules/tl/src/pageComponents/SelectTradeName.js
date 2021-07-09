@@ -7,7 +7,7 @@ const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => 
   const [TradeName, setTradeName] = useState(formData.TradeDetails?.TradeName);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   const { isLoading, data: fydata = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "egf-master", "FinancialYear");
   
 

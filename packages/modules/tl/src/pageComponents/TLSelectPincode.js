@@ -8,7 +8,7 @@ const TLSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
   const { pathname } = useLocation();
   const presentInModifyApplication = pathname.includes("modify");
   // let isEditProperty = formData?.isEditProperty || false;
-  let isEdit = window.location.href.includes("/edit-application/");
+  let isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   //if (formData?.isUpdateProperty) isEditProperty = true;
   const inputs = [
     {

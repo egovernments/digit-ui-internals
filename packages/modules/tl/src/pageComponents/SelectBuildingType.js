@@ -7,7 +7,7 @@ const SelectBuildingType = ({ t, config, onSelect, userType, formData }) => {
   const stateId = tenantId.split(".")[0];
   const [BuildingType, setBuildingType] = useState(formData?.TradeDetails?.BuildingType);
   const { isLoading, data: Menu = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", "StructureType");
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   let menu = [];
   Menu &&
     Menu["common-masters"] &&
