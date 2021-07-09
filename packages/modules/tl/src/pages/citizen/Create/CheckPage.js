@@ -1,78 +1,46 @@
-import React from "react";
 import {
-  Card,
-  CardCaption,
-  CardHeader,
-  CardLabel,
-  CardSubHeader,
-  StatusTable,
-  Row,
-  ActionLinks,
-  LinkButton,
-  SubmitBar,
-  CardText,
-  CitizenInfoLabel,
+  Card, CardHeader, CardSubHeader, CardText,
+  CitizenInfoLabel, LinkButton, Row, StatusTable, SubmitBar
 } from "@egovernments/digit-ui-react-components";
-import { useHistory,useRouteMatch } from "react-router-dom";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import TLDocument from "../../../pageComponents/TLDocumets";
 
 const ActionButton = ({ jumpTo }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  
   function routeTo() {
-    sessionStorage.setItem("isDirectRenewal",false);
+    sessionStorage.setItem("isDirectRenewal", false);
     history.push(jumpTo);
   }
-
   return <LinkButton label={t("CS_COMMON_CHANGE")} className="check-page-link-button" onClick={routeTo} />;
 };
 
-
-const getPath=(path,params)=>{
-params&&Object.keys(params).map(key=>{
-path=path.replace(`:${key}`,params[key]);
-})
-return path;
+const getPath = (path, params) => {
+  params && Object.keys(params).map(key => {
+    path = path.replace(`:${key}`, params[key]);
+  })
+  return path;
 }
-
 
 const CheckPage = ({ onSubmit, value }) => {
   let isEdit = window.location.href.includes("renew-trade");
   const { t } = useTranslation();
   const history = useHistory();
   const match = useRouteMatch();
-  const { TradeDetails, address, owners, propertyType, subtype, pitType, pitDetail,isEditProperty } = value;
-  console.log("find values here ", value);
-
-
-  //   const pitDetailValues = pitDetail ? Object.values(pitDetail).filter((value) => !!value) : null;
-
-  //   const pitMeasurement = pitDetailValues?.reduce((previous, current, index, array) => {
-  //     if (index === array.length - 1) {
-  //       return previous + current + "m";
-  //     } else {
-  //       return previous + current + "m x ";
-  //     }
-  //   }, "");
+  const { TradeDetails, address, owners, propertyType, subtype, pitType, pitDetail, isEditProperty } = value;
   function getdate(date) {
     let newdate = Date.parse(date);
-    return `${
-      new Date(newdate).getDate().toString() + "/" + (new Date(newdate).getMonth() + 1).toString() + "/" + new Date(newdate).getFullYear().toString()
-    }`;
+    return `${new Date(newdate).getDate().toString() + "/" + (new Date(newdate).getMonth() + 1).toString() + "/" + new Date(newdate).getFullYear().toString()
+      }`;
   }
-
-
   const typeOfApplication = !isEditProperty ? `new-application` : `renew-trade`;
-
-let routeLink=`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}`;
-
-if(window.location.href.includes("edit-application")||window.location.href.includes("renew-trade")){
-routeLink=`${getPath(match.path,match.params)}`;
-routeLink=routeLink.replace('/check','');
-}
-
+  let routeLink = `/digit-ui/citizen/tl/tradelicence/${typeOfApplication}`;
+  if (window.location.href.includes("edit-application") || window.location.href.includes("renew-trade")) {
+    routeLink = `${getPath(match.path, match.params)}`;
+    routeLink = routeLink.replace('/check', '');
+  }
   return (
     <Card>
       <CardHeader>{t("CS_CHECK_CHECK_YOUR_ANSWERS")}</CardHeader>
@@ -210,58 +178,7 @@ routeLink=routeLink.replace('/check','');
             </StatusTable>
           )}
         </div>
-        {/* <Row
-          label={t("CS_CHECK_PROPERTY_SUB_TYPE")}
-          text={t(subtype.i18nKey)}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/fsm/new-application/property-subtype" />}
-        />
-        <Row
-          label={t("CS_CHECK_ADDRESS")}
-          text={`${address?.doorNo?.trim() ? `${address?.doorNo?.trim()}, ` : ""} ${address?.street?.trim() ? `${address?.street?.trim()}, ` : ""}${t(
-            address?.locality?.i18nkey
-          )}, ${t(address?.city.code)}`}
-          actionButton={<ActionButton jumpTo="/digit-ui/citizen/fsm/new-application/pincode" />}
-        />
-        {address?.landmark?.trim() && (
-          <Row
-            label={t("CS_CHECK_LANDMARK")}
-            text={address?.landmark?.trim()}
-            actionButton={<ActionButton jumpTo="/digit-ui/citizen/fsm/new-application/landmark" />}
-          />
-        )}
-        {address?.slumArea?.code === true && (
-          <Row
-            label={t("CS_APPLICATION_DETAILS_SLUM_NAME")}
-            text={t(address?.slumData?.i18nKey)}
-            actionButton={<ActionButton jumpTo="/digit-ui/citizen/fsm/new-application/slum-details" />}
-          />
-        )}
-        {pitType && (
-          <Row
-            label={t("CS_CHECK_PIT_TYPE")}
-            text={t(pitType.i18nKey)}
-            actionButton={<ActionButton jumpTo="/digit-ui/citizen/fsm/new-application/pit-type" />}
-          />
-        )}
-        {pitMeasurement && (
-          <Row
-            label={t("CS_CHECK_SIZE")}
-            text={[
-              pitMeasurement,
-              {
-                value:
-                  pitDetailValues?.length === 3
-                    ? `${t(`CS_COMMON_LENGTH`)} x ${t(`CS_COMMON_BREADTH`)} x ${t(`CS_COMMON_DEPTH`)}`
-                    : `${t(`CS_COMMON_DIAMETER`)} x ${t(`CS_COMMON_DEPTH`)}`,
-                className: "card-text",
-                style: { fontSize: "16px" },
-              },
-            ]}
-            actionButton={<ActionButton jumpTo="/digit-ui/citizen/fsm/new-application/tank-size" />}
-          />
-        )} */}
       </StatusTable>
-      {/* <CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("CS_CHECK_INFO_TEXT")} /> */}
       <SubmitBar label={t("CS_COMMON_SUBMIT")} onSubmit={onSubmit} />
     </Card>
   );

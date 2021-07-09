@@ -38,9 +38,7 @@ const CreateTradeLicence = ({ parentRoute }) => {
     if (nextStep === null) {
       return redirectWithHistory(`${match.path}/check`);
     }
-
     nextPage = `${match.path}/${nextStep}`;
-
     redirectWithHistory(nextPage);
   };
 
@@ -49,23 +47,14 @@ const CreateTradeLicence = ({ parentRoute }) => {
   };
 
   function handleSelect(key, data, skipStep, index, isAddMultiple = false) {
-    /* if (key === "owners") {
-      let owners = params.owners || [];
-      owners[index] = data;
-      setParams({ ...params, ...{ [key]: [...owners] } });
-    } else {
-      setParams({ ...params, ...{ [key]: { ...params[key], ...data } } });
-    } */
     setParams({ ...params, ...{ [key]: { ...params[key], ...data } } });
     goNext(skipStep, index, isAddMultiple, key);
   }
 
-  const handleSkip = () => {};
-  const handleMultiple = () => {};
+  const handleSkip = () => { };
+  const handleMultiple = () => { };
 
   const onSuccess = () => {
-    //sessionStorage.setItem("TL-CREATE-FORMDATA", JSON.stringify(params));
-    //clearParams();
     sessionStorage.removeItem("CurrentFinancialYear");
     queryClient.invalidateQueries("TL_CREATE_TRADE");
   };

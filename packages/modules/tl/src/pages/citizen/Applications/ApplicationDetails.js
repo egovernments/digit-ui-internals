@@ -1,8 +1,7 @@
+import { Card, Loader, MultiLink, Row, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { Header, Card, Row, LinkButton, Loader, MultiLink, SubmitBar } from "@egovernments/digit-ui-react-components";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import getPDFData from "../../../utils/getTLAcknowledgementData";
 
 const ApplicationDetails = () => {
@@ -11,10 +10,8 @@ const ApplicationDetails = () => {
   const { tenantId } = useParams();
   const history = useHistory();
   const [bill, setBill] = useState(null);
-
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
-
   const { isLoading, isError, error, data: application, error: errorApplication } = Digit.Hooks.tl.useTLSearchApplication({
     tenantId: tenantId,
     applicationNumber: id,
@@ -32,10 +29,8 @@ const ApplicationDetails = () => {
       });
     }
   }, [application]);
-
   const [showOptions, setShowOptions] = useState(false);
-
-  useEffect(() => {}, [application, errorApplication]);
+  useEffect(() => { }, [application, errorApplication]);
 
   if (isLoading) {
     return <Loader />;
@@ -78,21 +73,21 @@ const ApplicationDetails = () => {
   const dowloadOptions =
     paymentsHistory?.Payments?.length > 0
       ? [
-          {
-            label: t("TL_CERTIFICATE"),
-            onClick: downloadTLcertificate,
-          },
-          {
-            label: t("CS_COMMON_PAYMENT_RECEIPT"),
-            onClick: downloadPaymentReceipt,
-          },
-        ]
+        {
+          label: t("TL_CERTIFICATE"),
+          onClick: downloadTLcertificate,
+        },
+        {
+          label: t("CS_COMMON_PAYMENT_RECEIPT"),
+          onClick: downloadPaymentReceipt,
+        },
+      ]
       : [
-          {
-            label: t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT"),
-            onClick: handleDownloadPdf,
-          },
-        ];
+        {
+          label: t("CS_COMMON_APPLICATION_ACKNOWLEDGEMENT"),
+          onClick: handleDownloadPdf,
+        },
+      ];
 
   return (
     <React.Fragment>
@@ -190,12 +185,11 @@ const ApplicationDetails = () => {
                   </div>
                 );
               })}
-              
               {application?.status == "CITIZENACTIONREQUIRED" ? (
                 <Link
                   to={{
                     pathname: `/digit-ui/citizen/tl/tradelicence/edit-application/${application?.applicationNumber}/${application?.tenantId}`,
-                    state: { },
+                    state: {},
                   }}
                 >
                   <SubmitBar label={t("COMMON_EDIT")} />
