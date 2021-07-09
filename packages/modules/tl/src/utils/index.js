@@ -432,6 +432,69 @@ export const convertToEditTrade = (data,fy=[]) => {
   return formdata;
 }
 
+
+
+
+
+//FinancialYear
+export const convertToResubmitTrade = (data) => {
+ 
+
+
+  console.log("dataforedit",data);
+
+  let formdata = {
+    Licenses:[
+      { 
+        id:data?.id,
+        tenantId:data?.tenantId,
+        businessService:data?.businessService,
+        licenseType:data?.licenseType,
+        applicationType:data.applicationType,
+        workflowCode:data.workflowCode,
+        licenseNumber:data?.licenseNumber,
+        applicationNumber:data?.applicationNumber,
+        tradeName:data?.tradeName,
+        applicationDate:data?.applicationDate,
+        commencementDate:data?.commencementDate,
+        issuedDate:data?.issuedDate,
+        financialYear:data?.financialYear,
+        validFrom:data?.validFrom,
+        validTo:data?.validTo,
+        action:"FORWARD",
+        wfDocuments:data?.wfDocuments,
+        status:data?.status,
+        tradeLicenseDetail: {
+          address: data.tradeLicenseDetail.address,
+          applicationDocuments: data.tradeLicenseDetail.applicationDocuments,
+          //accessories: data?.TradeDetails?.accessories ? getaccessories(data) : null,
+          accessories:  gettradeupdateaccessories(data),
+          //owners: getownerarray(data),
+          owners: gettradeownerarray(data),
+          structureType: (data?.TradeDetails?.VehicleType ? data?.TradeDetails?.VehicleType.code : data?.TradeDetails?.BuildingType.code),
+          subOwnerShipCategory: data?.ownershipCategory?.code,
+          //tradeUnits: gettradeunits(data),
+          tradeUnits: gettradeupdateunits(data),
+
+
+additionalDetail: data.tradeLicenseDetail.additionalDetail,
+
+auditDetails:data.tradeLicenseDetail.auditDetails,
+channel: data.tradeLicenseDetail.channel,
+id:  data.tradeLicenseDetail.id,
+institution:  data.tradeLicenseDetail.institution,
+        },
+        calculation:null,
+        auditDetails:data?.auditDetails,
+accountId:data?.accountId,
+      
+      }
+    ]
+  }
+  console.log("formdata",formdata);
+  return formdata;
+}
+
 // export const setUpdateOwnerDetails = (data = []) => {
 //   const { institution, owners } = data;
 //   if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {

@@ -13,7 +13,7 @@ import {
   CardText,
   CitizenInfoLabel,
 } from "@egovernments/digit-ui-react-components";
-import { useHistory } from "react-router-dom";
+import { useHistory,useRouteMatch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import TLDocument from "../../../pageComponents/TLDocumets";
 
@@ -29,15 +29,24 @@ const ActionButton = ({ jumpTo }) => {
   return <LinkButton label={t("CS_COMMON_CHANGE")} className="check-page-link-button" onClick={routeTo} />;
 };
 
+
+const getPath=(path,params)=>{
+params&&Object.keys(params).map(key=>{
+path=path.replace(`:${key}`,params[key]);
+})
+return path;
+}
+
+
 const CheckPage = ({ onSubmit, value }) => {
   let isEdit = window.location.href.includes("renew-trade");
   const { t } = useTranslation();
   const history = useHistory();
-
+  const match = useRouteMatch();
   const { TradeDetails, address, owners, propertyType, subtype, pitType, pitDetail,isEditProperty } = value;
   console.log("find values here ", value);
 
-  const typeOfApplication = !isEditProperty ? `new-application` : `renew-trade`;
+
   //   const pitDetailValues = pitDetail ? Object.values(pitDetail).filter((value) => !!value) : null;
 
   //   const pitMeasurement = pitDetailValues?.reduce((previous, current, index, array) => {
@@ -54,6 +63,16 @@ const CheckPage = ({ onSubmit, value }) => {
     }`;
   }
 
+
+  const typeOfApplication = !isEditProperty ? `new-application` : `renew-trade`;
+
+let routeLink=`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}`;
+
+if(window.location.href.includes("edit-application")||window.location.href.includes("renew-trade")){
+routeLink=`${getPath(match.path,match.params)}`;
+routeLink=routeLink.replace('/check','');
+}
+debugger;
   return (
     <Card>
       <CardHeader>{t("CS_CHECK_CHECK_YOUR_ANSWERS")}</CardHeader>
@@ -64,12 +83,12 @@ const CheckPage = ({ onSubmit, value }) => {
         <Row
           label={t("TL_LOCALIZATION_TRADE_NAME")}
           text={t(TradeDetails?.TradeName)}
-          actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/TradeName`} />}
+          actionButton={<ActionButton jumpTo={`${routeLink}/TradeName`} />}
         />
         <Row
           label={t("TL_STRUCTURE_TYPE")}
           text={t(`TL_${TradeDetails?.StructureType.code}`)}
-          actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/structure-type`} />}
+          actionButton={<ActionButton jumpTo={`${routeLink}/structure-type`} />}
         />
         <Row
           label={t("TL_STRUCTURE_SUB_TYPE")}
@@ -78,8 +97,8 @@ const CheckPage = ({ onSubmit, value }) => {
             <ActionButton
               jumpTo={
                 TradeDetails?.VehicleType
-                  ? `/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/vehicle-type`
-                  : `/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/Building-type`
+                  ? `${routeLink}/vehicle-type`
+                  : `${routeLink}/Building-type`
               }
             />
           }
@@ -87,7 +106,7 @@ const CheckPage = ({ onSubmit, value }) => {
         <Row
           label={t("TL_NEW_TRADE_DETAILS_TRADE_COMM_DATE_LABEL")}
           text={t(getdate(TradeDetails?.CommencementDate))}
-          actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/commencement-date`} />}
+          actionButton={<ActionButton jumpTo={`${routeLink}/commencement-date`} />}
         />
         {TradeDetails.units.map((unit, index) => (
           <div key={index}>
@@ -97,27 +116,27 @@ const CheckPage = ({ onSubmit, value }) => {
             <Row
               label={t("TL_NEW_TRADE_DETAILS_TRADE_CAT_LABEL")}
               text={t(unit?.tradecategory.i18nKey)}
-              actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/units-details`} />}
+              actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_TRADE_TYPE_LABEL")}
               text={t(unit?.tradetype.i18nKey)}
-              actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/units-details`} />}
+              actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_TRADE_SUBTYPE_LABEL")}
               text={t(unit?.tradesubtype.i18nKey)}
-              actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/units-details`} />}
+              actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
             <Row
               label={t("TL_UNIT_OF_MEASURE_LABEL")}
               text={t(unit?.unit)}
-              actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/units-details`} />}
+              actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")}
               text={t(unit?.uom)}
-              actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/units-details`} />}
+              actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
           </div>
         ))}
@@ -130,22 +149,22 @@ const CheckPage = ({ onSubmit, value }) => {
               <Row
                 label={t("TL_TRADE_ACC_HEADER")}
                 text={t(acc?.accessory.i18nKey)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/accessories-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
               <Row
                 label={t("TL_NEW_TRADE_ACCESSORY_COUNT")}
                 text={t(acc?.accessorycount)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/accessories-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
               <Row
                 label={t("TL_ACC_UOM_LABEL")}
                 text={t(acc?.unit)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/accessories-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
               <Row
                 label={t("TL_ACC_UOM_VALUE_LABEL")}
                 text={t(acc?.uom)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/accessories-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
             </div>
           ))}
@@ -155,7 +174,7 @@ const CheckPage = ({ onSubmit, value }) => {
           text={`${address?.doorNo?.trim() ? `${address?.doorNo?.trim()}, ` : ""} ${address?.street?.trim() ? `${address?.street?.trim()}, ` : ""}${t(
             address?.locality?.i18nkey
           )}, ${t(address?.city.code)} ${address?.pincode?.trim() ? `,${address?.pincode?.trim()}` : ""}`}
-          actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/map`} />}
+          actionButton={<ActionButton jumpTo={`${routeLink}/map`} />}
         />
         <CardSubHeader>{t("TL_NEW_OWNER_DETAILS_HEADER")}</CardSubHeader>
         {owners.owners &&
@@ -167,17 +186,17 @@ const CheckPage = ({ onSubmit, value }) => {
               <Row
                 label={t("TL_COMMON_TABLE_COL_OWN_NAME")}
                 text={t(owner?.name)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/owner-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/owner-details`} />}
               />
               <Row
                 label={t("TL_NEW_OWNER_DETAILS_GENDER_LABEL")}
                 text={t(owner?.gender?.name)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/owner-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/owner-details`} />}
               />
               <Row
                 label={t("TL_MOBILE_NUMBER_LABEL")}
                 text={t(owner?.mobilenumber)}
-                actionButton={<ActionButton jumpTo={`/digit-ui/citizen/tl/tradelicence/${typeOfApplication}/owner-details`} />}
+                actionButton={<ActionButton jumpTo={`${routeLink}/owner-details`} />}
               />
             </div>
           ))}

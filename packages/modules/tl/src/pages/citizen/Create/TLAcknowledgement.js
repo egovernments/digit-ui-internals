@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 //import getPTAcknowledgementData from "../../../getPTAcknowledgementData";
-import { convertToTrade, convertToUpdateTrade, convertToEditTrade, stringToBoolean } from "../../../utils";
+import { convertToTrade, convertToUpdateTrade, convertToEditTrade, stringToBoolean ,convertToResubmitTrade} from "../../../utils";
 import getPDFData from "../../../utils/getTLAcknowledgementData";
 
 const GetActionMessage = (props) => {
@@ -35,7 +35,7 @@ const BannerPicker = (props) => {
 
 const TLAcknowledgement = ({ data, onSuccess }) => {
   const { t } = useTranslation();
-
+const resubmit=window.location.href.includes("edit-application");
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const mutation = Digit.Hooks.tl.useTradeLicenseAPI(
     data?.address?.city ? data.address?.city?.code : tenantId,
@@ -49,6 +49,7 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
     data?.address?.city ? data.address?.city?.code : tenantId,
     false
   );
+
   // const mutationDirect = Digit.Hooks.tl.useTradeLicenseAPI(
   //   data?.address?.city ? data.address?.city?.code : tenantId,
   //   false
@@ -65,6 +66,9 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
 
   useEffect(() => {
     try {
+      if(!resubmit){
+
+
       let tenantId = data?.address?.city ? data.address?.city?.code : tenantId;
       data.tenantId = tenantId;
       let formdata = !isEdit?convertToTrade(data):convertToEditTrade(data,fydata["egf-master"]?fydata["egf-master"].FinancialYear.filter(y => y.module === "TL"):[]);
@@ -77,6 +81,16 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
       }) : mutation1.mutate(formdata, {
         onSuccess,
       })):console.log("skipped");
+      }else{
+          let tenantId = data?.address?.city ? data.address?.city?.code : tenantId;
+      data.tenantId = tenantId;
+      let formdata = convertToResubmitTrade(data);
+      formdata.Licenses[0].tenantId = formdata?.Licenses[0]?.tenantId || tenantId;
+     !mutation2.isLoading&& mutation2.mutate(formdata, {
+        onSuccess,
+      })
+
+      }
     } catch (err) {
       console.log(err);
     }
