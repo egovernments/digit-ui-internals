@@ -17,8 +17,6 @@ const CreateTradeLicence = ({ parentRoute }) => {
 
   const goNext = (skipStep, index, isAddMultiple, key) => {
     let currentPath = pathname.split("/").pop(),
-      lastchar = currentPath.charAt(currentPath.length - 1),
-      isMultiple = false,
       nextPage;
     let { nextStep = {} } = config.find((routeObj) => routeObj.route === currentPath);
     if (typeof nextStep == "object" && nextStep != null) {
