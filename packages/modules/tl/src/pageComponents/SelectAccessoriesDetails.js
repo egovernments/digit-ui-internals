@@ -37,8 +37,10 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
 
   function handleRemove(index) {
     const values = [...fields];
+    if(values.length!=1){
     values.splice(index,1);
     setFeilds(values);
+    }
   }
 
   function selectAccessory(i, value) {

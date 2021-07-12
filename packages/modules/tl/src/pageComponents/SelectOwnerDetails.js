@@ -38,8 +38,10 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
 
   function handleRemove(index) {
     const values = [...fields];
-    values.splice(index,1);
-    setFeilds(values);
+    if(values.length !=1)
+    {values.splice(index,1);
+    setFeilds(values);}
+    
   }
 
   function setOwnerName(i, e) {
@@ -94,8 +96,8 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
         return (
           <div key={`${field}-${index}`}>
             {ismultiple && <hr color="#d6d5d4" className="break-line"></hr>}
-            <CardLabel style={{marginBottom:"-11px"}}>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}</CardLabel>
-            <LinkButton
+            <CardLabel style={ismultiple?{marginBottom:"-11px"}:{}}>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}</CardLabel>
+            {ismultiple && <LinkButton
             label={
             <div >
             <span>
@@ -107,7 +109,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
             }
               style={{ width: "100px", display:"inline" }}
               onClick={(e) => handleRemove(index)}
-           />
+           />}
             <TextInput
               t={t}
               type={"text"}
