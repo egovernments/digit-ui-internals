@@ -32,8 +32,7 @@ const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => 
         onSkip={onSkip}
         t={t}
       >
-        {/* localisation_hardcoded */}
-        <CardLabel>{`${t("Trade Name")}`}</CardLabel>
+        <CardLabel>{`${t("TL_LOCALIZATION_TRADE_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           isMandatory={false}
