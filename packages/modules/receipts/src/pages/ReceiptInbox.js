@@ -42,7 +42,13 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
   const fetchPrevPage = () => {
     setPageOffset((prevState) => prevState - pageSize);
   };
+  const fetchLastPage = () => {
+    setPageOffset((prevState) => countData?.Count && (Math.ceil(countData?.Count / 10) * 10 - pageSize));
+  };
 
+  const fetchFirstPage = () => {
+    setPageOffset((prevState) => 0);
+  };
   const handleFilterChange = (filterParam, reset = false) => {
     if (!reset) {
       let keys_to_delete = filterParam.delete;
@@ -139,6 +145,8 @@ const ReceiptInbox = ({ parentRoute, businessService = "receipts", initialStates
             onSort={handleSort}
             onNextPage={fetchNextPage}
             onPrevPage={fetchPrevPage}
+            onLastPage={fetchLastPage}
+            onFirstPage={fetchFirstPage}
             currentPage={Math.floor(pageOffset / pageSize)}
             pageSizeLimit={pageSize}
             disableSort={false}

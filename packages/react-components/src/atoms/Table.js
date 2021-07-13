@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useTable, useRowSelect, usePagination, useSortBy, useGlobalFilter, useControlledState } from "react-table";
-import { ArrowBack, ArrowForward, SortUp, SortDown } from "./svgindex";
+import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from "react-table";
+import { ArrowBack, ArrowForward, ArrowToFirst, ArrowToLast, SortDown, SortUp } from "./svgindex";
 
 // const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 //   const defaultRef = React.useRef();
@@ -17,7 +17,7 @@ import { ArrowBack, ArrowForward, SortUp, SortDown } from "./svgindex";
 //   );
 // });
 
-const noop = () => {};
+const noop = () => { };
 
 const Table = ({
   className = "table",
@@ -38,6 +38,8 @@ const Table = ({
   globalSearch,
   onSort = noop,
   onPageSizeChange,
+  onLastPage,
+  onFirstPage,
   sortParams = [],
 }) => {
   const {
@@ -182,13 +184,12 @@ const Table = ({
               {totalRecords ? `of ${totalRecords}` : ""}
             </span>{" "}
           </span>
-          {/* <button style={{ marginLeft: "20px", marginRight: "20px" }} onClick={() => previousPage()} disabled={!canPreviousPage}>
-          <span>
-
-          </span>
-        </button> */}
+          {/* to go to first and last page we need to do a manual pagination , it can be updated later*/}
+          {canPreviousPage && manualPagination && onFirstPage && <ArrowToFirst onClick={() => (manualPagination && onFirstPage())} className={"cp"} />}
           {canPreviousPage && <ArrowBack onClick={() => (manualPagination ? onPrevPage() : previousPage())} className={"cp"} />}
-          {rows.length==pageSizeLimit&&canNextPage && <ArrowForward onClick={() => (manualPagination ? onNextPage() : nextPage())} className={"cp"} />}
+          {rows.length == pageSizeLimit && canNextPage && <ArrowForward onClick={() => (manualPagination ? onNextPage() : nextPage())} className={"cp"} />}
+          {rows.length == pageSizeLimit && canNextPage && manualPagination && onLastPage && <ArrowToLast onClick={() => (manualPagination && onLastPage())} className={"cp"} />}
+          {/* to go to first and last page we need to do a manual pagination , it can be updated later*/}
         </div>
       }
     </React.Fragment>

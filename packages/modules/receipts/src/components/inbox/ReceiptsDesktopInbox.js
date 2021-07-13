@@ -105,6 +105,8 @@ const ReceiptsDesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
         currentPage={props.currentPage}
         onNextPage={props.onNextPage}
         onPrevPage={props.onPrevPage}
+        onLastPage={props.onLastPage}
+        onFirstPage={props.onFirstPage}
         pageSizeLimit={props.pageSizeLimit}
         onSort={props.onSort}
         disableSort={props.disableSort}

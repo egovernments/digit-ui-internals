@@ -36,6 +36,18 @@ const ArrowForward = ({ className, onClick }) => (
   </svg>
 );
 
+const ArrowToFirst = ({ className, onClick }) => (
+  <svg width="18px" height="18px" viewBox="0 0 13 12" fill="black" xmlns="http://www.w3.org/2000/svg" className={className} onClick={onClick} >
+    <path d="M12.41 10.59L7.82 6L12.41 1.41L11 0L5 6L11 12L12.41 10.59ZM0 0H2V12H0V0Z" fill="#505a5f"></path>
+  </svg>
+);
+
+const ArrowToLast = ({ className, onClick }) => (
+  <svg width="18px" height="18px" viewBox="0 0 13 12" fill="black" xmlns="http://www.w3.org/2000/svg" className={className} onClick={onClick}>
+    <path d="M0.589844 1.41L5.17984 6L0.589844 10.59L1.99984 12L7.99984 6L1.99984 0L0.589844 1.41ZM10.9998 0H12.9998V12H10.9998V0Z" fill="#505a5f" />
+  </svg>
+);
+
 const CameraSvg = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -563,4 +575,6 @@ export {
   WhatsappIcon,
   EmailIcon,
   DocumentSVG,
+  ArrowToFirst,
+  ArrowToLast
 };
