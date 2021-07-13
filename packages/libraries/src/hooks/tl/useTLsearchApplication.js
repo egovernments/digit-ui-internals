@@ -5,14 +5,14 @@ const useTLSearchApplication = (params, config = {}) => {
   const getApplications = async () => {
     const data = await Digit.TLService.search(params, config);
     let tenantId = "";
-    let BusinessServices = [];
+    let BusinessServices = {};
     if (data && data?.Licenses && Array.isArray(data.Licenses) && data.Licenses.length > 0) {
       data.Licenses?.map(async (service) => {
         tenantId = service?.tenantId;
-        BusinessServices.push(service.workflowCode);
+        BusinessServices[service.workflowCode]=service.workflowCode;
       });
       let workflow = {};
-      const workflowdata = await Digit.WorkflowService.init(tenantId, [...new Set(BusinessServices)]?.join(',')).then((workflowdata) => workflowdata);
+      const workflowdata = await Digit.WorkflowService.init(tenantId, Object.keys(BusinessServices)?.join(',')).then((workflowdata) => workflowdata);
       workflowdata.BusinessServices.map(businessService => {
         workflow[businessService.businessService] = businessService;
         return businessService;
