@@ -40,6 +40,7 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
             selectedReason,
             Reasons,
             selectReason,
+            employees:applicationData?.Employees[0]||{}
           })
         );
       default:
