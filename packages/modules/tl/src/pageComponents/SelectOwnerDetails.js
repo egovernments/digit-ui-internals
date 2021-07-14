@@ -101,16 +101,6 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     }
   };
 
-  function ismovenext(){
-    fields && fields.map((ob) => {
-      if(!(ob.name || ob.mobilenumber || ob.gender))
-      {
-        setCanmovenext(true);
-      }
-    });
-    setCanmovenext(false);
-  }
-
   const onSkip = () => onSelect();
   // As Ticket RAIN-2619 other option in gender and gaurdian will be enhance , dont uncomment it
   const options = [
@@ -122,7 +112,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   ];
 
   return (
-    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={canmovenext} /* isDisabled={!fields[0].name || !fields[0].mobilenumber || !fields[0].gender } */ forcedError={t(error)}>
+    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={canmovenext} forcedError={t(error)}>
       {fields.map((field, index) => {
         return (
           <div key={`${field}-${index}`}>
@@ -168,7 +158,6 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
               onSelect={(e) => setGenderName(index, e)}
               isDependent={true}
               labelKey="TL_GENDER"
-              isMandatory={true}
               //disabled={isUpdateProperty || isEditProperty}
             />
             <CardLabel>{`${t("TL_MOBILE_NUMBER_LABEL")}`}</CardLabel>
