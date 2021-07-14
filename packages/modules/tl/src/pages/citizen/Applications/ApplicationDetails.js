@@ -1,8 +1,9 @@
-import { Card, Loader, MultiLink, Row, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Card, CardHeader, Loader, MultiLink, Row, SubmitBar, Header } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory, useParams } from "react-router-dom";
 import getPDFData from "../../../utils/getTLAcknowledgementData";
+import TLWFApplicationTimeline from "../../../pageComponents/TLWFApplicationTimeline";
 
 const ApplicationDetails = () => {
   const { t } = useTranslation();
@@ -92,7 +93,8 @@ const ApplicationDetails = () => {
   return (
     <React.Fragment>
       <MultiLink onHeadClick={() => setShowOptions(!showOptions)} displayOptions={showOptions} options={dowloadOptions} />
-      <Card style={{ position: "relative", marginTop: "2rem" }}>
+      <Header>{t("CS_TITLE_APPLICATION_DETAILS")}</Header>
+      <Card style={{ position: "relative" }}>
         {application?.map((application, index) => {
           return (
             <div key={index} className="employee-data-table">
@@ -106,7 +108,7 @@ const ApplicationDetails = () => {
               {application?.tradeLicenseDetail.owners.map((ele, index) => {
                 return (
                   <Row
-                    label={`${t("TL_COMMON_TABLE_COL_OWN_NAME")} ${application?.tradeLicenseDetail.owners.length > 0 ? index : ""}`}
+                    label={`${t("TL_COMMON_TABLE_COL_OWN_NAME")} ${application?.raw?.tradeLicenseDetail.owners.length > 0 ? index+1 : ""}`}
                     text={t(ele.name)}
                     textStyle={{ whiteSpace: "pre" }}
                   />
@@ -185,6 +187,7 @@ const ApplicationDetails = () => {
                   </div>
                 );
               })}
+              <TLWFApplicationTimeline application={application?.raw} id={id} />
               {application?.status == "CITIZENACTIONREQUIRED" ? (
                 <Link
                   to={{
