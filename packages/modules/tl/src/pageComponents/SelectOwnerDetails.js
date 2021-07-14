@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   let validation = {};
+  const [canmovenext, setCanmovenext] = useState(true);
   const [name, setName] = useState(formData?.owners?.name || "");
   const [isPrimaryOwner, setisPrimaryOwner] = useState(false);
   const [gender, setGender] = useState(formData?.owners?.gender);
@@ -34,6 +35,8 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     const values = [...fields];
     values.push({ name: "", gender: "", mobilenumber: null, isprimaryowner: false });
     setFeilds(values);
+    setCanmovenext(true);
+    
   }
 
   function handleRemove(index) {
@@ -41,7 +44,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     if(values.length !=1)
     {values.splice(index,1);
     setFeilds(values);}
-
+   
   }
 
   function setOwnerName(i, e) {
@@ -49,6 +52,8 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     units[i].name = e.target.value;
     setName(e.target.value);
     setFeilds(units);
+    if(units[i].gender && units[i].mobilenumber && units[i].name){
+      setCanmovenext(false);}
   }
 
   function setGenderName(i, value) {
@@ -56,12 +61,16 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     units[i].gender = value;
     setGender(value);
     setFeilds(units);
+    if(units[i].gender && units[i].mobilenumber && units[i].name){
+    setCanmovenext(false);}
   }
   function setMobileNo(i, e) {
     let units = [...fields];
     units[i].mobilenumber = e.target.value;
     setMobileNumber(e.target.value);
     setFeilds(units);
+    if(units[i].gender && units[i].mobilenumber && units[i].name){
+      setCanmovenext(false);}
   }
   function setPrimaryOwner(i, e) {
     let units = [...fields];
@@ -80,7 +89,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
 
   const goNext = () => {
     setError(null);
-    if(fields.length==1)
+    if(ismultiple == true && fields.length==1)
     {
       setError("TL_ERROR_MULTIPLE_OWNER");
     }
@@ -91,6 +100,16 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     onSelect(config.key, ownerStep);
     }
   };
+
+  function ismovenext(){
+    fields && fields.map((ob) => {
+      if(!(ob.name || ob.mobilenumber || ob.gender))
+      {
+        setCanmovenext(true);
+      }
+    });
+    setCanmovenext(false);
+  }
 
   const onSkip = () => onSelect();
   // As Ticket RAIN-2619 other option in gender and gaurdian will be enhance , dont uncomment it
@@ -103,7 +122,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   ];
 
   return (
-    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={!fields[0].name || !fields[0].mobilenumber || !fields[0].gender } forcedError={t(error)}>
+    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={canmovenext} /* isDisabled={!fields[0].name || !fields[0].mobilenumber || !fields[0].gender } */ forcedError={t(error)}>
       {fields.map((field, index) => {
         return (
           <div key={`${field}-${index}`}>
@@ -149,6 +168,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
               onSelect={(e) => setGenderName(index, e)}
               isDependent={true}
               labelKey="TL_GENDER"
+              isMandatory={true}
               //disabled={isUpdateProperty || isEditProperty}
             />
             <CardLabel>{`${t("TL_MOBILE_NUMBER_LABEL")}`}</CardLabel>
