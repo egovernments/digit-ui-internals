@@ -29,11 +29,11 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
       <Card>
         <CardHeader>{!config.isMutation ? t("PT_DOC_REQ_SCREEN_HEADER") : t("PT_REQIURED_DOC_TRANSFER_OWNERSHIP")}</CardHeader>
         <div>
-          <CardText>{t("PT_DOC_REQ_SCREEN_SUB_HEADER")}</CardText>
-          <CardText>{t("PT_DOC_REQ_SCREEN_TEXT")}</CardText>
-          <CardText>{t("PT_DOC_REQ_SCREEN_SUB_TEXT")}</CardText>
+          <CardText className={"primaryColor"}>{t("PT_DOC_REQ_SCREEN_SUB_HEADER")}</CardText>
+          <CardText className={"primaryColor"}>{t("PT_DOC_REQ_SCREEN_TEXT")}</CardText>
+          <CardText className={"primaryColor"}>{t("PT_DOC_REQ_SCREEN_SUB_TEXT")}</CardText>
           <CardSubHeader>{t("PT_DOC_REQ_SCREEN_LABEL")}</CardSubHeader>
-          <CardText>{t("PT_DOC_REQ_SCREEN_LABEL_TEXT")}</CardText>
+          <CardText className={"primaryColor"}>{t("PT_DOC_REQ_SCREEN_LABEL_TEXT")}</CardText>
           <div>
             {isLoading && <Loader />}
             {Array.isArray(docs)
@@ -43,10 +43,12 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
                       <CardSubHeader>
                         {index + 1}. {t(code)}
                       </CardSubHeader>
-                      {dropdownData.map((dropdownData) => (
-                        <CardText>{t(dropdownData?.code)}</CardText>
-                      ))}
-                      <CardText>{t(`${code.split('.')[0]}.${code.split('.')[1]}.${code.split('.')[1]}_DESCRIPTION`)}</CardText>
+                      <CardText className={"primaryColor"}>
+                        {dropdownData.map((dropdownData) => (
+                          t(dropdownData?.code)
+                        )).join(', ')}
+                      </CardText>
+                      {/* <CardText>{t(`${code.split('.')[0]}.${code.split('.')[1]}.${code.split('.')[1]}_DESCRIPTION`)}</CardText> */}
                     </div>
                   )) :
                   docs.map(({ code, dropdownData }, index) => (
@@ -55,7 +57,7 @@ const PropertyTax = ({ t, config, onSelect, userType, formData }) => {
                         {index + 1}. {t("PROPERTYTAX_" + stringReplaceAll(code, ".", "_") + "_HEADING")}
                       </CardSubHeader>
                       {dropdownData.map((dropdownData) => (
-                        <CardText>{t("PROPERTYTAX_" + stringReplaceAll(dropdownData?.code, ".", "_") + "_LABEL")}</CardText>
+                        <CardText className={"primaryColor"}>{t("PROPERTYTAX_" + stringReplaceAll(dropdownData?.code, ".", "_") + "_LABEL")}</CardText>
                       ))}
                     </div>
                   ))

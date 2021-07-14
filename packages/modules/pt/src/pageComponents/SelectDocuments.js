@@ -307,7 +307,15 @@ function SelectDocument({
     return null;
   }
 
-  // console.log(dropDownData, "dropdown data");
+  if (doc.code === "OWNER.TRANSFERREASONDOCUMENT") {
+    dropDownData = dropDownData.filter((e) => e.code?.split(".")[2] === formData?.additionalDetails?.reasonForTransfer?.code);
+    console.log(
+      dropDownData,
+      formData?.additionalDetails?.reasonForTransfer,
+      formData?.additionalDetails?.reasonForTransfer?.code?.split(".")[2],
+      "dropdown data"
+    );
+  }
 
   return (
     <div style={{ marginBottom: "24px" }}>

@@ -24,7 +24,7 @@ const MultiSelectDropdown = ({ options, optionsKey, selected = [], onSelect, def
       <div className="custom-checkbox">
         <CheckSvg />
       </div>
-      <p className="label">{t(option[optionsKey]&&typeof option[optionsKey]=="string" && option[optionsKey].toUpperCase())}</p>
+      <p className="label">{t(option[optionsKey]&&typeof option[optionsKey]=="string" && option[optionsKey])}</p>
     </div>
   );
 

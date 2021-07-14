@@ -91,10 +91,11 @@ import useTradeLicenseMDMS from "./tl/useTradeLicenseMDMS";
 import useTLDocumentSearch from "./tl/useTLDocumentSearch";
 import useTradeLicenseAPI from "./tl/useTradeLicenseAPI";
 import useTradeLicenseSearch from "./tl/useTradeLicenseSearch";
-import useTLSearchApplication from "./tl/useTLsearchApplication";
+import { useTLSearchApplication, useTLApplicationDetails } from "./tl/useTLsearchApplication";
 import useTLPaymentHistory from "./tl/userPaymentHistory";
 import useTLApplicationDetail from "./tl/useApplicationDetail";
 import useTLApplicationActions from "./tl/useApplicationActions";
+import useTLFetchBill from "./tl/useFetchBill";
 
 import useTLGenderMDMS from "./tl/useTLGenderMDMS";
 import useTLInbox from "./tl/useInbox";
@@ -210,6 +211,8 @@ const tl = {
   useSearch: useTLSearch,
   useApplicationDetail: useTLApplicationDetail,
   useApplicationActions: useTLApplicationActions,
+  useFetchBill: useTLFetchBill,
+  useTLApplicationDetails
 };
 
 const receipts = {

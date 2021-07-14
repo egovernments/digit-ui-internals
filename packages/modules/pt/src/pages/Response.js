@@ -38,6 +38,7 @@ const Response = (props) => {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [showToast, setShowToast] = useState(null);
+  const [enableAudit, setEnableAudit] = useState(false);
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_HAPPENED", false);
   const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("EMPLOYEE_MUTATION_SUCCESS_DATA", false);
 
@@ -54,15 +55,25 @@ const Response = (props) => {
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
 
+  const { isLoading: auditDataLoading, isError: isAuditError, data: auditData } = Digit.Hooks.pt.usePropertySearch(
+    {
+      tenantId,
+      filters: { propertyIds: state.Property.propertyId, audit: true },
+    },
+    { enabled: enableAudit, select: (data) => data.Properties?.filter((e) => e.status === "ACTIVE") }
+  );
+
   useEffect(() => {
-    console.log(mutation.isSuccess, "inside respose");
     if (mutation.data && mutation.isSuccess) setsuccessData(mutation.data);
   }, [mutation.data]);
 
   useEffect(() => {
-    const onSuccess = () => {
+    const onSuccess = async (successRes) => {
       setMutationHappened(true);
       queryClient.clear();
+      if (successRes?.Properties[0]?.creationReason === "MUTATION") {
+        setEnableAudit(true);
+      }
     };
     const onError = (error, variables) => {
       setShowToast({ key: "error" });
@@ -80,17 +91,14 @@ const Response = (props) => {
         }
       );
     }
-
-    return () => {
-      console.log("unmounted respone");
-    };
   }, []);
 
   const handleDownloadPdf = async () => {
     const { Properties = [] } = mutation.data || successData;
     const Property = (Properties && Properties[0]) || {};
     const tenantInfo = tenants.find((tenant) => tenant.code === Property.tenantId);
-    const data = await getPTAcknowledgementData({ ...Property }, tenantInfo, t);
+
+    const data = await getPTAcknowledgementData({ ...Property, auditData }, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
   };
 
@@ -109,8 +117,10 @@ const Response = (props) => {
           isLoading={(mutation.isIdle && !mutationHappened) || mutation?.isLoading}
           isEmployee={props.parentRoute.includes("employee")}
         />
-        <CardText>{DisplayText(state.action, mutation.isSuccess || !!successData, props.parentRoute.includes("employee"), t)}</CardText>
-        {(mutation.isSuccess || !!successData) && (
+        <CardText>
+          {DisplayText(state.action, (mutation.isSuccess || !!successData) && !mutation.isError, props.parentRoute.includes("employee"), t)}
+        </CardText>
+        {(mutation.isSuccess || !!successData) && !mutation.isError && (
           <SubmitBar style={{ overflow: "hidden" }} label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />
         )}
       </Card>

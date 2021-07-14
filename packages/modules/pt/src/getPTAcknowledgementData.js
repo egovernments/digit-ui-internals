@@ -14,25 +14,26 @@ import {
 const capitalize = (text) => text.substr(0, 1).toUpperCase() + text.substr(1);
 const ulbCamel = (ulb) => ulb.toLowerCase().split(" ").map(capitalize).join(" ");
 
-const getOwner = (application, t) => {
-  application.owners = application?.owners.filter((owner) => owner.status == "ACTIVE") || [];
+const getOwner = (application, t, customTitle) => {
+  console.log(customTitle, application, "inside owner details");
+  let owners = [...(application?.owners.filter((owner) => owner.status == "ACTIVE") || [])];
   if (application?.ownershipCategory == "INDIVIDUAL.SINGLEOWNER") {
     return {
-      title: t("PT_OWNERSHIP_INFO_SUB_HEADER"),
+      title: t(customTitle || "PT_OWNERSHIP_INFO_SUB_HEADER"),
       values: [
-        { title: t("PT_OWNERSHIP_INFO_NAME"), value: application?.owners[0]?.name || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_MOBILE_NO"), value: application?.owners[0]?.mobileNumber || "N/A" },
-        { title: t("PT_SEARCHPROPERTY_TABEL_GUARDIANNAME"), value: application?.owners[0]?.fatherOrHusbandName || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_GENDER"), value: t(application?.owners[0]?.gender) || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_NAME"), value: owners[0]?.name || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_MOBILE_NO"), value: owners[0]?.mobileNumber || "N/A" },
+        { title: t("PT_SEARCHPROPERTY_TABEL_GUARDIANNAME"), value: owners[0]?.fatherOrHusbandName || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_GENDER"), value: t(owners[0]?.gender) || "N/A" },
         { title: t("PT_FORM3_OWNERSHIP_TYPE"), value: t(application?.ownershipCategory) || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_EMAIL_ID"), value: application?.owners[0]?.emailId || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_USER_CATEGORY"), value: t(getPropertyOwnerTypeLocale(application?.owners[0]?.ownerType)) || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_CORR_ADDR"), value: application?.owners[0]?.permanentAddress || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_EMAIL_ID"), value: owners[0]?.emailId || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_USER_CATEGORY"), value: t(getPropertyOwnerTypeLocale(owners[0]?.ownerType)) || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_CORR_ADDR"), value: owners[0]?.permanentAddress || "N/A" },
       ],
     };
   } else if (application?.ownershipCategory.includes("INDIVIDUAL")) {
     let values = [];
-    application.owners.map((owner) => {
+    owners.map((owner) => {
       let doc = [
         { title: t("PT_OWNERSHIP_INFO_NAME"), value: owner?.name || "N/A" },
         { title: t("PT_OWNERSHIP_INFO_MOBILE_NO"), value: owner?.mobileNumber || "N/A" },
@@ -57,9 +58,9 @@ const getOwner = (application, t) => {
         { title: t("PT_TYPE_OF_INSTITUTION"), value: application?.institution?.type || "N/A" },
         { title: t("PT_OWNER_NAME"), value: application?.institution?.nameOfAuthorizedPerson || "N/A" },
         { title: t("PT_COMMON_AUTHORISED_PERSON_DESIGNATION"), value: application?.institution?.designation || "N/A" },
-        { title: t("PT_FORM3_MOBILE_NUMBER"), value: application?.owners[0]?.mobileNumber || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_TEL_PHONE_NO"), value: application?.owners[0]?.altContactNumber || "N/A" },
-        { title: t("PT_OWNERSHIP_INFO_CORR_ADDR"), value: application?.owners[0]?.correspondenceAddress || "N/A" },
+        { title: t("PT_FORM3_MOBILE_NUMBER"), value: owners[0]?.mobileNumber || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_TEL_PHONE_NO"), value: owners[0]?.altContactNumber || "N/A" },
+        { title: t("PT_OWNERSHIP_INFO_CORR_ADDR"), value: owners[0]?.correspondenceAddress || "N/A" },
         { title: t("PT_FORM3_OWNERSHIP_TYPE"), value: t(application?.ownershipCategory) || "N/A" },
       ],
     };
@@ -70,6 +71,7 @@ const getOwner = (application, t) => {
     };
   }
 };
+
 const getAssessmentInfo = (application, t) => {
   let values = [
     { title: t("PT_ASSESMENT_INFO_USAGE_TYPE"), value: t(getPropertyUsageTypeLocale(application?.usageCategory)) || "N/A" },
@@ -141,9 +143,82 @@ const getAssessmentInfo = (application, t) => {
   };
 };
 
+const getMutationDetails = (application, t) => {
+  return {
+    title: t("PT_MUTATION_DETAILS"),
+    values: [
+      {
+        title: t("PT_MUTATION_COURT_PENDING_OR_NOT"),
+        value: application?.additionalDetails?.isMutationInCourt
+          ? t(`PT_MUTATION_PENDING_${application?.additionalDetails.isMutationInCourt}`)
+          : "N/A",
+      },
+      { title: t("PT_MUTATION_COURT_CASE_DETAILS"), value: application?.additionalDetails?.caseDetails || "N/A" },
+      { title: t("PT_MUTATION_STATE_ACQUISITION"), value: application?.additionalDetails?.isPropertyUnderGovtPossession || "N/A" },
+      { title: t("PT_MUTATION_GOVT_ACQUISITION_DETAILS"), value: application?.additionalDetails?.govtAcquisitionDetails || "N/A" },
+    ],
+  };
+};
+
+const mutationRegistrationDetails = (application, t) => {
+  return {
+    title: t("PT_MUTATION_REGISTRATION_DETAILS"),
+    values: [
+      {
+        title: t("PT_MUTATION_TRANSFER_REASON"),
+        value: application?.additionalDetails?.reasonForTransfer.replaceAll(".", "_"),
+      },
+      { title: t("PT_MUTATION_MARKET_VALUE"), value: application?.additionalDetails?.marketValue || "N/A" },
+      { title: t("PT_MUTATION_DOCUMENT_NO"), value: application?.additionalDetails?.documentNumber || "N/A" },
+      { title: t("PT_MUTATION_DOCUMENT_VALUE"), value: application?.additionalDetails?.documentValue || "N/A" },
+      {
+        title: t("PT_MUTATION_DOCUMENT_ISSUE_DATE"),
+        value: application?.additionalDetails?.documentDate ? new Date(application?.additionalDetails?.documentDate).toDateString() : "N/A",
+      },
+      {
+        title: t(""),
+      },
+      { title: t("PT_MUTATION_REMARKS"), value: application?.additionalDetails?.remarks || "N/A" },
+    ],
+  };
+};
+
 const getPTAcknowledgementData = async (application, tenantInfo, t) => {
+  console.log(application, "inside acknowledgement data");
   const filesArray = application?.documents?.map((value) => value?.fileStoreId);
   const res = await Digit.UploadServices.Filefetch(filesArray, application?.tenantId.split(".")[0]);
+
+  if (application.creationReason === "MUTATION") {
+    return {
+      t: t,
+      tenantId: tenantInfo?.code,
+      name: `${t(tenantInfo?.i18nKey)} ${ulbCamel(t(`ULBGRADE_${tenantInfo?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`))}`,
+      email: tenantInfo?.emailId,
+      phoneNumber: tenantInfo?.contactNumber,
+      heading: t("PT_ACKNOWLEDGEMENT"),
+      details: [
+        {
+          title: t("PT_PROPERTY_ADDRESS_SUB_HEADER"),
+          values: [
+            { title: t("PT_PROPERTY_ADDRESS_PINCODE"), value: application?.address?.pincode || "N/A" },
+            { title: t("PT_PROPERTY_ADDRESS_CITY"), value: t(getCityLocale(application?.tenantId)) || "N/A" },
+            {
+              title: t("PT_PROPERTY_ADDRESS_MOHALLA"),
+              value: t(`${getMohallaLocale(application?.address?.locality?.code, application?.tenantId)}`) || "N/A",
+            },
+            { title: t("PT_PROPERTY_ADDRESS_STREET_NAME"), value: application?.address?.street || "N/A" },
+            { title: t("PT_PROPERTY_ADDRESS_HOUSE_NO"), value: application?.address?.doorNo || "N/A" },
+            { title: t("PT_PROPERTY_ADDRESS_LANDMARK"), value: application?.address?.landmark || "N/A" },
+          ],
+        },
+        getOwner(application?.auditData?.[0], t, "PT_MUTATION_TRANSFEROR_DETAILS"),
+        getOwner(application, t, "PT_MUTATION_TRANSFEREE_DETAILS_HEADER"),
+        getMutationDetails(application, t),
+        mutationRegistrationDetails(application, t),
+      ],
+    };
+  }
+
   return {
     t: t,
     tenantId: tenantInfo?.code,

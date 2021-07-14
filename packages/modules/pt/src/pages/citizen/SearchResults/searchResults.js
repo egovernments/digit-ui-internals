@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Header, ResponseComposer, Loader, Modal, Card, KeyNote, SubmitBar } from "@egovernments/digit-ui-react-components";
 import PropTypes from "prop-types";
 import { useHistory, Link, useLocation } from "react-router-dom";
@@ -25,14 +25,16 @@ const CloseBtn = (props) => {
 
 const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation, onSelect, config, clearParams = () => {} }) => {
   const { t } = useTranslation();
+  const modalRef = useRef();
   const { mobileNumber, propertyIds, oldPropertyIds, locality, city } = Digit.Hooks.useQueryParams();
   const filters = {};
-
+  
   const [modalData, setShowModal] = useState(false);
-
+  
   const closeModal = () => {
     setShowModal(false);
   };
+  Digit.Hooks.useClickOutside(modalRef, closeModal, modalData);
 
   if (mobileNumber) filters.mobileNumber = mobileNumber;
   if (propertyIds) filters.propertyIds = propertyIds;
@@ -132,30 +134,32 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
 
       {modalData ? (
         <Modal
-          headerBarEnd={<CloseBtn onClick={closeModal} />}
+          // headerBarEnd={<CloseBtn onClick={closeModal} />}
           hideSubmit={true}
           isDisabled={false}
-          popupStyles={{ width: "319px", height: "285px", marginTop: "75px" }}
+          popupStyles={{ width: "319px", height: "250px", marginTop: "75px" }}
           formId="modal-action"
         >
           {/* <Card> */}
-          <KeyNote
-            keyValue={t("PT_TOTAL_DUES")}
-            note={modalData?.total_due?.toLocaleString("en-IN")}
-            noteStyle={{ fontSize: "24px", fontWeight: "bold" }}
-          />
-          <p>
-            {t("PT_YOU_HAVE") +
-              " " +
-              t("PT_MUTATION_RS") +
-              " " +
-              modalData?.total_due.toLocaleString("en-IN") +
-              " " +
-              t("PT_PENDING_AMOUNT") +
-              " " +
-              t("PT_INORDER_TO_TRANSFER")}
-          </p>
-          <SubmitBar submit={false} onSubmit={() => proceedToPay(modalData)} style={{ marginTop: "14px" }} label={t("PROCEED_TO_PAY")} />
+          <div ref={modalRef}>
+            <KeyNote
+              keyValue={t("PT_AMOUNT_DUE")}
+              note={`₹ ${modalData?.total_due?.toLocaleString("en-IN")}`}
+              noteStyle={{ fontSize: "24px", fontWeight: "bold" }}
+            />
+            <p>
+              {t("PT_YOU_HAVE") +
+                " " +
+                "₹" +
+                " " +
+                modalData?.total_due.toLocaleString("en-IN") +
+                " " +
+                t("PT_PENDING_AMOUNT") +
+                " " +
+                t("PT_INORDER_TO_TRANSFER")}
+            </p>
+            <SubmitBar submit={false} onSubmit={() => proceedToPay(modalData)} style={{ marginTop: "14px", width: "100%" }} label={t("PT_PROCEED_PAYMENT")} />
+          </div>
           {/* </Card> */}
         </Modal>
       ) : null}
