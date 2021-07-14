@@ -20,6 +20,9 @@ function ApplicationDetailsToast({ t, showToast, closeToast, businessService }) 
       case "REJECT":
         label = showToast?.key === "error" ? showToast?.error?.message : t("TL_APPROVAL_REJ_MESSAGE_HEAD");
         break;
+      case "RESUBMIT":
+        label = showToast?.key === "error" ? showToast?.error?.message : t("TL_APPLICATION_RESUBMIT_SUCCESS_MESSAGE_MAIN");
+        break;
       default:
         label = showToast?.key === "error" ? showToast?.error?.message : `ES_${businessService}_${showToast?.action?.action}_UPDATE_SUCCESS`;
     }

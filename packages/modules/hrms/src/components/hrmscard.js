@@ -1,7 +1,7 @@
+import { ArrowRightInbox, Loader } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRightInbox, Person } from "@egovernments/digit-ui-react-components";
+import { Link } from "react-router-dom";
 
 const ArrowRight = ({ to }) => (
   <Link to={to}>
@@ -11,19 +11,14 @@ const ArrowRight = ({ to }) => (
 
 const HRMSCard = () => {
   const ADMIN = Digit.Utils.hrmsAccess();
-
   if (!ADMIN) {
     return null;
   }
   const tenantId = Digit.ULBService.getCurrentTenantId();
-
   const { t } = useTranslation();
-  // TODO: should be fetch
   const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.hrms.useHRMSCount(tenantId);
-  const total = 1;
-
   return (
-    <div className="employeeCard card-home-hrms" style={{ display: "inline-block" }}>
+    <div className="employeeCard card-home" style={{ display: "inline-block" }}>
       <div className="complaint-links-container">
         <div className="header">
           <span className="logo">
@@ -37,7 +32,7 @@ const HRMSCard = () => {
           <span className="text">{t("HRMS")}</span>
         </div>
         <div className="body" style={{ margin: "0px", padding: "0px" }}>
-          <div
+          {hookLoading ?<span style={{display:"flex",justifyContent:"center",width:"100%"}}> <Loader /></span>: <div
             className="flex-fit"
             style={{
               borderBottom: "1px solid #d6d5d4",
@@ -63,10 +58,12 @@ const HRMSCard = () => {
                 <Link to={`/digit-ui/employee/hrms/inbox`}>{t("ACTIVE_EMPLOYEES")}</Link>
               </div>
             </div>
-          </div>
+          </div>}
           <div style={{ paddingLeft: "3rem", paddingBottom: "1rem" }}>
             <span className="link">
               <Link to={`/digit-ui/employee/hrms/inbox`}>{t("HR_HOME_SEARCH_RESULTS_HEADING")}</Link>
+              <span className="inbox-total">{data?.EmployeCount?.totalEmployee || "-"}</span>
+              {<ArrowRight to={`/digit-ui/employee/hrms/inbox`} />}
             </span>
             <span className="link">
               <Link to={`/digit-ui/employee/hrms/create`}>{t("HR_COMMON_CREATE_EMPLOYEE_HEADER")}</Link>

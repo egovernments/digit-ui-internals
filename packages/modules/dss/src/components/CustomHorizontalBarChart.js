@@ -56,9 +56,9 @@ const CustomHorizontalBarChart = ({
 
   const tooltipFormatter = (value, name) => {
     if (id === "fsmMonthlyWasteCal") {
-      return [`${value} ${t("DSS_KL")}`, name];
+      return [`${Math.round((value + Number.EPSILON) * 100) / 100} ${t("DSS_KL")}`, name];
     }
-    return [value, name];
+    return [Math.round((value + Number.EPSILON) * 100) / 100, name];
   };
 
   const chartData = useMemo(() => constructChartData(response?.responseData?.data), [response]);

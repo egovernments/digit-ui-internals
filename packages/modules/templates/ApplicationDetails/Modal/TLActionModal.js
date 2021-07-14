@@ -99,7 +99,8 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             ...applicationData,
             action: action?.action,
             comment: data?.comments,
-            assignee: action?.isTerminateState ? [] : [selectedApprover?.uuid],
+            assignee: !selectedApprover?.uuid ? null : [selectedApprover?.uuid],
+            // assignee: action?.isTerminateState ? [] : [selectedApprover?.uuid],
             wfDocuments: uploadedFile ? [{
                 documentType: "Document - 1",
                 fileName: file?.name,
@@ -137,7 +138,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             actionCancelOnSubmit={closeModal}
             actionSaveLabel={t(config.label.submit)}
             actionSaveOnSubmit={() => { }}
-            isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
+            // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
             formId="modal-action"
         >
             {financialYearsLoading ? (

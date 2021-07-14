@@ -57,11 +57,11 @@ export const TLModule = ({ stateCode, userType, tenants }) => {
 
 export const TLLinks = ({ matchPath, userType }) => {
   const { t } = useTranslation();
-  // // const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_TRADE", {});
+  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_TRADE", {});
 
-  // useEffect(() => {
-  //   clearParams();
-  // }, []);
+  useEffect(() => {
+    clearParams();
+  }, []);
 
   const links = [
     {

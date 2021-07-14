@@ -29,7 +29,7 @@ export const configTLApproverApplication = ({
           {
             label: !checkCondtions ? null : t("WF_ASSIGNEE_NAME_LABEL"),
             placeholder: !checkCondtions ? null : t("WF_ASSIGNEE_NAME_PLACEHOLDER"),
-            isMandatory: checkCondtions,
+            // isMandatory: false,
             type: "dropdown",
             populators: !checkCondtions ? null : (
               <Dropdown

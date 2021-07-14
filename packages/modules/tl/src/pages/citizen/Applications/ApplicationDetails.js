@@ -114,12 +114,6 @@ const ApplicationDetails = () => {
               })}
               <Row
                 style={{ border: "none" }}
-                label={t("TL_COMMON_TABLE_COL_TRD_NAME")}
-                text={application?.tradeName}
-                textStyle={{ whiteSpace: "pre" }}
-              />
-              <Row
-                style={{ border: "none" }}
                 label={t("TL_COMMON_TABLE_COL_STATUS")}
                 text={t(`WF_NEWTL_${application?.status}`)}
                 textStyle={{ whiteSpace: "pre" }}
@@ -128,6 +122,12 @@ const ApplicationDetails = () => {
                 style={{ border: "none" }}
                 label={t("TL_COMMON_TABLE_COL_SLA_NAME")}
                 text={`${application?.SLA / (1000 * 60 * 60 * 24)} Days`}
+                textStyle={{ whiteSpace: "pre" }}
+              />
+              <Row
+                style={{ border: "none" }}
+                label={t("TL_COMMON_TABLE_COL_TRD_NAME")}
+                text={application?.tradeName}
                 textStyle={{ whiteSpace: "pre" }}
               />
               {application?.tradeLicenseDetail?.tradeUnits?.map((ele, index) => {

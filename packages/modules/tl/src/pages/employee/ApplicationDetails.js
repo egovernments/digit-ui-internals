@@ -4,6 +4,8 @@ import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails
 import cloneDeep from "lodash/cloneDeep";
 import { useParams } from "react-router-dom";
 import { Header } from "@egovernments/digit-ui-react-components";
+import get from "lodash/get";
+import orderBy from "lodash/orderBy";
 
 const ApplicationDetails = () => {
   const { t } = useTranslation();
@@ -59,8 +61,23 @@ const ApplicationDetails = () => {
     }
   }, [workflowDetails.data]);
 
-  if (workflowDetails?.data?.actionState?.nextActions?.length > 0) {
-    workflowDetails.data.actionState.nextActions = workflowDetails?.data?.actionState?.nextActions?.filter(data => data.action !== "ADHOC")
+  if (workflowDetails?.data?.processInstances?.length > 0) {
+    let filteredActions = [];
+    filteredActions = get(workflowDetails?.data?.processInstances[0], "nextActions", []).filter(
+      item => item.action != "ADHOC"
+    );
+    let actions = orderBy(filteredActions, ["action"], ["desc"]);
+    if (!actions || actions?.length == 0) workflowDetails.data.actionState.nextActions = [];
+
+    workflowDetails.data.actionState.nextActions.forEach(data => {
+      if(data.action == "RESUBMIT") {
+        data.redirectionUrl = {
+          pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
+          state: applicationDetails
+        },
+        data.tenantId = stateId
+      }
+    })
   }
 
 

@@ -127,7 +127,13 @@ const ReNewApplication = (props) => {
 
   const onSubmit = (data) => {
 
-    const EDITRENEWAL = data?.tradedetils1?.checkForRenewal;
+    let EDITRENEWAL = data?.tradedetils1?.checkForRenewal;
+    let sendBackToCitizen = false;
+    if (data?.tradedetils1?.action == "SENDBACKTOCITIZEN") {
+      EDITRENEWAL = false;
+      sendBackToCitizen = true;
+    }
+    
 
     if (data?.owners?.length > 0) {
       data?.owners.forEach(data => {
@@ -175,9 +181,9 @@ const ReNewApplication = (props) => {
     if (!EDITRENEWAL) {
       let formData = cloneDeep(data.tradedetils1);
 
-      formData.action = "INITIATE",
-      formData.applicationType = "RENEWAL",
-      formData.workflowCode = "DIRECTRENEWAL",
+      formData.action = sendBackToCitizen ? "RESUBMIT" : "INITIATE",
+      formData.applicationType = sendBackToCitizen ? data?.tradedetils1?.applicationType :"RENEWAL",
+      formData.workflowCode = sendBackToCitizen ? data?.tradedetils1?.workflowCode : "DIRECTRENEWAL",
       formData.commencementDate = commencementDate;
       formData.financialYear = financialYear;
       formData.licenseType = licenseType;

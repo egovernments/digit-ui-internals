@@ -38,8 +38,10 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
 
   function handleRemove(index) {
     const values = [...fields];
-    values.splice(index,1);
-    setFeilds(values);
+    if(values.length !=1)
+    {values.splice(index,1);
+    setFeilds(values);}
+
   }
 
   function setOwnerName(i, e) {
@@ -70,12 +72,24 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     setisPrimaryOwner(e.target.checked);
     setFeilds(units);
   }
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    console.log("Error Loged",error);
+  },[error]);
 
   const goNext = () => {
+    setError(null);
+    if(fields.length==1)
+    {
+      setError("TL_ERROR_MULTIPLE_OWNER");
+    }
+    else{
     let owner = formData.owners;
     let ownerStep;
     ownerStep = { ...owner, owners: fields };
     onSelect(config.key, ownerStep);
+    }
   };
 
   const onSkip = () => onSelect();
@@ -89,17 +103,17 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   ];
 
   return (
-    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={!fields[0].name || !fields[0].mobilenumber || !fields[0].gender}>
+    <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} isDisabled={!fields[0].name || !fields[0].mobilenumber || !fields[0].gender } forcedError={t(error)}>
       {fields.map((field, index) => {
         return (
           <div key={`${field}-${index}`}>
             {ismultiple && <hr color="#d6d5d4" className="break-line"></hr>}
-            <CardLabel style={{marginBottom:"-11px"}}>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}</CardLabel>
-            <LinkButton
+            <CardLabel style={ismultiple?{marginBottom:"-15px"}: {}}>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}</CardLabel>
+           {ismultiple && <LinkButton
             label={
             <div >
             <span>
-            <svg style={{   position:"relative",left:"280px", bottom:"7px"   }}  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg style={{float:"right", position:"relative", bottom:"5px"  }}  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z" fill="#0B0C0C"/>
             </svg>
             </span>
@@ -107,7 +121,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
             }
               style={{ width: "100px", display:"inline" }}
               onClick={(e) => handleRemove(index)}
-           />
+           />}
             <TextInput
               t={t}
               type={"text"}

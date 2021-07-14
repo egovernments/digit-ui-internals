@@ -41,7 +41,7 @@ const Response = (props) => {
             info={""}
             successful={true}
           />
-          <CardText>{t("The notification along with your application number is sent to your applicant’s mobile number. Applicant can track the application status using mobile or web app.")}</CardText>
+          <CardText>{t("TL_NEW_SUCESS_RESPONSE_NOTIFICATION_LABEL")}</CardText>
           <div className="primary-label-btn d-grid" style={{ marginLeft: "unset" }} onClick={printReciept}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                 <path d="M0 0h24v24H0z" fill="none" />

@@ -7,6 +7,7 @@ const TLDocumentsEmployee = ({ t, config, onSelect, userType, formData, setError
   const stateId = tenantId.split(".")[0];
   const [documents, setDocuments] = useState(formData?.documents?.documents || []);
   const [error, setError] = useState(null);
+  const [previousLicenseDetails, setPreviousLicenseDetails] = useState(formData?.tradedetils1 || []);
 
   let action = "create";
 
@@ -26,9 +27,9 @@ const TLDocumentsEmployee = ({ t, config, onSelect, userType, formData, setError
   let finalTlDocumentsList = [];
   if (tlDocumentsList && tlDocumentsList.length > 0) {
     tlDocumentsList.map(data => {
-      if (!ckeckingLocation && data?.applicationType?.includes("NEW")) {
+      if ((!ckeckingLocation || previousLicenseDetails?.action == "SENDBACKTOCITIZEN" ) && data?.applicationType?.includes("NEW")) {
         finalTlDocumentsList.push(data);
-      } else if (ckeckingLocation && data?.applicationType?.includes("RENEWAL")) {
+      } else if (ckeckingLocation && previousLicenseDetails?.action != "SENDBACKTOCITIZEN" && data?.applicationType?.includes("RENEWAL")) {
         finalTlDocumentsList.push(data);
       }
     })
