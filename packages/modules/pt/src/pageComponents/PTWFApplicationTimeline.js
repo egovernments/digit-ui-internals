@@ -121,7 +121,7 @@ const PTWFApplicationTimeline = (props) => {
                       <CheckPoint
                         keyValue={index}
                         isCompleted={index === 0}
-                        label={t((checkpoint.state && `WF_${businessService}_${checkpoint.state}`) || "NA")}
+                        label={checkpoint.state ? t(`WF_${businessService}_${checkpoint.state}`) : "NA"}
                         customChild={getTimelineCaptions(checkpoint)}
                       />
                     </React.Fragment>
