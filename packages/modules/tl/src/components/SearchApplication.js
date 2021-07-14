@@ -19,6 +19,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
       register("sortOrder", "DESC")
     },[register])
     const { data: applicationTypes } = Digit.Hooks.tl.useMDMS.applicationTypes(tenantId)
+    //need to get from workflow
     const applicationStatuses = [
         {
             code: "CANCELLED",

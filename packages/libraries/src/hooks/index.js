@@ -242,6 +242,7 @@ const Hooks = {
   useNewInboxGeneral,
   useStore,
   useTenants,
+  useInbox: useTLInbox,
   pgr,
   fsm,
   pt,

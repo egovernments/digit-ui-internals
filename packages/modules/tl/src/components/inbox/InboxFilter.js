@@ -58,8 +58,8 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
   const onServiceSelect = (e, label) => {
-    if (e.target.checked) localParamChange({ services: [..._searchParams.services, label] });
-    else localParamChange({ services: _searchParams.services.filter((o) => o !== label) });
+    if (e.target.checked) localParamChange({ services: [...(_searchParams?.services ? _searchParams.services : [] ), label] });
+    else localParamChange({ services: _searchParams?.services.filter((o) => o !== label) });
   };
 
   const selectLocality = (d) => {

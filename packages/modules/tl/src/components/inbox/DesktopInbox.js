@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import { Card, Loader } from "@egovernments/digit-ui-react-components";
 import InboxLinks from "./ApplicationLinks";
 import ApplicationTable from "./ApplicationTable";
@@ -19,18 +18,6 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     return value < 0 ? <span className="sla-cell-error">{value}</span> : <span className="sla-cell-success">{value}</span>;
   };
 
-  const convertEpochToDate = dateEpoch => {
-    if(dateEpoch == null || dateEpoch == undefined || dateEpoch == ''){
-      return "NA" ;
-    }
-    const dateFromApi = new Date(dateEpoch);
-    let month = dateFromApi.getMonth() + 1;
-    let day = dateFromApi.getDate();
-    let year = dateFromApi.getFullYear();
-    month = (month > 9 ? "" : "0") + month;
-    day = (day > 9 ? "" : "0") + day;
-    return `${day}/${month}/${year}`;
-  };
   const stringReplaceAll = (str = "", searcher = "", replaceWith = "") => {
     if (searcher == "") return str;
     while (str.includes(searcher)) {
@@ -66,7 +53,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     {
       Header: t("WF_INBOX_HEADER_STATUS"),
       Cell: ({ row }) => {
-        const dueDate = row.original?.dueDate === "NA" ? "NA" : convertEpochToDate(row.original?.dueDate);
+        const dueDate = row.original?.dueDate === "NA" ? "NA" : Digit.DateUtils.ConvertEpochToDate(row.original?.dueDate);
         return GetCell(t(`${dueDate}`));
       },
     },
@@ -82,11 +69,6 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     },
   }
   ];
-
-
-  useEffect(() => {
-    console.log(data, columns, "inside desktop inbox....");
-  }, [data, columns]);
 
   let result;
   if (props.isLoading) {
@@ -136,7 +118,8 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     <div className="inbox-container">
       {!props.isSearch && (
         <div className="filters-container">
-          <InboxLinks parentRoute={props.parentRoute}     allLinks={[
+          <InboxLinks parentRoute={props.parentRoute}
+            allLinks={[
               {
                 text: "TL_NEW_APPLICATION",
                 link: "/digit-ui/employee/hrms/create",

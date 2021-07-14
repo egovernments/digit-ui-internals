@@ -31,7 +31,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
             return (
               <div>
                 <span className="link">
-                  <Link to={`/application-details/` + row.original["licenseNumber"]}>
+                  <Link to={`/application-details/${row.original["licenseNumber"]}`}>
                     {row.original["licenseNumber"]}
                   </Link>
                 </span>
@@ -57,7 +57,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
         {
             Header: t("ES_APPLICATION_DETAILS_LOCALITY"),
             disableSortBy: true,
-            accessor: (row) => GetCell(row.tradeLicenseDetail.address.locality || ""),
+            accessor: (row) => GetCell(row.tradeLicenseDetail.address.locality.code || ""),
         },
         {
           Header: t("ES_APPLICATION_DETAILS_STATUS"),
