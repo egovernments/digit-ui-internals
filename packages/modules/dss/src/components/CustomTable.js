@@ -79,7 +79,7 @@ const CustomTable = ({ data, onSearch, setChartData }) => {
           if (prevData === cellValue) insight = 0;
           else insight = prevData === 0 ? 100 : Math.round(((cellValue - prevData) / prevData) * 100);
         }
-        if (row?.name === "CapacityUtilization") cellValue = cellValue + "%"
+        // if (row?.name === "CapacityUtilization") cellValue = cellValue + "%"
         if (typeof cellValue === "number" && !Number.isInteger(cellValue)) {
           cellValue = Math.round((cellValue + Number.EPSILON) * 100) / 100;
         }
