@@ -13,7 +13,8 @@ const ApplicationDetails = () => {
   const [bill, setBill] = useState(null);
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const { tenants } = storeData || {};
-  const { isLoading, isError, error, data: application, error: errorApplication } = Digit.Hooks.tl.useTLSearchApplication({
+  //todo: hook should return object to render the data
+  const { isLoading, isError, error, data: application, error: errorApplication } = Digit.Hooks.tl.useTLApplicationDetails({
     tenantId: tenantId,
     applicationNumber: id,
   });
@@ -187,7 +188,7 @@ const ApplicationDetails = () => {
                   </div>
                 );
               })}
-              <TLWFApplicationTimeline application={application?.raw} id={id} />
+              <TLWFApplicationTimeline application={application} id={id} />
               {application?.status == "CITIZENACTIONREQUIRED" ? (
                 <Link
                   to={{
@@ -198,6 +199,7 @@ const ApplicationDetails = () => {
                   <SubmitBar label={t("COMMON_EDIT")} />
                 </Link>
               ) : null}
+              {/* //TODO: change the actions to be fulfilled from workflow nextactions */}
               {application?.status == "PENDINGPAYMENT" ? (
                 <Link
                   to={{
