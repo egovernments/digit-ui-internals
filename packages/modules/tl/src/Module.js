@@ -26,8 +26,6 @@ import TLAcknowledgement from "./pages/citizen/Create/TLAcknowledgement";
 import MyApplications from "./pages/citizen/Applications/Application";
 import TradeLicenseList  from "./pages/citizen/Renewal/TradeLicenseList";
 import TLWFApplicationTimeline from "./pageComponents/TLWFApplicationTimeline";
-import TLWFReason from "./pageComponents/TLWFReason";
-import TLWFCaption from "./pageComponents/TLWFCaption";
 
 import TLOwnerDetailsEmployee from "./pageComponents/TLOwnerDetailsEmployee";
 import TLTradeDetailsEmployee from "./pageComponents/TLTradeDetailsEmployee";
@@ -121,8 +119,6 @@ const componentsToRegister = {
   TL_INBOX_FILTER,
   TLInfoLabel,
   TLWFApplicationTimeline,
-  TLWFReason,
-  TLWFCaption
 };
 
 export const initTLComponents = () => {

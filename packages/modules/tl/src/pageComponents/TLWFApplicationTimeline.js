@@ -2,6 +2,7 @@ import { ActionLinks, CardSectionHeader, CheckPoint, ConnectingCheckPoints, Load
 import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+//TODO : make it a react component
 import TLWFCaption from "./TLWFCaption";
 
 const TLWFApplicationTimeline = (props) => {
