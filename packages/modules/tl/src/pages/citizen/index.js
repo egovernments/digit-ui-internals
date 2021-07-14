@@ -21,6 +21,7 @@ const App = () => {
           <PrivateRoute path={`${path}/tradelicence/edit-application/:id/:tenantId`} component={EditTrade} />
           <PrivateRoute path={`${path}/tradelicence/renew-trade/:id/:tenantId`} component={RenewTrade} />
           <PrivateRoute path={`${path}/tradelicence/my-application`} component={MyApplications} />
+          <PrivateRoute path={`${path}/tradelicence/my-bills`} component={() => <MyApplications view="bills" />} />
           <PrivateRoute path={`${path}/tradelicence/tl-info`} component={TradeLicense} />
           <PrivateRoute path={`${path}/tradelicence/application/:id/:tenantId`} component={ApplicationDetails} />
           <PrivateRoute path={`${path}/tradelicence/renewal-list`} component={TLList} />
