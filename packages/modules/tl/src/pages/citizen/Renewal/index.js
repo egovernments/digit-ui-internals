@@ -33,12 +33,12 @@ export const TLList = () => {
           ))}
         {!applicationsList?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PT_NO_APPLICATION_FOUND_MSG")}</p>}
       </div>
-      <p style={{ marginLeft: "16px", marginTop: "16px" }}>
+      {/* <p style={{ marginLeft: "16px", marginTop: "16px" }}>
         {t("TL_NOT_ABLE_TO_FIND_TRADE_LICENSE")}{" "}
         <span className="link" style={{ display: "block" }}>
           <Link to="/digit-ui/citizen/tl/tradelicence/trade-search">{t("TL_SEARCH_TRADE_LICENSE")}</Link>
         </span>
-      </p>
+      </p> */}
     </React.Fragment>
   );
 };
