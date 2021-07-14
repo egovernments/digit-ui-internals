@@ -8,16 +8,16 @@ export const TLList = () => {
   const { t } = useTranslation();
   const userInfo = Digit.UserService.getUser();
   const tenantId = userInfo?.info?.permanentCity;
-  const { mobileNumber: mobileno, LicenseNumber: licenseno } = Digit.Hooks.useQueryParams();
+  const { mobileNumber: mobileno, LicenseNumber: licenseno, tenantId:tenantID } = Digit.Hooks.useQueryParams();
   let filter1 = {};
-  if (licenseno) filter1.applicationNumber = licenseno;
-  if (mobileno) filter1.tenantId = tenantId;
+  if (licenseno) filter1.licenseNumbers = licenseno;
+  if (licenseno) filter1.tenantId = tenantID;
   const { isLoading, isError, error, data } = Digit.Hooks.tl.useTradeLicenseSearch({ filters: filter1 }, { filters: filter1 });
   if (isLoading) {
     return <Loader />;
   }
   let { Licenses: applicationsList } = data || {};
-  applicationsList = applicationsList.filter(ele => ele.financialYear != "2021-22" && (ele.status == "EXPIRED" || ele.status == "APPROVED"));
+  applicationsList = applicationsList ? applicationsList.filter(ele => ele.financialYear != "2021-22" && (ele.status == "EXPIRED" || ele.status == "APPROVED")) : [];
   return (
     <React.Fragment>
       <Card>
@@ -33,12 +33,12 @@ export const TLList = () => {
           ))}
         {!applicationsList?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PT_NO_APPLICATION_FOUND_MSG")}</p>}
       </div>
-      <p style={{ marginLeft: "16px", marginTop: "16px" }}>
+      {/* <p style={{ marginLeft: "16px", marginTop: "16px" }}>
         {t("TL_NOT_ABLE_TO_FIND_TRADE_LICENSE")}{" "}
         <span className="link" style={{ display: "block" }}>
           <Link to="/digit-ui/citizen/tl/tradelicence/trade-search">{t("TL_SEARCH_TRADE_LICENSE")}</Link>
         </span>
-      </p>
+      </p> */}
     </React.Fragment>
   );
 };

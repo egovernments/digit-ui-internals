@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, RadioButtons, LabelFieldPair, CardLabel, Dropdown, Loader } from "@egovernments/digit-ui-react-components";
+import { FormStep, RadioButtons, LabelFieldPair, CardLabel, Dropdown, Loader, TextInput } from "@egovernments/digit-ui-react-components";
 
 const IsMutationPending = (props) => {
   const { t, config, onSelect, userType, formData, setError, clearErrors, errors } = props;
 
   const menu = [{ code: "YES" }, { code: "NO" }];
 
-  const [isMutationInCourt, setSelected] = useState(formData?.[config.key]?.isMutationInCourt);
+  const [isMutationInCourt, setMutationInCourt] = useState(formData?.[config.key]?.isMutationInCourt);
+  const [caseDetails, setCaseDetails] = useState(formData?.[config.key]?.caseDetails || "");
 
   const goNext = () => {
-    onSelect(config.key, { ...formData?.[config.key], isMutationInCourt });
+    onSelect(config.key, { ...formData?.[config.key], isMutationInCourt, caseDetails });
   };
 
   useEffect(() => {
@@ -40,11 +41,19 @@ const IsMutationPending = (props) => {
               options={menu}
               selectedOption={isMutationInCourt}
               onSelect={(v) => {
-                setSelected(v);
+                setMutationInCourt(v);
               }}
               labelKey="PT_MUTATION_PENDING"
               isDependent={true}
             />
+          </div>
+        </LabelFieldPair>
+        <LabelFieldPair style={{ marginBottom: "50px" }}>
+          <CardLabel style={{ fontWeight: "bold" }} className="card-label-smaller">
+            {t("PT_MUTATION_COURT_CASE_DETAILS")}
+          </CardLabel>
+          <div className="field">
+            <TextInput disable={isMutationInCourt?.code !== "YES"} value={caseDetails} onChange={(e) => setCaseDetails(e.target.value)} />
           </div>
         </LabelFieldPair>
       </React.Fragment>
@@ -62,7 +71,7 @@ const IsMutationPending = (props) => {
             options={menu}
             selectedOption={isMutationInCourt}
             onSelect={(v) => {
-              setSelected(v);
+              setMutationInCourt(v);
             }}
             labelKey="PT_MUTATION_PENDING"
             isDependent={true}

@@ -1,4 +1,4 @@
-import { FormComposer } from "@egovernments/digit-ui-react-components";
+import { FormComposer,Dropdown } from "@egovernments/digit-ui-react-components";
 import PropTypes from "prop-types";
 import React, { useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,13 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [canSubmit, setCanSubmit] = useState(false);
+  const userInfo =  Digit.UserService.getUser(); 
+  let user = userInfo?.info;
+  let defaultMobileno = user.mobileNumber;
+
+  const allCities = Digit.Hooks.tl.useTenants()?.sort((a, b) => a?.i18nKey?.localeCompare?.(b?.i18nKey));
+
+  const [cityCode, setCityCode] = useState();
 
 
   useLayoutEffect(() => {
@@ -34,7 +41,7 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
     }
     else {
       history.push(
-        `/digit-ui/citizen/tl/tradelicence/renewal-list?mobileNumber=${data?.mobileNumber ? data?.mobileNumber : ``}&LicenseNumber=${data?.LicenseNum ? data?.LicenseNum : ``}`
+        `/digit-ui/citizen/tl/tradelicence/renewal-list?mobileNumber=${data?.mobileNumber ? data?.mobileNumber : ``}&LicenseNumber=${data?.LicenseNum ? data?.LicenseNum : ``}&tenantId=${cityCode?cityCode:``}`
       );
     }
   };
@@ -45,12 +52,34 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
     {
       body: [
         {
+          label: "CORE_COMMON_CITY",
+          isMandatory: true,
+          type: "custom",
+          populators: {
+            name: "city",
+            defaultValue: null,
+            rules: { required: true },
+            customProps: { t, isMendatory: true, option: [...allCities], optionKey: "i18nKey" },
+            component: (props, customProps) => (
+              <Dropdown
+                {...customProps}
+                selected={props.value}
+                select={(d) => {
+                  if (d.code !== cityCode) props.setValue("locality", null);
+                  props.onChange(d);
+                }}
+              />
+            ),
+          },
+        },
+        {
           label: mobileNumber.label,
           type: mobileNumber.type,
           populators: {
             name: mobileNumber.name,
             validation: { pattern: /^[6-9]{1}[0-9]{9}$ / },
           },
+          disable: true,
           isMandatory: false,
         },
         {
@@ -69,12 +98,12 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
     const mobileNumberLength = data?.[mobileNumber.name]?.length;
     const Licenseno = data?.[tradelicense.name];
     // const propId = data?.[property.name];
-    // const city = data?.city;
+    const city = data?.city;
     // const locality = data?.locality;
 
-    // if (city?.code !== cityCode) {
-    //   setCityCode(city?.code);
-    // }
+    if (city?.code !== cityCode) {
+      setCityCode(city?.code);
+    }
 
     // let { errors } = formState;
 
@@ -89,7 +118,8 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
     // }
 
     if (mobileNumberLength > 0 && mobileNumberLength < 10) setCanSubmit(false);
-    else if (!Licenseno && !mobileNumberLength) setCanSubmit(false);
+    else if(!city) setCanSubmit(false);
+    else if (!Licenseno && !mobileNumberLength && !city) setCanSubmit(false);
     else setCanSubmit(true);
   };
 
@@ -110,6 +140,7 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
         cardStyle={{ margin: "auto" }}
         headingStyle={{ fontSize: "32px", marginBottom: "16px", fontFamily: "Roboto Condensed,sans-serif" }}
         isDisabled={!canSubmit}
+        defaultValues={{mobileNumber:defaultMobileno}}
         onFormValueChange={onFormValueChange}
       ></FormComposer>
     </div>
