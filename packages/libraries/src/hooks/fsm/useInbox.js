@@ -23,7 +23,8 @@ const useFSMInbox = (tenantId, filters, filterFsmFn, config = {}) => {
 	}
     const appList = useInbox({tenantId, filters: _filters, config:{
         select: (data) => ({
-            statuses: data.status,
+            totalCount: data.totalCount,
+            statuses: data.statusMap,
             table: data?.items?.map( application => ({
                 tenantId: application.businessObject.tenantId,
                 totalCount: application.businessObject.totalCount,
@@ -31,7 +32,11 @@ const useFSMInbox = (tenantId, filters, filterFsmFn, config = {}) => {
                 createdTime: new Date(application.businessObject.auditDetails.createdTime),
                 locality: application.businessObject.address.locality.code,
                 status: application.businessObject.applicationStatus,
-                taskOwner: application.ProcessInstance?.assigner?.name,
+                citizen:{
+                    name: application.ProcessInstance?.assigner?.name,
+                    mobileNumber: application.ProcessInstance?.assigner?.mobileNumber
+                },
+                propertyUsage: application.businessObject.propertyUsage,
                 sla: Math.round(application.ProcessInstance?.businesssServiceSla / (24 * 60 * 60 * 1000)) || "-",
                 mathsla: application.ProcessInstance?.businesssServiceSla,
             })),

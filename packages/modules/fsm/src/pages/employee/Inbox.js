@@ -185,7 +185,7 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
     }
   };
 
-  if (applications?.length !== null) {
+  if (applications?.table?.length !== null) {
     if (isMobile) {
       return (
         <MobileInbox
@@ -209,7 +209,7 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
           {!isSearch && (
             <Header>
               {t("ES_COMMON_INBOX")}
-              {Number(applications?.[0]?.totalCount) ? <p className="inbox-count">{Number(applications?.[0]?.totalCount)}</p> : null}
+              {Number(applications?.totalCount) ? <p className="inbox-count">{Number(applications?.totalCount)}</p> : null}
             </Header>
           )}
           <DesktopInbox
@@ -229,9 +229,9 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
             searchParams={searchParams}
             onPageSizeChange={handlePageSizeChange}
             parentRoute={parentRoute}
-            searchParams={searchParams}
+            paginationParms={paginationParms}
             sortParams={sortParams}
-            totalRecords={isInbox ? Number(applications?.[0]?.totalCount) : totalCount}
+            totalRecords={isInbox ? Number(applications?.totalCount) : totalCount}
           />
         </div>
       );
