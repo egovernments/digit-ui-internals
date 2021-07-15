@@ -53,6 +53,8 @@ export const configPTApproverApplication = ({
                 onDelete={() => {
                   setUploadedFile(null);
                 }}
+                showHint={true}
+                hintText={"Only .jpg and.pdf Files. 5 MB max file size"}
                 message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
               />
             ) : null,
