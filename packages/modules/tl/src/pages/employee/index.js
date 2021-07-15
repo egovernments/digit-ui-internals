@@ -22,7 +22,7 @@ const EmployeeApp = ({ path, url, userType }) => {
             <Link to="/digit-ui/employee" style={{ cursor: "pointer", color: "#666" }}>
               {t("ES_COMMON_HOME")}
             </Link>{" "}
-        / <span>{location.pathname === "/digit-ui/employee/tl/inbox" ? t("ES_TITILE_SEARCH_APPLICATION") : "MODULE_TL"}</span>
+        / <span>{location.pathname === "/digit-ui/employee/tl/inbox" ? t("ES_TITILE_SEARCH_APPLICATION") : "TL"}</span>
           </p>
           <PrivateRoute
             path={`${path}/inbox`}
