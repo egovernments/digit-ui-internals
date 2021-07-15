@@ -23,6 +23,7 @@ const getTradeEditDetails = (data) => {
         accessorycount: ob.count,
         unit: `${ob.uom}`,
         uom: `${ob.uomValue}`,
+        id : ob.id,
       })
     })
     return acc;
@@ -37,6 +38,7 @@ const getTradeEditDetails = (data) => {
         tradetype: { i18nKey: `TRADELICENSE_TRADETYPE_${ob.tradeType.split(".")[1]}`, code: `${ob.tradeType.split(".")[1]}` },
         unit: ob.uom,
         uom: ob.uomValue,
+        id : ob.id,
       });
     })
     return units;

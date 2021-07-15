@@ -4,7 +4,9 @@ import { useLocation } from "react-router-dom";
 
 const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   let validation = {};
-  const [canmovenext, setCanmovenext] = useState(true);
+  let isedittrade = window.location.href.includes("edit-application");
+  let isrenewtrade = window.location.href.includes("renew-trade");
+  const [canmovenext, setCanmovenext] = useState(isedittrade || isrenewtrade?false:true);
   const [name, setName] = useState(formData?.owners?.name || "");
   const [isPrimaryOwner, setisPrimaryOwner] = useState(false);
   const [gender, setGender] = useState(formData?.owners?.gender);
