@@ -226,6 +226,15 @@ function SelectDocument({
     if (isHidden) setUploadedFile(null);
   }, [isHidden]);
 
+  useEffect(() => {
+    if (doc.code === "OWNER.TRANSFERREASONDOCUMENT") {
+      if (selectedDocument?.code?.split(".")[2] !== formData?.additionalDetails?.reasonForTransfer?.code) {
+        setSelectedDocument(null);
+        setUploadedFile(null);
+      }
+    }
+  }, [formData?.additionalDetails?.reasonForTransfer?.code]);
+
   if (filterCondition) {
     const { filterValue, jsonPath, onArray, arrayAttribute, formDataPath, formArrayAttrPath } = filterCondition;
     if (action === "create") {
@@ -344,8 +353,9 @@ function SelectDocument({
             message={uploadedFile ? `1 ${t(`CS_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
             textStyles={{ width: "100%" }}
             inputStyles={{ width: "280px" }}
-            disabled={enabledActions?.[action].disableUpload || !selectedDocument?.code}
+            disabled={enabledActions?.[action]?.disableUpload || !selectedDocument?.code}
             buttonType="button"
+            error={!uploadedFile}
           />
         </div>
       </LabelFieldPair>
