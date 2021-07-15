@@ -69,7 +69,7 @@ const ApplicationDetails = () => {
     let actions = orderBy(filteredActions, ["action"], ["desc"]);
     if (!actions || actions?.length == 0) workflowDetails.data.actionState.nextActions = [];
 
-    workflowDetails.data.actionState.nextActions.forEach(data => {
+    workflowDetails?.data?.actionState?.nextActions?.forEach(data => {
       if(data.action == "RESUBMIT") {
         data.redirectionUrl = {
           pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
