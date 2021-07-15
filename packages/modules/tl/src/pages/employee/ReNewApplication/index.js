@@ -143,13 +143,33 @@ const ReNewApplication = (props) => {
       })
     };
 
+    for (let i = 0; i < data?.tradedetils1?.tradeLicenseDetail?.owners?.length; i++) {
+      let filteredArray = data?.owners?.filter(owner => owner.id === data?.tradedetils1?.tradeLicenseDetail?.owners[i]?.id);
+      if (filteredArray?.length == 0) {
+        let removedOwner = data?.tradedetils1?.tradeLicenseDetail?.owners[i];
+        removedOwner.active = false;
+        data?.owners.push(removedOwner);
+        EDITRENEWAL = true;
+      }
+    }
+
     if (data?.tradeUnits?.length > 0) {
       data?.tradeUnits.forEach(data => {
-        data.tradeType = data?.tradeSubType?.code || null,
+          data.tradeType = data?.tradeSubType?.code || null,
           data.uom = data?.tradeSubType?.uom || null,
           data.uomValue = Number(data?.uomValue) || null
       });
     };
+
+    for (let i = 0; i < data?.tradedetils1?.tradeLicenseDetail?.tradeUnits?.length; i++) {
+      let filteredArray = data?.tradeUnits?.filter(unit => unit.id === data?.tradedetils1?.tradeLicenseDetail?.tradeUnits[i]?.id);
+      if (filteredArray?.length == 0) {
+        let removedUnit = data?.tradedetils1?.tradeLicenseDetail?.tradeUnits[i];
+        removedUnit.active = false;
+        data?.tradeUnits.push(removedUnit);
+        EDITRENEWAL = true;
+      }
+    }
 
     let accessoriesFlag = false;
     if (data?.accessories?.length > 0) {
@@ -178,7 +198,7 @@ const ReNewApplication = (props) => {
     let subOwnerShipCategory = data?.ownershipCategory?.code || "";
     let licenseType = data?.tradedetils?.["0"]?.licenseType?.code || "PERMANENT";
 
-    if (!EDITRENEWAL) {
+    if (!EDITRENEWAL || sendBackToCitizen) {
       let formData = cloneDeep(data.tradedetils1);
 
       formData.action = sendBackToCitizen ? "RESUBMIT" : "INITIATE",

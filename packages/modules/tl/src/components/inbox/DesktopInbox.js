@@ -122,18 +122,18 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
             allLinks={[
               {
                 text: "TL_NEW_APPLICATION",
-                link: "/digit-ui/employee/hrms/create",
+                link: "/digit-ui/employee/tl/new-application",
                 businessService: "TL",
-                roles: [],
+                roles: ["TL_CEMP"],
 
               },
-              {
-                text: "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR",
-                link: "/digit-ui/employee/hrms/create",
-                businessService: "TL",
-                roles: [],
+              // {
+              //   text: "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR",
+              //   link: "/digit-ui/employee/hrms/create",
+              //   businessService: "TL",
+              //   roles: [],
 
-              },
+              // },
               {
                 text: "ACTION_TEST_REPORTS",
                 link: "/digit-ui/employee/hrms/create",

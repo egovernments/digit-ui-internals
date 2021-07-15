@@ -5,8 +5,8 @@ import { FormStep, RadioOrSelect, RadioButtons } from "@egovernments/digit-ui-re
 const SelectAccessories = ({ t, config, onSelect, userType, formData }) => {
   const [isAccessories, setisAccessories] = useState(formData?.TradeDetails?.isAccessories);
   const menu = [
-    { i18nKey: "TL_COMMON_YES", code: "RESIDENTIAL" },
-    { i18nKey: "TL_COMMON_NO", code: "NONRESIDENTIAL" },
+    { i18nKey: "TL_COMMON_YES", code: "ACCESSORY" },
+    { i18nKey: "TL_COMMON_NO", code: "NONACCESSORY" },
   ];
 
   const onSkip = () => onSelect();

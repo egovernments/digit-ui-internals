@@ -30,7 +30,7 @@ const TLCard = () => {
                         </svg>
 
                     </span>
-                    <span className="text">{t("MODULE_TL")}</span>
+                    <span className="text">{t("TL")}</span>
                 </div>
                 <div className="body" style={{ margin: "0px", padding: "0px" }}>
                     <div

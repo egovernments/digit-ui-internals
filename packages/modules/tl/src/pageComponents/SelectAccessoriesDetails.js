@@ -12,8 +12,10 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
     (formData?.TradeDetails && formData?.TradeDetails?.accessories) || [{ accessory: "", accessorycount: "", unit: null, uom: null }]
   );
 
-  const isUpdateProperty = formData?.isUpdateProperty || false;
-  let isEditProperty = formData?.isEditProperty || false;
+  //const isUpdateProperty = formData?.isUpdateProperty || false;
+  //let isEditProperty = formData?.isEditProperty || false;
+  let isEditTrade = window.location.href.includes("edit-application");
+  let isRenewTrade = window.location.href.includes("renew-trade");
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -94,7 +96,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
       onSelect={goNext}
       onSkip={onSkip}
       t={t}
-      isDisabled={!fields[0].accessory}
+      isDisabled={!fields[0].accessory || !fields[0].accessorycount || !fields[0].uom}
     >
       {fields.map((field, index) => {
         return (
@@ -132,7 +134,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
               name="AccessoryCount"
               value={field.accessorycount}
               onChange={(e) => selectAccessoryCount(index, e)}
-              //disable={isUpdateProperty || isEditProperty}
+              disable={(isEditTrade || isRenewTrade) && (formData?.TradeDetails?.accessories.length-1<index?false:field.accessorycount)}
               /* {...(validation = {
             isRequired: true,
             pattern: "^[a-zA-Z-.`' ]*$",
@@ -166,7 +168,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
               name="UomValue"
               value={field.uom}
               onChange={(e) => selectUomValue(index, e)}
-              disable={!field.unit}
+              disable={(isEditTrade || isRenewTrade)?((isEditTrade || isRenewTrade) && (formData?.TradeDetails?.accessories.length-1<index?false:field.uom)):!field.unit}
               //disable={isUpdateProperty || isEditProperty}
               {...(validation = {
                 isRequired: true,
