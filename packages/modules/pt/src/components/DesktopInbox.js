@@ -17,8 +17,6 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
 
   const [clearSearchCalled, setClearSearchCalled] = useState(false);
 
-  // searchData, workFlowData
-
   const columns = React.useMemo(() => (props.isSearch ? tableConfig.searchColumns(props) : tableConfig.inboxColumns(props) || []), []);
 
   useEffect(() => {

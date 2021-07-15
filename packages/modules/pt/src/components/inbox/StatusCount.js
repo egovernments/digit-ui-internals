@@ -5,16 +5,15 @@ import { CheckBox } from "@egovernments/digit-ui-react-components";
 const StatusCount = ({ status, searchParams, onAssignmentChange, statusMap, businessServices }) => {
   const { t } = useTranslation();
 
-  // console.log(
-  //   status,
-  //   // statusMap?.find((e) => e.statusid === status.uuid),
-  //   statusMap?.find((e) => e.statusid === status.uuid),
-  //   "inside status count"
-  // );
+  console.log(
+    status,
+    statusMap?.find((e) => e.statusid === status.uuid),
+    "inside status count"
+  );
 
   return (
     <CheckBox
-      onChange={(e) => onAssignmentChange(e, status)}
+      onChange={(e) => onAssignmentChange({ ...e, state: status.state }, status)}
       checked={(() => {
         return searchParams?.applicationStatus.some((e) => e.uuid === status.uuid);
       })()}

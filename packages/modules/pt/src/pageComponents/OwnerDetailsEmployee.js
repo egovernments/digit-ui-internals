@@ -182,9 +182,7 @@ const OwnerForm = (_props) => {
       <div style={{ marginBottom: "16px" }}>
         <div className="label-field-pair">
           <h2 className="card-label card-label-smaller" style={{ color: "#505A5F" }}>
-            {isIndividualTypeOwner
-              ? `Owner ${formData?.ownershipCategory?.code?.includes("MULTIPLE") ? index + 1 : ""}`
-              : "Authorised Person Details"}
+            {isIndividualTypeOwner ? `Owner ${formData?.ownershipCategory?.code?.includes("MULTIPLE") ? index + 1 : ""}` : ""}
           </h2>
         </div>
         <div style={{ border: "1px solid #E3E3E3", padding: "16px", marginTop: "8px" }}>
@@ -264,7 +262,7 @@ const OwnerForm = (_props) => {
                 defaultValue={owner?.name}
                 rules={{
                   required: t("CORE_COMMON_REQUIRED_ERRMSG"),
-                  validate: { pattern: (val) => (/^\w+( +\w+)*$/.test(val) ? true : t("INVALID_NAME")) },
+                  validate: { pattern: (val) => (/^[a-zA-Z\s]*$/.test(val) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) },
                 }}
                 render={(props) => (
                   <TextInput
