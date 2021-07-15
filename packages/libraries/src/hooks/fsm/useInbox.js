@@ -1,14 +1,14 @@
 import React from "react"
 import useInbox from "../useInbox"
 
-const useFSMInbox = (tenantId, filters, filterFsmFn, config = {}) => {
-    let { uuid } = Digit.UserService.getUser().info;
+const useFSMInbox = (tenantId, filters, config = {}) => {
+
     const { applicationNos, mobileNumber, limit, offset, sortBy, sortOrder } = filters;
     const _filters = {
 		tenantId,
 		processSearchCriteria: {
 			businessService: ["FSM"],
-            ...(filters?.applicationStatus?.length > 0 ? {applicationStatus: filters.applicationStatus.map((status) => status.code).join(",")} : {}),
+            ...(filters?.applicationStatus?.length > 0 ? {status: filters.applicationStatus.map((status) => status?.id)} : {}),
 		},
 		moduleSearchCriteria: {
             ...(mobileNumber ? {mobileNumber}: {}),
@@ -16,7 +16,6 @@ const useFSMInbox = (tenantId, filters, filterFsmFn, config = {}) => {
             ...(sortBy ? {sortBy} : {}),
             ...(sortOrder ? {sortOrder} : {}),
             ...(filters?.locality?.length > 0 ? {locality: filters.locality.map((item) => item.code.split("_").pop()).join(",")} : {}),
-            ...(filters.uuid && Object.keys(filters.uuid).length > 0 ? {assignee: filters.uuid.code === "ASSIGNED_TO_ME" ? uuid : ""} : {}),
 		},
 		limit,
 		offset,
@@ -39,9 +38,20 @@ const useFSMInbox = (tenantId, filters, filterFsmFn, config = {}) => {
                 propertyUsage: application.businessObject.propertyUsage,
                 sla: Math.round(application.ProcessInstance?.businesssServiceSla / (24 * 60 * 60 * 1000)) || "-",
                 mathsla: application.ProcessInstance?.businesssServiceSla,
-            })),
-    })}})
-
+            }))
+        }),
+        ...config
+    }})
+    if(filters?.uuid?.code === "ASSIGNED_TO_ME"){
+        return {
+            data:{
+                totalCount: 0,
+                statuses: [],
+                table: []
+            },
+            isLoading: false
+        }
+    }
     return { ...appList }
 }
 

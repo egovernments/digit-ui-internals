@@ -6,7 +6,7 @@ import StatusCount from "./StatusCount";
 const Status = ({ onAssignmentChange, fsmfilters, mergedRoleDetails, statusMap }) => {
   const { t } = useTranslation();
 
-  const { data: applicationsWithCount, isLoading } = Digit.Hooks.fsm.useApplicationStatus(true);
+  const { data: applicationsWithCount, isLoading } = Digit.Hooks.fsm.useApplicationStatus(true, true, statusMap);
   // console.log("find application stats", applicationsWithCount)
 
   const [moreStatus, showMoreStatus] = useState(false);
