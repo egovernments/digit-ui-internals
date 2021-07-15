@@ -2,13 +2,14 @@ import Urls from "../atoms/urls";
 import { Request } from "../atoms/Utils/Request";
 
 export const InboxGeneral = {
-  Search: ({ ...filters }) =>
-    Request({
+  Search: ({ ...filters }) =>{
+    return Request({
       url: Urls.InboxSearch,
       useCache: false,
       method: "POST",
       auth: true,
-      userService: false,
+      userService: true,
       data: { ...filters },
-    }),
+    })
+  },
 };

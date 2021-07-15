@@ -1,4 +1,4 @@
-import { CheckBox, CloseSvg, Dropdown, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { CheckBox, CloseSvg, Dropdown, Loader, SubmitBar,ApplyFilterBar,ActionBar } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getDefaultReceiptService } from "../utils";
@@ -98,20 +98,26 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
                 <div className="filter-label">{t("CR_SERVICE_CATEGORY_LABEL")}</div>
                 <Dropdown t={t} option={data?.dropdownData || null} value={service} selected={service} select={setService} optionKey={"name"} />
               </div>
-              <div>
+              {props.type !== "mobile" &&<div>
                 <SubmitBar
                   disabled={status?.length == mdmsStatus?.length&& service?.code == defaultService}
                   onSubmit={() => {onFilterChange(_searchParams)
                     props?.onClose?.()}}
                   label={t("ACTION_TEST_APPLY")}
                 />
-              </div>
-              {props.type === "mobile" && <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <button type={"button"} style={{ flex: 1 }} className="button-clear" onClick={()=>{clearAll()
-                 props?.onClose?.()}}>
-                  <header>{t("ES_COMMON_CLEAR_ALL")}</header>
-                </button>
               </div>}
+              {props.type === "mobile" &&(  <ActionBar>
+                <ApplyFilterBar
+                  submit={false}
+                  labelLink={t("ES_COMMON_CLEAR_ALL")}
+                  buttonLink={t("ACTION_TEST_APPLY")}
+                  onSubmit={() => {onFilterChange(_searchParams)
+                    props?.onClose?.()}}
+                  onClear={() => {clearAll()
+                    props?.onClose?.()}}
+                  style={{ flex: 1 }}
+                />
+              </ActionBar>)}
             </div>
           </div>
         </div>

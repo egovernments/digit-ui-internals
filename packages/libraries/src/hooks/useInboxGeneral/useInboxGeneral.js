@@ -5,6 +5,7 @@ import { PTService } from "../../services/elements/PT";
 import { TableConfig } from "./tableConfig";
 import { filterFunctions } from "./filterFn";
 import { getSearchFields } from "./searchFields";
+import { TLService } from "../../services/elements/TL"
 
 const inboxConfig = (tenantId, filters) => ({
   PT: {
@@ -22,6 +23,14 @@ const inboxConfig = (tenantId, filters) => ({
     businessIdAliasForSearch: "applicationNo",
     fetchFilters: filterFunctions.FSM,
     _searchFn: () => FSMService.search(tenantId, filters),
+  },
+  TL: {
+    services: ["TL"],
+    searchResponseKey: "items",
+    businessIdsParamForSearch: "businessId",
+    businessIdAliasForSearch: "businessId",
+    fetchFilters: filterFunctions.TL,
+    _searchFn: () => TLService.search(tenantId, filters),
   },
 });
 

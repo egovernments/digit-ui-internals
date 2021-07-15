@@ -4,7 +4,7 @@ import { FormStep, RadioOrSelect, RadioButtons } from "@egovernments/digit-ui-re
 
 const SelectCommencementDate = ({ t, config, onSelect, userType, formData }) => {
   const [CommencementDate, setCommencementDate] = useState(formData?.TradeDetails?.CommencementDate);
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   /* const menu = [
     { i18nKey: "MOTOR_DRIVEN", code: "motor" },
     { i18nKey: "HAND_PULLED", code: "hand" },

@@ -24,7 +24,8 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const isEditScreen = pathname.includes("/modify-application/");
-  const [tradedetils, setTradedetils] = useState(formData?.tradedetils || [createTradeDetailsDetails()])
+  const [tradedetils, setTradedetils] = useState(formData?.tradedetils || [createTradeDetailsDetails()]);
+  const [previousLicenseDetails, setPreviousLicenseDetails] = useState(formData?.tradedetils1 || []);
   const [structureSubTypeOptions, setStructureSubTypeOptions] = useState([]);
   const [owners, setOwners] = useState(formData?.owners || [createTradeDetailsDetails()]);
   const [focusIndex, setFocusIndex] = useState({ index: -1, type: "" });
@@ -56,6 +57,10 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
   }, [tradedetils]);
 
   useEffect(() => {
+    onSelect("tradedetils1", previousLicenseDetails);
+  }, [previousLicenseDetails]);
+
+  useEffect(() => {
     setOwners([createTradeDetailsDetails()]);
   }, [formData?.tradedetils?.[0]?.key]);
 
@@ -81,7 +86,9 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
     isErrors,
     billingSlabData,
     licenseTypeList, 
-    setLicenseTypeList
+    setLicenseTypeList,
+    previousLicenseDetails, 
+    setPreviousLicenseDetails
   };
 
   if (isEditScreen) {
@@ -91,7 +98,7 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
   return (
     <React.Fragment>
       {tradedetils.map((tradedetail, index) => (
-        <OwnerForm key={tradedetail.key} index={index} tradedetail={tradedetail} {...commonProps} />
+        <OwnerForm1 key={tradedetail.key} index={index} tradedetail={tradedetail} {...commonProps} />
       ))}
       {formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? (
         <LinkButton label="Add Owner" onClick={addNewOwner} style={{ color: "orange" }} />
@@ -100,7 +107,7 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
   );
 };
 
-const OwnerForm = (_props) => {
+const OwnerForm1 = (_props) => {
   const {
     tradedetail,
     index,
@@ -124,10 +131,12 @@ const OwnerForm = (_props) => {
     isErrors,
     billingSlabData,
     licenseTypeList, 
-    setLicenseTypeList
+    setLicenseTypeList,
+    previousLicenseDetails, 
+    setPreviousLicenseDetails
   } = _props;
 
-  const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger } = useForm();
+  const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger, getValues } = useForm();
   const formValue = watch();
   const { errors } = localFormState;
 
@@ -186,7 +195,7 @@ const OwnerForm = (_props) => {
   structureTypeOptions = Menu && Menu["common-masters"] &&
     Menu["common-masters"].StructureType.map((e) => {
       let code = e?.code.split('.')[0];
-      return ({ i18nKey: `COMMON_MASTERS_STRUCTURETYPE _${stringReplaceAll(code?.toUpperCase(), ".", "_")}`, label: code, ...e })
+      return ({ i18nKey: t(`COMMON_MASTERS_STRUCTURETYPE_${stringReplaceAll(code?.toUpperCase(), ".", "_")}`), label: code, ...e })
     }) || [];
 
   let selectedStructureTypeOptions = [];
@@ -197,10 +206,31 @@ const OwnerForm = (_props) => {
       flags[structureTypeOptions[i].label] = true;
       selectedStructureTypeOptions.push({
         code: structureTypeOptions[i].label,
-        i18nKey: `COMMON_MASTERS_STRUCTURETYPE _${stringReplaceAll(structureTypeOptions[i]?.label?.toUpperCase(), ".", "_")}`
+        i18nKey: t(`COMMON_MASTERS_STRUCTURETYPE_${stringReplaceAll(structureTypeOptions[i]?.label?.toUpperCase(), ".", "_")}`)
       });
     }
   }
+
+  const isRenewal = window.location.href.includes("renew-application-details");
+
+
+  useEffect(() => {
+    if (isRenewal && structureTypeOptions?.length > 0) {
+      let selectedOption = tradedetail?.structureType?.code?.split('.')[0];
+      let structureSubTypeOption = [];
+      structureTypeOptions.map(data => {
+        if (selectedOption === data?.code?.split('.')[0]) {
+          structureSubTypeOption.push({
+            code: data?.code,
+            i18nKey: t(`COMMON_MASTERS_STRUCTURETYPE_${stringReplaceAll(data?.code?.toUpperCase(), ".", "_")}`),
+          })
+        }
+      });
+      // setValue("structureSubType", "");
+      setStructureSubTypeOptions(structureSubTypeOption);
+    }
+}, [tradedetail?.structureType]);
+
 
   const isIndividualTypeOwner = useMemo(() => formData?.ownershipCategory?.code.includes("INDIVIDUAL"), [formData?.ownershipCategory?.code]);
 
@@ -254,11 +284,12 @@ const OwnerForm = (_props) => {
                 <Dropdown
                   className="form-field"
                   selected={props.value}
-                  disable={financialYearOptions?.length === 1}
+                  // disable={financialYearOptions?.length === 1}
                   option={financialYearOptions}
                   select={props.onChange}
                   optionKey="i18nKey"
                   onBlur={props.onBlur}
+                  disable={isRenewal}
                   t={t}
                 />
               )}
@@ -274,7 +305,7 @@ const OwnerForm = (_props) => {
               render={(props) => (
                 <Dropdown
                   className="form-field"
-                  selected={licenseTypeList[0]}
+                  selected={licenseTypeList[1]}
                   disable={true}
                   option={licenseTypeList}
                   select={props.onChange}
@@ -292,7 +323,7 @@ const OwnerForm = (_props) => {
               <Controller
                 control={control}
                 name={"tradeName"}
-                defaultValue={tradedetail?.name}
+                defaultValue={tradedetail?.tradeName}
                 rules={{ required: "NAME_REQUIRED", validate: { pattern: (val) => (/^[-@.\/#&+\w\s]*$/.test(val) ? true : t("INVALID_NAME")) } }}
                 render={(props) => (
                   <TextInput
@@ -306,6 +337,7 @@ const OwnerForm = (_props) => {
                       setFocusIndex({ index: -1 });
                       props.onBlur(e);
                     }}
+                    disable={isRenewal}
                   />
                 )}
               />
@@ -323,7 +355,7 @@ const OwnerForm = (_props) => {
                 <Dropdown
                   className="form-field"
                   selected={props.value}
-                  disable={false}
+                  disable={isRenewal}
                   option={selectedStructureTypeOptions}
                   select={(e) => {
                     let selectedOption = e?.code?.split('.')[0];
@@ -332,10 +364,11 @@ const OwnerForm = (_props) => {
                       if (selectedOption === data?.code?.split('.')[0]) {
                         structureSubTypeOption.push({
                           code: data?.code,
-                          i18nKey: `COMMON_MASTERS_STRUCTURETYPE _${stringReplaceAll(data?.code?.toUpperCase(), ".", "_")}`,
+                          i18nKey: t(`COMMON_MASTERS_STRUCTURETYPE_${stringReplaceAll(data?.code?.toUpperCase(), ".", "_")}`),
                         })
                       }
                     });
+                    setValue("structureSubType", "");
                     setStructureSubTypeOptions(structureSubTypeOption);
                     props.onChange(e);
                   }}
@@ -357,10 +390,13 @@ const OwnerForm = (_props) => {
               render={(props) => (
                 <Dropdown
                   className="form-field"
-                  selected={props.value}
+                  selected={getValues("structureSubType")}
                   disable={false}
                   option={structureSubTypeOptions}
-                  select={props.onChange}
+                  select={(e) => {
+                    if(e?.code != tradedetail?.structureSubType?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
+                    props.onChange(e)
+                  }}
                   optionKey="i18nKey"
                   onBlur={props.onBlur}
                   t={t}
@@ -375,7 +411,7 @@ const OwnerForm = (_props) => {
               <Controller
                 name="commencementDate"
                 rules={{ required: t("ERR_DEFAULT_INPUT_FIELD_MSG") }}
-                // defaultValue={tradedetils?.[0]?.commencementDate}
+                defaultValue={tradedetail?.commencementDate}
                 control={control}
                 render={(props) => (
                   <DatePicker
@@ -383,6 +419,7 @@ const OwnerForm = (_props) => {
                     // date={CommencementDate} 
                     name="CommencementDate"
                     onChange={props.onChange}
+                    disabled={isRenewal}
                   />
                 )}
               />
@@ -407,6 +444,7 @@ const OwnerForm = (_props) => {
                     }}
                     labelStyle={{ marginTop: "unset" }}
                     onBlur={props.onBlur}
+                    disable={isRenewal}
                   />
                 )}
               />
@@ -430,6 +468,7 @@ const OwnerForm = (_props) => {
                     value={props.value}
                     autoFocus={focusIndex.index === tradedetail?.key && focusIndex.type === "operationalArea"}
                     onBlur={props.onBlur}
+                    disable={isRenewal}
                   />
                 )}
               />
@@ -453,6 +492,7 @@ const OwnerForm = (_props) => {
                     value={props.value}
                     autoFocus={focusIndex.index === tradedetail?.key && focusIndex.type === "noOfEmployees"}
                     onBlur={props.onBlur}
+                    disable={isRenewal}
                   />
                 )}
               />

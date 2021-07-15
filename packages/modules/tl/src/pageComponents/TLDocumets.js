@@ -21,7 +21,6 @@ function TLDocument({ value = {} }) {
   documents.push(value.owners.documents["OwnerPhotoProof"]);
   documents.push(value.owners.documents["ProofOfIdentity"]);
   documents.push(value.owners.documents["ProofOfOwnership"]);
-  //   const documents = property?.documents || [];
 
   if (isLoading) {
     return <Loader />;

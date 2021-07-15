@@ -148,80 +148,82 @@ function createContent(details, phoneNumber) {
   const data = [];
 
   details.forEach((detail, index) => {
-    let column1 = [];
-    let column2 = [];
-
-    if ((index + 1) % 7 === 0) {
+    if(detail?.values?.length > 0) {
+      let column1 = [];
+      let column2 = [];
+  
+      if ((index + 1) % 7 === 0) {
+        data.push({
+          text: "",
+          margin: [-25, 0, 0, 200],
+        });
+      }
+      
       data.push({
-        text: "",
-        margin: [-25, 0, 0, 200],
+        text: `${detail.title}`,
+        font: "Hind",
+        fontSize: 18,
+        bold: true,
+        margin: [-25, 20, 0, 20],
+      });
+  
+      const newArray = [];
+      let count = 0;
+      let arrayNumber = 0;
+  
+      detail.values.forEach((value, index) => {
+        if (count <= 3) {
+          if (!newArray[arrayNumber]) {
+            newArray[arrayNumber] = [];
+          }
+          if (value) {
+            newArray[arrayNumber].push(value);
+          }
+          count++;
+        }
+        if (count === 4) {
+          count = 0;
+          arrayNumber++;
+        }
+      });
+  
+      newArray.forEach((value) => {
+        if (value?.length === 2) {
+          createContentForDetailsWithLengthOfTwo(value, data, column1, column2, detail.values.length > 3 ? 10 : 0);
+        } else if (value?.length === 1 || value?.length === 3) {
+          createContentForDetailsWithLengthOfOneAndThree(value, data, column1, column2, detail.values.length > 3 ? 10 : 0);
+        } else {
+          value.forEach((value, index) => {
+            let margin = [-25, 0, 0, 5];
+            if (index === 1) margin = [15, 0, 0, 5];
+            if (index === 2) margin = [26, 0, 0, 5];
+            if (index === 3) margin = [30, 0, 0, 5];
+            column1.push({
+              text: value.title,
+              font: "Hind",
+              fontSize: 11,
+              bold: true,
+              margin,
+            });
+            if (index === 1) margin = [15, 0, 0, 10];
+            if (index === 2) margin = [26, 0, 0, 10];
+            if (index === 3) margin = [30, 0, 0, 10];
+            column2.push({
+              text: value.value,
+              font: "Hind",
+              fontSize: 9,
+              margin,
+              color: "#1a1a1a",
+              width: "25%",
+            });
+          });
+          data.push({ columns: column1 });
+          data.push({ columns: column2 });
+          column1 = [];
+          column2 = [];
+        }
       });
     }
-
-    data.push({
-      text: `${detail.title}`,
-      font: "Hind",
-      fontSize: 18,
-      bold: true,
-      margin: [-25, 20, 0, 20],
-    });
-
-    const newArray = [];
-    let count = 0;
-    let arrayNumber = 0;
-
-    detail.values.forEach((value, index) => {
-      if (count <= 3) {
-        if (!newArray[arrayNumber]) {
-          newArray[arrayNumber] = [];
-        }
-        if (value) {
-          newArray[arrayNumber].push(value);
-        }
-        count++;
-      }
-      if (count === 4) {
-        count = 0;
-        arrayNumber++;
-      }
-    });
-
-    newArray.forEach((value) => {
-      if (value?.length === 2) {
-        createContentForDetailsWithLengthOfTwo(value, data, column1, column2, detail.values.length > 3 ? 10 : 0);
-      } else if (value?.length === 1 || value?.length === 3) {
-        createContentForDetailsWithLengthOfOneAndThree(value, data, column1, column2, detail.values.length > 3 ? 10 : 0);
-      } else {
-        value.forEach((value, index) => {
-          let margin = [-25, 0, 0, 5];
-          if (index === 1) margin = [15, 0, 0, 5];
-          if (index === 2) margin = [26, 0, 0, 5];
-          if (index === 3) margin = [30, 0, 0, 5];
-          column1.push({
-            text: value.title,
-            font: "Hind",
-            fontSize: 11,
-            bold: true,
-            margin,
-          });
-          if (index === 1) margin = [15, 0, 0, 10];
-          if (index === 2) margin = [26, 0, 0, 10];
-          if (index === 3) margin = [30, 0, 0, 10];
-          column2.push({
-            text: value.value,
-            font: "Hind",
-            fontSize: 9,
-            margin,
-            color: "#1a1a1a",
-            width: "25%",
-          });
-        });
-        data.push({ columns: column1 });
-        data.push({ columns: column2 });
-        column1 = [];
-        column2 = [];
-      }
-    });
   });
 
   return data;

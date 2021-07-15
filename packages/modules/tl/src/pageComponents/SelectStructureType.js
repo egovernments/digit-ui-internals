@@ -4,7 +4,7 @@ import { FormStep, RadioOrSelect, RadioButtons } from "@egovernments/digit-ui-re
 
 const SelectStructureType = ({ t, config, onSelect, userType, formData }) => {
   const [StructureType, setStructureType] = useState(formData?.TradeDetails?.StructureType);
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   const menu = [
     { i18nKey: "TL_COMMON_YES", code: "MOVABLE" },
     { i18nKey: "TL_COMMON_NO", code: "IMMOVABLE" },
@@ -12,7 +12,6 @@ const SelectStructureType = ({ t, config, onSelect, userType, formData }) => {
 
   const onSkip = () => onSelect();
 
-  // const propertyOwnerShipCategory = Digit.Hooks.pt.useMDMS("pb", "PropertyTax", "OwnerShipCategory", {});
   function selectStructuretype(value) {
     setStructureType(value);
   }
@@ -20,7 +19,6 @@ const SelectStructureType = ({ t, config, onSelect, userType, formData }) => {
   function goNext() {
     sessionStorage.setItem("StructureType", StructureType.i18nKey);
     onSelect(config.key, { StructureType });
-    //onSelect("usageCategoryMajor", { i18nKey: "PROPERTYTAX_BILLING_SLAB_RESIDENTIAL" });
   }
   return (
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!StructureType}>

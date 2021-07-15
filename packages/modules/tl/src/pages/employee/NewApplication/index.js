@@ -165,7 +165,7 @@ const NewApplication = () => {
   // let configs = newConfig;
   let configs = [];
   newConfig.map(conf => {
-    if (conf.head !== "ES_NEW_APPLICATION_PROPERTY_ASSESSMENT") {
+    if (conf.head !== "ES_NEW_APPLICATION_PROPERTY_ASSESSMENT" && conf.head) {
       configs.push(conf);
     }
   });
@@ -182,7 +182,7 @@ const NewApplication = () => {
   }
 
   return (
-    <div>
+    <div style={{marginLeft:"30px"}}>
       <FormComposer
         heading={t("ES_TITLE_NEW_TRADE_LICESE_APPLICATION")}
         isDisabled={!canSubmit}

@@ -1,20 +1,14 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { FormComposer, CardLabelDesc, Loader, Dropdown, Localities } from "@egovernments/digit-ui-react-components";
+import { FormComposer } from "@egovernments/digit-ui-react-components";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import React, { useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 const SearchTrade = ({ config: propsConfig, onSelect }) => {
   const { t } = useTranslation();
-
   const history = useHistory();
-  const tenantId = Digit.ULBService.getCurrentTenantId();
   const [canSubmit, setCanSubmit] = useState(false);
 
-//   const allCities = Digit.Hooks.pt.useTenants()?.sort((a, b) => a?.i18nKey?.localeCompare?.(b?.i18nKey));
-
-//   const [cityCode, setCityCode] = useState();
-  const [formValue, setFormValue] = useState();
 
   useLayoutEffect(() => {
     const getActionBar = () => {
@@ -33,13 +27,12 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
     getActionBar();
   }, []);
 
-  // moduleCode, type, config = {}, payload = []
 
   const onTradeSearch = async (data) => {
     if (!data.mobileNumber && !data.LicenseNum) {
       alert(t("TL_ERROR_NEED_ONE_PARAM"));
     }
-     else {
+    else {
       history.push(
         `/digit-ui/citizen/tl/tradelicence/renewal-list?mobileNumber=${data?.mobileNumber ? data?.mobileNumber : ``}&LicenseNumber=${data?.LicenseNum ? data?.LicenseNum : ``}`
       );
@@ -100,9 +93,9 @@ const SearchTrade = ({ config: propsConfig, onSelect }) => {
     else setCanSubmit(true);
   };
 
-//   if (isLoading) {
-//     return <Loader />;
-//   }
+  //   if (isLoading) {
+  //     return <Loader />;
+  //   }
 
   return (
     <div style={{ marginTop: "16px" }}>

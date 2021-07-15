@@ -8,7 +8,9 @@ const TLSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
   const { pathname } = useLocation();
   const presentInModifyApplication = pathname.includes("modify");
   // let isEditProperty = formData?.isEditProperty || false;
-  let isEdit = window.location.href.includes("/edit-application/");
+  let isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
+  const isRenewal = window.location.href.includes("edit-application") || window.location.href.includes("tl/renew-application-details");
+  
   //if (formData?.isUpdateProperty) isEditProperty = true;
   const inputs = [
     {
@@ -19,7 +21,7 @@ const TLSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
       validation: {
         minlength: 6,
         maxlength: 7,
-        pattern: "[0-9]+",
+        pattern: "^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$",
         max: "9999999",
         title: t("CORE_COMMON_PINCODE_INVALID"),
       },
@@ -66,7 +68,8 @@ const TLSelectPincode = ({ t, config, onSelect, formData = {}, userType, registe
             <TextInput 
               key={input.name} 
               value={pincode} 
-              onChange={onChange} 
+              onChange={onChange}
+              disable={isRenewal}
               {...input.validation} 
               autoFocus={presentInModifyApplication} 
             />

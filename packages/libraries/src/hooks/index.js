@@ -20,6 +20,8 @@ import useInboxGeneral from "./useInboxGeneral/useInboxGeneral";
 import useApplicationStatusGeneral from "./useStatusGeneral";
 import useModuleTenants from "./useModuleTenants";
 import useStore from "./useStore";
+import { useTenants } from "./useTenants"
+import useInbox from "./useInbox"
 import useNewInboxGeneral from "./useInboxGeneral/useNewInbox";
 
 import useComplaintDetails from "./pgr/useComplaintDetails";
@@ -31,7 +33,7 @@ import useEmployeeFilter from "./pgr/useEmployeeFilter";
 import useInboxData from "./pgr/useInboxData";
 import useLocalities from "./pgr/useLocalities";
 import useServiceDefs from "./pgr/useServiceDefs";
-import useTenants from "./pgr/useTenants";
+import usePGRTenants from "./pgr/useTenants";
 import useComplaintSubType from "./pgr/useComplaintSubType";
 import useComplaintStatusCount from "./pgr/useComplaintStatusWithCount";
 
@@ -43,7 +45,7 @@ import useSearch from "./fsm/useSearch";
 import useSearchAll from "./fsm/useSearchAll";
 import useVehicleSearch from "./fsm/useVehicleSearch";
 import useVehicleUpdate from "./fsm/useVehicleUpdate";
-import useInbox from "./fsm/useInbox";
+import useFSMInbox from "./fsm/useInbox";
 import useApplicationUpdate from "./fsm/useApplicationUpdate";
 import useWorkflowData from "./fsm/useWorkflowData";
 import useRouteSubscription from "./fsm/useRouteSubscription";
@@ -93,11 +95,13 @@ import useTLSearchApplication from "./tl/useTLsearchApplication";
 import useTLPaymentHistory from "./tl/userPaymentHistory";
 import useTLApplicationDetail from "./tl/useApplicationDetail";
 import useTLApplicationActions from "./tl/useApplicationActions";
+import useTLFetchBill from "./tl/useFetchBill";
 
 import useTLGenderMDMS from "./tl/useTLGenderMDMS";
-
+import useTLInbox from "./tl/useInbox";
 import useTradeLicenseBillingslab from "./tl/useTradeLicenseBillingslab";
-
+import useTLMDMS from "./tl/useMDMS";
+import useTLSearch from "./tl/useSearch";
 
 import useHRMSSearch from "./hrms/useHRMSsearch";
 import useHrmsMDMS from "./hrms/useHRMSMDMS";
@@ -122,7 +126,7 @@ const pgr = {
   useInboxData,
   useLocalities,
   useServiceDefs,
-  useTenants,
+  useTenants: usePGRTenants,
   useComplaintSubType,
   usePropertyMDMS,
   useComplaintStatusCount,
@@ -136,7 +140,7 @@ const fsm = {
   useSearch,
   useRouteSubscription,
   useSearchAll,
-  useInbox,
+  useInbox: useFSMInbox,
   useApplicationUpdate,
   useApplicationStatus,
   useWorkflowData,
@@ -202,8 +206,12 @@ const tl = {
   useTradeLicenseSearch,
   useTLGenderMDMS,
   useTradeLicenseBillingslab,
+  useInbox:useTLInbox,
+  useMDMS: useTLMDMS,
+  useSearch: useTLSearch,
   useApplicationDetail: useTLApplicationDetail,
   useApplicationActions: useTLApplicationActions,
+  useFetchBill: useTLFetchBill,
 };
 
 const receipts = {
@@ -235,6 +243,8 @@ const Hooks = {
   useRecieptSearch,
   useNewInboxGeneral,
   useStore,
+  useTenants,
+  useInbox: useTLInbox,
   pgr,
   fsm,
   pt,

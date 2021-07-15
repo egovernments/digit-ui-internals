@@ -35,9 +35,20 @@ export const TLSearch = {
     return response.Licenses[0];
   },
 
+  numberOfApplications: async (tenantId, filters = {}) => {
+    const response = await TLService.TLsearch({ tenantId, filters });
+    return response.Licenses;
+  },
+
   applicationDetails: async (t, tenantId, applicationNumber, userType) => {
     const filter = { applicationNumber };
     const response = await TLSearch.application(tenantId, filter);
+    let numOfApplications = [];
+    if(response?.licenseNumber) {
+      const licenseNumbers = response?.licenseNumber;
+      const filters = { licenseNumbers, offset: 0 };
+      numOfApplications = await TLSearch.numberOfApplications(tenantId, filters);
+    }
     console.log(response, "from hookfrom hookfrom hookfrom hookfrom hookfrom hook");
 
     let employeeResponse = [];
@@ -106,7 +117,7 @@ export const TLSearch = {
       values: [
         { title: "CORE_COMMON_PINCODE", value: response?.tradeLicenseDetail?.address?.pincode || "NA" },
         { title: "MYCITY_CODE_LABEL", value: response?.tradeLicenseDetail?.address?.city || "NA" },
-        { title: "TL_LOCALIZATION_LOCALITY", value: response?.tradeLicenseDetail?.address?.locality?.name || "NA" },
+        { title: "TL_LOCALIZATION_LOCALITY", value: response?.tradeLicenseDetail?.address?.locality?.code || "NA" },
         { title: "TL_LOCALIZATION_BUILDING_NO", value: response?.tradeLicenseDetail?.address?.doorNo || "NA" },
         { title: "TL_LOCALIZATION_STREET_NAME", value: response?.tradeLicenseDetail?.address?.street || "NA" }
       ],
@@ -148,7 +159,7 @@ export const TLSearch = {
       },
     };
 
-    if(response?.workflowCode == "NewTL") {
+    if(response?.workflowCode == "NewTL" && response?.status !== "APPROVED") {
       const details = {
         title: "",
         values: [
@@ -170,6 +181,7 @@ export const TLSearch = {
       applicationDetails: employeeResponse,
       additionalDetails: response?.additionalDetails,
       applicationData: response,
+      numOfApplications: numOfApplications
     };
   },
 };

@@ -1,7 +1,6 @@
-import { Card, CardHeader, CardSubHeader, CardText, Loader, SubmitBar, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
+import { Card, CardHeader, CardSubHeader, CardText, CitizenInfoLabel, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { stringReplaceAll } from "../utils";
-//import { map } from "lodash-es";
 
 const TradeLicense = ({ t, config, onSelect, userType, formData }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -9,8 +8,7 @@ const TradeLicense = ({ t, config, onSelect, userType, formData }) => {
 
   const { isLoading, data: Documentsob = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "TradeLicense", "TLDocuments");
   let docs = Documentsob?.TradeLicense?.Documents;
-  //docs = docs?.filter((doc) => doc["digit-citizen"]);
-  function onSave() {}
+  function onSave() { }
 
   function goNext() {
     onSelect();
@@ -25,13 +23,13 @@ const TradeLicense = ({ t, config, onSelect, userType, formData }) => {
             {isLoading && <Loader />}
             {Array.isArray(docs)
               ? docs.map(({ code, dropdownData }, index) => (
-                  <div key={index}>
-                    <CardSubHeader>{t("TRADELICENSE_" + stringReplaceAll(code, ".", "_") + "_HEADING")}</CardSubHeader>
-                    {dropdownData.map((dropdownData) => (
-                      <CardText>{t("TRADELICENSE_" + stringReplaceAll(dropdownData?.code, ".", "_") + "_LABEL")}</CardText>
-                    ))}
-                  </div>
-                ))
+                <div key={index}>
+                  <CardSubHeader>{t("TRADELICENSE_" + stringReplaceAll(code, ".", "_") + "_HEADING")}</CardSubHeader>
+                  {dropdownData.map((dropdownData) => (
+                    <CardText>{t("TRADELICENSE_" + stringReplaceAll(dropdownData?.code, ".", "_") + "_LABEL")}</CardText>
+                  ))}
+                </div>
+              ))
               : console.log("error")}
           </div>
         </div>

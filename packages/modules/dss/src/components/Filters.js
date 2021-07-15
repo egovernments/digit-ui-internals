@@ -98,7 +98,7 @@ const Filters = ({ t, ulbTenants, isOpen, closeFilters, showDateRange = true, sh
             onSelect={selectFilters}
             selected={selected}
             defaultLabel={t("ES_DSS_ALL_ULB_SELECTED")}
-            defaultUnit={t("ES_DSS_ULB_SELECTED")}
+            defaultUnit={t("ES_DSS_DDR_SELECTED")}
           />
         </div>
       )}

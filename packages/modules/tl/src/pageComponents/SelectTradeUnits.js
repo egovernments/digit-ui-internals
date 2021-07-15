@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown, RadioOrSelect } from "@egovernments/digit-ui-react-components";
+import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown, RadioOrSelect, LinkButton } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
 
 const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
@@ -20,6 +20,14 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
     const values = [...fields];
     values.push({ tradecategory: "", tradetype: "", tradesubtype: "", unit: null, uom: null });
     setFeilds(values);
+  }
+
+  function handleRemove(index) {
+    const values = [...fields];
+    if(values.length !=1){
+    values.splice(index,1);
+    setFeilds(values);
+    }
   }
 
   const { isLoading, data: Data = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "TradeLicense", "TradeUnits", "[?(@.type=='TL')]");
@@ -138,13 +146,26 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
       onSelect={goNext}
       onSkip={onSkip}
       t={t}
-      //isDisabled={!name || !mobileNumber || !gender }
+      isDisabled={!fields[0].tradecategory || !fields[0].tradetype || !fields[0].tradesubtype }
     >
       {fields.map((field, index) => {
         return (
           <div key={`${field}-${index}`}>
             <hr color="#d6d5d4" className="break-line"></hr>
             <CardLabel>{`${t("TL_NEW_TRADE_DETAILS_TRADE_CAT_LABEL")}`}</CardLabel>
+            <LinkButton
+            label={
+            <div>
+            <span>
+            <svg style={{float:"right", position:"relative",bottom:"32px"  }}  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z" fill="#0B0C0C"/>
+            </svg>
+            </span>
+            </div>
+            }
+              style={{ width: "100px", display:"inline" }}
+              onClick={(e) => handleRemove(index)}
+           />
             <RadioButtons
               t={t}
               options={TradeCategoryMenu}

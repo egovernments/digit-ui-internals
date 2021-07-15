@@ -33,13 +33,13 @@ export const TLService = {
       userService: false,
       //params: { tenantId, ...filters },
     }),
-  TLsearch: ({ tenantId, filters, auth }) =>
-    Request({
+  TLsearch: ({ tenantId, filters }) =>
+     Request({
       url: Urls.tl.search,
       useCache: false,
       method: "POST",
-      auth: auth === false ? auth : true,
-      userService: auth === false ? auth : true,
+      auth: true,
+      userService: false,
       params: { tenantId, ...filters },
     }),
   update: (details, tenantId) =>

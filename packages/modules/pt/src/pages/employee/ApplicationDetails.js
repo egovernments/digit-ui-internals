@@ -158,6 +158,13 @@ const ApplicationDetails = () => {
     });
   }
 
+  if (workflowDetails?.data?.actionState?.nextActions?.find((ac) => ac.action === "VERIFY")) {
+    workflowDetails.data.actionState.nextActions = [
+      ...workflowDetails?.data?.actionState?.nextActions,
+      { ...workflowDetails?.data?.actionState?.nextActions?.find((ac) => ac.action === "VERIFY"), docUploadRequired: true },
+    ];
+  }
+
   return (
     <div>
       <Header>{t("PT_APPLICATION_TITLE")}</Header>

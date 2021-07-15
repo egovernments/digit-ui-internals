@@ -8,7 +8,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
   const stateId = tenantId.split(".")[0];
   //const isUpdateProperty = formData?.isUpdateProperty || false;
   //let isEditProperty = formData?.isEditProperty || false;
-  let isEdit = window.location.href.includes("edit-application");
+  let isEdit = window.location.href.includes("edit-application")||window.location.href.includes("renew-trade");
   const [ownershipCategory, setOwnershipCategory] = useState(formData?.ownershipCategory);
   const { data: OwnerShipCategoryOb } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", "TLOwnerShipCategory");
   const ownerShipdropDown = [];
@@ -102,7 +102,8 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
   // }, []);
 
   if (userType === "employee") {
-    
+  const isRenewal = window.location.href.includes("tl/renew-application-details");
+  
     return (
       <React.Fragment>
         <LabelFieldPair>
@@ -113,7 +114,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
             className="form-field"
             selected={ownershipCategory}
             // selected={ownershipCategory ? ownershipCategory : dropdownData[0]}
-            // disable={getDropdwonForProperty(ownerShipdropDown)?.length === 1 || editScreen}
+            disable={isRenewal}
             option={dropdownData}
             select={selectedValue}
             optionKey="i18nKey"
@@ -134,7 +135,8 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
     <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!ownershipCategory}>
       <RadioButtons
         isMandatory={config.isMandatory}
-        options={getDropdwonForProperty(ownerShipdropDown) || []}
+        //options={getDropdwonForProperty(ownerShipdropDown) || []}
+        options={dropdownData?dropdownData:[]}
         selectedOption={ownershipCategory}
         optionsKey="i18nKey"
         onSelect={selectedValue}

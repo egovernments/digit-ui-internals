@@ -1,0 +1,16 @@
+.search-form-wrapper{
+    @apply inline-block bg-white mx-lg mb-lg py-lg pl-lg;
+    .form-field{
+        width: 300px;
+        @apply inline-block mr-md align-middle;
+    }
+    .submit{
+        @apply inline-flex align-middle !important;
+        button{
+            margin: 0;
+        }
+        p{
+            @apply cursor-pointer text-link text-focus ;
+        }
+    }
+}

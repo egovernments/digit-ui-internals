@@ -7,7 +7,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
   const allCities = Digit.Hooks.tl.useTenants();
   let tenantId = Digit.ULBService.getCurrentTenantId();
   //let isEditProperty = formData?.isEditProperty || false;
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
   //if (formData?.isUpdateProperty) isEditProperty = true;
   const { pincode, city } = formData?.address || "";
   const cities =
@@ -152,6 +152,8 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
     }
   }, [errors]);
 
+  const checkingLocationForRenew = window.location.href.includes("renew-application-details");
+  const checkingLocationFornew = window.location.href.includes("new-application-details");
 
   if (userType === "employee") {
     return (
@@ -167,7 +169,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
               <Dropdown
                 className="form-field"
                 selected={props.value}
-                // disable={isEditProperty ? isEditProperty : cities?.length === 1}
+                disable={checkingLocationForRenew || checkingLocationFornew ? true : false}
                 option={cities}
                 select={props.onChange}
                 optionKey="code"
@@ -182,7 +184,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
           <CardLabel className="card-label-smaller">{`${t("TL_LOCALIZATION_LOCALITY")}:`}</CardLabel>
           <Controller
             name="locality"
-            defaultValue={null}
+            defaultValue={checkingLocationForRenew ? formData.address.locality : null}
             control={control}
             rules={{required: "Required"}}
             render={(props) => (
@@ -194,6 +196,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
                 onBlur={props.onBlur}
                 optionKey="i18nkey"
                 t={t}
+                disable={checkingLocationForRenew ? true : false}
                 // disable={isEditProperty ? isEditProperty : false}
               />
             )}

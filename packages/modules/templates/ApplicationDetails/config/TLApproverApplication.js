@@ -21,7 +21,7 @@ export const configTLApproverApplication = ({
     label: {
       heading: `WF_${action?.action}_APPLICATION`,
       submit: `WF_${businessService?.toUpperCase()}_${action?.action}`,
-      cancel: "ES_PT_COMMON_CANCEL",
+      cancel: "WF_EMPLOYEE_NEWTL_CANCEL",
     },
     form: [
       {
@@ -29,7 +29,7 @@ export const configTLApproverApplication = ({
           {
             label: !checkCondtions ? null : t("WF_ASSIGNEE_NAME_LABEL"),
             placeholder: !checkCondtions ? null : t("WF_ASSIGNEE_NAME_PLACEHOLDER"),
-            isMandatory: checkCondtions,
+            // isMandatory: false,
             type: "dropdown",
             populators: !checkCondtions ? null : (
               <Dropdown
@@ -50,7 +50,7 @@ export const configTLApproverApplication = ({
             },
           },
           {
-            label: t("ES_PT_UPLOAD_FILE"),
+            label: t("TL_APPROVAL_CHECKLIST_BUTTON_UP_FILE"),
             populators:  (
               <UploadFile
                 // accept=".jpg"
@@ -58,7 +58,7 @@ export const configTLApproverApplication = ({
                 onDelete={() => {
                   setUploadedFile(null);
                 }}
-                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
+                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
               />
             )
           },

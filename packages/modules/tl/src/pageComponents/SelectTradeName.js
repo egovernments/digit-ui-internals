@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FormStep, CardLabel, TextInput, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
+import { CardLabel, CitizenInfoLabel, FormStep, Loader, TextInput } from "@egovernments/digit-ui-react-components";
+import React, { useState } from "react";
 
 const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => {
   let validation = {};
@@ -7,30 +7,22 @@ const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => 
   const [TradeName, setTradeName] = useState(formData.TradeDetails?.TradeName);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
-  const isEdit = window.location.href.includes("/edit-application/");
+  const isEdit = window.location.href.includes("/edit-application/") || window.location.href.includes("renew-trade");
   const { isLoading, data: fydata = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "egf-master", "FinancialYear");
-  
 
-  let mdmsFinancialYear = fydata["egf-master"]?fydata["egf-master"].FinancialYear.filter(y => y.module === "TL"):[];
-  let temp = mdmsFinancialYear.length > 0 ? parseInt(mdmsFinancialYear[0].id):0;
-  let FY;
-  mdmsFinancialYear && mdmsFinancialYear.map((year) => {
-    if(parseInt(year.id)>temp)
-    {
-      FY=year.finYearRange;
-      temp=parseInt(year.id);
-    }
-  })
-
+  let mdmsFinancialYear = fydata["egf-master"] ? fydata["egf-master"].FinancialYear.filter(y => y.module === "TL") : [];
+  let FY = mdmsFinancialYear && mdmsFinancialYear.length > 0 && mdmsFinancialYear.sort((x, y) => y.endingDate - x.endingDate)[0]?.code;
   function setSelectTradeName(e) {
     setTradeName(e.target.value);
   }
 
   const goNext = () => {
-    sessionStorage.setItem("CurrentFinancialYear",FY);
+    sessionStorage.setItem("CurrentFinancialYear", FY);
     onSelect(config.key, { TradeName });
   };
-  //const onSkip = () => onSelect();
+  if (isLoading) {
+    return <Loader></Loader>
+  }
 
   return (
     <React.Fragment>
@@ -38,12 +30,9 @@ const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => 
         config={config}
         onSelect={goNext}
         onSkip={onSkip}
-        //forcedError={t(unitareaerror) || t(areanotzeroerror)}
         t={t}
-        // isDisabled={isEdit}
-        //showErrorBelowChildren={true}
       >
-        <CardLabel>{`${t("Trade Name")}`}</CardLabel>
+        <CardLabel>{`${t("TL_LOCALIZATION_TRADE_NAME")}`}</CardLabel>
         <TextInput
           t={t}
           isMandatory={false}
@@ -56,7 +45,7 @@ const SelectTradeName = ({ t, config, onSelect, value, userType, formData }) => 
           {...(validation = { pattern: "^[a-zA-Z-.`' ]*$", isRequired: true, type: "text", title: t("TL_INVALID_TRADE_NAME") })}
         />
       </FormStep>
-      {<CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("TL_LICENSE_ISSUE_YEAR_INFO_MSG")+FY} />}
+      {<CitizenInfoLabel info={t("CS_FILE_APPLICATION_INFO_LABEL")} text={t("TL_LICENSE_ISSUE_YEAR_INFO_MSG") + FY} />}
     </React.Fragment>
   );
 };

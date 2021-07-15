@@ -17,7 +17,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
     return initialStates.searchParams || {};
   });
 
-  let isMobile = false;
+  let isMobile = window.Digit.Utils.browser.isMobile();
   let paginationParams = isMobile
     ? { limit: 100, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" }
     : { limit: pageSize, offset: pageOffset, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
@@ -104,6 +104,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
           onSearch={handleFilterChange}
           onSort={handleSort}
           onNextPage={fetchNextPage}
+          tableConfig={rest?.tableConfig}
           onPrevPage={fetchPrevPage}
           currentPage={Math.floor(pageOffset / pageSize)}
           pageSizeLimit={pageSize}
@@ -113,6 +114,7 @@ const Inbox = ({ parentRoute, businessService = "HRMS", initialStates = {}, filt
           searchParams={searchParams}
           sortParams={sortParams}
           totalRecords={totalRecords}
+          linkPrefix={'/digit-ui/employee/hrms/details/'}
           filterComponent={filterComponent}
         />
         // <div></div>

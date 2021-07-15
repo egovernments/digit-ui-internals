@@ -2,7 +2,8 @@ import React from "react";
 import { UploadFile, Dropdown } from "@egovernments/digit-ui-react-components";
 import { convertEpochToDate } from "../Utils/index";
 
-export const configEmployeeActiveApplication = ({ t, action, selectFile, uploadedFile, setUploadedFile, selectedReason, Reasons, selectReason }) => {
+export const configEmployeeActiveApplication = ({ t, action, selectFile, uploadedFile, setUploadedFile, selectedReason, Reasons, selectReason,employees={} }) => {
+  employees.deactivationDetails=employees?.deactivationDetails?.sort((y,x)=>x?.auditDetails?.createdDate-y?.auditDetails?.createdDate);
   return {
     label: {
       heading: `HR_ACTIVATE_EMPLOYEE_HEAD`,
@@ -33,7 +34,7 @@ export const configEmployeeActiveApplication = ({ t, action, selectFile, uploade
             populators: {
               error: t("HR_EFFECTIVE_DATE_INVALID"),
               name: "effectiveFrom",
-              max: convertEpochToDate(new Date().toJSON().slice(0, 10).replace(/-/g, "/")),
+              min: convertEpochToDate(employees?.deactivationDetails?.[0].effectiveFrom),
             },
           },
           {

@@ -10,6 +10,7 @@ const SelectEmployeeCorrespondenceAddress = ({ t, config, onSelect, formData = {
       type: "text",
       name: "correspondenceAddress",
       validation: {
+        pattern: Digit.Utils.getPattern('Address'),
         isRequired: true,
         title: t("CORE_COMMON_APPLICANT_NAME_INVALID"),
       },
@@ -23,8 +24,9 @@ const SelectEmployeeCorrespondenceAddress = ({ t, config, onSelect, formData = {
 
   return (
     <div>
-      {inputs?.map((input, index) => (
-        <React.Fragment key={index}>
+      {inputs?.map((input, index) => {
+        let currentValue=formData && formData[config.key] && formData[config.key][input.name]||'';
+        return(<React.Fragment key={index}>
           {errors[input.name] && <CardLabelError>{t(input.error)}</CardLabelError>}
           <LabelFieldPair>
             <CardLabel className="card-label-smaller">
@@ -40,10 +42,11 @@ const SelectEmployeeCorrespondenceAddress = ({ t, config, onSelect, formData = {
                 defaultValue={undefined}
                 {...input.validation}
               />
+               {currentValue&&currentValue.length>0&&!currentValue.match(Digit.Utils.getPattern('Address'))&&<CardLabelError style={{ width: "100%", marginTop: '-15px', fontSize: '16px', marginBottom: '12px'}}>{t("CORE_COMMON_APPLICANT_ADDRESS_INVALID")}</CardLabelError>}
             </div>
           </LabelFieldPair>
         </React.Fragment>
-      ))}
+      )})}
     </div>
   );
 };

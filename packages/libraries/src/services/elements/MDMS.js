@@ -478,7 +478,7 @@ const getTLFinancialYearList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: "FinancialYear" }],
+        masterDetails: [{ name: "FinancialYear", filter: `[?(@.module == "TL")]` }],
       },
     ],
   },

@@ -1,9 +1,9 @@
 import Urls from "../atoms/urls";
 import { Request } from "../atoms/Utils/Request";
+import cloneDeep from "lodash/cloneDeep";
 
 export const WorkflowService = {
   init: (stateCode, businessServices) => {
-    console.log("***************************************>>>>>>>>>>>>>>>>>>>>", stateCode);
     return Request({
       url: Urls.WorkFlow,
       useCache: true,
@@ -27,6 +27,7 @@ export const WorkflowService = {
     // console.log("getWorkflowDetails", tenantId, id, moduleCode, role);
     // console.log(Digit);
     const workflow = await Digit.WorkflowService.getByBusinessId(tenantId, id);
+    const applicationProcessInstance = cloneDeep(workflow?.ProcessInstances);
     const businessServiceResponse = (await Digit.WorkflowService.init(tenantId, moduleCode))?.BusinessServices[0]?.states;
     if (workflow && workflow.ProcessInstances) {
       const processInstances = workflow.ProcessInstances;
@@ -100,7 +101,7 @@ export const WorkflowService = {
             status: "CREATED",
           });
 
-        const details = { timeline, nextActions, actionState, applicationBusinessService: workflow?.ProcessInstances?.[0]?.businessService };
+        const details = { timeline, nextActions, actionState, applicationBusinessService: workflow?.ProcessInstances?.[0]?.businessService, processInstances: applicationProcessInstance };
         return details;
       }
     } else {

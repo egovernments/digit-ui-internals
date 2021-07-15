@@ -1,28 +1,30 @@
-import { Loader } from "@egovernments/digit-ui-react-components";
+import { ArrowRightInbox, Loader } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { getDefaultReceiptService } from "./utils";
 
+const ArrowRight = ({ to }) => (
+  <Link to={to}>
+    <ArrowRightInbox />
+  </Link>
+);
+
 const ReceiptsCard = () => {
+  if (!Digit.Utils.receiptsAccess()) {
+    return null;
+  }
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
-  const isupdate = Digit.SessionStorage.get("isupdate");
   const searchParams = {
     tenantId: tenantId,
     businessServices: getDefaultReceiptService(),
     isCountRequest: true
   };
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], isupdate);
-  if (hookLoading) {
-    return <Loader></Loader>
-  }
+  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], false);
   const total = data?.Count;
-  if (!Digit.Utils.receiptsAccess()) {
-    return null;
-  }
   return (
-    <div className="employeeCard card-home card-home-receipts">
+    <div className="employeeCard card-home" style={{ display: "inline-block" }}>
       <div className="complaint-links-container">
         <div className="header">
           <span className="logo">
@@ -33,20 +35,47 @@ const ReceiptsCard = () => {
           </span>
           <span className="text">{t("ACTION_TEST_RECEIPTS")}</span>
         </div>
-        <div className="header" style={{ flexFlow: "column" }}>
-          <span className="text" style={{ display: "block", marginLeft: "-8em", fontWeight: "400" }}>  {total}</span>
-          <span className="text" style={{ display: "block", marginLeft: "-4em", fontWeight: "400" }}> <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_TOTAL_RECEIPTS")}</Link></span>
-        </div>
-        <div className="body">
-          <span className="link">
-            <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
-          </span>
-          <span className="link">
+        <div className="body" style={{ margin: "0px", padding: "0px" }}>
+          {hookLoading ? <span style={{ display: "flex", justifyContent: "center", width: "100%" }}> <Loader /></span> : <div
+            className="flex-fit"
+            style={{
+              borderBottom: "1px solid #d6d5d4",
+              padding: "15px 10px 10px",
+              width: "100%",
+              paddingLeft: "3rem",
+              paddingBottom: "1rem",
+            }}
+          >
+            <div className="card-count">
+              <div>
+                <span style={{ fontWeight: "800" }}>{" " + total ? total : 0 || "-"}</span>
+              </div>
+              <div>
+                <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_TOTAL_RECEIPTS")}</Link>
+              </div>
+            </div>
+            <div>
+              <div>
+                <span style={{ fontWeight: "800" }}>{" "}</span>
+              </div>
+              <div>
+                {/* <Link to={`/digit-ui/employee/hrms/inbox`}>{t("ACTIVE_EMPLOYEES")}</Link> */}
+              </div>
+            </div>
+          </div>}
+          <div style={{ paddingLeft: "3rem", paddingBottom: "1rem" }}>
+            <span className="link">
+              <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
+              <span className="inbox-total">{total ? total : 0 || "-"}</span>
+              {<ArrowRight to={`/digit-ui/employee/receipts/inbox`} />}
+            </span>
+            {/* <span className="link">
             <Link to={`/digit-ui/employee/receipts/inprogress`}>{t("CR_HOME_HEADER_DASHBOARD")}</Link>
           </span>
           <span className="link">
             <Link to={`/digit-ui/employee/receipts/inprogress`}>{t("CR_HOME_HEADER_REPORT")}</Link>
-          </span>
+          </span> */}
+          </div>
         </div>
       </div>
     </div>

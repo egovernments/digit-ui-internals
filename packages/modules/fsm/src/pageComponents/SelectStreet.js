@@ -11,7 +11,9 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
   const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger } = useForm();
   const formValue = watch();
   const { errors } = localFormState;
-  const checkLocation = window.location.href.includes("tl/new-application");
+  const checkLocation = window.location.href.includes("tl/new-application") || window.location.href.includes("tl/renew-application-details");
+  const isRenewal = window.location.href.includes("edit-application") || window.location.href.includes("tl/renew-application-details");
+  
   let inputs;
   if (window.location.href.includes("tl")) {
     inputs = config.inputs;
@@ -110,6 +112,7 @@ const SelectStreet = ({ t, config, onSelect, userType, formData, formState, setE
                     _props.onChange(e.target.value);
                   }}
                   onBlur={_props.onBlur}
+                  disable={isRenewal}
                   autoFocus={focusIndex?.index == index}
                   {...input.validation}
                 />

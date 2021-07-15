@@ -7,6 +7,10 @@ function isEndDateFocused(focusNumber) {
   return focusNumber === 1;
 }
 
+function isStartDateFocused(focusNumber) {
+  return focusNumber === 0;
+}
+
 const DateRange = ({ values, onFilterChange, t }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [focusedRange, setFocusedRange] = useState([0, 0]);
@@ -28,7 +32,7 @@ const DateRange = ({ values, onFilterChange, t }) => {
   useEffect(() => {
     if (!isModalOpen) {
       const startDate = selectionRange?.startDate;
-      const endDate =  isEqual(selectionRange?.startDate, selectionRange?.endDate) ? addSeconds(addMinutes(addHours(selectionRange?.endDate, 23), 59), 59) : selectionRange?.endDate;
+      const endDate =  selectionRange?.endDate;
       const duration = getDuration(selectionRange?.startDate, selectionRange?.endDate);
       const title = `${format(selectionRange?.startDate, "MMM d, yyyy")} - ${format(selectionRange?.endDate, "MMM d, yyyy")}`;
       onFilterChange({ range: { startDate, endDate, duration, title }, requestDate: { startDate, endDate, duration, title } });
@@ -104,8 +108,12 @@ const DateRange = ({ values, onFilterChange, t }) => {
 
   const handleSelect = (ranges) => {
     const { range1: selection } = ranges;
-    setSelectionRange(selection);
+    const { startDate, endDate, title, duration } = selection;
+    if (isStartDateFocused(focusedRange[1])) {
+      setSelectionRange(selection);
+    }
     if (isEndDateFocused(focusedRange[1])) {
+      setSelectionRange({ title, duration, startDate, endDate: addSeconds(addMinutes(addHours(endDate, 23), 59), 59) });
       setIsModalOpen(false);
     }
   };
@@ -135,7 +143,7 @@ const DateRange = ({ values, onFilterChange, t }) => {
               ranges={[selectionRange]}
               rangeColors={["#9E9E9E"]}
               onChange={handleSelect}
-              onRangeFocusChange={handleFocusChange}
+              onRangeFocusChange={setFocusedRange}
               retainEndDateOnFirstSelection={true}
               showSelectionPreview={true}
               staticRanges={staticRanges}

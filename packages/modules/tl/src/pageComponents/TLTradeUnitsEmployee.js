@@ -31,6 +31,8 @@ const TLTradeUnitsEmployee = ({ config, onSelect, userType, formData, setError, 
     const [tradeTypeOptionsList, setTradeTypeOptionsList] = useState([]);
     const [tradeSubTypeOptionsList, setTradeSubTypeOptionsList] = useState([]);
     const [isErrors, setIsErrors] = useState(false);
+    const [previousLicenseDetails, setPreviousLicenseDetails] = useState(formData?.tradedetils1 || []);
+    const isRenewal = window.location.href.includes("tl/renew-application-details");
 
     const { data: tradeMdmsData,isLoading } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "TradeLicense", "TradeUnits", "[?(@.type=='TL')]");
 
@@ -50,6 +52,9 @@ const TLTradeUnitsEmployee = ({ config, onSelect, userType, formData, setError, 
         onSelect(config?.key, data);
     }, [units]);
 
+    useEffect(() => {
+        onSelect("tradedetils1", previousLicenseDetails);
+      }, [previousLicenseDetails]);
 
     // useEffect(() => {
     //   setUnits([createOwnerDetails()]);
@@ -79,7 +84,10 @@ const TLTradeUnitsEmployee = ({ config, onSelect, userType, formData, setError, 
         setTradeCategoryValues,
         tradeMdmsData,
         isErrors,
-        setIsErrors
+        setIsErrors,
+        previousLicenseDetails, 
+        setPreviousLicenseDetails,
+        isRenewal
     };
 
     if (isEditScreen) {
@@ -122,7 +130,10 @@ const TradeUnitForm = (_props) => {
         setTradeCategoryValues,
         tradeMdmsData,
         isErrors,
-        setIsErrors
+        setIsErrors,
+        previousLicenseDetails, 
+        setPreviousLicenseDetails,
+        isRenewal
     } = _props;
 
     const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger, getValues } = useForm();
@@ -179,6 +190,40 @@ const TradeUnitForm = (_props) => {
         }
     }, [errors]);
 
+    const ckeckingLocation = window.location.href.includes("renew-application-details");
+
+    useEffect(() => {
+        if (tradeTypeMdmsData?.length > 0 && ckeckingLocation) {
+            let tradeType = cloneDeep(tradeTypeMdmsData);
+            let filteredTradeType = tradeType.filter(data => data?.code?.split('.')[0] === unit?.tradeCategory?.code)
+            let tradeTypeOptions = [];
+            filteredTradeType.map(data => {
+                data.code = data?.code?.split('.')[1];
+                data.code = data?.code?.split('.')[0];
+                data.i18nKey = t(`TRADELICENSE_TRADETYPE_${data?.code?.split('.')[0]}`);
+                tradeTypeOptions.push(data);
+            });
+            const filterTradeCategoryList = getUniqueItemsFromArray(filteredTradeType, "code");
+            setTradeTypeOptionsList(filterTradeCategoryList);
+        }
+    }, [tradeTypeMdmsData]);
+
+    useEffect(() => {
+        if (tradeTypeMdmsData?.length > 0 && ckeckingLocation) {
+            let tradeType = cloneDeep(tradeTypeMdmsData);
+            let filteredTradeSubType = tradeType.filter(data => data?.code?.split('.')[1] === unit?.tradeType?.code)
+            let tradeSubTypeOptions = [];
+            filteredTradeSubType.map(data => {
+                let code = stringReplaceAll(data?.code, "-", "_");
+                data.i18nKey = t(`TRADELICENSE_TRADETYPE_${stringReplaceAll(code, ".", "_")}`);
+                tradeSubTypeOptions.push(data);
+            });
+            const filterTradeSubTypeList = getUniqueItemsFromArray(tradeSubTypeOptions, "code");
+            setTradeSubTypeOptionsList(filterTradeSubTypeList);
+        }
+    }, [tradeTypeMdmsData]);
+
+
     const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
     return (
         <React.Fragment>
@@ -203,6 +248,8 @@ const TradeUnitForm = (_props) => {
                                     disable={false}
                                     option={tradeCategoryValues}
                                     select={(e) => {
+                                        if (props?.value?.code == e?.code) return true;
+                                        if(e?.code != props?.value?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                                         let selectedOption = e?.code;
                                         if (tradeTypeMdmsData?.length > 0) {
                                             let tradeType = cloneDeep(tradeTypeMdmsData);
@@ -215,6 +262,10 @@ const TradeUnitForm = (_props) => {
                                                 tradeTypeOptions.push(data);
                                             });
                                             const filterTradeCategoryList = getUniqueItemsFromArray(filteredTradeType, "code");
+                                            setValue("tradeType", "");
+                                            setValue("tradeSubType", "");
+                                            setValue("uom", "");
+                                            setValue("uomValue", "");
                                             setTradeTypeOptionsList(filterTradeCategoryList);
                                         }
                                         props.onChange(e);
@@ -240,10 +291,12 @@ const TradeUnitForm = (_props) => {
                             render={(props) => (
                                 <Dropdown
                                     className="form-field"
-                                    selected={props.value}
+                                    selected={getValues("tradeType")}
                                     disable={false}
                                     option={unit?.tradeCategory ? tradeTypeOptionsList : []}
                                     select={(e) => {
+                                        if (props?.value?.code == e?.code) return true;
+                                        if(e?.code != props?.value?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                                         let selectedOption = e?.code;
                                         if (tradeTypeMdmsData?.length > 0) {
                                             let tradeType = cloneDeep(tradeTypeMdmsData);
@@ -255,6 +308,9 @@ const TradeUnitForm = (_props) => {
                                                 tradeSubTypeOptions.push(data);
                                             });
                                             const filterTradeSubTypeList = getUniqueItemsFromArray(tradeSubTypeOptions, "code");
+                                            setValue("tradeSubType", "");
+                                            setValue("uom", "");
+                                            setValue("uomValue", "");
                                             setTradeSubTypeOptionsList(filterTradeSubTypeList);
                                         }
                                         props.onChange(e);
@@ -277,10 +333,16 @@ const TradeUnitForm = (_props) => {
                             render={(props) => (
                                 <Dropdown
                                     className="form-field"
-                                    selected={props.value}
+                                    selected={getValues("tradeSubType")}
                                     disable={false}
                                     option={unit?.tradeType ? tradeSubTypeOptionsList : []}
-                                    select={props.onChange}
+                                    select={(e) => {
+                                        if (props?.value?.code == e?.code) return true;
+                                        if(e?.code != props?.value?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
+                                        setValue("uom", e?.uom ? e?.uom : "");
+                                        setValue("uomValue", "");
+                                        props.onChange(e);
+                                    }}
                                     optionKey="i18nKey"
                                     onBlur={props.onBlur}
                                     t={t}
@@ -296,10 +358,11 @@ const TradeUnitForm = (_props) => {
                                 control={control}
                                 name={"uom"}
                                 defaultValue={unit?.tradeSubType?.uom}
-                                rules={unit?.tradeSubType?.uom ? { required: "Required", validate: (v) => (/^(0)*[1-9][0-9]{0,5}$/.test(v) ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") } : {}}
+                                // rules={unit?.tradeSubType?.uom ? { required: "Required", validate: (v) => (/^(0)*[1-9][0-9]{0,5}$/.test(v) ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") } : {}}
                                 render={(props) => (
                                     <TextInput
-                                        value={unit?.tradeSubType?.uom || ""}
+                                        value={getValues("uom")}
+                                        // value={unit?.tradeSubType?.uom || ""}
                                         autoFocus={focusIndex.index === unit?.key && focusIndex.type === "uom"}
                                         onChange={(e) => {
                                             props.onChange(e);
@@ -320,12 +383,13 @@ const TradeUnitForm = (_props) => {
                                 control={control}
                                 name={"uomValue"}
                                 defaultValue={unit?.uomValue}
-                                rules={unit?.tradeSubType?.uom ? { required: "ERR_DEFAULT_INPUT_FIELD_MSG", validate: { pattern: (val) => (/^(0)*[1-9][0-9]{0,5}$/.test(val) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) } } : {}}
+                                rules={getValues("uomValue") && { required: "ERR_DEFAULT_INPUT_FIELD_MSG", validate: { pattern: (val) => (/^(0)*[1-9][0-9]{0,5}$/.test(val) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) } } }
                                 render={(props) => (
                                     <TextInput
-                                        value={props.value}
+                                        value={getValues("uomValue")}
                                         autoFocus={focusIndex.index === unit?.key && focusIndex.type === "uomValue"}
                                         onChange={(e) => {
+                                            if(e.target.value != unit?.uomValue && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                                             props.onChange(e);
                                             setFocusIndex({ index: unit.key, type: "uomValue" });
                                         }}

@@ -26,6 +26,7 @@ const TLAccessoriesEmployee = ({ config, onSelect, userType, formData, setError,
     const [isErrors, setIsErrors] = useState(false);
     const [flag, setFlag] = useState(true);
     const [uomvalues, setUomvalues] = useState("");
+    const isRenewal = window.location.href.includes("renew-application-details");
 
 
     const { data: billingSlabData } = Digit.Hooks.tl.useTradeLicenseBillingslab({ tenantId, filters: {} });
@@ -47,7 +48,7 @@ const TLAccessoriesEmployee = ({ config, onSelect, userType, formData, setError,
     }, [accessoriesList]);
 
     useEffect(() => {
-        if (formData?.accessories?.length > 0) {
+        if (formData?.accessories?.length > 0 && !isRenewal) {
           let flag = true;
           accessoriesList.map(data => {
             Object.keys(data).map(dta => {
@@ -91,7 +92,8 @@ const TLAccessoriesEmployee = ({ config, onSelect, userType, formData, setError,
         accessoriesList,
         billingSlabData,
         setUomvalues,
-        uomvalues
+        uomvalues,
+        isRenewal
     };
 
     if (isEditScreen) {
@@ -132,10 +134,11 @@ const AccessoriersForm = (_props) => {
         accessoriesList,
         billingSlabData,
         setUomvalues,
-        uomvalues
+        uomvalues,
+        isRenewal
     } = _props;
 
-    const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger } = useForm();
+    const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger, getValues } = useForm();
     const formValue = watch();
     const { errors } = localFormState;
 
@@ -269,6 +272,8 @@ const AccessoriersForm = (_props) => {
                                     className="form-field"
                                     selected={props.value}
                                     select={(e) => {
+                                        setValue("uom", e?.uom ? e?.uom : "");
+                                        if (e?.uom !== accessor?.accessoryCategory?.uom) setValue("uomValue", "");
                                         props.onChange(e);
                                         setUomvalues(accessor?.accessoryCategory?.uom);
                                     }}
@@ -276,6 +281,7 @@ const AccessoriersForm = (_props) => {
                                     option={accessories || []}
                                     optionKey="i18nKey"
                                     t={t}
+                                    disable={isRenewal}
                                 />
                             )}
                         />
@@ -291,7 +297,8 @@ const AccessoriersForm = (_props) => {
                                 // rules={accessor?.accessoryCategory?.uom ? { required: "Required" } : {}}
                                 render={(props) => (
                                     <TextInput
-                                        value={uomvalues}
+                                        value={getValues("uom")}
+                                        // value={uomvalues}
                                         // value={accessor?.accessoryCategory?.uom || ""}
                                         autoFocus={focusIndex.index === accessor?.key && focusIndex.type === "uom"}
                                         onChange={(e) => {
@@ -314,16 +321,16 @@ const AccessoriersForm = (_props) => {
                                 name={"uomValue"}
                                 defaultValue={accessor?.uomValue}
                                 rules={accessor?.accessoryCategory?.uom && { required: "Required", validate: (e) => ((e && getPattern("UOMValue").test(e)) || !e ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") }}
-                                // rules={accessor?.accessoryCategory?.uom ? { required: "Required" } : {}}
                                 render={(props) => (
                                     <TextInput
-                                        value={accessor?.accessoryCategory?.uom ? props.value : ""}
+                                        value={getValues("uomValue")}
+                                        // value={accessor?.accessoryCategory?.uom ? props.value : ""}
                                         autoFocus={focusIndex.index === accessor?.key && focusIndex.type === "uomValue"}
                                         onChange={(e) => {
                                             props.onChange(e.target.value);
                                             setFocusIndex({ index: accessor.key, type: "uomValue" });
                                         }}
-                                        disable={!(accessor?.accessoryCategory?.uom)}
+                                        disable={!(accessor?.accessoryCategory?.uom) || isRenewal}
                                         onBlur={props.onBlur}
                                     />
                                 )}
@@ -349,6 +356,7 @@ const AccessoriersForm = (_props) => {
                                             setFocusIndex({ index: accessor.key, type: "count" });
                                         }}
                                         onBlur={props.onBlur}
+                                        disable={isRenewal}
                                     />
                                 )}
                             />

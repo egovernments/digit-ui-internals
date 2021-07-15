@@ -9,7 +9,7 @@ const ActionModal = (props) => {
     return <PTActionModal {...props} />;
   }
 
-  if (props?.businessService.includes("NewTL")) {
+  if (props?.businessService.includes("NewTL") || props?.businessService.includes("TL") || props?.businessService.includes("EDITRENEWAL") ) {
     return <TLActionModal {...props} />;
   }
   // return <FSMActionModal {...props} />;

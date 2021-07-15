@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { Banner, Card, CardText, Loader, Row, StatusTable, SubmitBar } from "@egovernments/digit-ui-react-components";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
+import { Link, useParams } from "react-router-dom";
 
 export const SuccessfulPayment = (props) => {
   const { t } = useTranslation();
@@ -112,6 +112,18 @@ export const SuccessfulPayment = (props) => {
   const paymentData = data?.payments?.Payments[0];
   const amount = reciept_data?.paymentDetails?.[0]?.totalAmountPaid;
   const transactionDate = paymentData.transactionDate;
+  const printCertificate = async () => {
+    const tenantId = Digit.ULBService.getCurrentTenantId();
+    const state = tenantId?.split(".")[0];
+    const applicationDetails = await Digit.TLService.search({ applicationNumber: consumerCode, tenantId });
+    const generatePdfKeyForTL = "tlcertificate"
+
+    if (applicationDetails) {
+      let response = await Digit.PaymentService.generatePdf(state, { Licenses: applicationDetails?.Licenses }, generatePdfKeyForTL);
+      const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
+      window.open(fileStore[response.filestoreIds[0]], "_blank");
+    }
+  }
 
   const printReciept = async () => {
     if (printing) return;
@@ -177,15 +189,15 @@ export const SuccessfulPayment = (props) => {
         successful={true}
       />
       <CardText>{t(`${bannerText}_DETAIL`)}</CardText>
-      {/* {generatePdfKey ? (
-        <div className="primary-label-btn d-grid" onClick={printReciept}>
+      {business_service == "TL" ? (
+        <div className="primary-label-btn d-grid" onClick={printCertificate}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />
           </svg>
-          
+          {t("CS_COMMON_PRINT_CERTIFICATE")}
         </div>
-      ) : null} */}
+      ) : null}
       <StatusTable>
         <Row rowContainerStyle={rowContainerStyle} last label={t(label)} text={applicationNo} />
         {/** TODO : move this key and value into the hook based on business Service */}

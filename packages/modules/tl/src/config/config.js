@@ -1,5 +1,17 @@
 export const newConfig = [
   {
+    head: "",
+    body: [
+      {
+        type: "component",
+        component: "TLInfoLabel",
+        key: "tradedetils1",
+        withoutLabel: true,
+        hideInCitizen: true,
+      }
+    ]
+  },
+  {
     head: "TL_COMMON_TR_DETAILS",
     body: [
       {
@@ -106,7 +118,7 @@ export const newConfig = [
             label: "TL_LOCALIZATION_STREET_NAME",
             type: "text",
             name: "street",
-            disable: window.location.href.includes("edit-application"),
+            disable: window.location.href.includes("edit-application")||window.location.href.includes("renew-trade"),
             validation: {
               // pattern: "[a-zA-Z0-9]{1,255}",
               maxlength: 256,
@@ -117,7 +129,7 @@ export const newConfig = [
             label: "TL_LOCALIZATION_BUILDING_NO",
             type: "text",
             name: "doorNo",
-            disable: window.location.href.includes("edit-application"),
+            disable: window.location.href.includes("edit-application")||window.location.href.includes("renew-trade"),
             validation: {
               // pattern: "([A-z0-9À-ž@#$&()\\-`.+,/s ]){1,63}",
               maxlength: 256,

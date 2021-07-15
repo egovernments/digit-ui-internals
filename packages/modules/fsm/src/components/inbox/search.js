@@ -119,20 +119,6 @@ const SearchApplication = ({ onSearch, type, onClose, isFstpOperator, searchFiel
                   {getFields(input)}{" "}
                 </span>
               ))}
-              {/* <span className="complaint-input">
-                <Label>{isFstpOperator ? t("ES_FSTP_OPERATOR_VEHICLE_NO") : t("ES_SEARCH_APPLICATION_APPLICATION_NO")}</Label>
-                <TextInput
-                  name="applicationNo"
-                  value={applicationNo}
-                  onChange={setComplaint}
-                  inputRef={register}
-                  style={{ width: "280px", marginBottom: "8px" }}
-                ></TextInput>
-              </span>
-              <span className="mobile-input">
-                <Label>{isFstpOperator ? t("ES_FSTP_DSO_NAME") : t("ES_SEARCH_APPLICATION_MOBILE_NO")}</Label>
-                <TextInput name="mobileNumber" value={mobileNo} onChange={setMobile} inputRef={register} style={{ width: "280px" }}></TextInput>
-              </span> */}
               {type === "desktop" && !mobileView && <SubmitBar className="submit-bar-search" label={t("ES_COMMON_SEARCH")} submit />}
             </div>
             {error ? <CardLabelError className="search-error-label">{t("ES_SEARCH_APPLICATION_ERROR")}</CardLabelError> : null}

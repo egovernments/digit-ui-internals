@@ -115,6 +115,7 @@ import PitDimension from "./molecules/PitDimension";
 import RadioOrSelect from "./molecules/RadioOrSelect";
 import DashboardBox from "./molecules/DashboardBox";
 import Localities from "./molecules/Localities";
+import {SearchForm, SearchField} from "./molecules/SearchForm";
 
 import { FormComposer } from "./hoc/FormComposer";
 import ResponseComposer from "./hoc/ResponseComposer";
@@ -223,6 +224,8 @@ export {
   RemoveableTag,
   RadioOrSelect,
   Localities,
+  SearchForm,
+  SearchField,
   // hoc
   FormComposer,
   ResponseComposer,
