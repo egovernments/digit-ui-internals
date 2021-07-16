@@ -50,7 +50,7 @@ const RequiredDoc = () => {
               {dd.map((e, ind) => {
                 return (
                   <React.Fragment key={ind}>
-                    <CardLabel>{ind + 1 + ". " + t(e.code)}</CardLabel>
+                    <CardLabel style={{ fontWeight: 700 }}>{ind + 1 + ". " + t(e.code)}</CardLabel>
                   </React.Fragment>
                 );
               })}

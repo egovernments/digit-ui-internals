@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import PopUp from "../atoms/PopUp";
 import HeaderBar from "../atoms/HeaderBar";
@@ -20,6 +20,12 @@ const Modal = ({
   isDisabled,
   hideSubmit,
 }) => {
+  useEffect(() => {
+    document.body.style.overflowY = 'hidden';
+    return () =>{
+      document.body.style.overflowY = 'auto';
+    }
+  }, [])
   return (
     <PopUp>
       <div className="popup-module" style={popupStyles}>
