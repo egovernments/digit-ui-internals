@@ -129,13 +129,13 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, isLoading, ...prop
                 text: "TL_SEARCH_APPLICATIONS",
                 link: "/digit-ui/employee/tl/search/application",
                 businessService: "TL",
-                roles: ["TL_FIELD_INSPECTOR","TL_APPROVER", "TL_DOC_VERIFIER"],
+                roles: ["TL_FIELD_INSPECTOR","TL_APPROVER", "TL_DOC_VERIFIER","TL_CEMP"],
               },
               {
                 text: "TL_SEARCH_LICENSE",
                 link: "/digit-ui/employee/tl/search/license",
                 businessService: "TL",
-                roles: ["TL_APPROVER", "TL_DOC_VERIFIER"],
+                roles: ["TL_APPROVER", "TL_DOC_VERIFIER","TL_FIELD_INSPECTOR"],
               },
               {
                 text: "TL_RENEWAL_HEADER",
