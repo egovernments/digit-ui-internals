@@ -117,11 +117,11 @@ const AssessmentDetails = () => {
       />
       {!queryClient.getQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear]) ? (
         <ActionBar>
-          <SubmitBar label={t("PT_ASSESS")} onSubmit={handleAssessment} />
+          <SubmitBar label={t("PT_ASSESS_PROPERTY_BUTTON")} onSubmit={handleAssessment} />
         </ActionBar>
       ) : (
         <ActionBar>
-          <SubmitBar label={t("PT_TOTALDUES_PAY")} onSubmit={proceeedToPay} />
+          <SubmitBar label={t("PT_PROCEED_PAYMENT")} onSubmit={proceeedToPay} />
         </ActionBar>
       )}
     </div>

@@ -37,8 +37,6 @@ const ApplicationDetails = () => {
     role: "TL_CEMP",
   });
 
-  console.log(applicationDetails, updateResponse, workflowDetails, "applicationDetailsapplicationDetailsapplicationDetails")
-
   const closeToast = () => {
     setShowToast(null);
   };
@@ -63,13 +61,13 @@ const ApplicationDetails = () => {
 
   if (workflowDetails?.data?.processInstances?.length > 0) {
     let filteredActions = [];
-    filteredActions = get(workflowDetails?.data?.processInstances[0], "nextActions", []).filter(
+    filteredActions = get(workflowDetails?.data?.processInstances[0], "nextActions", [])?.filter(
       item => item.action != "ADHOC"
     );
     let actions = orderBy(filteredActions, ["action"], ["desc"]);
-    if (!actions || actions?.length == 0) workflowDetails.data.actionState.nextActions = [];
+    if ((!actions || actions?.length == 0) && workflowDetails?.data?.actionState) workflowDetails.data.actionState.nextActions = [];
 
-    workflowDetails.data.actionState.nextActions.forEach(data => {
+    workflowDetails?.data?.actionState?.nextActions?.forEach(data => {
       if(data.action == "RESUBMIT") {
         data.redirectionUrl = {
           pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
@@ -92,25 +90,41 @@ const ApplicationDetails = () => {
   const renewalPeriod = TradeRenewalDate?.TradeLicense?.TradeRenewal?.[0]?.renewalPeriod;
 
   if (rolecheck && (applicationDetails?.applicationData?.status === "APPROVED" || applicationDetails?.applicationData?.status === "EXPIRED") && duration <= renewalPeriod) {
-    if(workflowDetails?.data?.nextActions?.length > 0) {
-      workflowDetails = {
-        ...workflowDetails,
-        data: {
-          ...workflowDetails?.data,
-          actionState: {
-            nextActions: allowedToNextYear ?[
-              {
-                action: "RENEWAL_SUBMIT_BUTTON",
-                redirectionUrl: {
-                  pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
-                  state: applicationDetails
-                },
-                tenantId: stateId,
-              }
-            ] : [],
+    if(workflowDetails?.data && allowedToNextYear) {
+      if(!workflowDetails?.data?.actionState) {
+        workflowDetails.data.actionState = {};
+        workflowDetails.data.actionState.nextActions = [];
+      }
+      const flagData = workflowDetails?.data?.actionState?.nextActions?.filter(data => data.action == "RENEWAL_SUBMIT_BUTTON");
+      if(flagData && flagData.length === 0) {
+        workflowDetails?.data?.actionState?.nextActions?.push({
+          action: "RENEWAL_SUBMIT_BUTTON",
+          redirectionUrl: {
+            pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
+            state: applicationDetails
           },
-        },
-      };
+          tenantId: stateId,
+          role: []
+        });
+      }
+      // workflowDetails = {
+      //   ...workflowDetails,
+      //   data: {
+      //     ...workflowDetails?.data,
+      //     actionState: {
+      //       nextActions: allowedToNextYear ?[
+      //         {
+      //           action: "RENEWAL_SUBMIT_BUTTON",
+      //           redirectionUrl: {
+      //             pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
+      //             state: applicationDetails
+      //           },
+      //           tenantId: stateId,
+      //         }
+      //       ] : [],
+      //     },
+      //   },
+      // };
     }
   }
 

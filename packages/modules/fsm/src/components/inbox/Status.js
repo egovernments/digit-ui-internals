@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { LinkButton, Loader } from "@egovernments/digit-ui-react-components";
+import React, { useState } from "react";
+import { Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import StatusCount from "./StatusCount";
 
-const Status = ({ onAssignmentChange, fsmfilters, mergedRoleDetails }) => {
+const Status = ({ onAssignmentChange, fsmfilters, mergedRoleDetails, statusMap }) => {
   const { t } = useTranslation();
 
-  const { data: applicationsWithCount, isLoading } = Digit.Hooks.fsm.useApplicationStatus(true);
+  const { data: applicationsWithCount, isLoading } = Digit.Hooks.fsm.useApplicationStatus(true, true, statusMap);
   // console.log("find application stats", applicationsWithCount)
 
   const [moreStatus, showMoreStatus] = useState(false);
@@ -20,11 +20,6 @@ const Status = ({ onAssignmentChange, fsmfilters, mergedRoleDetails }) => {
   );
 
   // console.log("find role status from here", applicationsWithCount , mergedRoleDetails, finalApplicationWithCount, moreApplicationWithCount);
-
-  useEffect(() => {
-    console.log(">>>>>>", applicationsWithCount);
-  }, [applicationsWithCount]);
-
   if (isLoading) {
     return <Loader />;
   }
@@ -33,11 +28,11 @@ const Status = ({ onAssignmentChange, fsmfilters, mergedRoleDetails }) => {
     <div className="status-container">
       <div className="filter-label">{t("ES_INBOX_STATUS")}</div>
       {finalApplicationWithCount?.map((option, index) => (
-        <StatusCount key={index} onAssignmentChange={onAssignmentChange} status={option} fsmfilters={fsmfilters} />
+        <StatusCount key={index} onAssignmentChange={onAssignmentChange} status={option} fsmfilters={fsmfilters} statusMap={statusMap} />
       ))}
       {moreStatus
         ? moreApplicationWithCount?.map((option, index) => (
-            <StatusCount key={index} onAssignmentChange={onAssignmentChange} status={option} fsmfilters={fsmfilters} />
+            <StatusCount key={index} onAssignmentChange={onAssignmentChange} status={option} fsmfilters={fsmfilters} statusMap={statusMap} />
           ))
         : null}
       {mergedRoleDetails.fixed === false ? (

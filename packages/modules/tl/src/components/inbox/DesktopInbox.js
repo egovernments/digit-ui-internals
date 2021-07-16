@@ -122,38 +122,27 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
             allLinks={[
               {
                 text: "TL_NEW_APPLICATION",
-                link: "/digit-ui/employee/hrms/create",
+                link: "/digit-ui/employee/tl/new-application",
                 businessService: "TL",
-                roles: [],
-
-              },
-              {
-                text: "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR",
-                link: "/digit-ui/employee/hrms/create",
-                businessService: "TL",
-                roles: [],
-
-              },
-              {
-                text: "ACTION_TEST_REPORTS",
-                link: "/digit-ui/employee/hrms/create",
-                businessService: "TL",
-                roles: [],
-
+                roles: ["TL_CEMP"],
               },
               {
                 text: "TL_SEARCH_APPLICATIONS",
-                link: "/digit-ui/employee/hrms/create",
+                link: "/digit-ui/employee/tl/search/application",
                 businessService: "TL",
                 roles: [],
-
+              },
+              {
+                text: "TL_RENEWAL_HEADER",
+                link: "/digit-ui/employee/tl/search/license",
+                businessService: "TL",
+                roles: ["TL_CEMP"],
               },
               {
                 text: "ACTION_TEST_DASHBOARD",
-                link: "/digit-ui/employee/hrms/create",
+                link: "/digit-ui/employee/dss/dashboard/tradelicence",
                 businessService: "TL",
-                roles: [],
-
+                roles: ["STADMIN"],
               },
             ]}
             headerText={t("ACTION_TEST_TRADELICENSE")} businessService={props.businessService} />

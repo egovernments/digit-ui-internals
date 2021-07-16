@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Status from "./Status";
 import AssignedTo from "./AssignedTo";
 
-const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
+const Filter = ({ searchParams, paginationParms, onFilterChange, onSearch, removeParam, ...props }) => {
   const { t } = useTranslation();
 
   const DSO = Digit.UserService.hasAccess(["FSM_DSO"]) || false;
@@ -69,7 +69,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
           </div>
           <div>
             {!DSO && !isFstpOperator && searchParams && (
-              <AssignedTo onFilterChange={onFilterChange} searchParams={searchParams} tenantId={tenantId} t={t} />
+              <AssignedTo onFilterChange={onFilterChange} searchParams={searchParams} paginationParms={paginationParms} tenantId={tenantId} t={t} />
             )}
             <div>
               {/* {GetSelectOptions(t("ES_INBOX_LOCALITY"), localities, selectedLocality, onSelectLocality, "code", onRemove, "locality", "name")} */}
@@ -99,7 +99,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
           ) : null}
           <div>
             {isRoleStatusFetched && mergedRoleDetails ? (
-              <Status onAssignmentChange={onStatusChange} fsmfilters={searchParams} mergedRoleDetails={mergedRoleDetails} />
+              <Status onAssignmentChange={onStatusChange} fsmfilters={searchParams} mergedRoleDetails={mergedRoleDetails} statusMap={props?.applications?.statuses} />
             ) : (
               <Loader />
             )}
