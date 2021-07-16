@@ -126,8 +126,6 @@ const NewApplication = () => {
     if (address) formData.tradeLicenseDetail.address = address;
     if (structureType) formData.tradeLicenseDetail.structureType = structureType;
     if (subOwnerShipCategory) formData.tradeLicenseDetail.subOwnerShipCategory = subOwnerShipCategory;
-
-    console.log(formData, "formDataformDataformDataformDataformData");
    
     // setFormData(formData)
 

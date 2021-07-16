@@ -63,13 +63,13 @@ const FSMCard = () => {
     else return { uuid: { code: "ASSIGNED_TO_ME", name: t("ES_INBOX_ASSIGNED_TO_ME") } };
   };
 
-  const { data: inbox, isFetching: pendingApprovalRefetching } = Digit.Hooks.fsm.useInbox(tenantId, { ...filters, ...getUUIDFilter() }, null, {
+  const { data: inbox, isFetching: pendingApprovalRefetching } = Digit.Hooks.fsm.useInbox(tenantId, { ...filters,limit:10, offset:0, ...getUUIDFilter() }, {
     enabled: !isFSTPOperator ? true : false,
   });
 
   useEffect(() => {
     if (inbox) {
-      const total = inbox?.[0]?.totalCount || 0;
+      const total = inbox?.totalCount || 0;
       setTotal(total);
     }
   }, [inbox]);

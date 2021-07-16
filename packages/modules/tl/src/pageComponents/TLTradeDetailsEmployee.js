@@ -188,6 +188,8 @@ const OwnerForm1 = (_props) => {
   let financialYearOptions = [];
   FinaceMenu && FinaceMenu["egf-master"] &&
     FinaceMenu["egf-master"].FinancialYear.map(data => { if (data.module == "TL") financialYearOptions.push({ code: data.name, i18nKey: `FY${data.name}`, id: data.name.split('-')[0] }) });
+    
+  if (financialYearOptions && financialYearOptions.length > 0) { financialYearOptions.sort(function (a, b) { return Number(a.id) - Number(b.id);});}
 
   let structureTypeOptions = [];
   // let structureSubTypeOptions = [];

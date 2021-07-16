@@ -137,7 +137,7 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
           // headerBarEnd={<CloseBtn onClick={closeModal} />}
           hideSubmit={true}
           isDisabled={false}
-          popupStyles={{ width: "319px", height: "250px", marginTop: "75px" }}
+          popupStyles={{ width: "319px", height: "250px" }}
           formId="modal-action"
         >
           {/* <Card> */}

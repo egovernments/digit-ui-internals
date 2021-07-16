@@ -9,8 +9,6 @@ import cloneDeep from "lodash/cloneDeep";
 
 const ReNewApplication = (props) => {
 
-  console.log(props, "propspropspropspropspropspropspropsprops");
-
   const applicationData = cloneDeep(props?.location?.state?.applicationData) || {};
 
   const tenantId = Digit.ULBService.getCurrentTenantId();

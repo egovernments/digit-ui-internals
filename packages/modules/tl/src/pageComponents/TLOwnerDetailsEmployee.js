@@ -40,6 +40,11 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
     "OwnerShipCategory",
   ]);
 
+
+  const { data: genderTypeData } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", [
+    "GenderType"
+  ]);
+
   const addNewOwner = () => {
     const newOwner = createOwnerDetails();
     setOwners((prev) => [...prev, newOwner]);
@@ -108,7 +113,8 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
     isErrors,
     isRenewal,
     previousLicenseDetails, 
-    setPreviousLicenseDetails
+    setPreviousLicenseDetails,
+    genderTypeData
   };
 
   if (isEditScreen) {
@@ -147,7 +153,8 @@ const OwnerForm = (_props) => {
     isErrors,
     isRenewal,
     previousLicenseDetails, 
-    setPreviousLicenseDetails
+    setPreviousLicenseDetails,
+    genderTypeData
   } = _props;
 
   const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger } = useForm();
@@ -161,6 +168,17 @@ const OwnerForm = (_props) => {
         code: e.code,
       })) || [],
     [mdmsData]
+  );
+
+  const genderFilterTypeMenu = genderTypeData && genderTypeData["common-masters"]?.GenderType?.filter(e => e.active);
+
+  const genderTypeMenu = useMemo(
+    () =>
+      genderFilterTypeMenu?.map?.((e) => ({
+        i18nKey: `TL_GENDER_${e.code}`,
+        code: e.code,
+      })) || [],
+    [genderFilterTypeMenu]
   );
 
   const isIndividualTypeOwner = useMemo(() => formData?.ownershipCategory?.code.includes("INDIVIDUAL"), [formData?.ownershipCategory?.code]);
@@ -331,12 +349,7 @@ const OwnerForm = (_props) => {
                     props.onChange(e)
                   }}
                   onBlur={props.onBlur}
-                  option={[
-                    { i18nKey: "TL_GENDER_MALE", code: "Male" },
-                    { i18nKey: "TL_GENDER_FEMALE", code: "Female" },
-                    { i18nKey: "TL_GENDER_TRANSGENDER", code: "Transgender" },
-                    { i18nKey: "COMMON_GENDER_OTHERS", code: "OTHERS" },
-                  ]}
+                  option={genderTypeMenu}
                   optionKey="i18nKey"
                   t={t}
                 />

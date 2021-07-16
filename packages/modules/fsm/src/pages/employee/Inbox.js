@@ -52,7 +52,6 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
       fromDate: searchParams?.fromDate ? new Date(searchParams?.fromDate).getTime() : undefined,
       toDate: searchParams?.toDate ? new Date(searchParams?.toDate).getTime() : undefined,
     },
-    null,
     {
       enabled: isInbox,
     }
@@ -98,7 +97,7 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
   };
 
   const handleSort = useCallback((args) => {
-    if (args.length === 0) return;
+    if (args?.length === 0) return;
     setSortParams(args);
     // const [sortBy] = args;
     // setSortParams({ key: sortBy.id, sortOrder: sortBy.desc ? "DESC" : "ASC" });
@@ -110,7 +109,7 @@ const Inbox = ({ parentRoute, isSearch = false, isInbox = false }) => {
 
   const onSearch = (params = {}) => {
     if (isSearch) {
-      if (Object.keys(params).length === 0) {
+      if (Object.keys(params)?.length === 0) {
         setShouldSearch(false);
         queryClient.resetQueries("FSM_CITIZEN_SEARCH");
       } else {

@@ -232,7 +232,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
             optionKey="i18nkey"
             onSelect={selectLocality}
             t={t}
-            isDependent={true}
+            //isDependent={true}
             labelKey=""
             disabled={isEdit}
           />

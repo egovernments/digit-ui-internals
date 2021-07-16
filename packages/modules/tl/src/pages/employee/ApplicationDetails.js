@@ -37,8 +37,6 @@ const ApplicationDetails = () => {
     role: "TL_CEMP",
   });
 
-  console.log(applicationDetails, updateResponse, workflowDetails, "applicationDetailsapplicationDetailsapplicationDetails")
-
   const closeToast = () => {
     setShowToast(null);
   };
@@ -92,8 +90,11 @@ const ApplicationDetails = () => {
   const renewalPeriod = TradeRenewalDate?.TradeLicense?.TradeRenewal?.[0]?.renewalPeriod;
 
   if (rolecheck && (applicationDetails?.applicationData?.status === "APPROVED" || applicationDetails?.applicationData?.status === "EXPIRED") && duration <= renewalPeriod) {
-    
-    if(workflowDetails?.data?.nextActions?.length > 0 && allowedToNextYear) {
+    if(workflowDetails?.data && allowedToNextYear) {
+      if(!workflowDetails?.data?.actionState) {
+        workflowDetails.data.actionState = {};
+        workflowDetails.data.actionState.nextActions = [];
+      }
       const flagData = workflowDetails?.data?.actionState?.nextActions?.filter(data => data.action == "RENEWAL_SUBMIT_BUTTON");
       if(flagData && flagData.length === 0) {
         workflowDetails?.data?.actionState?.nextActions?.push({

@@ -57,7 +57,7 @@ const PropertyDetails = () => {
   }, [applicationDetails]);
 
   useEffect(() => {
-    if (auditData && Object.keys(appDetailsToShow).length) {
+    if (auditData?.length && Object.keys(appDetailsToShow).length) {
       let owners = auditData[0].owners.filter((e) => e.status === "ACTIVE");
       let applicationDetails = appDetailsToShow.applicationDetails.map((obj) => {
         const { additionalDetails, title } = obj;

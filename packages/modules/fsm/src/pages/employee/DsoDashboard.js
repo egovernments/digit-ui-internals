@@ -53,7 +53,6 @@ const DsoDashboard = () => {
   const { data: pendingApprovalArray, isFetching: pendingApprovalRefetching } = Digit.Hooks.fsm.useInbox(
     tenantId,
     { ...filters, applicationStatus: [pendingApprovalStatusCode] },
-    null,
     {
       enabled: typeof pendingApprovalStatusCode === "object" && isDsoLoaded && !statusFetching,
     }
@@ -62,7 +61,6 @@ const DsoDashboard = () => {
   const { data: pendingCompletionArray, isFetching: pendingCompletionRefetching } = Digit.Hooks.fsm.useInbox(
     tenantId,
     { ...filters, applicationStatus: [progressStatusCode] },
-    null,
     {
       enabled: typeof progressStatusCode === "object" && isDsoLoaded && !statusFetching,
     }
@@ -79,7 +77,7 @@ const DsoDashboard = () => {
     }
   }, [pendingApprovalArray, pendingCompletionArray, progressStatusCode, pendingApprovalStatusCode]);
 
-  const { data: inbox, isFetching: inboxFetching } = Digit.Hooks.fsm.useInbox(tenantId, { ...filters }, null, {
+  const { data: inbox, isFetching: inboxFetching } = Digit.Hooks.fsm.useInbox(tenantId, { ...filters }, {
     enabled: isDsoLoaded,
   });
 
