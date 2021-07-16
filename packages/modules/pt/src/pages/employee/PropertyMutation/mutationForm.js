@@ -22,9 +22,9 @@ const MutationForm = ({ applicationData, tenantId }) => {
     clearSuccessData();
   }, []);
 
-  useEffect(() => {
-    console.log(mutationDocs, "MUTATION"), [isLoading];
-  });
+  // useEffect(() => {
+  //   console.log(mutationDocs, "MUTATION"), [isLoading];
+  // });
 
   const history = useHistory();
 
