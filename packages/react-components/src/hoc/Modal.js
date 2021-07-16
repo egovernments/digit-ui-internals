@@ -20,6 +20,9 @@ const Modal = ({
   isDisabled,
   hideSubmit,
 }) => {
+  /**
+   * TODO: It needs to be done from the desgin changes
+   */
   useEffect(() => {
     document.body.style.overflowY = 'hidden';
     return () =>{
