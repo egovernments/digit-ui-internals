@@ -31,7 +31,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
   };
 
   const selectLocality = (d) => {
-    localParamChange({ locality: [..._searchParams?.locality, d] });
+    localParamChange({ locality: [ ...(_searchParams?.locality || []) , d ] });
   };
 
   return (
