@@ -34,7 +34,7 @@ export const SuccessfulPayment = (props) => {
     {
       tenantId,
       businessService: business_service,
-      receiptNumbers: data?.payments?.Payments[0].paymentDetails[0].receiptNumber,
+      receiptNumbers: data?.payments?.Payments?.[0]?.paymentDetails[0].receiptNumber,
       // receiptNumbers: "PT/107/2021-22/224890",
       // receiptNumbers: "PT/107/2021-22/224891",
     },
@@ -113,8 +113,8 @@ export const SuccessfulPayment = (props) => {
   const amount = reciept_data?.paymentDetails?.[0]?.totalAmountPaid;
   const transactionDate = paymentData.transactionDate;
   const printCertificate = async () => {
-    const tenantId = Digit.ULBService.getCurrentTenantId();
-    const state = tenantId?.split(".")[0];
+    //const tenantId = Digit.ULBService.getCurrentTenantId();
+    const state = tenantId;
     const applicationDetails = await Digit.TLService.search({ applicationNumber: consumerCode, tenantId });
     const generatePdfKeyForTL = "tlcertificate"
 
