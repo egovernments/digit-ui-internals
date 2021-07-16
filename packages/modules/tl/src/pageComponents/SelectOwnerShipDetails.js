@@ -113,6 +113,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
           <Dropdown
             className="form-field"
             selected={ownershipCategory}
+            errorStyle={formState.touched?.[config.key] && formState.errors[config.key]?.message ? true : false}
             // selected={ownershipCategory ? ownershipCategory : dropdownData[0]}
             disable={isRenewal}
             option={dropdownData}

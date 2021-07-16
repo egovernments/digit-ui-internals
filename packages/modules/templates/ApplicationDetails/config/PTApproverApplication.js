@@ -45,17 +45,18 @@ export const configPTApproverApplication = ({
             },
           },
           {
-            label: action.docUploadRequired ? t("ES_PT_UPLOAD_FILE") : null,
-            populators: action.docUploadRequired ? (
+            label: `${t("ES_PT_UPLOAD_FILE")}${action.docUploadRequired ? " *" : ""}`,
+            populators: (
               <UploadFile
-                // accept=".jpg"
                 onUpload={selectFile}
                 onDelete={() => {
                   setUploadedFile(null);
                 }}
+                showHint={true}
+                hintText={t("PT_UPLOAD_RESTRICTIONS_SIZE")}
                 message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
               />
-            ) : null,
+            ),
           },
         ],
       },

@@ -28,9 +28,9 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
   const modalRef = useRef();
   const { mobileNumber, propertyIds, oldPropertyIds, locality, city } = Digit.Hooks.useQueryParams();
   const filters = {};
-  
+
   const [modalData, setShowModal] = useState(false);
-  
+
   const closeModal = () => {
     setShowModal(false);
   };
@@ -137,7 +137,7 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
           // headerBarEnd={<CloseBtn onClick={closeModal} />}
           hideSubmit={true}
           isDisabled={false}
-          popupStyles={{ width: "319px", height: "250px" }}
+          popupStyles={{ width: "319px", height: "250px", margin: "auto" }}
           formId="modal-action"
         >
           {/* <Card> */}
@@ -158,7 +158,12 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
                 " " +
                 t("PT_INORDER_TO_TRANSFER")}
             </p>
-            <SubmitBar submit={false} onSubmit={() => proceedToPay(modalData)} style={{ marginTop: "14px", width: "100%" }} label={t("PT_PROCEED_PAYMENT")} />
+            <SubmitBar
+              submit={false}
+              onSubmit={() => proceedToPay(modalData)}
+              style={{ marginTop: "14px", width: "100%" }}
+              label={t("PT_PROCEED_PAYMENT")}
+            />
           </div>
           {/* </Card> */}
         </Modal>

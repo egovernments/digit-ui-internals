@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
 import { useLocation } from "react-router-dom";
+import { getPattern } from "../utils";
 
 const createOwnerDetails = () => ({
   name: "",
@@ -239,6 +240,7 @@ const OwnerForm = (_props) => {
                   <TextInput
                     value={props.value}
                     autoFocus={focusIndex.index === owner?.key && focusIndex.type === "name"}
+                    errorStyle={(localFormState.touched.name && errors?.name?.message) ? true : false}
                     onChange={(e) => {
                       if(e.target.value != owner?.name && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                       props.onChange(e.target.value);
@@ -272,8 +274,9 @@ const OwnerForm = (_props) => {
                       props.onChange(e);
                       setFocusIndex({ index: owner.key, type: "mobileNumber" });
                     }}
-                    labelStyle={{ marginTop: "unset" }}
+                    labelStyle={{ marginTop: "unset", border: "1px solid #464646", borderRight: "none" }}
                     onBlur={props.onBlur}
+                    errorStyle={(localFormState.touched.mobileNumber && errors?.mobileNumber?.message) ? true : false}
                   />
                 )}
               />
@@ -292,6 +295,7 @@ const OwnerForm = (_props) => {
                   <TextInput
                     value={props.value}
                     autoFocus={focusIndex.index === owner?.key && focusIndex.type === "fatherOrHusbandName"}
+                    errorStyle={(localFormState.touched.fatherOrHusbandName && errors?.fatherOrHusbandName?.message) ? true : false}
                     onChange={(e) => {
                       if(e.target.value != owner?.fatherOrHusbandName && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                       props.onChange(e.target.value);
@@ -316,6 +320,7 @@ const OwnerForm = (_props) => {
                 <Dropdown
                   className="form-field"
                   selected={props.value}
+                  errorStyle={(localFormState.touched.relationship && errors?.relationship?.message) ? true : false}
                   select={(e) => {
                     if (e?.code != owner?.relationship?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true });
                     props.onChange(e)
@@ -344,6 +349,7 @@ const OwnerForm = (_props) => {
                 <Dropdown
                   className="form-field"
                   selected={props.value}
+                  errorStyle={(localFormState.touched.gender && errors?.gender?.message) ? true : false}
                   select={(e) => {
                     if(e?.code !=  owner?.gender?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                     props.onChange(e)
@@ -364,11 +370,12 @@ const OwnerForm = (_props) => {
                 control={control}
                 name={"emailId"}
                 defaultValue={owner?.emailId}
-                rules={{ validate: (e) => ((e && /^[^\s@]+@[^\s@]+$/.test(e)) || !e ? true : "INVALID_EMAIL") }}
+                rules={{ validate: (e) => ((e && getPattern("Email").test(e)) || !e ? true : "INVALID_EMAIL") }}
                 render={(props) => (
                   <TextInput
                     value={props.value}
                     autoFocus={focusIndex.index === owner?.key && focusIndex.type === "emailId"}
+                    errorStyle={(localFormState.touched.emailId && errors?.emailId?.message) ? true : false}
                     onChange={(e) => {
                       if(e.target.value != owner?.emailId && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                       props.onChange(e.target.value);
@@ -393,6 +400,7 @@ const OwnerForm = (_props) => {
                 <Dropdown
                   className="form-field"
                   selected={props.value}
+                  errorStyle={(localFormState.touched.ownerType && errors?.ownerType?.message) ? true : false}
                   select={(e) => {
                     if(e?.code !=  owner?.ownerType?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                     props.onChange(e)
@@ -418,6 +426,7 @@ const OwnerForm = (_props) => {
                   <TextInput
                     value={props.value}
                     autoFocus={focusIndex.index === owner?.key && focusIndex.type === "permanentAddress"}
+                    errorStyle={(localFormState.touched.permanentAddress && errors?.permanentAddress?.message) ? true : false}
                     onChange={(e) => {
                       if(e.target.value != owner?.permanentAddress && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                       props.onChange(e.target.value);
