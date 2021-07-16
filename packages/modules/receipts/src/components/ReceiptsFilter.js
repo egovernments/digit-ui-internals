@@ -21,12 +21,6 @@ const ReceiptsFilter = ({ searchParams, onFilterChange, onSearch, removeParam, .
   const mdmsStatus = data?.dropdownDataStatus || [];
 
   useEffect(() => {
-    if (data?.dropdownDataStatus) {
-      // setStatus(mdmsStatus?.map(mdms=>mdms?.code));
-    }
-  }, [data]);
-
-  useEffect(() => {
     if (service?.code != _searchParams.businessServices) {
       setSearchParams({ businessServices: service?.code });
     }

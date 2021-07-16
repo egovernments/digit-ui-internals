@@ -17,9 +17,6 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   const form = watch();
   const mobileView = innerWidth <= 640;
 
-  useEffect(() => {
-    console.log(formState.errors, "inside form");
-  }, [formState, form]);
 
   useEffect(() => {
     searchFields.forEach(({ pattern, name, maxLength, minLength, errorMessages, ...el }) => {
