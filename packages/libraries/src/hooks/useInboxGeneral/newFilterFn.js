@@ -21,7 +21,7 @@ export const filterFunctions = {
       workflowFilters.status = applicationStatus.map((status) => status.uuid);
     }
     if (filtersArg?.locality?.length) {
-      searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop()).join(",");
+      searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop());
     }
     if (filtersArg?.uuid && filtersArg?.uuid.code === "ASSIGNED_TO_ME") {
       workflowFilters.assignes = uuid;
