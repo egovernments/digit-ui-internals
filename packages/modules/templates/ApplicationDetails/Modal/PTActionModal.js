@@ -24,7 +24,6 @@ const CloseBtn = (props) => {
 };
 
 const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction, actionData, applicationData, businessService, moduleCode }) => {
-  console.log(action, "inside action modal");
   const { data: approverData, isLoading: PTALoading } = Digit.Hooks.useEmployeeSearch(
     tenantId,
     {
@@ -49,12 +48,13 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   const [config, setConfig] = useState({});
   const [defaultValues, setDefaultValues] = useState({});
   const [approvers, setApprovers] = useState([]);
-  const [selectedApprover, setSelectedApprover] = useState({});
+  const [selectedApprover, setSelectedApprover] = useState(null);
   const [file, setFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [error, setError] = useState(null);
   const [financialYears, setFinancialYears] = useState([]);
   const [selectedFinancialYear, setSelectedFinancialYear] = useState(null);
+  const [disableActionSubmit, setDisableActionSubmit] = useState(false);
 
   useEffect(() => {
     if (financialYearsData && financialYearsData["egf-master"]) {
@@ -96,7 +96,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   function submit(data) {
     if (!action?.showFinancialYearsModal) {
       let workflow = { action: action?.action, comments: data?.comments, businessService, moduleName: moduleCode };
-      workflow["assignes"] = action?.isTerminateState ? [] : [selectedApprover];
+      workflow["assignes"] = action?.isTerminateState || !selectedApprover ? [] : [selectedApprover];
       if (uploadedFile)
         workflow["documents"] = [
           {
@@ -165,7 +165,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       actionCancelOnSubmit={closeModal}
       actionSaveLabel={t(config.label.submit)}
       actionSaveOnSubmit={() => {}}
-      isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
+      isDisabled={!action.showFinancialYearsModal ? PTALoading || (action?.docUploadRequired && !uploadedFile) : !selectedFinancialYear}
       formId="modal-action"
     >
       {financialYearsLoading ? (

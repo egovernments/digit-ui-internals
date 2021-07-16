@@ -6,6 +6,7 @@ import Routes from "./routes";
 
 export const MyBills = ({ stateCode }) => {
   const { businessService } = useParams();
+  const { tenantId: _tenantId } = Digit.Hooks.useQueryParams();
 
   const { isLoading: storeLoading, data: store } = Digit.Services.useStore({
     stateCode,
@@ -17,7 +18,7 @@ export const MyBills = ({ stateCode }) => {
   const { url } = useRouteMatch();
   const location = useLocation();
 
-  const { tenantId } = Digit.UserService.getUser()?.info || location?.state || {};
+  const { tenantId } = Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
 
   if (!tenantId && !location?.state?.fromSearchResults) {
     history.replace(`/digit-ui/citizen/login`, { from: url });
