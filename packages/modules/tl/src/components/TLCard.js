@@ -1,7 +1,7 @@
+import { ArrowRightInbox } from "@egovernments/digit-ui-react-components";
 import React from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRightInbox, PropertyHouse } from "@egovernments/digit-ui-react-components";
+import { Link } from "react-router-dom";
 import { checkForEmployee } from "../utils";
 
 const ArrowRight = ({ to }) => (
@@ -16,7 +16,7 @@ const TLCard = () => {
     const total = 1;
     const tenantId = Digit.ULBService.getCurrentTenantId();
     //const { isLoading: hookLoading, isError, error, data: count, ...rest } = Digit.Hooks.tl.useTradeLicenseWorkFlowCount(tenantId);
-    let count =10;
+    let count = 10;
 
     const isCounterEmployee = checkForEmployee("TL_CEMP");
 
@@ -66,14 +66,19 @@ const TLCard = () => {
                             <span className="inbox-total">{" " + count || "-"}</span>
                             {<ArrowRight to={`/digit-ui/employee/tl/inbox`} />}
                         </span>
-                        {
-                            isCounterEmployee ? <span className="link">
-                                <Link to={`/digit-ui/employee/tl/new-application`}>{t("TL_NEW_TRADE_LICENSE_HEADER")}</Link>
-                            </span> : ""
-                        }
                         <span className="link">
-                            <Link to={`/digit-ui/employee/tl/renewal`}>{t("TL_COMMON_RENEW_LIC")}</Link>
+                            <Link to={`/digit-ui/employee/tl/search/application`}>{t("TL_SEARCH_APPLICATIONS")}</Link>
                         </span>
+                        {isCounterEmployee && (
+                            <React.Fragment>
+                                <span className="link">
+                                    <Link to={`/digit-ui/employee/tl/new-application`}>{t("TL_NEW_TRADE_LICENSE_HEADER")}</Link>
+                                </span>
+                                <span className="link">
+                                    <Link to={`/digit-ui/employee/tl/search/license`}>{t("TL_RENEWAL_HEADER")}</Link>
+                                </span>
+                            </React.Fragment>
+                        )}
                     </div>
                 </div>
             </div>

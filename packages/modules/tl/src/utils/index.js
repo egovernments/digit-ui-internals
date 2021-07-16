@@ -163,17 +163,31 @@ export const gettradeunits = (data) => {
 
 export const gettradeupdateunits = (data) => {
   let TLunits = [];
-  data?.TradeDetails?.units.map((ob, index) => {
-    if (data.tradeLicenseDetail.tradeUnits[index]) {
-      if (ob.tradesubtype.code !== data.tradeLicenseDetail.tradeUnits[index].tradeType) {
-        data.tradeLicenseDetail.tradeUnits[index].tradeType = ob.tradesubtype.code;
-        TLunits.push(data.tradeLicenseDetail.tradeUnits[index]);
+
+  data.tradeLicenseDetail.tradeUnits.map((oldunit) => {
+    data.TradeDetails.units.map((newunit) => {
+      if(oldunit.id === newunit.id)
+      {
+        if (oldunit.tradeType !== newunit.tradesubtype.code)
+        {
+          oldunit.tradeType = newunit.tradesubtype.code;
+          TLunits.push(oldunit);
+        }
+        else
+        {
+          TLunits.push(oldunit);
+        }
+
       }
-      else {
-        TLunits.push(data.tradeLicenseDetail.tradeUnits[index]);
+      else
+      {
+        TLunits.push({...oldunit,active:false});   
       }
-    }
-    else {
+    })
+  })
+  data.TradeDetails.units.map((ob) => {
+    if(!ob.id)
+    {
       TLunits.push({ tradeType: ob.tradesubtype.code, uom: ob.unit, uomValue: ob.uom });
     }
   })
@@ -190,17 +204,32 @@ export const getaccessories = (data) => {
 
 export const gettradeupdateaccessories = (data) => {
   let TLaccessories = [];
-  data?.TradeDetails?.accessories.map((ob, index) => {
-    if (data.tradeLicenseDetail.accessories[index]) {
-      if (ob.accessory.code !== data.tradeLicenseDetail.accessories[index].accessoryCategory) {
-        data.tradeLicenseDetail.accessories[index].accessoryCategory = ob.accessory.code;
-        data.push(data.tradeLicenseDetail.accessories[index]);
+
+  data.tradeLicenseDetail.accessories.map((oldunit) => {
+    data.TradeDetails.accessories.map((newunit) => {
+      if(oldunit.id === newunit.id)
+      {
+        if (oldunit.accessoryCategory !== newunit.accessory.code)
+        {
+          oldunit.accessoryCategory = newunit.accessory.code;
+          TLaccessories.push(oldunit);
+        }
+        else
+        {
+          TLaccessories.push(oldunit);
+        }
+
       }
-      else {
-        TLaccessories.push(data.tradeLicenseDetail.accessories[index]);
+      else
+      {
+          TLaccessories.push({...oldunit,active:false});
+        
       }
-    }
-    else {
+    })
+  })
+  data.TradeDetails.accessories.map((ob) => {
+    if(!ob.id)
+    {
       TLaccessories.push({ uom: ob.unit, accessoryCategory: ob.accessory.code, uomValue: ob.uom, count: ob.accessorycount });
     }
   })

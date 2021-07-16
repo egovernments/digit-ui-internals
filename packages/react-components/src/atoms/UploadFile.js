@@ -109,6 +109,20 @@ const UploadFile = (props) => {
           disabled={props.disabled}
           onChange={(e) => props.onUpload(e)}
         />
+        {!hasFile || props.error ? (
+          <h2 className="file-upload-status">{props.message}</h2>
+        ) : (
+          <div className="tag-container" style={extraStyles ? extraStyles?.tagContainerStyles : null}>
+            <div className="tag" style={extraStyles ? extraStyles?.tagStyles : null}>
+              <span className="text" style={extraStyles ? extraStyles?.textStyles : null}>
+                {inpRef.current.files[0]?.name?.slice(0, 20)}
+              </span>
+              <span onClick={() => handleDelete()}>
+                <Close className="close" />
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </Fragment>
   );
