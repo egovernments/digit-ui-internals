@@ -98,12 +98,12 @@ const CheckPage = ({ onSubmit, value }) => {
             />
             <Row
               label={t("TL_UNIT_OF_MEASURE_LABEL")}
-              text={t(unit?.unit)}
+              text={ `${unit?.unit ? t(unit?.unit):"NA"}`}
               actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")}
-              text={t(unit?.uom)}
+              text={`${unit?.uom ? t(unit?.uom):"NA"}`}
               actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
           </div>
@@ -126,12 +126,12 @@ const CheckPage = ({ onSubmit, value }) => {
               />
               <Row
                 label={t("TL_ACC_UOM_LABEL")}
-                text={t(acc?.unit)}
+                text={`${acc?.unit ? t(acc?.unit):"NA"}`}
                 actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
               <Row
                 label={t("TL_ACC_UOM_VALUE_LABEL")}
-                text={t(acc?.uom)}
+                text={`${acc?.unit ?t(acc?.uom):"NA"}`}
                 actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
             </div>
