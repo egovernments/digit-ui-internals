@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import _ from "lodash";
 
-const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props }) => {
+const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, ...props }) => {
   const { t } = useTranslation();
 
   const [_searchParams, setSearchParams] = useState(() => searchParams);
@@ -22,38 +22,6 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
     setSearchParams(defaultSearchParams);
     onFilterChange(defaultSearchParams);
   };
-  const ApplicationTypeMenu = [
-    {
-        code : "INITIATED"
-      },
-      {
-        code : "APPLIED"
-      },
-      {
-        code : "FIELDINSPECTION"
-      },
-      {
-        code : "PENDINGAPPROVAL"
-      },
-      {
-        code : "PENDINGPAYMENT"
-      },
-      {
-        code : "APPROVED"
-      },
-      {
-        code : "CITIZENACTIONREQUIRED"
-      },
-      {
-        code : "EXPIRED"
-      },
-      {
-        code : "CANCELLED"
-      },
-      {
-        code : "REJECTED"
-      }
-  ];
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -63,7 +31,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
   };
 
   const selectLocality = (d) => {
-    localParamChange({ locality: [..._searchParams?.locality, d] });
+    localParamChange({ locality: [ ...(_searchParams?.locality || []) , d ] });
   };
 
   return (
@@ -135,13 +103,13 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, ...props })
               <div className="filter-label" style={{ fontWeight: "normal" }}>
                 {t("CS_INBOX_STATUS_FILTER")}
               </div>
-              {ApplicationTypeMenu.map((e, index) => {
+              {statuses.map((e, index) => {
                 const checked = _searchParams?.services?.includes(e.value);
                 return (
                   <CheckBox
                     key={index + "service"}
-                    label={t(`WF_NEWTL_${e.code}`)}
-                    value={e.code}
+                    label={t(`WF_NEWTL_${e.applicationstatus}`)}
+                    value={e.id}
                     checked={checked}
                     onChange={(event) => onServiceSelect(event, e.value)}
                   />

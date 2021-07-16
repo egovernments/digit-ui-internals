@@ -50,15 +50,11 @@ const Inbox = ({
   };
 
   const handleFilterChange = (filterParam) => {
-    let keys_to_delete = filterParam.delete;
+    let keys_to_delete = filterParam?.delete;
     console.log(keys_to_delete);
     let _new = {};
     if (isMobile) {
       _new = { ...filterParam };
-      // setSearchParams({
-      //   businessService: [],
-      //   status: []
-      // })
     } else {
       _new = { ...searchParams, ...filterParam };
     }

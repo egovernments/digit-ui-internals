@@ -119,7 +119,7 @@ const ApplicationDetails = () => {
                 style={{ border: "none" }}
                 label={t("TL_COMMON_TABLE_COL_STATUS")}
                 text={t(`WF_NEWTL_${application?.status}`)}
-                textStyle={{ whiteSpace: "pre" }}
+                textStyle={{ whiteSpace: "pre-wrap",width:"70%" }}
               />
               <Row
                 style={{ border: "none" }}
@@ -131,7 +131,7 @@ const ApplicationDetails = () => {
                 style={{ border: "none" }}
                 label={t("TL_COMMON_TABLE_COL_TRD_NAME")}
                 text={application?.tradeName}
-                textStyle={{ whiteSpace: "pre" }}
+                textStyle={{ whiteSpace: "pre-wrap",width:"70%" }}
               />
               {application?.tradeLicenseDetail?.tradeUnits?.map((ele, index) => {
                 return (
@@ -156,7 +156,7 @@ const ApplicationDetails = () => {
                           .split("-")
                           .join("_")}`
                       )}
-                      textStyle={{ whiteSpace: "pre" }}
+                      textStyle={{ whiteSpace: "pre-wrap",width:"70%" }}
                     />
                   </div>
                 );
@@ -183,7 +183,7 @@ const ApplicationDetails = () => {
                       style={{ border: "none" }}
                       label={t("TL_NEW_TRADE_ADDRESS_LABEL")}
                       text={ele?.permanentAddress}
-                      textStyle={{ whiteSpace: "pre" }}
+                      textStyle={{ whiteSpace: "pre-wrap",width:"70%" }}
                     />
                   </div>
                 );
