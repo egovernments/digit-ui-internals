@@ -24,14 +24,14 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
     const GetCell = (value) => <span className="cell-text">{value}</span>;
     const columns = useMemo( () => ([
         {
-          Header: t("ES_INBOX_LICENSE_NUMBER"),
+          Header: t("TL_TRADE_LICENSE_LABEL"),
           accessor: "licenseNumber",
           disableSortBy: true,
           Cell: ({ row }) => {
             return (
               <div>
                 <span className="link">
-                  <Link to={`/application-details/${row.original["licenseNumber"]}`}>
+                  <Link to={`/digit-ui/employee/tl/application-details/${row.original["licenseNumber"]}`}>
                     {row.original["licenseNumber"]}
                   </Link>
                 </span>
@@ -40,27 +40,27 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
           },
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_TRADE_NAME"),
+          Header: t("TL_LOCALIZATION_TRADE_NAME"),
           disableSortBy: true,
           accessor: (row) => GetCell(row.tradeName || ""),
         },
         {
-            Header: t("ES_APPLICATION_DETAILS_ISSUED_DATE"),
+            Header: t("ES_APPLICATION_SEARCH_ISSUED_DATE"),
             disableSortBy: true,
-            accessor: (row) => GetCell(row.issuedDate || ""),
+            accessor: (row) => GetCell(row.issuedDate? Digit.DateUtils.ConvertTimestampToDate(row.issuedDate) : ""),
         },
         {
-            Header: t("ES_APPLICATION_DETAILS_VALID_TO"),
+            Header: t("ES_APPLICATION_SEARCH_VALID_TO"),
             disableSortBy: true,
-            accessor: (row) => GetCell(row.validTo || ""),
+            accessor: (row) => GetCell(row.validTo? Digit.DateUtils.ConvertTimestampToDate(row.validTo) : ""),
         },
         {
-            Header: t("ES_APPLICATION_DETAILS_LOCALITY"),
+            Header: t("TL_HOME_SEARCH_RESULTS__LOCALITY"),
             disableSortBy: true,
             accessor: (row) => GetCell(row.tradeLicenseDetail.address.locality.code || ""),
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_STATUS"),
+          Header: t("TL_COMMON_TABLE_COL_STATUS"),
           accessor: (row) => GetCell(row.status || ""),
           disableSortBy: true,
         }
@@ -74,23 +74,31 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
     return <React.Fragment>
             <SearchForm onSubmit={onSubmit} handleSubmit={handleSubmit}>
             <SearchField>
-                <label>{t("TL_SEARCH_LICENSE_NUMBER")}</label>
+                <label>{t("TL_TRADE_LICENSE_LABEL")}</label>
                 <TextInput name="licenseNumbers" inputRef={register({})} />
             </SearchField>
             <SearchField>
-                <label>{t("TL_SEARCH_TRADE_OWNER_NAME")}</label>
+                <label>{t("TL_TRADE_LICENSE_LABEL")}</label>
                 <TextInput name="ownerName" inputRef={register({})}/>
             </SearchField>
             <SearchField>
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_FROM")}</label>
-                <TextInput name="licenseIssuer" inputRef={register({})}/>
+                <Controller
+                  render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
+                  name="toDate"
+                  control={control}
+                />
             </SearchField>
             <SearchField>
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_TO")}</label>
-                <TextInput name="licenseIssuedTo" inputRef={register({})}/>
+                <Controller
+                    render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
+                    name="fromDate"
+                    control={control}
+                  />
             </SearchField>
             <SearchField>
-                <label>{t("TL_SEARCH_TRADE_LICENSE_TRADE_NAME")}</label>
+                <label>{t("TL_LOCALIZATION_TRADE_NAME")}</label>
                 <TextInput name="tradeName" inputRef={register({})}/>
             </SearchField>
             <SearchField className="submit">

@@ -69,7 +69,7 @@ const TLCard = () => {
                         <span className="link">
                             <Link to={`/digit-ui/employee/tl/search/application`}>{t("TL_SEARCH_APPLICATIONS")}</Link>
                         </span>
-                        {isCounterEmployee && (
+                        {isCounterEmployee ? (
                             <React.Fragment>
                                 <span className="link">
                                     <Link to={`/digit-ui/employee/tl/new-application`}>{t("TL_NEW_TRADE_LICENSE_HEADER")}</Link>
@@ -78,7 +78,7 @@ const TLCard = () => {
                                     <Link to={`/digit-ui/employee/tl/search/license`}>{t("TL_RENEWAL_HEADER")}</Link>
                                 </span>
                             </React.Fragment>
-                        )}
+                        ): null}
                     </div>
                 </div>
             </div>

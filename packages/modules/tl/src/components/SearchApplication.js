@@ -23,49 +23,49 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
     const applicationStatuses = [
         {
             code: "CANCELLED",
-            i18nKey: "TLAPPLICATION_TYPE_CANCELLED"
+            i18nKey: "WF_NEWTL_CANCELLED"
         },
         {
             code: "APPROVED",
-            i18nKey: "TLAPPLICATION_TYPE_APPROVED"
+            i18nKey: "WF_NEWTL_APPROVED"
         },
         {
             code: "EXPIRED",
-            i18nKey: "TLAPPLICATION_TYPE_EXPIRED"
+            i18nKey: "WF_NEWTL_EXPIRED"
         },
         {
             code: "APPLIED",
-            i18nKey: "TLAPPLICATION_TYPE_APPLIED"
+            i18nKey: "WF_NEWTL_APPLIED"
         },
         {
             code: "REJECTED",
-            i18nKey: "TLAPPLICATION_TYPE_REJECTED"
+            i18nKey: "WF_NEWTL_REJECTED"
         },
         {
             code: "PENDINGPAYMENT",
-            i18nKey: "TLAPPLICATION_TYPE_PENDINGPAYMENT"
+            i18nKey: "WF_NEWTL_PENDINGPAYMENT"
         },
         {
             code: "FIELDINSPECTION",
-            i18nKey: "TLAPPLICATION_TYPE_FIELDINSPECTION"
+            i18nKey: "WF_NEWTL_FIELDINSPECTION"
         },
         {
             code: "CITIZENACTIONREQUIRED",
-            i18nKey: "TLAPPLICATION_TYPE_CITIZENACTIONREQUIRED"
+            i18nKey: "WF_NEWTL_CITIZENACTIONREQUIRED"
         },
         {
             code: "PENDINGAPPROVAL",
-            i18nKey: "TLAPPLICATION_TYPE_PENDINGAPPROVAL"
+            i18nKey: "WF_NEWTL_PENDINGAPPROVAL"
         },
         {
             code: "INITIATED",
-            i18nKey: "TLAPPLICATION_TYPE_INITIATED"
+            i18nKey: "WF_NEWTL_INITIATED"
         }	
     ]
     const GetCell = (value) => <span className="cell-text">{value}</span>;
     const columns = useMemo( () => ([
         {
-          Header: t("ES_INBOX_APPLICATION_NO"),
+          Header: t("TL_COMMON_TABLE_COL_APP_NO"),
           accessor: "applicationNo",
           disableSortBy: true,
           Cell: ({ row }) => {
@@ -81,22 +81,22 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
           },
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_COMMENCEMENT_DATE"),
+          Header: t("TL_NEW_TRADE_DETAILS_TRADE_COMM_DATE_LABEL"),
           disableSortBy: true,
-          accessor: (row) => GetCell(row.commencementDate || ""),
+          accessor: (row) => GetCell(row.commencementDate ? Digit.DateUtils.ConvertTimestampToDate(row.commencementDate) : ""),
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_TRADE_NAME"),
+          Header: t("TL_COMMON_TABLE_COL_TRD_NAME"),
           disableSortBy: true,
           accessor: (row) => GetCell(row.tradeName || ""),
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_TRADE_OWNER"),
+          Header: t("TL_COMMON_TABLE_COL_OWN_NAME"),
           accessor: (row) => GetCell(row.tradeLicenseDetail.owners.map( o => o.name ). join(",") || ""),
           disableSortBy: true,
         },
         {
-          Header: t("ES_APPLICATION_DETAILS_STATUS"),
+          Header: t("TL_COMMON_TABLE_COL_STATUS"),
           accessor: (row) => GetCell(row.status || ""),
           disableSortBy: true,
         }
@@ -110,11 +110,11 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
     return <React.Fragment>
                 <SearchForm onSubmit={onSubmit} handleSubmit={handleSubmit}>
                 <SearchField>
-                    <label>{t("TL_SEARCH_APPLICATION_NUMBER")}</label>
+                    <label>{t("TL_HOME_SEARCH_RESULTS_APP_NO_LABEL")}</label>
                     <TextInput name="applicationNumber" inputRef={register({})} />
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_SEARCH_APPLICATION_TYPE")}</label>
+                    <label>{t("TL_LOCALIZATION_APPLICATION_TYPE")}</label>
                     <Controller
                             control={control}
                             name="applicationType"
@@ -131,7 +131,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                             />
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_SEARCH_FROM_DATE")}</label>
+                    <label>{t("TL_TRADE_LICENCE_FROM_DATE")}</label>
                     <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
                         name="toDate"
@@ -139,7 +139,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                         />
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_SEARCH_TO_DATE")}</label>
+                    <label>{t("TL_TRADE_LICENCE_TO_DATE")}</label>
                     <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
                         name="fromDate"
@@ -147,11 +147,11 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                         />
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_SEARCH_TRADE_LICENSE_NUMBER")}</label>
+                    <label>{t("TL_TRADE_LICENSE_LABEL")}</label>
                     <TextInput name="licenseNumbers" inputRef={register({})}/>
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_SEARCH_APPLICATION_STATUS")}</label>
+                    <label>{t("TL_HOME_SEARCH_RESULTS_APP_STATUS_LABEL")}</label>
                     <Controller
                             control={control}
                             name="status"
@@ -168,7 +168,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                             />
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_SEARCH_TRADE_LICENSE_NUMBER")}</label>
+                    <label>{t("TL_TRADE_LICENSE_LABEL")}</label>
                     <TextInput name="licenseNumbers" inputRef={register({})}/>
                 </SearchField>
                 <SearchField className="submit">
@@ -176,7 +176,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                     <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
                 </SearchField>
             </SearchForm>
-            {data?.display ?<Card style={{ marginTop: 20 }}>
+            {data?.display ? <Card style={{ marginTop: 20 }}>
                 {
                 t(data.display)
                     .split("\\n")

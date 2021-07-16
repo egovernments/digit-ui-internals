@@ -7,7 +7,7 @@ import SearchApplication from "./search";
 import { Link } from "react-router-dom";
 // import { getActionButton } from "../../utils";
 
-const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
+const DesktopInbox = ({ tableConfig, filterComponent,columns, isLoading, ...props }) => {
   const { data } = props;
   const { t } = useTranslation();
   const [FilterComponent, setComp] = useState(() => Digit.ComponentRegistryService?.getComponent(filterComponent));
@@ -34,7 +34,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
         return (
           <div>
             <span className="link">
-            <Link to={"/digit-ui/employee/tl/tl-details/" + row.original["applicationNo"]}>{row.original["applicationNo"]}</Link>
+            <Link to={"/digit-ui/employee/tl/application-details/" + row.original["applicationId"]}>{row.original["applicationId"]}</Link>
             </span>
           </div>
         );
@@ -42,7 +42,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     },{
       Header: t("TL_COMMON_TABLE_COL_APP_DATE"),
       Cell: ({ row }) => {
-        return GetCell(`${row.original?.["name"]}`);
+        return GetCell(Digit.DateUtils.ConvertTimestampToDate(row.original.date))
       }
     },{
           Header: t("WF_INBOX_HEADER_LOCALITY"),
@@ -53,14 +53,13 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     {
       Header: t("WF_INBOX_HEADER_STATUS"),
       Cell: ({ row }) => {
-        const dueDate = row.original?.dueDate === "NA" ? "NA" : Digit.DateUtils.ConvertEpochToDate(row.original?.dueDate);
-        return GetCell(t(`${dueDate}`));
+        return GetCell(t(`${row.original?.["status"]}`));
       },
     },
     {
       Header: t("WF_INBOX_HEADER_CURRENT_OWNER"),
       Cell: ({ row }) => {
-        return GetCell(t(`${row.original?.totalAmount}`));
+        return GetCell(t(`${row.original?.owner}`));
       }
     },{
     Header: t("WF_INBOX_HEADER_SLA_DAYS_REMAINING"),
@@ -73,7 +72,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
   let result;
   if (props.isLoading) {
     result = <Loader />;
-  } else if (data?.length === 0) {
+  } else if (data?.table?.length === 0) {
     result = (
       <Card style={{ marginTop: 20 }}>
         {t("CS_MYAPPLICATIONS_NO_APPLICATION")
@@ -85,11 +84,11 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
           ))}
       </Card>
     );
-  } else if (data?.length > 0) {
+  } else if (data?.table?.length > 0) {
     result = (
       <ApplicationTable
         t={t}
-        data={data}
+        data={data?.table}
         columns={inboxColumns(data)}
         getCellProps={(cellInfo) => {
           return {
@@ -114,7 +113,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
     );
   }
 
-  return (
+  return isLoading ? <Loader /> : (
     <div className="inbox-container">
       {!props.isSearch && (
         <div className="filters-container">
@@ -130,7 +129,13 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
                 text: "TL_SEARCH_APPLICATIONS",
                 link: "/digit-ui/employee/tl/search/application",
                 businessService: "TL",
-                roles: [],
+                roles: ["TL_FIELD_INSPECTOR","TL_APPROVER", "TL_DOC_VERIFIER","TL_CEMP"],
+              },
+              {
+                text: "TL_SEARCH_LICENSE",
+                link: "/digit-ui/employee/tl/search/license",
+                businessService: "TL",
+                roles: ["TL_APPROVER", "TL_DOC_VERIFIER","TL_FIELD_INSPECTOR"],
               },
               {
                 text: "TL_RENEWAL_HEADER",
@@ -150,6 +155,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, ...props }) => {
             {
               <FilterComponent
                 defaultSearchParams={props.defaultSearchParams}
+                statuses={data.statuses}
                 onFilterChange={props.onFilterChange}
                 searchParams={props.searchParams}
                 type="desktop"
