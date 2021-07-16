@@ -148,9 +148,25 @@ export const SuccessfulPayment = (props) => {
       let to = new Date(taxPeriodTo).getFullYear().toString();
       return "FY " + from + "-" + to;
     } else if (fromPeriod && toPeriod) {
+      if (workflw === "mcollect") {
+        from =
+          new Date(fromPeriod).getDate().toString() +
+          " " +
+          Digit.Utils.date.monthNames[new Date(fromPeriod).getMonth() + 1].toString() +
+          " " +
+          new Date(fromPeriod).getFullYear().toString();
+        to =
+          new Date(toPeriod).getDate() +
+          " " +
+          Digit.Utils.date.monthNames[new Date(toPeriod).getMonth() + 1] +
+          " " +
+          new Date(toPeriod).getFullYear();
+        return from + " - " + to;
+      }
       let from = new Date(fromPeriod).getFullYear().toString();
       let to = new Date(toPeriod).getFullYear().toString();
       return "FY " + from + "-" + to;
+
     } else return "N/A";
   };
 
