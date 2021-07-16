@@ -247,6 +247,7 @@ const TradeUnitForm = (_props) => {
                                     selected={props.value}
                                     disable={false}
                                     option={tradeCategoryValues}
+                                    errorStyle={(localFormState.touched.tradeCategory && errors?.tradeCategory?.message) ? true : false}
                                     select={(e) => {
                                         if (props?.value?.code == e?.code) return true;
                                         if(e?.code != props?.value?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
@@ -294,6 +295,7 @@ const TradeUnitForm = (_props) => {
                                     selected={getValues("tradeType")}
                                     disable={false}
                                     option={unit?.tradeCategory ? tradeTypeOptionsList : []}
+                                    errorStyle={(localFormState.touched.tradeType && errors?.tradeType?.message) ? true : false}
                                     select={(e) => {
                                         if (props?.value?.code == e?.code) return true;
                                         if(e?.code != props?.value?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
@@ -336,6 +338,7 @@ const TradeUnitForm = (_props) => {
                                     selected={getValues("tradeSubType")}
                                     disable={false}
                                     option={unit?.tradeType ? tradeSubTypeOptionsList : []}
+                                    errorStyle={(localFormState.touched.tradeSubType && errors?.tradeSubType?.message) ? true : false}
                                     select={(e) => {
                                         if (props?.value?.code == e?.code) return true;
                                         if(e?.code != props?.value?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
@@ -364,6 +367,7 @@ const TradeUnitForm = (_props) => {
                                         value={getValues("uom")}
                                         // value={unit?.tradeSubType?.uom || ""}
                                         autoFocus={focusIndex.index === unit?.key && focusIndex.type === "uom"}
+                                        errorStyle={(localFormState.touched.uom && errors?.uom?.message) ? true : false}
                                         onChange={(e) => {
                                             props.onChange(e);
                                             setFocusIndex({ index: unit.key, type: "uom" });
@@ -388,6 +392,7 @@ const TradeUnitForm = (_props) => {
                                     <TextInput
                                         value={getValues("uomValue")}
                                         autoFocus={focusIndex.index === unit?.key && focusIndex.type === "uomValue"}
+                                        errorStyle={(localFormState.touched.uomValue && errors?.uomValue?.message) ? true : false}
                                         onChange={(e) => {
                                             if(e.target.value != unit?.uomValue && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true});
                                             props.onChange(e);

@@ -55,7 +55,7 @@ const TextInput = (props) => {
             type={props.type || "text"}
             name={props.name}
             id={props.id}
-            className={`${user_type ? "employee-card-input" : "citizen-card-input"} ${props.disable && "disabled"} focus-visible`}
+            className={`${user_type ? "employee-card-input" : "citizen-card-input"} ${props.disable && "disabled"} focus-visible ${props.errorStyle && "employee-card-input-error"}`}
             placeholder={props.placeholder}
             onChange={(event) => {
               if (props?.onChange) {

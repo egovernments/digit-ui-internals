@@ -326,6 +326,7 @@ const AccessoriersForm = (_props) => {
                                         value={getValues("uomValue")}
                                         // value={accessor?.accessoryCategory?.uom ? props.value : ""}
                                         autoFocus={focusIndex.index === accessor?.key && focusIndex.type === "uomValue"}
+                                        errorStyle={(localFormState.touched.uomValue && errors?.uomValue?.message) ? true : false}
                                         onChange={(e) => {
                                             props.onChange(e.target.value);
                                             setFocusIndex({ index: accessor.key, type: "uomValue" });
@@ -351,6 +352,7 @@ const AccessoriersForm = (_props) => {
                                     <TextInput
                                         value={props.value}
                                         autoFocus={focusIndex.index === accessor?.key && focusIndex.type === "count"}
+                                        errorStyle={(localFormState.touched.count && errors?.count?.message) ? true : false}
                                         onChange={(e) => {
                                             props.onChange(e.target.value);
                                             setFocusIndex({ index: accessor.key, type: "count" });
