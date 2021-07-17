@@ -8,6 +8,8 @@ const MutationForm = ({ applicationData, tenantId }) => {
   //   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const [canSubmit, setSubmitValve] = useState(false);
+
+  const { data: mutationDocs, isLoading } = Digit.Hooks.pt.useMDMS(tenantId.split(".")[0], "PropertyTax", "MutationDocuments");
   const defaultValues = {
     originalData: applicationData,
   };
@@ -19,6 +21,10 @@ const MutationForm = ({ applicationData, tenantId }) => {
     setMutationHappened(false);
     clearSuccessData();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(mutationDocs, "MUTATION"), [isLoading];
+  // });
 
   const history = useHistory();
 
@@ -98,10 +104,9 @@ const MutationForm = ({ applicationData, tenantId }) => {
         },
         ownershipCategory: data.ownershipCategory.code,
         documents: [
-          ...data.originalData?.documents.map((oldDoc) => {
-            if (data.documents.documents.some((mut) => oldDoc.documentType.includes(mut.documentType))) return { ...oldDoc, status: "INACTIVE" };
-            else return oldDoc;
-          }),
+          ...data.originalData?.documents.filter(
+            (oldDoc) => !mutationDocs?.PropertyTax?.MutationDocuments.some((mut) => oldDoc.documentType.includes(mut.code))
+          ),
           ...data.documents.documents.map((e) =>
             e.documentType.includes("OWNER.TRANSFERREASONDOCUMENT") ? { ...e, documentType: e.documentType.split(".")[2] } : e
           ),

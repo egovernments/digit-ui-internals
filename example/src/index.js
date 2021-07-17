@@ -100,13 +100,13 @@ const userInfo = {
   QAPGRCSR,
 };
 
-const enabledModules = ["PGR", "FSM", "Payment", "PT", "QuickPayLinks", "DSS", "MCollect", "HRMS", "TL","Receipts"];
+const enabledModules = ["PGR", "FSM", "Payment", "PT", "QuickPayLinks", "DSS", "MCollect", "HRMS", "TL", "Receipts"];
 
 const initTokens = (stateCode) => {
   const userType = window.sessionStorage.getItem("userType") || process.env.REACT_APP_USER_TYPE || "CITIZEN";
-   
+
   const token = window.sessionStorage.getItem("token") || process.env[`REACT_APP_${userType}_TOKEN`];
-   
+
   // console.log(token);
 
   const citizenInfo = window.localStorage.getItem("Citizen.user-info") || userInfo[userType];
@@ -161,7 +161,7 @@ const initDigitUI = () => {
 
   window.Digit.Customizations = { PGR: pgrCustomizations };
 
-  const stateCode = window?.globalConfigs?.getConfig("STATE_LEVEL_TENANT_ID")||'pb';
+  const stateCode = window?.globalConfigs?.getConfig("STATE_LEVEL_TENANT_ID") || "pb";
   initTokens(stateCode);
 
   const registry = Digit.ComponentRegistryService.getRegistry();

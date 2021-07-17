@@ -10,7 +10,7 @@ const MyChallanResult = ({ template, header, actionButtonLabel }) => {
   const history = useHistory();
   const filters = {};
   const userInfo = Digit.UserService.getUser();
-  const tenantId = userInfo?.info?.permanentCity;
+  const tenantId = userInfo?.info?.tenantId;
 
   filters.mobileNumber = userInfo?.info?.mobileNumber;
 

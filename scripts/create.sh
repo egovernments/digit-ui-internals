@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./scripts/run.sh fsm
+./scripts/run.sh tl

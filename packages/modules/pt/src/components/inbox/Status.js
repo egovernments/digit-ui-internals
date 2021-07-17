@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import StatusCount from "./StatusCount";
 
 const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap, moduleCode }) => {
   const { t } = useTranslation();
-
-  console.log({ businessServices, moduleCode }, "inside status");
 
   const [moreStatus, showMoreStatus] = useState(false);
 
@@ -25,7 +23,18 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
     return t(`ES_PT_COMMON_STATUS_${state.state || "CREATED"}`);
   };
 
-  console.log(statusData, "status data");
+  useEffect(() => {
+    if (statusData) {
+      let a = statusData.userRoleStates
+        ?.filter((e) => !e.isTerminateState)
+        .reduce((acc, state) => {
+          if (!acc[state.state]) acc[state.state] = [state];
+          else acc[state.state]?.push(state);
+          return acc;
+        }, {});
+      // console.log(statusData, a, "status data");
+    }
+  }, [statusData]);
 
   if (isLoading) {
     return <Loader />;

@@ -145,7 +145,10 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
                 moduleCode={moduleCode}
                 onAssignmentChange={(e, status) => {
                   if (e.target.checked) localParamChange({ applicationStatus: [..._searchParams?.applicationStatus, status] });
-                  else localParamChange({ applicationStatus: _searchParams?.applicationStatus.filter((e) => e.code !== status.code) });
+                  else {
+                    let applicationStatus = _searchParams?.applicationStatus.filter((e) => e.state !== status.state);
+                    localParamChange({ applicationStatus });
+                  }
                 }}
               />
             </div>

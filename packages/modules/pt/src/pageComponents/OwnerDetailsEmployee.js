@@ -264,7 +264,7 @@ const OwnerForm = (_props) => {
                 defaultValue={owner?.name}
                 rules={{
                   required: t("CORE_COMMON_REQUIRED_ERRMSG"),
-                  validate: { pattern: (val) => (/^\w+( +\w+)*$/.test(val) ? true : t("INVALID_NAME")) },
+                  validate: { pattern: (val) => (/^[a-zA-Z\s]*$/.test(val) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) },
                 }}
                 render={(props) => (
                   <TextInput

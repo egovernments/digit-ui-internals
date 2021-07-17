@@ -85,9 +85,16 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
   }, [isLoading]);
 
   const calculateNumberOfFloors = () => {
-    // if (!floorlist?.length || formState.errors[config.key]) return;
     if (formData?.PropertyType?.code !== "BUILTUP.INDEPENDENTPROPERTY") {
       if (formState.errors[config.key]?.type === "units_missing") clearErrors(config.key);
+      if (formData?.PropertyType?.code.includes("BUILTUP")) {
+        let uniqueFloors = units.reduce((acc, unit) => (!unit.floorNo ? acc : acc[unit.floorNo] ? acc : { ...acc, [unit.floorNo]: 1 }), {});
+        onSelect("noOfFloors", Object.keys(uniqueFloors).length);
+        let totalGroundFloorArea = units.reduce((acc, { floorNo, builtUpArea }) => acc + (floorNo?.code == 0 ? Number(builtUpArea) : 0), 0);
+        if (totalGroundFloorArea > Number(formData?.landarea)) {
+          setError(config.key, { type: "landArea extended", message: t("PT_BUILTUPAREA_GRATER_THAN_LANDAREA") });
+        } else clearErrors(config.key);
+      }
       return;
     }
 
