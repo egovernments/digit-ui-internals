@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRightInbox, ShippingTruck } from "@egovernments/digit-ui-react-components";
+import { ArrowRightInbox, ShippingTruck, EmployeeModuleCard} from "@egovernments/digit-ui-react-components";
 
 const ArrowRight = ({ to }) => (
   <Link to={to}>
@@ -108,31 +108,37 @@ const FSMCard = () => {
       </div>
     );
   }
-  return (
-    <div className="employeeCard card-home">
-      <div className="complaint-links-container">
-        <div className="header">
-          <span className="logo">
-            <ShippingTruck />
-          </span>
-          <span className="text">{t("ES_TITLE_FAECAL_SLUDGE_MGMT")}</span>
-        </div>
-        <div className="body">
-          <span className="link">
-            <Link to={`/digit-ui/employee/fsm/inbox`}>{t("ES_TITLE_INBOX")}</Link>
-            <span className="inbox-total">{" " + total || "-"}</span>
-            {<ArrowRight to={`/digit-ui/employee/fsm/inbox`} />}
-          </span>
-          {!DSO && !COLLECTOR && !FSM_EDITOR && (
-            <React.Fragment>
-              <span className="link">
-                <Link to={`/digit-ui/employee/fsm/new-application`}>{t("ES_TITLE_NEW_DESULDGING_APPLICATION")}</Link>
-              </span>
-            </React.Fragment>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+
+  const linksForSomeFSMEmployees = !DSO && !COLLECTOR && !FSM_EDITOR ? [
+    {
+      label: t("ES_TITLE_NEW_DESULDGING_APPLICATION"),
+      link: `/digit-ui/employee/fsm/new-application`
+    }
+  ] : []
+
+  const propsForModuleCard = {
+    Icon: <ShippingTruck />,
+    moduleName: "FSM",
+    kpis:[
+      {
+          label: t("TOTAL_FSM"),
+          link: `/digit-ui/employee/fsm/inbox`
+      },
+      {
+          label: t("TOTAL_NEARING_SLA"),
+          link: `/digit-ui/employee/fsm/inbox`
+      }  
+    ],
+    links: [
+      {
+        count: total,
+        label: t("ES_COMMON_INBOX"),
+        link: `/digit-ui/employee/fsm/inbox`
+      },
+      ...linksForSomeFSMEmployees
+    ]
+  }
+
+  return <EmployeeModuleCard {...propsForModuleCard} />
 };
 export default FSMCard;

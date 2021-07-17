@@ -2,16 +2,21 @@
   @apply bg-white;
   border-radius: 4px;
   .header {
-    @apply flex items-center border-b border-border;
+    @apply flex items-center border-b border-border justify-between;
 
     .logo {
+      width: 56px;
+      height: 56px;
       @apply bg-focus;
       padding: 12px;
       border-radius: 4px;
+      svg{
+        @apply w-8 h-8;
+      }
     }
 
     .text {
-      @apply pl-md font-bold;
+      @apply pl-md text-heading-m font-bold;
     }
   }
 
@@ -26,12 +31,19 @@
     }
 
     .inbox-total {
-      @apply text-center text-white;
-      background-color: #000;
-      border-radius: 12px;
-      margin-left: 5px;
-      padding-left: 3px;
-      padding-right: 3px;
+      padding: 4px;
+      @apply text-center text-white w-8 h-8 bg-primary-main rounded-full ml-xs;
+    }
+  }
+
+  .links-wrapper{
+    @apply pl-md py-sm text-text-btn;
+    .link{
+      padding: 0 !important;
+      padding-bottom: 4px !important;
+      svg{
+        @apply ml-sm
+      }
     }
   }
 }
@@ -141,7 +153,7 @@
       }
 
       .text {
-        @apply pl-md font-bold;
+        @apply pl-md text-heading-m-dt font-bold;
       }
     }
 

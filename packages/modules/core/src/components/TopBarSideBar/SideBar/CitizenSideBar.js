@@ -1,9 +1,9 @@
 import React from "react";
 import { NavBar, LogoutIcon } from "@egovernments/digit-ui-react-components";
-import SideBarMenu from "../config/sidebar-menu";
+import SideBarMenu from "../../../config/sidebar-menu";
 import { useTranslation } from "react-i18next";
-import { digitImg } from "../Images/digit.js";
-import { powered } from "../Images/powered.js";
+import { digitImg } from "../../../Images/digit.js";
+import { powered } from "../../../Images/powered.js";
 
 const defaultImage =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO4AAADUCAMAAACs0e/bAAAAM1BMVEXK0eL" +
@@ -54,7 +54,7 @@ const PoweredBy = () => (
   </div>
 );
 
-export const CitizenSidebar = ({ isOpen, isMobile, toggleSidebar, onLogout }) => {
+export const CitizenSideBar = ({ isOpen, isMobile, toggleSidebar, onLogout }) => {
   const { data: storeData, isFetched } = Digit.Hooks.useStore.getInitData();
   const { stateInfo } = storeData || {};
   const user = Digit.UserService.getUser();

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULES=( "css" "components" "common" "core" "libraries" "example" )
+MODULES=( "components" "common" "core" "libraries" "example" )
 
 RUNARGS=()
 BUILDARGS=()
@@ -11,9 +11,9 @@ do
     RUNARGS=( ${RUNARGS[@]} dev:"$var" )
 done
 
-a=1
+a=0
 i=0
-while [ "$a" -lt 5 ]
+while [ "$a" -lt 4 ]
 do 
     BUILD[$a]=build:${MODULES[$a]}
     a=` expr $a + 1 `
@@ -23,8 +23,8 @@ done
 echo "BUILDING MODULES:-" ${BUILD[*]} ${BUILDARGS[*]}
 yarn run-p ${BUILD[*]} ${BUILDARGS[*]}
 
-b=1
-while [ "$b" -lt 6 ]
+b=0
+while [ "$b" -lt 5 ]
 do 
     RUN[$b]=dev:${MODULES[$b]}
     b=` expr $b + 1 `

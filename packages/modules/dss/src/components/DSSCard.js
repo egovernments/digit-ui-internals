@@ -14,7 +14,7 @@ const DSSCard = () => {
   const ADMIN = Digit.UserService.hasAccess("FSM_ADMIN") || Digit.UserService.hasAccess("EMPLOYEE ADMIN") || false;
   return (
     <>
-      {ADMIN ? (
+      {null ? (
         <div className="employeeCard card-home">
           <div className="complaint-links-container">
             <div className="header">

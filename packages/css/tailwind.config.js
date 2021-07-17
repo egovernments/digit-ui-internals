@@ -55,7 +55,7 @@ module.exports = {
       "caption-l": ["18px", "21px"],
       "caption-m-dt": ["19px", "23px"],
       "caption-m": ["16px", "19px"],
-      "form-field": ["16x", "20px"],
+      "form-field": ["16px", "20px"],
       "body-l-dt": ["19px", "28px"],
       "body-l": ["16px", "24px"],
       "body-s-dt": ["16px", "24px"],

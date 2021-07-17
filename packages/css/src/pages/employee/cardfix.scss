@@ -1,6 +1,12 @@
 .flex-fit{
-    display: flex;
+    @apply flex w-full px-md py-sm border-b border-solid border-border;
 }
 .card-count{
-    padding-right: 4rem;
+    @apply pr-xl;
+    div{
+        @apply text-link;
+        span{
+            @apply text-link font-bold;
+        }
+    }
 }

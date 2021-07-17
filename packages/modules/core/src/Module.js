@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { getI18n } from "react-i18next";
 import { Body, Loader } from "@egovernments/digit-ui-react-components";
 
-import { DigitApp } from "./components/App";
+import { DigitApp } from "./App";
 
 import getStore from "./redux/store";
 

@@ -135,7 +135,7 @@ const StarEmpty = ({ className, onClick, styles }) => (
     />
   </svg>
 );
-
+//TODO: URGENT REMOVE THIS!!!!!!!!!!
 const DocumentSVG = ({ className }) => (
   <svg width="196" height="196" viewBox="0 0 196 196" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#filter0_d)">
@@ -284,16 +284,8 @@ const SortUp = (style) => (
 );
 
 const ArrowRightInbox = ({ style }) => (
-  <svg
-    style={{ display: "inline", height: "24px", ...style }}
-    xmlns="http://www.w3.org/2000/svg"
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-  >
-    <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="#F47738" />
-    <path d="M16 5.33325L14.12 7.21325L21.56 14.6666H5.33337V17.3333H21.56L14.12 24.7866L16 26.6666L26.6667 15.9999L16 5.33325Z" fill="white" />
+  <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>
+    <path d="M13 0L11.59 1.41L16.17 6H0V8H16.17L11.58 12.59L13 14L20 7L13 0Z" fill="#F47738"/>
   </svg>
 );
 
@@ -528,6 +520,10 @@ const EmailIcon = () => (
   </svg>
 );
 
+const CaseIcon = () =>  <svg width="24" height="24" viewBox="0 0 34 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30.3333 6.99967H23.6667V3.66634C23.6667 1.81634 22.1833 0.333008 20.3333 0.333008H13.6667C11.8167 0.333008 10.3333 1.81634 10.3333 3.66634V6.99967H3.66667C1.81667 6.99967 0.350001 8.48301 0.350001 10.333L0.333334 28.6663C0.333334 30.5163 1.81667 31.9997 3.66667 31.9997H30.3333C32.1833 31.9997 33.6667 30.5163 33.6667 28.6663V10.333C33.6667 8.48301 32.1833 6.99967 30.3333 6.99967ZM20.3333 6.99967H13.6667V3.66634H20.3333V6.99967Z" fill="white" />
+  </svg>
+
 export {
   ArrowLeft,
   ArrowDown,
@@ -576,5 +572,6 @@ export {
   EmailIcon,
   DocumentSVG,
   ArrowToFirst,
-  ArrowToLast
+  ArrowToLast,
+  CaseIcon
 };
