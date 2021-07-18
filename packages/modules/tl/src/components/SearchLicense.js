@@ -31,7 +31,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
             return (
               <div>
                 <span className="link">
-                  <Link to={`/digit-ui/employee/tl/application-details/${row.original["licenseNumber"]}`}>
+                  <Link to={`/digit-ui/employee/tl/application-details/${row.original["applicationNumber"]}`}>
                     {row.original["licenseNumber"]}
                   </Link>
                 </span>
