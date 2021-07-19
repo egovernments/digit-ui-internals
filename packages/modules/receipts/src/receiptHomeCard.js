@@ -1,4 +1,4 @@
-import { ReceiptIcon, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard, ReceiptIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getDefaultReceiptService } from "./utils";
@@ -16,31 +16,29 @@ const ReceiptsCard = () => {
   };
   const { isLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], false);
   const total = data?.Count;
-
-    const propsForModuleCard = {
-        Icon : <ReceiptIcon/>,
-        moduleName: t("ACTION_TEST_RECEIPTS"),
-        kpis: [
-            {
-                count:  isLoading ? "-" : total,
-                label: t("TOTAL_EMPLOYEES"),
-                link: `/digit-ui/employee/receipts/inbox`
-            },
-            {
-                label: t(""),
-                link: `/digit-ui/employee/receipts/inbox`
-            }  
-        ],
-        links: [
-            {
-                count: isLoading ? "-" : total,
-                label: t("CR_SEARCH_COMMON_HEADER"),
-                link: `/digit-ui/employee/receipts/inbox`
-            }       
-        ]
-    }
-
-    return <EmployeeModuleCard {...propsForModuleCard} />
+  const propsForModuleCard = {
+    Icon: <ReceiptIcon />,
+    moduleName: t("ACTION_TEST_RECEIPTS"),
+    kpis: [
+      {
+        count: isLoading ? "-" : total,
+        label: t("TOTAL_EMPLOYEES"),
+        link: `/digit-ui/employee/receipts/inbox`
+      },
+      {
+        label: t(""),
+        link: `/digit-ui/employee/receipts/inbox`
+      }
+    ],
+    links: [
+      {
+        count: isLoading ? "-" : total,
+        label: t("CR_SEARCH_COMMON_HEADER"),
+        link: `/digit-ui/employee/receipts/inbox`
+      }
+    ]
+  }
+  return <EmployeeModuleCard {...propsForModuleCard} />
 };
 
 export default ReceiptsCard;
