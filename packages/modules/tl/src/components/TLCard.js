@@ -38,12 +38,13 @@ const TLCard = () => {
                 link: `/digit-ui/employee/tl/inbox`
             }
         ],
-        links: [...counterEmployeeExtraLinks,
+        links: [
         {
             count: isLoading ? "-" : inboxData?.totalCount,
             label: t("ES_COMMON_INBOX"),
             link: `/digit-ui/employee/tl/inbox`
         },
+        ...counterEmployeeExtraLinks,
         {
             label: t("TL_SEARCH_APPLICATIONS"),
             link: `/digit-ui/employee/tl/search/application`
