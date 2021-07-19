@@ -33,6 +33,7 @@ export const configEmployeeApplication = ({ t, action, selectFile, uploadedFile,
             populators: {
               error: t("HR_EFFECTIVE_DATE_INVALID"),
               name: "effectiveFrom",
+              min: convertEpochToDate(new Date().toJSON().slice(0, 10).replace(/-/g, "/")),
               max: convertEpochToDate(new Date().toJSON().slice(0, 10).replace(/-/g, "/")),
             },
           },
