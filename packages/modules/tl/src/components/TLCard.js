@@ -1,7 +1,6 @@
 import { CaseIcon, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { checkForEmployee } from "../utils";
 
 const TLCard = () => {
@@ -16,12 +15,12 @@ const TLCard = () => {
 
     const counterEmployeeExtraLinks = checkForEmployee("TL_CEMP") ? [
         {
-            label: t("TL_SEARCH_APPLICATIONS"),
-            link: `/digit-ui/employee/tl/search/application`
+            label: t("TL_SEARCH_LICENSE"),
+            link: `/digit-ui/employee/tl/search/license`
         },
         {
-            label: t("TL_SEARCH_APPLICATIONS"),
-            link: `/digit-ui/employee/tl/search/application`
+            label: t("TL_NEW_APPLICATION"),
+            link: "/digit-ui/employee/tl/new-application",
         }
     ] : []
 
@@ -39,7 +38,7 @@ const TLCard = () => {
                 link: `/digit-ui/employee/tl/inbox`
             }  
         ],
-        links: [
+        links: [ ...counterEmployeeExtraLinks,
             {
                 count: isLoading ? "-" : inboxData?.totalCount,
                 label: t("ES_COMMON_INBOX"),
@@ -48,8 +47,7 @@ const TLCard = () => {
             {
                 label: t("TL_SEARCH_APPLICATIONS"),
                 link: `/digit-ui/employee/tl/search/application`
-            },
-            ...counterEmployeeExtraLinks
+            }           
         ]
     }
 
