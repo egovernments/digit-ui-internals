@@ -1,14 +1,7 @@
-import { ArrowRightInbox, Loader } from "@egovernments/digit-ui-react-components";
+import { ReceiptIcon, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { getDefaultReceiptService } from "./utils";
-
-const ArrowRight = ({ to }) => (
-  <Link to={to}>
-    <ArrowRightInbox />
-  </Link>
-);
 
 const ReceiptsCard = () => {
   if (!Digit.Utils.receiptsAccess()) {
@@ -21,65 +14,34 @@ const ReceiptsCard = () => {
     businessServices: getDefaultReceiptService(),
     isCountRequest: true
   };
-  const { isLoading: hookLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], false);
+  const { isLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], false);
   const total = data?.Count;
-  return (
-    <div className="employeeCard card-home" style={{ display: "inline-block" }}>
-      <div className="complaint-links-container">
-        <div className="header">
-          <span className="logo">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-              <path d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z" fill="white"></path>
-            </svg>
-          </span>
-          <span className="text">{t("ACTION_TEST_RECEIPTS")}</span>
-        </div>
-        <div className="body" style={{ margin: "0px", padding: "0px" }}>
-          {hookLoading ? <span style={{ display: "flex", justifyContent: "center", width: "100%" }}> <Loader /></span> : <div
-            className="flex-fit"
-            style={{
-              borderBottom: "1px solid #d6d5d4",
-              padding: "15px 10px 10px",
-              width: "100%",
-              paddingLeft: "3rem",
-              paddingBottom: "1rem",
-            }}
-          >
-            <div className="card-count">
-              <div>
-                <span style={{ fontWeight: "800" }}>{" " + total ? total : 0 || "-"}</span>
-              </div>
-              <div>
-                <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_TOTAL_RECEIPTS")}</Link>
-              </div>
-            </div>
-            <div>
-              <div>
-                <span style={{ fontWeight: "800" }}>{" "}</span>
-              </div>
-              <div>
-                {/* <Link to={`/digit-ui/employee/hrms/inbox`}>{t("ACTIVE_EMPLOYEES")}</Link> */}
-              </div>
-            </div>
-          </div>}
-          <div style={{ paddingLeft: "3rem", paddingBottom: "1rem" }}>
-            <span className="link">
-              <Link to={`/digit-ui/employee/receipts/inbox`}>{t("CR_SEARCH_COMMON_HEADER")}</Link>
-              <span className="inbox-total">{total ? total : 0 || "-"}</span>
-              {<ArrowRight to={`/digit-ui/employee/receipts/inbox`} />}
-            </span>
-            {/* <span className="link">
-            <Link to={`/digit-ui/employee/receipts/inprogress`}>{t("CR_HOME_HEADER_DASHBOARD")}</Link>
-          </span>
-          <span className="link">
-            <Link to={`/digit-ui/employee/receipts/inprogress`}>{t("CR_HOME_HEADER_REPORT")}</Link>
-          </span> */}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+
+    const propsForModuleCard = {
+        Icon : <ReceiptIcon/>,
+        moduleName: t("ACTION_TEST_RECEIPTS"),
+        kpis: [
+            {
+                count:  isLoading ? "-" : total,
+                label: t("TOTAL_EMPLOYEES"),
+                link: `/digit-ui/employee/receipts/inbox`
+            },
+            {
+                label: t(""),
+                link: `/digit-ui/employee/receipts/inbox`
+            }  
+        ],
+        links: [
+            {
+                count: isLoading ? "-" : total,
+                label: t("CR_SEARCH_COMMON_HEADER"),
+                link: `/digit-ui/employee/receipts/inbox`
+            }       
+        ]
+    }
+
+    return <EmployeeModuleCard {...propsForModuleCard} />
 };
 
 export default ReceiptsCard;
+
