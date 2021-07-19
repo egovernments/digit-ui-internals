@@ -186,8 +186,8 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
         label={propsConfig.texts.submitButtonLabel}
         heading={propsConfig.texts.header}
         text={propsConfig.texts.text}
-        cardStyle={{ margin: "auto" }}
         headingStyle={{ fontSize: "32px", marginBottom: "16px", fontFamily: "Roboto Condensed,sans-serif" }}
+        // headingStyle={{ fontSize: "32px", marginBottom: "16px" }}
         isDisabled={!canSubmit}
         onFormValueChange={onFormValueChange}
       ></FormComposer>

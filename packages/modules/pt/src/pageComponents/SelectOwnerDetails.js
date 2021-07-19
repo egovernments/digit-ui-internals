@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown, Menu } from "@egovernments/digit-ui-react-components";
+import { FormStep, TextInput, CardLabel, RadioButtons, LabelFieldPair, Dropdown, Menu, MobileNumber } from "@egovernments/digit-ui-react-components";
 import { cardBodyStyle } from "../utils";
 import { useLocation, useRouteMatch } from "react-router-dom";
 
@@ -28,15 +28,13 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = tenantId.split(".")[0];
 
-  const { data: Menu} = Digit.Hooks.pt.useGenderMDMS(stateId, "common-masters", "GenderType");
+  const { data: Menu } = Digit.Hooks.pt.useGenderMDMS(stateId, "common-masters", "GenderType");
 
   let menu = [];
-    Menu &&
-      Menu.map((genderDetails) => {
-        menu.push({i18nKey: `PT_COMMON_GENDER_${genderDetails.code}`, code: `${genderDetails.code}`,value: `${genderDetails.code}`})
+  Menu &&
+    Menu.map((genderDetails) => {
+      menu.push({ i18nKey: `PT_COMMON_GENDER_${genderDetails.code}`, code: `${genderDetails.code}`, value: `${genderDetails.code}` });
     });
-  
-
 
   function setOwnerName(e) {
     setName(e.target.value);
@@ -58,7 +56,6 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
     setRelationship(value);
   }
 
-
   const goNext = () => {
     let owner = formData.owners && formData.owners[index];
     let ownerStep;
@@ -76,8 +73,6 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
     }
   };
 
-
-  
   const onSkip = () => onSelect();
   // As Ticket RAIN-2619 other option in gender and gaurdian will be enhance , dont uncomment it
   const options = [
@@ -207,7 +202,6 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
       </div>
     );
   }
-  
 
   return (
     <FormStep
@@ -239,7 +233,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
         <RadioButtons
           t={t}
           options={menu}
-          optionsKey= "code"
+          optionsKey="code"
           name="gender"
           value={gender}
           selectedOption={gender}
@@ -249,21 +243,12 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
           disabled={isUpdateProperty || isEditProperty}
         />
         <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}`}</CardLabel>
-        <TextInput
-          type={"text"}
-          t={t}
-          isMandatory={false}
-          optionKey="i18nKey"
-          name="mobileNumber"
+        <MobileNumber
           value={mobileNumber}
-          onChange={setMobileNo}
+          name="mobileNumber"
+          onChange={(value) => setMobileNo({ target: { value } })}
           disable={isUpdateProperty || isEditProperty}
-          {...(validation = {
-            isRequired: true,
-            pattern: "[6-9]{1}[0-9]{9}",
-            type: "tel",
-            title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
-          })}
+          {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
         />
         <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
         <TextInput

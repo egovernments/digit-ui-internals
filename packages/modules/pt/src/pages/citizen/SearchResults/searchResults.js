@@ -87,7 +87,6 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
   const onSubmit = (data) => {
     if (isMutation) {
       let property = result?.data?.Properties?.filter?.((e) => e.propertyId === data.property_id)[0];
-      console.log(data, ">>>>>>>>>>>>>>>");
       if (Number(data.total_due) > 0) {
         setShowModal(data);
       } else onSelect(config.key, { data, property });

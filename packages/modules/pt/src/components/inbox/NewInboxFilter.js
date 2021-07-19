@@ -38,7 +38,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
       value: "PT.MUTATION",
     },
     {
-      label: "ES_PT_UPDATE",
+      label: "ES_PT_UPDATE_PROPERTY",
       value: "PT.UPDATE",
     },
   ];
