@@ -19,7 +19,7 @@ const MetricData = ({ t, data, code }) => {
       </p>
       {data?.insight && (
         <div>
-          {data?.insight?.indicator === "upper_green" ? <UpwardArrow /> : <DownwardArrow />}
+          {data?.insight?.indicator === "upper_green" ? <UpwardArrow marginRight={9} /> : <DownwardArrow marginRight={9} />}
           <p className={`${data?.insight.colorCode}`}>{data?.insight.value.replace(/[+-]/g, "")}</p>
         </div>
       )}

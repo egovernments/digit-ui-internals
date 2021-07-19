@@ -10,7 +10,7 @@ const getValue = (plot) => plot.value;
 const renderUnits = (t, denomination) => {
   switch (denomination) {
     case "Unit":
-      return "";
+      return `(${t("DSS_UNIT")})`;
     case "Lac":
       return `(${t("DSS_LAC")})`;
     case "Cr":
@@ -138,7 +138,7 @@ const CustomAreaChart = ({ xDataKey = "name", yDataKey = getValue, data }) => {
             <XAxis dataKey={xDataKey} tick={{ fontSize: "14px", fill: "#505A5F" }} tickFormatter={tickFormatter} />
             <YAxis
               label={{
-                value: `${response?.responseData?.data?.[0]?.headerName} ${
+                value: `${t(`DSS_${response?.responseData?.data?.[0]?.headerName.replaceAll(" ", "_").toUpperCase()}`)} ${
                   id === "fsmTotalCumulativeCollection" ? renderUnits(t, value.denomination) : `(%)`
                 }`,
                 angle: -90,

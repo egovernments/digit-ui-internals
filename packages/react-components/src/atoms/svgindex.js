@@ -316,41 +316,21 @@ function CloseSvg({ onClick }) {
   );
 }
 
-const UpwardArrow = () => (
+const UpwardArrow = ({ color = "#00703C", rotate = 0, marginRight = 0 }) => (
   <svg
-    style={{ display: "inline-block", verticalAlign: "baseline" }}
+    style={{ display: "inline-block", verticalAlign: "baseline", transform: `rotate(${rotate}deg)`, marginRight: `${marginRight}px` }}
     width="11"
     height="16"
     viewBox="0 0 11 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M0 5.6L1.10786 6.728L4.71429 3.064V16H6.28571V3.064L9.89214 6.736L11 5.6L5.5 0L0 5.6Z" fill="#00703C" />
+    <path d="M0 5.6L1.10786 6.728L4.71429 3.064V16H6.28571V3.064L9.89214 6.736L11 5.6L5.5 0L0 5.6Z" fill={color} />
   </svg>
 );
 
-const DownwardArrow = () => (
-  <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" style={{ display: "inline-block", verticalAlign: "baseline" }}>
-    <title>Arrow Downward</title>
-    <desc>Created with Sketch.</desc>
-    <g id="All-Screens-(Iteration-5)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g id="01-Landing" transform="translate(-401.000000, -510.000000)">
-        <g id="Metrix:-Total-Collections,-Etc" transform="translate(256.000000, 228.000000)">
-          <g id="Icon_Arrow-Downward" transform="translate(141.000000, 278.000000)">
-            <g id="Arrow-Downward" transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) ">
-              <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
-              <polygon
-                id="Path"
-                fill="#E54D42"
-                fill-rule="nonzero"
-                points="4 12 5.41 13.41 11 7.83 11 20 13 20 13 7.83 18.58 13.42 20 12 12 4"
-              ></polygon>
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
-  </svg>
+const DownwardArrow = (props) => (
+  <UpwardArrow {...props} color="#e54d42" rotate={180} />
 );
 
 const DownloadIcon = ({ styles, className, onClick }) => (
