@@ -15,13 +15,13 @@ const ReceiptsCard = () => {
     isCountRequest: true
   };
   const { isLoading, isError, error, data, ...rest } = Digit.Hooks.receipts.useReceiptsSearch(searchParams, tenantId, [], false);
-  const total = data?.Count;
-  const propsForModuleCard = {
+
+  const  propsForModuleCard  = {
     Icon: <ReceiptIcon />,
     moduleName: t("ACTION_TEST_RECEIPTS"),
     kpis: [
       {
-        count: isLoading ? "-" : total,
+        count: isLoading ? "-" : data?.Count,
         label: t("TOTAL_EMPLOYEES"),
         link: `/digit-ui/employee/receipts/inbox`
       },
@@ -32,7 +32,7 @@ const ReceiptsCard = () => {
     ],
     links: [
       {
-        count: isLoading ? "-" : total,
+        count: isLoading ? "-" : data?.Count,
         label: t("CR_SEARCH_COMMON_HEADER"),
         link: `/digit-ui/employee/receipts/inbox`
       }
