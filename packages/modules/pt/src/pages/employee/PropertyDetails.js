@@ -48,7 +48,7 @@ const PropertyDetails = () => {
   );
 
   useEffect(() => {
-    if (applicationDetails) {
+    if (applicationDetails && !enableAudit) {
       setAppDetailsToShow(_.cloneDeep(applicationDetails));
       if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
         setEnableAudit(true);
@@ -57,7 +57,7 @@ const PropertyDetails = () => {
   }, [applicationDetails]);
 
   useEffect(() => {
-    if (auditData?.length && Object.keys(appDetailsToShow).length) {
+    if (enableAudit && auditData?.length && Object.keys(appDetailsToShow).length) {
       let owners = auditData[0].owners.filter((e) => e.status === "ACTIVE");
       let applicationDetails = appDetailsToShow.applicationDetails.map((obj) => {
         const { additionalDetails, title } = obj;
@@ -103,7 +103,7 @@ const PropertyDetails = () => {
 
       setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
     }
-  }, [auditData]);
+  }, [auditData, enableAudit]);
 
   let workflowDetails = Digit.Hooks.useWorkflowDetails({
     tenantId: applicationDetails?.tenantId || tenantId,

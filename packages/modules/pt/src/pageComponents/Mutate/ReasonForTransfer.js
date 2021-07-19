@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, FormStep, RadioButtons, LabelFieldPair, CardLabel } from "@egovernments/digit-ui-react-components";
+import { Dropdown, FormStep, LabelFieldPair, CardLabel, RadioOrSelect } from "@egovernments/digit-ui-react-components";
 
 const ReasonForTransfer = (props) => {
   const { t, config, onSelect, userType, formData, setError, clearErrors, errors } = props;
@@ -52,13 +52,14 @@ const ReasonForTransfer = (props) => {
     <React.Fragment>
       <FormStep t={t} config={config} onSelect={goNext} onSkip={onSkip} isDisabled={!reasonForTransfer}>
         <div>
-          <RadioButtons
+          <RadioOrSelect
             t={t}
-            optionsKey="i18nKey"
+            optionKey="i18nKey"
             isMandatory={config.isMandatory}
             options={menu}
             onSelect={setSelected}
             selectedOption={reasonForTransfer}
+            optionCardStyles={{ maxHeight: "50vh", overflow: "auto", zIndex: 100 }}
           />
         </div>
       </FormStep>
