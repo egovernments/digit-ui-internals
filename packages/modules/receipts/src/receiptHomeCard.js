@@ -25,10 +25,6 @@ const ReceiptsCard = () => {
         label: t("TOTAL_EMPLOYEES"),
         link: `/digit-ui/employee/receipts/inbox`
       },
-
-
-
-
     ],
     links: [
       {
