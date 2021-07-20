@@ -1,8 +1,9 @@
+import { FormComposer, Loader, Modal } from "@egovernments/digit-ui-react-components";
+import set from "lodash/set";
 import React, { useEffect, useState } from "react";
-import { configEmployeeApplication } from "./Modal/EmployeeAppliaction";
-import { configEmployeeActiveApplication } from "./Modal/EmployeeActivation";
-import { Loader, Modal, FormComposer } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
+import { configEmployeeActiveApplication } from "./Modal/EmployeeActivation";
+import { configEmployeeApplication } from "./Modal/EmployeeAppliaction";
 
 const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applicationData, billData }) => {
   const history = useHistory();
@@ -40,7 +41,7 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
             selectedReason,
             Reasons,
             selectReason,
-            employees:applicationData?.Employees[0]||{}
+            employees: applicationData?.Employees[0] || {}
           })
         );
       default:
@@ -119,7 +120,12 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
         };
         applicationData.Employees[0]["documents"].push(documents);
       }
-      Employees[0]["deactivationDetails"].push(data);
+
+      set(Employees[0], 'deactivationDetails[0].effectiveFrom', data?.effectiveFrom);
+      set(Employees[0], 'deactivationDetails[0].orderNo', data?.orderNo);
+      set(Employees[0], 'deactivationDetails[0].reasonForDeactivation', data?.reasonForDeactivation);
+      set(Employees[0], 'deactivationDetails[0].remarks', data?.remarks);
+
       Employees[0].isActive = false;
       history.replace("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "DEACTIVATION" });
     } else {
@@ -132,7 +138,10 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
         applicationData.Employees[0]["documents"].push(documents);
       }
 
-      Employees[0]["reactivationDetails"].push(data);
+      set(Employees[0], 'reactivationDetails[0].effectiveFrom', data?.effectiveFrom);
+      set(Employees[0], 'reactivationDetails[0].orderNo', data?.orderNo);
+      set(Employees[0], 'reactivationDetails[0].reasonForDeactivation', data?.reasonForDeactivation);
+      set(Employees[0], 'reactivationDetails[0].remarks', data?.remarks);
       Employees[0].isActive = true;
 
       history.replace("/digit-ui/employee/hrms/response", { Employees, key: "UPDATE", action: "ACTIVATION" });
@@ -145,7 +154,7 @@ const EmployeeAction = ({ t, action, tenantId, closeModal, submitAction, applica
       headerBarEnd={<CloseBtn onClick={closeModal} />}
       actionCancelOnSubmit={closeModal}
       actionSaveLabel={t(config?.label?.submit)}
-      actionSaveOnSubmit={() => {}}
+      actionSaveOnSubmit={() => { }}
       formId="modal-action"
       isDisabled={!selectedReason}
     >
