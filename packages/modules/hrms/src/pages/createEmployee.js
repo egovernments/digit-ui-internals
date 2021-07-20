@@ -115,12 +115,17 @@ const defaultValues = {
     }
   };
 
+  const navigateToAcknowledgement=(Employees)=>{
+    history.replace("/digit-ui/employee/hrms/response", { Employees, key: "CREATE", action: "CREATE" });
+  }
+
+
   const onSubmit = (data) => {
       if(data.Jurisdictions.filter(juris=>juris.tenantId==tenantId).length==0){
         setShowToast({ key: true, label: "ERR_BASE_TENANT_MANDATORY" });
         return;
       }
-    
+
     let roles = data?.Jurisdictions?.map((ele) => {
       return ele.roles?.map((item) => {
         item["tenantId"] = ele.boundary;
@@ -153,7 +158,18 @@ const defaultValues = {
         tests: [],
       },
     ];
-    history.replace("/digit-ui/employee/hrms/response", { Employees, key: "CREATE", action: "CREATE" });
+    if(data?.SelectEmployeeId?.code && data?.SelectEmployeeId?.code?.trim().length>0){
+      Digit.HRMSService.search(tenantId, null, { codes: data?.SelectEmployeeId?.code }).then((result, err) => {
+        if (result.Employees.length > 0) {
+          setShowToast({ key: true, label: "ERR_HRMS_USER_EXIST_ID" });
+          return;
+        } else {
+          navigateToAcknowledgement(Employees);
+        }
+      });
+    } else {
+      navigateToAcknowledgement(Employees);
+    }
   };
 
   const config = newConfig;
