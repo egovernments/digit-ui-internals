@@ -150,8 +150,10 @@ const MutationCitizen = (props) => {
       data.Property.owners = data.Property.owners?.map((owner) =>
         owner.status === "INACTIVE" ? { ...owner, altContactNumber: ownersArray[0].altContactNumber } : owner
       );
+    } else {
+      delete data.Property.institution;
     }
-    console.log(data, "mutation submit");
+    // console.log(data, "mutation submit");
     setFormData(data);
   };
 

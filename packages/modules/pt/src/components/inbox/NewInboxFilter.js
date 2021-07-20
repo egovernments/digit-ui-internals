@@ -141,7 +141,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
               <Status
                 searchParams={_searchParams}
                 businessServices={_searchParams.services}
-                statusMap={statusMap}
+                statusMap={statusMap || client.getQueryData(`INBOX_STATUS_MAP_${moduleCode}`)}
                 moduleCode={moduleCode}
                 onAssignmentChange={(e, status) => {
                   if (e.target.checked) localParamChange({ applicationStatus: [..._searchParams?.applicationStatus, status] });
