@@ -10,7 +10,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
   const [UnitOfMeasure, setUnitOfMeasure] = useState(formData?.TadeDetails?.accessories?.UnitOfMeasure || "");
   const [UomValue, setUomValue] = useState(formData?.TadeDetails?.accessories?.UomValue || "");
   const [fields, setFeilds] = useState(
-    (formData?.TradeDetails && formData?.TradeDetails?.accessories) || [{ accessory: "", accessorycount: "", unit: null, uom: null }]
+    formData?.TradeDetails && formData?.TradeDetails?.accessories && formData?.TradeDetails?.accessories.length>0? (formData?.TradeDetails?.accessories) : [{ accessory: "", accessorycount: "", unit: null, uom: null }]
   );
 
   //const isUpdateProperty = formData?.isUpdateProperty || false;
@@ -97,7 +97,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
       onSelect={goNext}
       onSkip={onSkip}
       t={t}
-      isDisabled={!fields[0].accessory || !fields[0].accessorycount || !fields[0].uom}
+      isDisabled={!fields?.[0]?.accessory || !fields?.[0]?.accessorycount || !fields?.[0]?.uom}
     >
       {fields.map((field, index) => {
         return (
