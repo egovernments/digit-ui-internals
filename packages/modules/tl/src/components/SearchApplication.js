@@ -135,7 +135,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                     <label>{t("TL_TRADE_LICENCE_FROM_DATE")}</label>
                     <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                        name="toDate"
+                        name="fromDate"
                         control={control}
                         />
                 </SearchField>
@@ -143,7 +143,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                     <label>{t("TL_TRADE_LICENCE_TO_DATE")}</label>
                     <Controller
                         render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                        name="fromDate"
+                        name="toDate"
                         control={control}
                         />
                 </SearchField>
@@ -169,8 +169,8 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                             />
                 </SearchField>
                 <SearchField>
-                    <label>{t("TL_TRADE_LICENSE_LABEL")}</label>
-                    <TextInput name="licenseNumbers" inputRef={register({})}/>
+                    <label>{t("TL_LOCALIZATION_TRADE_NAME")}</label>
+                    <TextInput name="tradeName" inputRef={register({})}/>
                 </SearchField>
                 <SearchField className="submit">
                     <p>{t(`ES_COMMON_CLEAR_ALL`)}</p>

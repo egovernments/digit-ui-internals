@@ -86,7 +86,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_FROM")}</label>
                 <Controller
                   render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                  name="toDate"
+                  name="fromDate"
                   control={control}
                 />
             </SearchField>
@@ -94,7 +94,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_TO")}</label>
                 <Controller
                     render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                    name="fromDate"
+                    name="toDate"
                     control={control}
                   />
             </SearchField>
