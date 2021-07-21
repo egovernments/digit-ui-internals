@@ -87,7 +87,12 @@ const Inbox = ({
         label: t("CORE_COMMON_MOBILE_NUMBER"),
         name: "mobileNumber",
         maxlength: 10,
+
         pattern: Digit.Utils.getPattern("MobileNo"),
+
+        type: "mobileNumber",
+   
+
         title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
         componentInFront: "+91",
       },
