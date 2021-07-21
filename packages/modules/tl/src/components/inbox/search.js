@@ -48,6 +48,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   }, [form, formState, setError, clearErrors]);
 
   const onSubmitInput = (data) => {
+    if(data.mobileNumber.length==0||data.mobileNumber.length==10){
     if (!data.mobileNumber) {
       delete data.mobileNumber;
     }
@@ -62,6 +63,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     if (type === "mobile") {
       onClose();
     }
+  }
   };
 
   function clearSearch() {
@@ -159,7 +161,6 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
               <div className="search-action-wrapper">
                 {type === "desktop" && !mobileView && (
                   <SubmitBar
-                    disabled={!!Object.keys(formState.errors).length}
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
                     submit
