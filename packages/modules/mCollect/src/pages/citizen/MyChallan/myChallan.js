@@ -47,11 +47,11 @@ const MyChallanResult = ({ template, header, actionButtonLabel }) => {
   function getBillingPeriod(fromPeriod, toPeriod) {
     if (fromPeriod && toPeriod) {
       let from =
-        new Date(fromPeriod).getDate().toString() +
+        new Date(fromPeriod).getDate() +
         " " +
-        Digit.Utils.date.monthNames[new Date(fromPeriod).getMonth() + 1].toString() +
+        Digit.Utils.date.monthNames[new Date(fromPeriod).getMonth() + 1] +
         " " +
-        new Date(fromPeriod).getFullYear().toString();
+        new Date(fromPeriod).getFullYear();
       let to =
         new Date(toPeriod).getDate() + " " + Digit.Utils.date.monthNames[new Date(toPeriod).getMonth() + 1] + " " + new Date(toPeriod).getFullYear();
       return from + " - " + to;

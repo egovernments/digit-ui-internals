@@ -24,7 +24,7 @@ export const configPTApproverApplication = ({
         body: [
           {
             label: action.isTerminateState ? null : t(assigneeLabel || `WF_ROLE_${action.assigneeRoles?.[0]}`),
-            isMandatory: !action.isTerminateState,
+            // isMandatory: !action.isTerminateState,
             type: "dropdown",
             populators: action.isTerminateState ? null : (
               <Dropdown

@@ -31,6 +31,8 @@ const PropertyDetails = () => {
   const [appDetailsToShow, setAppDetailsToShow] = useState({});
   const [enableAudit, setEnableAudit] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const PT_CEMP = Digit.UserService.hasAccess(["PT_CEMP"]) || false;
+  const [businessService, setBusinessService] = useState("PT.CREATE");
   const history = useHistory();
 
   let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, applicationNumber);
@@ -116,6 +118,13 @@ const PropertyDetails = () => {
     setShowToast(null);
   };
 
+  useEffect(() => {
+    if (workflowDetails?.data?.applicationBusinessService) {
+      console.log(workflowDetails?.data, "workflowDetaisl");
+      setBusinessService(workflowDetails?.data?.applicationBusinessService);
+    }
+  }, [workflowDetails.data]);
+
   if (appDetailsToShow?.applicationDetails) {
     appDetailsToShow.applicationDetails = appDetailsToShow?.applicationDetails?.map((e) => {
       if (e.title === "PT_OWNERSHIP_INFO_SUB_HEADER") {
@@ -179,6 +188,20 @@ const PropertyDetails = () => {
         },
       },
     };
+  }
+
+  if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP) {
+    if (businessService == "PT.CREATE") setBusinessService("PT.UPDATE");
+    if (!workflowDetails?.data?.actionState?.nextActions?.find((e) => e.action === "UPDATE")) {
+      workflowDetails?.data?.actionState?.nextActions?.push({
+        action: "UPDATE",
+        redirectionUrl: {
+          pathname: `/digit-ui/employee/pt/modify-application/${applicationNumber}`,
+          state: { workflow: { action: "OPEN", moduleName: "PT", businessService } },
+        },
+        tenantId: "pb",
+      });
+    }
   }
 
   if (fetchBillLoading) {

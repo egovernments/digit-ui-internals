@@ -58,7 +58,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
     <Card style={{ position: "relative" }}>
       {applicationDetails?.applicationDetails?.map((detail, index) => (
         <React.Fragment key={index}>
-          <div style={checkLocation ? { lineHeight: "19px" } : {}}>
+          <div style={checkLocation ? { lineHeight: "19px", width: "40%" } : {}}>
             {index === 0 && !detail.asSectionHeader ? (
               <CardSubHeader style={{ marginBottom: "16px" }}>{t(detail.title)}</CardSubHeader>
             ) : (
@@ -82,6 +82,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                     last={index === detail?.values?.length - 1}
                     caption={value.caption}
                     className="border-none"
+                    rowContainerStyle={checkLocation ? {justifyContent: "space-between"}: {}}
                   />
                 );
               })}

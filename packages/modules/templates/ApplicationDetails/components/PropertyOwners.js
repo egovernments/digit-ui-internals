@@ -10,7 +10,7 @@ function PropertyOwners({ owners }) {
   return (
     <React.Fragment>
       {owners.map((owner, index) => (
-        <div key={t(owner?.title)} style={checkLocation ? { marginTop: "19px", background: "#FAFAFA", border: "1px solid #D6D5D4", borderRadius: "4px", padding: "8px", lineHeight: "19px" } : { marginTop: "19px" }}>
+        <div key={t(owner?.title)} style={checkLocation ? { marginTop: "19px", background: "#FAFAFA", border: "1px solid #D6D5D4", borderRadius: "4px", padding: "8px", lineHeight: "19px", width: "40%" } : { marginTop: "19px" }}>
           <CardSubHeader style={{ marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>{checkLocation ? `${t(owner?.title)} ${index+1}` : t(owner?.title)}</CardSubHeader>
           <React.Fragment key={index}>
             {/* <CardSectionHeader style={{ marginBottom: "16px", color: "#505A5F", fontSize: "16px", marginTop: index !== 0 ? "16px" : "revert" }}>
@@ -41,6 +41,7 @@ function PropertyOwners({ owners }) {
                     last={index === value?.values?.length - 1}
                     caption={value.caption}
                     className="border-none"
+                    rowContainerStyle={checkLocation ? {justifyContent: "space-between"}: {}}
                   />
                 );
               })}

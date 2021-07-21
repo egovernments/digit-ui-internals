@@ -209,7 +209,7 @@ export const getaccessories = (data) => {
 export const gettradeupdateaccessories = (data) => {
   let TLaccessories = [];
 
-  data.tradeLicenseDetail.accessories.map((oldunit) => {
+  data?.tradeLicenseDetail?.accessories && data.tradeLicenseDetail.accessories.map((oldunit) => {
     data.TradeDetails.accessories.map((newunit) => {
       if(oldunit.id === newunit.id)
       {
@@ -231,7 +231,7 @@ export const gettradeupdateaccessories = (data) => {
       }
     })
   })
-  data.TradeDetails.accessories.map((ob) => {
+  data?.tradeLicenseDetail?.accessories && data.TradeDetails.accessories.map((ob) => {
     if(!ob.id)
     {
       TLaccessories.push({ uom: ob.unit, accessoryCategory: ob.accessory.code, uomValue: ob.uom, count: ob.accessorycount });

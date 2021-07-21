@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { convertEpochToDateDMY, stringReplaceAll } from "../utils";
 
 const SearchLicense = ({tenantId, t, onSubmit, data }) => {
-    const { register, control, handleSubmit, setValue, getValues } = useForm({
+    const { register, control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: {
             offset: 0,
             limit: 10,
@@ -58,6 +58,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
         {
             Header: t("TL_HOME_SEARCH_RESULTS__LOCALITY"),
             disableSortBy: true,
+            // accessor: (row) => GetCell(row.tradeLicenseDetail.address.locality.name || ""),
             accessor: (row) => GetCell( t(`${stringReplaceAll(row.tradeLicenseDetail.address?.city?.toUpperCase(), ".", "_")}_REVENUE_${row.tradeLicenseDetail.address.locality.code}`) || ""),
         },
         {
@@ -86,7 +87,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_FROM")}</label>
                 <Controller
                   render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                  name="toDate"
+                  name="fromDate"
                   control={control}
                 />
             </SearchField>
@@ -94,7 +95,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_TO")}</label>
                 <Controller
                     render={(props) => <DatePicker date={props.value} onChange={props.onChange} />}
-                    name="fromDate"
+                    name="toDate"
                     control={control}
                   />
             </SearchField>
@@ -103,8 +104,8 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <TextInput name="tradeName" inputRef={register({})}/>
             </SearchField>
             <SearchField className="submit">
-                <p>{t(`ES_COMMON_CLEAR_ALL`)}</p>
                 <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
+                <p onClick={() => reset()}>{t(`ES_COMMON_CLEAR_ALL`)}</p>
             </SearchField>
         </SearchForm>
         {data?.display ?<Card style={{ marginTop: 20 }}>

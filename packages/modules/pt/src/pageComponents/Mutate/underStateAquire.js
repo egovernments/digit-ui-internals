@@ -10,6 +10,7 @@ const PTPropertyUnderStateAquire = ({ ...props }) => {
   const [govtAcquisitionDetails, setReason] = useState(formData?.[config.key]?.govtAcquisitionDetails);
 
   useEffect(() => {
+    if (isPropertyUnderGovtPossession?.code === "NO" && govtAcquisitionDetails?.length) setReason("");
     if (userType === "employee") {
       if (!isPropertyUnderGovtPossession) {
         setError(config.key, { type: "Required" });

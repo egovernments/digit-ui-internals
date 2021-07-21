@@ -13,8 +13,7 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
       ? allCities.filter((city) => city?.pincode?.some((pin) => pin == pincode))
       : allCities;
 
-  const [selectedCity, setSelectedCity] = useState(() => formData?.address?.city || null);
-  // console.log("find selected locality here", selectedCity)
+  const [selectedCity, setSelectedCity] = useState(() => formData?.address?.city || Digit.SessionStorage.get("fsm.file.address.city") || null);
   const { data: fetchedLocalities } = Digit.Hooks.useBoundaryLocalities(
     selectedCity?.code,
     "revenue",
@@ -23,20 +22,7 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
     },
     t
   );
-  // console.log("find fetchedLocalities here", fetchedLocalities)
-  // if (pincode && city) {
-  //   const filteredLocalityList = localitiesObj[city?.code].filter((locality) => locality?.pincode?.some((item) => item.toString() == pincode));
-  //   localitiesObj[city?.code] = filteredLocalityList.length ? filteredLocalityList : allLocalities[city?.code];
-  // }
   const [localities, setLocalities] = useState();
-  //   () => {
-  //   console.log("find usestate localities here", formData?.address?.pincode, fetchedLocalities)
-  // return formData?.address?.pincode ?
-  // fetchedLocalities.filter((obj) => obj.pincode?.find((item) => item == formData.address.pincode))
-  //  :
-  // fetchedLocalities
-  // }
-  // console.log("find set localities here", localities)
   const [selectedLocality, setSelectedLocality] = useState();
 
   useEffect(() => {
@@ -47,17 +33,12 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
     }
   }, [cities]);
 
-  // useEffect(()=>{
-  //   console.log("let all know locality is set", selectedLocality)
-  // },[selectedLocality])
-
   useEffect(() => {
     if (selectedCity && fetchedLocalities) {
       let __localityList = fetchedLocalities;
       let filteredLocalityList = [];
 
       if (formData?.address?.locality) {
-        // console.log("find formData inside useEffect", formData?.address)
         setSelectedLocality(formData.address.locality);
       }
 
@@ -83,6 +64,7 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
   function selectCity(city) {
     setSelectedLocality(null);
     setLocalities(null);
+    Digit.SessionStorage.set("fsm.file.address.city", city);
     setSelectedCity(city);
   }
 
@@ -137,7 +119,13 @@ const SelectAddress = ({ t, config, onSelect, userType, formData }) => {
   return (
     <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>
       <CardLabel>{`${t("MYCITY_CODE_LABEL")} *`}</CardLabel>
-      <RadioOrSelect options={cities} selectedOption={selectedCity} optionKey="code" onSelect={selectCity} t={t} />
+      <RadioOrSelect
+        options={cities}
+        selectedOption={selectedCity}
+        optionKey="i18nKey"
+        onSelect={selectCity}
+        t={t}
+      />
       {selectedCity && localities && <CardLabel>{`${t("CS_CREATECOMPLAINT_MOHALLA")} *`}</CardLabel>}
       {selectedCity && localities && (
         <RadioOrSelect

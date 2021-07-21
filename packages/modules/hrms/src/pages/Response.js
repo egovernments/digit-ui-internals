@@ -76,6 +76,7 @@ const Response = (props) => {
       return mutation?.error?.response?.data?.Errors[0].code||errorInfo;
     } else {
       Digit.SessionStorage.set("isupdate", Math.floor(100000 + Math.random() * 900000));
+      return state.key === "CREATE"?"HRMS_CREATE_EMPLOYEE_INFO" :"";
     }
   };
     if (mutation.isLoading || (mutation.isIdle && !mutationHappened)) {

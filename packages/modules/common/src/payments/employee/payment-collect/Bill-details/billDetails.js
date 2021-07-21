@@ -62,7 +62,7 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
   const yearWiseBills = bill?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod);
   const billDetails = yearWiseBills?.[0] || [];
 
-  const getTotal = () => bill?.totalAmount || 0;
+  const getTotal = () => bill?.totalAmount ? bill?.totalAmount : 0;
 
   const { isLoading: mdmsLoading, data: mdmsBillingData } = Digit.Hooks.useGetPaymentRulesForBusinessServices(tenantId);
   const [paymentRules, setPaymentRules] = useState();
@@ -172,7 +172,7 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
           ))}
 
         <hr style={{ width: "40%" }} className="underline" />
-        <Row label={t("CS_PAYMENT_TOTAL_AMOUNT")} textStyle={{ fontWeight: "bold" }} text={"₹ " + bill?.totalAmount} />
+        <Row label={t("CS_PAYMENT_TOTAL_AMOUNT")} textStyle={{ fontWeight: "bold" }} text={"₹ " +getTotal()} />
       </StatusTable>
       {showDetails && !ModuleWorkflow ? (
         <React.Fragment>
@@ -254,7 +254,7 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
           </div>
         )
       )}
-      {!ModuleWorkflow && (
+      {paymentRules?.partPaymentAllowed  && (
         <div className="bill-payment-amount">
           <CardSectionHeader>{t("CS_COMMON_PAYMENT_AMOUNT")}</CardSectionHeader>
           <RadioButtons

@@ -14,6 +14,7 @@ const IsMutationPending = (props) => {
   };
 
   useEffect(() => {
+    if (isMutationInCourt?.code === "NO" && caseDetails?.length) setCaseDetails("");
     if (userType === "employee") {
       if (!isMutationInCourt) {
         setError(config.key, { type: "Required" });

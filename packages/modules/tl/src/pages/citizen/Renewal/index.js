@@ -12,12 +12,22 @@ export const TLList = () => {
   let filter1 = {};
   if (licenseno) filter1.licenseNumbers = licenseno;
   if (licenseno) filter1.tenantId = tenantID;
-  const { isLoading, isError, error, data } = Digit.Hooks.tl.useTradeLicenseSearch({ filters: filter1 }, { filters: filter1 });
+  const { isLoading, isError, error, data } = Digit.Hooks.tl.useTradeLicenseSearch({ filters: filter1 }, {});
   if (isLoading) {
     return <Loader />;
   }
   let { Licenses: applicationsList } = data || {};
-  applicationsList = applicationsList ? applicationsList.filter(ele => ele.financialYear != "2021-22" && (ele.status == "EXPIRED" || ele.status == "APPROVED")) : [];
+  let applications = {};
+  applicationsList.filter((response)=>response.licenseNumber).map((ob)=>{
+    if(applications[ob.licenseNumber]){
+    if(applications[ob.licenseNumber].applicationDate<ob.applicationDate)
+    applications[ob.licenseNumber]=ob
+    }
+    else
+    applications[ob.licenseNumber]=ob;    
+    })
+  let newapplicationlist = Object.values(applications);
+  newapplicationlist = newapplicationlist ? newapplicationlist.filter(ele => ele.financialYear != "2021-22" && (ele.status == "EXPIRED" || ele.status == "APPROVED")) : [];
   return (
     <React.Fragment>
       <Card>
@@ -25,13 +35,13 @@ export const TLList = () => {
         <CardText>{`${t("TL_RENEW_TRADE_TEXT")}`}</CardText>
       </Card>
       <div >
-        {applicationsList?.length > 0 &&
-          applicationsList.map((application, index) => (
+        {newapplicationlist?.length > 0 &&
+          newapplicationlist.map((application, index) => (
             <div key={index}>
               <TradeLicenseList application={application} />
             </div>
           ))}
-        {!applicationsList?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PT_NO_APPLICATION_FOUND_MSG")}</p>}
+        {!newapplicationlist?.length > 0 && <p style={{ marginLeft: "16px", marginTop: "16px" }}>{t("PT_NO_APPLICATION_FOUND_MSG")}</p>}
       </div>
       {/* <p style={{ marginLeft: "16px", marginTop: "16px" }}>
         {t("TL_NOT_ABLE_TO_FIND_TRADE_LICENSE")}{" "}
