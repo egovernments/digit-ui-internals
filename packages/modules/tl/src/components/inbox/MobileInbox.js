@@ -34,7 +34,6 @@ const MobileInbox = ({
       [t("WF_INBOX_HEADER_STATUS")]:t(e?.["status"]),
       [t("WF_INBOX_HEADER_CURRENT_OWNER")]:t(e?.owner),
       [t("WF_INBOX_HEADER_SLA_DAYS_REMAINING")]:e?.["sla"]}))
-  debugger
 
   return (
     <div style={{ padding: 0 }}>
