@@ -91,66 +91,33 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
             {Object.keys(ownershipInfo).map((key, index, arr) => {
               const date = convertEpochToDate(Number(key));
               return (
-                <div style={{ margin: "0 10px", position: "relative", paddingBottom: "5px" }}>
+                <div className="historyContent">
                   <div style={{ display: "flex" }}>
-                    <div
-                      style={{
-                        backgroundColor: "#fe7a51",
-                        borderRadius: "100%",
-                        width: "18px",
-                        height: "18px",
-                        display: "inline-block",
-                        position: "relative",
-                        left: "-9px",
-                        top: "4px",
-                        zIndex: 10,
-                      }}
-                    ></div>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <CardSubHeader
-                        style={{
-                          color: "rgba(0, 0, 0, 0.87)",
-                          fontSize: "16px",
-                          fontWeight: "700",
-                          lineHeight: "17px",
-                          textAlign: "left",
-                          display: "inline-block",
-                          paddingTop: "5px",
-                          marginBottom: "0px"
-                        }}
-                      >
+                    <div className="historyCheckpoint zIndex"></div>
+                    <div className="rowContainerStyles">
+                      <CardSubHeader className="historyTableDateLabel bottomMargin">
                         {" "}
                         {t("PT_DATE_OF_TRANSFER")}{" "}
                       </CardSubHeader>
                       <CardSubHeader
-                        style={{
-                          color: "rgba(0, 0, 0, 0.87)",
-                          fontSize: "19px",
-                          fontWeight: "400",
-                          lineHeight: "17px",
-                          textAlign: "left",
-                          display: "inline-block",
-                          paddingTop: "10px",
-                          marginBottom: "0px"
-                        }}
+                        className="historyTableDate bottomMargin"
                       >
                         {date}
                       </CardSubHeader>
                     </div>
                   </div>
                   <TransferDetails data={ownershipInfo[key]}
-                    wrapperStyles={{
-                      marginTop: "-5px",
-                      paddingLeft: "20px",
-                      paddingTop: "10px" 
+                    wrapperStyles="wrapperStyles"
+                    containerStyles="containerStyles"
+                    rowContainerStyles={{
+                      display: "flex",
+                      flexDirection: "column"
                     }}
-                    rowContainerStyles={{ flexDirection: "column" }}
                     tableStyles={{
-                      display: "grid", 
+                      display: "grid",
                       gridTemplateRows: "100px 100px",
-                      gridTemplateColumns: "repeat(5, minmax(100px, 1fr))" 
+                      gridTemplateColumns: "repeat(5, minmax(100px, 1fr))"
                     }}
-                    containerStyles={{ border: "1px solid #505A5F", padding: "16px", marginBottom: "20px" }}
                   />
                   {index !== arr.length - 1 && <div className="checkpoint-connect" style={{ marginLeft: 0, top: "4px" }}></div>}
                 </div>
@@ -171,51 +138,19 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
             const date = convertEpochToDate(Number(key));
             return (
               <div style={{ padding: "10px" }}>
-                <div
-                  style={{
-                    backgroundColor: "#fe7a51",
-                    borderRadius: "100%",
-                    width: "18px",
-                    height: "18px",
-                    display: "inline-block",
-                    position: "relative",
-                    left: "-9px",
-                    top: "4px",
-                  }}
-                ></div>
+                <div className="historyCheckpoint"></div>
                 <CardSubHeader
-                  style={{
-                    color: "rgba(0, 0, 0, 0.87)",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    lineHeight: "17px",
-                    textAlign: "left",
-                    display: "inline-block",
-                    paddingTop: "10px",
-                  }}
+                  className="historyTableDateLabel smallText"
                 >
                   {" "}
                   {t("PT_DATE_OF_TRANSFER")}{" "}
                 </CardSubHeader>
                 <CardSubHeader
-                  style={{
-                    color: "rgba(0, 0, 0, 0.87)",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    lineHeight: "17px",
-                    textAlign: "left",
-                    display: "inline-block",
-                    paddingTop: "10px",
-                  }}
+                  className="historyTableDate smallText"
                 >
                   &nbsp;-&nbsp;{date}
                 </CardSubHeader>
-                <TransferDetails data={ownershipInfo[key]} wrapperStyles={{
-                  borderLeft: "2px solid rgba(0, 0, 0, 0.12)",
-                  marginTop: "-5px",
-                  paddingLeft: "5px",
-                  paddingTop: "10px" 
-                }}
+                <TransferDetails data={ownershipInfo[key]} wrapperStyles="wrapperStyles leftBorder"
                 showHorizontalBar={true} />
               </div>
             );

@@ -15,11 +15,11 @@ const returnTransferData = (value, rowContainerStyles) => {
 
 const TransferDetails = ({ data, showHorizontalBar, wrapperStyles, tableStyles, containerStyles, rowContainerStyles }) => {
   return (
-    <div style={wrapperStyles}>
+    <div className={wrapperStyles}>
       {data.map((value, index) => {
         return (
-          <div style={containerStyles}>
-            {(index !== 0 && showHorizontalBar) && <div style={{ backgroundColor: "rgba(0, 0, 0, 0.12)", width: "auto", height: "2px", marginLeft: "16px" }}></div>}
+          <div className={containerStyles}>
+            {(index !== 0 && showHorizontalBar) && <div className="historyHorizontalBar"></div>}
             <StatusTable style={tableStyles}>{returnTransferData(value, rowContainerStyles)}</StatusTable>
           </div>
         );
