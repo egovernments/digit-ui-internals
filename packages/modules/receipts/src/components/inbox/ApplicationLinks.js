@@ -1,4 +1,4 @@
-import { Card, ReceiptIcon } from "@egovernments/digit-ui-react-components";
+import { AnnouncementIcon, Card } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -15,16 +15,15 @@ const InboxLinks = ({ parentRoute, businessService, allLinks, headerText }) => {
   }, []);
 
   const GetLogo = () => (
-    <div className="header" style={{ justifyContent: "flex-start" }}>
+    <div className="header">
       <span className="logo">
-        <ReceiptIcon />
+        <AnnouncementIcon />
       </span>{" "}
       <span className="text">{t(headerText)}</span>
     </div>
   );
-
   return (
-    <Card style={{ paddingRight: 0, marginTop: 0 }} className="employeeCard filter">
+    <Card className="employeeCard filter inboxLinks">
       <div className="complaint-links-container">
         {GetLogo()}
         <div className="body">
