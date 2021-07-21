@@ -28,7 +28,6 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   useEffect(() => {
     searchFields.forEach(({ pattern, name, maxLength, minLength, errorMessages, ...el }) => {
       const value = form[name];
-      debugger
       const error = formState.errors[name];
       if (pattern) {
         if (!new RegExp(pattern).test(value) && !error)
