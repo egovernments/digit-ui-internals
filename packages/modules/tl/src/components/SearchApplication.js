@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { convertEpochToDateDMY } from  "../utils";
 
 const SearchApplication = ({tenantId, t, onSubmit, data }) => {
-    const { register, control, handleSubmit, setValue, getValues } = useForm({
+    const { register, control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: {
             offset: 0,
             limit: 10,
@@ -80,6 +80,21 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
               </div>
             );
           },
+        },
+        {
+            Header: t("TL_COMMON_TABLE_COL_APP_NO"),
+            disableSortBy: true,
+            accessor: (row) => GetCell(row.applicationDate ? convertEpochToDateDMY(row.applicationDate) : ""),
+        },
+        {
+            Header: t("TL_TRADE_LICENSE_LABEL"),
+            disableSortBy: true,
+            accessor: (row) => GetCell(row.licenseNumber || "-"),
+        },
+        {
+            Header: t("TL_NEW_TRADE_DETAILS_LIC_TYPE_LABEL"),
+            disableSortBy: true,
+            accessor: (row) => GetCell(row.licenseType || ""),
         },
         {
           Header: t("TL_NEW_TRADE_DETAILS_TRADE_COMM_DATE_LABEL"),
@@ -173,8 +188,8 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                     <TextInput name="tradeName" inputRef={register({})}/>
                 </SearchField>
                 <SearchField className="submit">
-                    <p>{t(`ES_COMMON_CLEAR_ALL`)}</p>
                     <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
+                    <p onClick={() => reset()}>{t(`ES_COMMON_CLEAR_ALL`)}</p>
                 </SearchField>
             </SearchForm>
             {data?.display ? <Card style={{ marginTop: 20 }}>

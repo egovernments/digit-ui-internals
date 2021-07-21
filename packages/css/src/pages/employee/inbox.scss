@@ -168,6 +168,26 @@
     }
   }
 
+  .inboxLinks{
+    margin: 0 !important;
+    padding: 0 !important;
+    .header{
+      border: none;
+      @apply justify-start;
+      .logo{
+        @apply bg-white;
+        svg{
+          path{
+            fill: #f47738;
+          }
+        }
+      }
+    }
+    .body{
+      margin-left: 0;
+    }
+  }
+
   .inbox-container {
     @apply flex;
 
@@ -205,9 +225,20 @@
         }
 
         .complaint-input-container {
-          display: flex !important;
+          display: inline-block !important;
+          width: 66% !important;
           * {
             @apply flex-1;
+          }
+
+          .input-fields{
+            width: calc( 50% - 16px );
+            @apply inline-block mr-md !important;
+            .inbox-search-form-error{
+              padding-top: 0;
+              margin-top:0;
+              @apply absolute;
+            }
           }
 
           .complaint-input {
@@ -226,6 +257,17 @@
 
           .mobile-input {
             @apply ml-sm;
+          }
+        }
+
+        .search-action-wrapper{
+          width: 33%;
+          margin-top: 28px;
+          @apply inline-block align-middle text-center;
+          button{
+            margin: 0;
+            width: 100%;
+            max-width: 300px !important;
           }
         }
       }

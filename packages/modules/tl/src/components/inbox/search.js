@@ -28,6 +28,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   useEffect(() => {
     searchFields.forEach(({ pattern, name, maxLength, minLength, errorMessages, ...el }) => {
       const value = form[name];
+      debugger
       const error = formState.errors[name];
       if (pattern) {
         if (!new RegExp(pattern).test(value) && !error)
@@ -101,11 +102,11 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container" style={{ width: "100%" }}>
+            <div className="complaint-input-container">
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
-                  <div key={input.name} style={{ display: "flex", flexDirection: "column" }}>
+                  <div key={input.name} className="input-fields">
                     <span className={index === 0 ? "complaint-input" : "mobile-input"}>
                       <Label>{t(input.label)}</Label>
                       {!input.type ? (
@@ -140,7 +141,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 ))}
               {type === "desktop" && !mobileView && !isInboxPage && (
-                <div>
+                <div className="search-action-wrapper">
                   <SubmitBar
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
@@ -156,20 +157,19 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
             </div>
 
             {isInboxPage && (
-              <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
-                {type === "desktop" && !mobileView && (
-                  <span style={{ paddingTop: "9px" }} className="clear-search">
-                    {clearAll()}
-                  </span>
-                )}
+              <div className="search-action-wrapper">
                 {type === "desktop" && !mobileView && (
                   <SubmitBar
                     disabled={!!Object.keys(formState.errors).length}
-                    style={{ marginTop: "unset" }}
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
                     submit
                   />
+                )}
+                {type === "desktop" && !mobileView && (
+                  <span style={{ paddingTop: "9px" }} className="clear-search">
+                    {clearAll()}
+                  </span>
                 )}
               </div>
             )}

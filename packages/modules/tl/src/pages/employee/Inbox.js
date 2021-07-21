@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Header } from "@egovernments/digit-ui-react-components";
 
 import DesktopInbox from "../../components/inbox/DesktopInbox";
-// import MobileInbox from "../../components/MobileInbox";
+import MobileInbox from "../../components/inbox/MobileInbox"
 
 const Inbox = ({
   parentRoute,
@@ -118,8 +118,17 @@ const Inbox = ({
   // })
 
     if (isMobile) {
-      return (
-    <h5>Open In Desktop</h5>)
+      return <MobileInbox
+        data={data}
+        isLoading={hookLoading}
+        searchFields={getSearchFields()}
+        onFilterChange={handleFilterChange}
+        onSearch={handleFilterChange}
+        onSort={handleSort}
+        parentRoute={parentRoute}
+        searchParams={searchParams}
+        sortParams={sortParams}
+      />
     } else {
       return         <div>
                 {isInbox && <Header>{t("ES_COMMON_INBOX")}</Header>}

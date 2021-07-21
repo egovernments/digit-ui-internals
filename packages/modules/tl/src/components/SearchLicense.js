@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { convertEpochToDateDMY, stringReplaceAll } from "../utils";
 
 const SearchLicense = ({tenantId, t, onSubmit, data }) => {
-    const { register, control, handleSubmit, setValue, getValues } = useForm({
+    const { register, control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: {
             offset: 0,
             limit: 10,
@@ -103,8 +103,8 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <TextInput name="tradeName" inputRef={register({})}/>
             </SearchField>
             <SearchField className="submit">
-                <p>{t(`ES_COMMON_CLEAR_ALL`)}</p>
                 <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
+                <p onClick={() => reset()}>{t(`ES_COMMON_CLEAR_ALL`)}</p>
             </SearchField>
         </SearchForm>
         {data?.display ?<Card style={{ marginTop: 20 }}>
