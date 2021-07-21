@@ -204,6 +204,7 @@ const PropertyDetails = () => {
       />
       {showModal ? (
         <Modal
+          headerBarMain={<h1 className="heading-m">{t("PT_OWNER_HISTORY")}</h1>}
           headerBarEnd={<CloseBtn onClick={() => setShowModal(false)} />}
           hideSubmit={true}
           isDisabled={false}
