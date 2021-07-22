@@ -74,39 +74,25 @@ const FSMCard = () => {
     }
   }, [inbox]);
 
-  if (isFSTPOperator) {
-    return (
-      <div className="employeeCard card-home">
-        <div className="complaint-links-container">
-          <div className="header">
-            <span className="logo">
-              <ShippingTruck />
-            </span>
-            <span className="text">{t("ES_TITLE_VEHICLE_LOG")}</span>
-          </div>
-          <div className="body">
-            {info && (
-              <div className="employeeCard-info-box">
-                {Object.keys(info).map((key, index) => {
-                  return (
-                    <div key={index} className="employeeCard-info-data">
-                      <span>{t(key)}</span>
-                      <span>{t(info[key])}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <span className="link">
-              <Link to={`/digit-ui/employee/fsm/fstp-inbox`}>
-                <span>{t("ES_TITLE_INBOX")}</span>
-              </Link>
-              {<ArrowRight to={`/digit-ui/employee/fsm/fstp-inbox`} />}
-            </span>
-          </div>
-        </div>
-      </div>
-    );
+  const propsForFSTPO = {
+    Icon: <ShippingTruck />,
+    moduleName: t("ES_TITLE_VEHICLE_LOG"),
+    kpis: isSuccess ? Object.keys(info).map((key, index) => ({
+                label: t(key),
+                count: t(info[key]),
+                link: "/digit-ui/employee/fsm/fstp-inbox"
+            })): [],
+    links: [
+      {
+          label: t("ES_COMMON_INBOX"),
+          link: "/digit-ui/employee/fsm/fstp-inbox"
+      }
+    ]
+
+  }
+
+  if (isFSTPOperator && isSuccess) {
+    return  <EmployeeModuleCard {...propsForFSTPO} />
   }
 
   const linksForSomeFSMEmployees = !DSO && !COLLECTOR && !FSM_EDITOR ? [

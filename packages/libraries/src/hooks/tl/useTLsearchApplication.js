@@ -42,7 +42,6 @@ export const useTLSearchApplication = (params, config = {}) => {
         TL_COMMON_TABLE_COL_STATUS: `WF_NEWTL_${i?.status}`,
         TL_COMMON_TABLE_COL_SLA_NAME: `${i?.SLA / (1000 * 60 * 60 * 24)} Days`,
         TL_COMMON_TABLE_COL_TRD_NAME: i?.tradeName,
-        TL_COMMON_CITY_NAME: i.tenantId,
         raw: i
       }))
     }

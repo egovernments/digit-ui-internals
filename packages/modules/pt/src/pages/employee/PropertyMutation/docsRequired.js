@@ -46,7 +46,7 @@ const RequiredDoc = () => {
           const dd = doc.dropdownData;
           return (
             <React.Fragment key={index}>
-              <CardSectionHeader style={{ marginTop: "38px" }}>{t(`${splitValues[0]}.${splitValues[1]}`)}</CardSectionHeader>
+              <CardSectionHeader style={{ marginTop: "38px", marginBottom: "16px" }}>{t(`${splitValues[0]}.${splitValues[1]}`)}</CardSectionHeader>
               {dd.map((e, ind) => {
                 return (
                   <React.Fragment key={ind}>
@@ -54,7 +54,7 @@ const RequiredDoc = () => {
                   </React.Fragment>
                 );
               })}
-              <CardText>{t(`${splitValues[0]}.${splitValues[1]}.${splitValues[1]}_DESCRIPTION`)}</CardText>
+              <CardText className="docsDescription">{t(`${splitValues[0]}.${splitValues[1]}.${splitValues[1]}_DESCRIPTION`)}</CardText>
             </React.Fragment>
           );
         })}

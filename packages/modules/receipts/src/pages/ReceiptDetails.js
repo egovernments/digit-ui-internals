@@ -5,6 +5,10 @@ import { useParams } from "react-router-dom";
 import ActionModal from "../components/Modal";
 import { convertEpochToDate, convertToLocale, getFinancialYears } from "../utils";
 
+const canCancelReceipt=(Receipt={})=>{
+  return Receipt?.paymentStatus !== "CANCELLED" && Receipt?.paymentStatus !== "DEPOSITED" && (Receipt?.instrumentStatus == "APPROVED" || Receipt?.instrumentStatus == "REMITTED");
+}
+
 const ReceiptDetails = () => {
 
   const [showModal, setShowModal] = useState(false);
@@ -73,7 +77,7 @@ const ReceiptDetails = () => {
         <ActionModal t={t} tenantId={tenantId} applicationData={data} closeModal={closeModal} submitAction={submitAction} />
       ) : null}
       <ActionBar>
-        {PaymentReceipt.paymentStatus !== "CANCELLED" && (PaymentReceipt.instrumentStatus = "APPROVED" || PaymentReceipt.instrumentStatus == "REMITTED") && <SubmitBar label={t("CR_CANCEL_RECEIPT_BUTTON")} onSubmit={() => cancelReceipt()} />}
+        {canCancelReceipt(PaymentReceipt) && <SubmitBar label={t("CR_CANCEL_RECEIPT_BUTTON")} onSubmit={() => cancelReceipt()} />}
       </ActionBar>
     </React.Fragment>
   );

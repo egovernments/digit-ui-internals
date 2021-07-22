@@ -48,7 +48,7 @@ const TopBar = ({
       <div className="topbar">
         {mobileView ? <Hamburger handleClick={toggleSidebar} color="#9E9E9E"/> : null}
         <img className="city" src={cityDetails?.logoId} />
-        <p className="ulb" style={mobileView ? { fontSize: "14px", display: "inline-block", marginTop: "15px" } : {}}>
+        <p className="ulb" style={mobileView ? { fontSize: "14px", display: "inline-block" } : {}}>
           {t(cityDetails?.i18nKey).toUpperCase()}{" "}
           {t(`ULBGRADE_${cityDetails?.city?.ulbGrade.toUpperCase().replace(" ", "_").replace(".", "_")}`).toUpperCase()}
         </p>

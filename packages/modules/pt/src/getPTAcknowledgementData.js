@@ -154,7 +154,7 @@ const getMutationDetails = (application, t) => {
           : "N/A",
       },
       { title: t("PT_MUTATION_COURT_CASE_DETAILS"), value: application?.additionalDetails?.caseDetails || "N/A" },
-      { title: t("PT_MUTATION_STATE_ACQUISITION"), value: application?.additionalDetails?.isPropertyUnderGovtPossession || "N/A" },
+      { title: t("PT_MUTATION_STATE_ACQUISITION"), value: application?.additionalDetails?.isPropertyUnderGovtPossession ? t(`PT_MUTATION_STATE_ACQUISITION_${application?.additionalDetails?.isPropertyUnderGovtPossession}`) : "N/A" },
       { title: t("PT_MUTATION_GOVT_ACQUISITION_DETAILS"), value: application?.additionalDetails?.govtAcquisitionDetails || "N/A" },
     ],
   };
@@ -166,7 +166,7 @@ const mutationRegistrationDetails = (application, t) => {
     values: [
       {
         title: t("PT_MUTATION_TRANSFER_REASON"),
-        value: application?.additionalDetails?.reasonForTransfer.replaceAll(".", "_"),
+        value: t(`PROPERTYTAX_REASONFORTRANSFER_${application?.additionalDetails?.reasonForTransfer.replaceAll(".", "_")}`),
       },
       { title: t("PT_MUTATION_MARKET_VALUE"), value: application?.additionalDetails?.marketValue || "N/A" },
       { title: t("PT_MUTATION_DOCUMENT_NO"), value: application?.additionalDetails?.documentNumber || "N/A" },

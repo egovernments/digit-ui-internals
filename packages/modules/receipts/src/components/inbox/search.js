@@ -92,11 +92,11 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container" style={{ width: "100%" }}>
+            <div className="complaint-input-container" >
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
-                  <div key={input.name} style={{ display: "flex", flexDirection: "column" }}>
+                  <div key={input.name} className="input-fields">
                     <span className={index === 0 ? "complaint-input" : "mobile-input"}>
                       <Label>{t(input.label)}</Label>
                       {!input.type ? (
@@ -104,7 +104,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                           render={(props) => {
                             return <div className="field-container">
                               {input?.componentInFront ? (
-                                <span className="citizen-card-input citizen-card-input--front" style={{ flex: "none" }}>
+                                <span className="employee-card-input employee-card-input--front" style={{ flex: "none" }}>
                                   {input?.componentInFront}
                                 </span>
                               ) : null}
@@ -138,7 +138,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 ))}
               {type === "desktop" && !mobileView && !isInboxPage && (
-                <div>
+                <div className="search-action-wrapper">
                   <SubmitBar
                     className="submit-bar-search"
                     label={t("CR_SEARCH_BUTTON")}
@@ -152,20 +152,25 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
               )}
             </div>
             {isInboxPage && (
-              <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
-                {type === "desktop" && !mobileView && (
-                  <span style={{ paddingTop: "9px" }} className="clear-search">
-                    {clearAll()}
-                  </span>
-                )}
-                {type === "desktop" && !mobileView && (
-                  <SubmitBar
-                    style={{ marginTop: "unset" }}
-                    className="submit-bar-search"
-                    label={t("CR_SEARCH_BUTTON")}
-                    submit
-                  />
-                )}
+              <div className="search-action-wrapper">
+                <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
+                  {type === "desktop" && !mobileView && (
+                    <span style={{ paddingTop: "9px" }} className="clear-search">
+                      {clearAll()}
+                    </span>
+                  )}
+                  {type === "desktop" && !mobileView && (
+                    <SubmitBar
+                      style={{
+                        marginTop: "unset", marginLeft: '8%',
+                        width: '50%'
+                      }}
+                      className="submit-bar-search"
+                      label={t("CR_SEARCH_BUTTON")}
+                      submit
+                    />
+                  )}
+                </div>
               </div>
             )}
           </div>

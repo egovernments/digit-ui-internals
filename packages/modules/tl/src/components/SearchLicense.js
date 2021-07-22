@@ -73,6 +73,22 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
         setValue("sortBy", args.id)
         setValue("sortOrder", args.desc ? "DESC" : "ASC")
     }, [])
+
+
+    function onPageSizeChange(e){
+      setValue("limit",Number(e.target.value))
+      handleSubmit(onSubmit)()
+    }
+
+    function nextPage () {
+        setValue("offset", getValues("offset") + getValues("limit"))
+        handleSubmit(onSubmit)()
+    }
+    function previousPage () {
+        setValue("offset", getValues("offset") - getValues("limit") )
+        handleSubmit(onSubmit)()
+    }
+
     return <React.Fragment>
             <SearchForm onSubmit={onSubmit} handleSubmit={handleSubmit}>
             <SearchField>
@@ -132,10 +148,10 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
             },
             };
             }}
-            onPageSizeChange={(e) => setValue("limit",Number(e.target.value))}
-            currentPage={getValues("offset")}
-            onNextPage={() => setValue("offset", getValues("offset") + getValues("limit") )}
-            onPrevPage={() => setValue("offset", getValues("offset") - getValues("limit") )}
+            onPageSizeChange={onPageSizeChange}
+            currentPage={getValues("offset")/getValues("limit")}
+            onNextPage={nextPage}
+            onPrevPage={previousPage}
             pageSizeLimit={getValues("limit")}
             onSort={onSort}
             disableSort={false}

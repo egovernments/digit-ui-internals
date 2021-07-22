@@ -29,7 +29,7 @@ const SelectOwnershipProof = ({ t, config, onSelect, userType, formData }) => {
   const handleSubmit = () => {
     let fileStoreId = uploadedFile;
     let fileDetails = file;
-    //if (fileDetails) fileDetails.documentType = dropdownValue;
+    if (fileDetails) fileDetails.documentType = "OWNERSHIPPROOF";
     if (fileDetails) fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     let owners = formData?.owners;
     if (owners && owners.documents) {

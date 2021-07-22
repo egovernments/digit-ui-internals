@@ -1,21 +1,19 @@
 .search-form-wrapper{
-    @apply inline-block bg-white mb-lg py-lg pl-lg;
+    @apply flex flex-wrap justify-between bg-white mb-lg py-lg pl-lg;
     .form-field{
-        width: 300px;
+        width: calc( 25% - 16px );
         @apply inline-block mr-md align-middle;
     }
     .submit{
         right: 36px;
         margin-top: 22px;
-        @apply inline absolute align-middle text-center !important;
+        @apply inline align-middle text-center !important;
         button{
             margin: 0;
-            width: 300px;
-            @apply inline-block !important;
+            @apply inline-block w-full !important;
         }
         p{
-            width: 300px;
-            @apply cursor-pointer text-link text-focus inline-block ;
+            @apply cursor-pointer text-link text-focus w-full inline-block ;
         }
     }
 }

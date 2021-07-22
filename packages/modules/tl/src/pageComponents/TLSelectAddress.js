@@ -169,7 +169,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
               <Dropdown
                 className="form-field"
                 selected={props.value}
-                disable={checkingLocationForRenew || checkingLocationFornew ? true : false}
+                disable={true}
                 option={cities}
                 select={props.onChange}
                 optionKey="code"
@@ -197,7 +197,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
                 optionKey="i18nkey"
                 t={t}
                 disable={checkingLocationForRenew ? true : false}
-                // disable={isEditProperty ? isEditProperty : false}
+                errorStyle={(localFormState.touched.locality && errors?.locality?.message) ? true : false}
               />
             )}
           />

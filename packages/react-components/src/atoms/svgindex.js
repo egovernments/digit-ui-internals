@@ -22,6 +22,7 @@ const ArrowDown = ({ className, onClick, styles, disable }) => (
   </svg>
 );
 
+
 const ArrowBack = ({ className, onClick }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" className={className} onClick={onClick} width="18px" height="18px">
     <path d="M0 0h24v24H0z" fill="none" />
@@ -516,9 +517,13 @@ const ReceiptIcon = () => <svg xmlns="http://www.w3.org/2000/svg" height="24" vi
 <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z" fill="white"></path>
 </svg>
 
+const AnnouncementIcon = () => <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24.6665 0.666016H3.33317C1.8665 0.666016 0.679837 1.86602 0.679837 3.33268L0.666504 27.3327L5.99984 21.9993H24.6665C26.1332 21.9993 27.3332 20.7993 27.3332 19.3327V3.33268C27.3332 1.86602 26.1332 0.666016 24.6665 0.666016ZM15.3332 12.666H12.6665V4.66602H15.3332V12.666ZM15.3332 17.9993H12.6665V15.3327H15.3332V17.9993Z" fill="#F47738"/>
+</svg>
 
 
 export {
+  AnnouncementIcon,
   ReceiptIcon,
   ArrowLeft,
   ArrowDown,

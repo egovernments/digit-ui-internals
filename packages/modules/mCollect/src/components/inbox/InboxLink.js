@@ -29,7 +29,7 @@ const InboxLinks = ({ parentRoute, businessService }) => {
   );
 
   return (
-    <Card style={{ paddingRight: 0, marginTop: 0 }} className="employeeCard filter">
+    <Card style={{ paddingRight: 0, marginTop: 0 }} className="employeeCard filter inboxLinks">
       <div className="complaint-links-container">
         {GetLogo()}
         <div className="body">

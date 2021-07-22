@@ -1,5 +1,5 @@
 import { CaseIcon, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { checkForEmployee } from "../utils";
 
@@ -12,6 +12,15 @@ const TLCard = () => {
         filters: { ...inboxSearchParams },
         config: {}
     });
+
+    const [isStateLocalisation, setIsStateLocalisation] = useState(true);
+
+    useEffect (() => {
+      if(tenantId && isStateLocalisation) {
+        setIsStateLocalisation(false);
+        Digit.LocalizationService.getLocale({modules: [`rainmaker-${tenantId}`], locale: Digit.StoreData.getCurrentLanguage(), tenantId: `${tenantId}`});
+      }
+    },[tenantId]);
 
     const counterEmployeeExtraLinks = checkForEmployee("TL_CEMP") ? [
         {

@@ -89,6 +89,7 @@ import {
   CaseIcon,
   PersonIcon,
   ReceiptIcon,
+  AnnouncementIcon,
 } from "./atoms/svgindex";
 import CustomButton from "./atoms/CustomButton";
 import CitizenInfoLabel from "./atoms/CitizenInfoLabel";
@@ -257,5 +258,6 @@ export {
   EmailIcon,
   DocumentSVG,
   PersonIcon,
-  ReceiptIcon
+  ReceiptIcon,
+  AnnouncementIcon
 };

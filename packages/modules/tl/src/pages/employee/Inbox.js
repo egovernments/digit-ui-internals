@@ -1,9 +1,9 @@
+import { Header } from "@egovernments/digit-ui-react-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Header } from "@egovernments/digit-ui-react-components";
-
 import DesktopInbox from "../../components/inbox/DesktopInbox";
-import MobileInbox from "../../components/inbox/MobileInbox"
+import MobileInbox from "../../components/inbox/MobileInbox";
+
 
 const Inbox = ({
   parentRoute,
@@ -32,10 +32,10 @@ const Inbox = ({
     : { limit: pageSize, offset: pageOffset, sortBy: sortParams?.[0]?.id, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
 
   const { isFetching, isLoading: hookLoading, searchResponseKey, data, searchFields, ...rest } = Digit.Hooks.tl.useInbox({
-      tenantId,
-      filters: { ...searchParams, ...paginationParams, sortParams },
-      config:{}
-    });
+    tenantId,
+    filters: { ...searchParams, ...paginationParams, sortParams },
+    config: {}
+  });
 
   useEffect(() => {
     setPageOffset(0);
@@ -81,13 +81,18 @@ const Inbox = ({
     return [
       {
         label: t("TL_HOME_SEARCH_RESULTS_APP_NO_LABEL"),
-        name: "applicationNo",
+        name: "applicationNumber",
       },
       {
         label: t("CORE_COMMON_MOBILE_NUMBER"),
         name: "mobileNumber",
         maxlength: 10,
-        pattern: "[6-9][0-9]{9}",
+
+        pattern: Digit.Utils.getPattern("MobileNo"),
+
+        type: "mobileNumber",
+   
+
         title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
         componentInFront: "+91",
       },
@@ -117,46 +122,46 @@ const Inbox = ({
   //   config:{}
   // })
 
-    if (isMobile) {
-      return <MobileInbox
+  if (isMobile) {
+    return <MobileInbox
+      data={data}
+      isLoading={hookLoading}
+      searchFields={getSearchFields()}
+      onFilterChange={handleFilterChange}
+      onSearch={handleFilterChange}
+      onSort={handleSort}
+      parentRoute={parentRoute}
+      searchParams={searchParams}
+      sortParams={sortParams}
+    />
+  } else {
+    return <div>
+      {isInbox && <Header>{t("ES_COMMON_INBOX")}</Header>}
+      <DesktopInbox
+        businessService={businessService}
         data={data}
+        tableConfig={rest?.tableConfig}
         isLoading={hookLoading}
-        searchFields={getSearchFields()}
+        defaultSearchParams={initialStates.searchParams}
+        isSearch={!isInbox}
         onFilterChange={handleFilterChange}
+        searchFields={getSearchFields()}
         onSearch={handleFilterChange}
         onSort={handleSort}
+        onNextPage={fetchNextPage}
+        onPrevPage={fetchPrevPage}
+        currentPage={Math.floor(pageOffset / pageSize)}
+        pageSizeLimit={pageSize}
+        disableSort={false}
+        onPageSizeChange={handlePageSizeChange}
         parentRoute={parentRoute}
         searchParams={searchParams}
         sortParams={sortParams}
+        totalRecords={Number(data?.[0]?.totalCount)}
+        filterComponent={filterComponent}
       />
-    } else {
-      return         <div>
-                {isInbox && <Header>{t("ES_COMMON_INBOX")}</Header>}
-                <DesktopInbox
-                    businessService={businessService}
-                    data={data}
-                    tableConfig={rest?.tableConfig}
-                    isLoading={hookLoading}
-                    defaultSearchParams={initialStates.searchParams}
-                    isSearch={!isInbox}
-                    onFilterChange={handleFilterChange}
-                    searchFields={getSearchFields()}
-                    onSearch={handleFilterChange}
-                    onSort={handleSort}
-                    onNextPage={fetchNextPage}
-                    onPrevPage={fetchPrevPage}
-                    currentPage={Math.floor(pageOffset / pageSize)}
-                    pageSizeLimit={pageSize}
-                    disableSort={false}
-                    onPageSizeChange={handlePageSizeChange}
-                    parentRoute={parentRoute}
-                    searchParams={searchParams}
-                    sortParams={sortParams}
-                    totalRecords={Number(data?.[0]?.totalCount)}
-                    filterComponent={filterComponent}
-                />
-                </div>
-    }
+    </div>
+  }
 };
 
 export default Inbox;

@@ -18,9 +18,10 @@ function TLDocument({ value = {} }) {
     { value }
   );
   let documents = [];
-  documents.push(value.owners.documents["OwnerPhotoProof"]);
   documents.push(value.owners.documents["ProofOfIdentity"]);
   documents.push(value.owners.documents["ProofOfOwnership"]);
+  documents.push(value.owners.documents["OwnerPhotoProof"]);
+  
 
   if (isLoading) {
     return <Loader />;
@@ -33,9 +34,9 @@ function TLDocument({ value = {} }) {
           {documents?.map((document, index) => {
             let documentLink = pdfDownloadLink(data.pdfFiles, document?.fileStoreId);
             return (
-              <a target="_" href={documentLink} style={{ minWidth: "160px" }} key={index}>
+              <a target="_" href={documentLink} style={{ minWidth: "100px",marginRight:"10px" }} key={index}>
                 <PDFSvg width={85} height={100} style={{ background: "#f6f6f6", padding: "8px" }} />
-                <p style={{ marginTop: "8px" }}>{pdfDocumentName(documentLink, index)}</p>
+                <p style={{ marginTop: "8px",textAlign:"center" }}>{t(`TL_${document?.documentType}_LABEL`)}</p>
               </a>
             );
           })}

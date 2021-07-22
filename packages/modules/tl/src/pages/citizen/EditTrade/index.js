@@ -106,7 +106,7 @@ const getTradeEditDetails = (data) => {
     documents: gettradedocuments(data?.tradeLicenseDetail?.applicationDocuments),
     owners: gettradeowners(data?.tradeLicenseDetail?.owners),
     permanentAddress: data?.tradeLicenseDetail?.owners[0].permanentAddress,
-    isCorrespondenceAddress: true,
+    isCorrespondenceAddress: false,
   }
   data.ownershipCategory = { code: `${data?.tradeLicenseDetail?.subOwnerShipCategory}`, i18nKey: `PT_OWNERSHIP_${data?.tradeLicenseDetail?.subOwnerShipCategory.split(".")[1]}`, value: `${data?.tradeLicenseDetail?.subOwnerShipCategory}` };
   return data;

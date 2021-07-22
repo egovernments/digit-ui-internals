@@ -128,7 +128,7 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
         <OwnerForm  index={index} owner={owner} {...commonProps} />
       ))}
       {formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? (
-        <LinkButton label="Add Owner" onClick={addNewOwner} style={{ color: "orange" }} />
+        <LinkButton label={t("TL_NEW_OWNER_DETAILS_ADD_OWN")} onClick={addNewOwner} style={{ color: "orange", width: "fit-content" }}/>
       ) : null}
     </React.Fragment>
   );
