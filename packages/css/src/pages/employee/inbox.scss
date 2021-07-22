@@ -322,3 +322,10 @@
 .search-error-label {
   @apply font-bold text-legend text-error mb-sm !important;
 }
+
+
+.inbox-action-container{
+  display: "flex";
+  justify-content: "flex-end";
+  align-items: "flex-start";
+}
