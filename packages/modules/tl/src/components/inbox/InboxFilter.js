@@ -26,7 +26,6 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
   const onServiceSelect = (e, label) => {
-    debugger
     if (e.target.checked) localParamChange({ applicationStatus: [...(_searchParams?.applicationStatus ? _searchParams.applicationStatus : [] ), label] });
     else localParamChange({ applicationStatus: _searchParams?.applicationStatus.filter((o) => o !== label) });
   };
