@@ -229,10 +229,17 @@
           display: grid;
           grid-template-columns: 33.33% 33.33% 33.33%;
 
-          /* width: 66% !important;
-          // * {
-          //   @apply flex-1;
-          // } */
+          .search-submit-wrapper {
+            grid-column: 3/4;
+            margin-left: 50%;
+            max-width: 50%;
+            grid-column: 3/4 @apply flex flex-col justify-center;
+            .submit-bar-search {
+              margin-top: unset;
+              width: 100%;
+              margin-bottom: 20px;
+            }
+          }
 
           .input-fields {
             /*width: calc(50% - 16px);*/

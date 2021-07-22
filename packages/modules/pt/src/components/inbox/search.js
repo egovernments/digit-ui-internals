@@ -144,20 +144,21 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 ))}
               {type === "desktop" && !mobileView && !isInboxPage && (
                 <div
-                  style={{
-                    gridColumn: "3/4",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginLeft: "50%",
-                    maxWidth: "50%",
-                  }}
+                  // style={{
+                  //   gridColumn: "3/4",
+                  //   display: "flex",
+                  //   flexDirection: "column",
+                  //   justifyContent: "center",
+                  //   alignItems: "center",
+                  //   marginLeft: "50%",
+                  //   maxWidth: "50%",
+                  // }}
+                  className="search-submit-wrapper"
                 >
                   <SubmitBar
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
-                    style={{ textAlign: "center", marginLeft: "unset", maxWidth: "100%", width: "100%", marginBottom: "20px", marginTop: "unset" }}
+                    // style={{ textAlign: "center", marginLeft: "unset", maxWidth: "100%", width: "100%", marginBottom: "20px", marginTop: "unset" }}
                     disabled={!!Object.keys(formState.errors).length || Object.keys(form).every((key) => !form?.[key])}
                     submit
                   />
