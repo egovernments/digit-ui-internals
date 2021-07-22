@@ -55,7 +55,7 @@ export const newConfig = [
       {
         type: "component",
         route: "street",
-        component: "SelectStreet",
+        component: "PTSelectStreet",
         key: "address",
         withoutLabel: true,
         texts: {
