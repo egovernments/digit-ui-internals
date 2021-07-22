@@ -107,8 +107,9 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
-                  <div key={input.name} style={{ display: "flex", flexDirection: "column" }}>
-                    <span className={index === 0 ? "complaint-input" : "mobile-input"}>
+                  <div key={input.name} className="input-fields">
+                    {/* <span className={index === 0 ? "complaint-input" : "mobile-input"}> */}
+                    <span className={"mobile-input"}>
                       <Label>{t(input.label)}</Label>
                       {!input.type ? (
                         <Controller
@@ -142,18 +143,26 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 ))}
               {type === "desktop" && !mobileView && !isInboxPage && (
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginLeft: "8px" }}>
+                <div
+                  style={{
+                    gridColumn: "3/4",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginLeft: "50%",
+                    maxWidth: "50%",
+                  }}
+                >
                   <SubmitBar
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
-                    style={{ textAlign: "center", marginLeft: "unset", maxWidth: "100%", width: "100%", marginBottom: "20px" }}
+                    style={{ textAlign: "center", marginLeft: "unset", maxWidth: "100%", width: "100%", marginBottom: "20px", marginTop: "unset" }}
                     disabled={!!Object.keys(formState.errors).length || Object.keys(form).every((key) => !form?.[key])}
                     submit
                   />
                   {/* style={{ paddingTop: "16px", textAlign: "center" }} className="clear-search" */}
-                  <div>
-                    {clearAll()}
-                  </div>
+                  <div>{clearAll()}</div>
                 </div>
               )}
             </div>

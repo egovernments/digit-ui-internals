@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRightInbox, PropertyHouse } from "@egovernments/digit-ui-react-components";
-
-const ArrowRight = ({ to }) => (
-  <Link to={to}>
-    <ArrowRightInbox />
-  </Link>
-);
+import { PropertyHouse, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 
 const PTCard = () => {
   const { t } = useTranslation();
-  // TODO: should be fetch
+
   const [total, setTotal] = useState("-");
-  const { data, isFetching, isSuccess } = Digit.Hooks.useNewInboxGeneral({
+  const { data, isLoading, isFetching, isSuccess } = Digit.Hooks.useNewInboxGeneral({
     tenantId: Digit.ULBService.getCurrentTenantId(),
     ModuleCode: "PT",
-    filters: { limit: 10, offset: 0, services: ["PT.CREATE"] },
+    filters: { limit: 10, offset: 0, services: ["PT.CREATE", "PT.MUTATION", "PT.UPDATE"] },
     config: {
       select: (data) => {
         return data?.totalCount || "-";
@@ -33,28 +27,30 @@ const PTCard = () => {
     return null;
   }
 
-  return (
-    <div className="employeeCard card-home">
-      <div className="complaint-links-container">
-        <div className="header">
-          <span className="logo">
-            <PropertyHouse />
-          </span>
-          <span className="text">{t("ES_TITLE_PROPERTY_TAX")}</span>
-        </div>
-        <div className="body">
-          <span className="link">
-            <Link to={`/digit-ui/employee/pt/inbox`}>{t("ES_TITLE_INBOX")}</Link>
-            <span className="inbox-total">{" " + total || "-"}</span>
-            {<ArrowRight to={`/digit-ui/employee/pt/inbox`} />}
-          </span>
-          <span className="link">
-            <Link to={`/digit-ui/employee/pt/new-application`}>{t("ES_TITLE_NEW_REGISTRATION")}</Link>
-          </span>
-        </div>
-      </div>
-    </div>
-  );
+  const propsForModuleCard = {
+    Icon: <PropertyHouse />,
+    moduleName: t("ES_TITLE_PROPERTY_TAX"),
+    kpis: [
+      {
+        count: total,
+        label: t("ES_TITLE_INBOX"),
+        link: `/digit-ui/employee/pt/inbox`,
+      },
+    ],
+    links: [
+      {
+        count: isLoading ? "-" : total,
+        label: t("ES_COMMON_INBOX"),
+        link: `/digit-ui/employee/pt/inbox`,
+      },
+      {
+        label: t("ES_TITLE_NEW_REGISTRATION"),
+        link: `/digit-ui/employee/pt/new-application`,
+      },
+    ],
+  };
+
+  return <EmployeeModuleCard {...propsForModuleCard} />;
 };
 
 export default PTCard;

@@ -29,7 +29,9 @@ const useApplicationStatusGeneral = ({ businessServices = [], tenantId }, config
     const roleStateMapArray = states?.map(addRoleToState).filter((e) => !!e.state);
 
     const userRoleStates = roleStateMapArray.filter(({ roles }) => roles?.some((role) => userRoles.includes(role)));
-    const otherRoleStates = roleStateMapArray.filter(({ roles }) => !roles?.some((role) => userRoles.includes(role)));
+    const otherRoleStates = roleStateMapArray
+      .filter(({ roles }) => !roles?.some((role) => userRoles.includes(role)))
+      .map((e) => ({ ...e, nonActionableRole: true }));
 
     return { userRoleStates, otherRoleStates };
   };

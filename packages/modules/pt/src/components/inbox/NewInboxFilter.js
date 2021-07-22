@@ -10,7 +10,10 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
   const { t } = useTranslation();
   const client = useQueryClient();
 
-  const [_searchParams, setSearchParams] = useState(() => searchParams);
+  const [_searchParams, setSearchParams] = useState(() => {
+    const { services, ...newParams } = searchParams;
+    return newParams;
+  });
 
   const localParamChange = (filterParam) => {
     let keys_to_delete = filterParam.delete;
@@ -46,8 +49,12 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
   const onServiceSelect = (e, label) => {
-    if (e.target.checked) localParamChange({ services: [..._searchParams.services, label] });
-    else localParamChange({ services: _searchParams.services.filter((o) => o !== label) });
+    if (e.target.checked) localParamChange({ services: Array.isArray(_searchParams.services) ? [..._searchParams.services, label] : [label] });
+    else
+      localParamChange({
+        services: _searchParams.services.filter((o) => o !== label),
+        applicationStatus: _searchParams.applicationStatus?.filter((e) => e.stateBusinessService !== label),
+      });
   };
 
   const selectLocality = (d) => {
@@ -153,11 +160,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
               />
             </div>
             <div>
-              <SubmitBar
-                disabled={_.isEqual(_searchParams, searchParams)}
-                onSubmit={() => onFilterChange(_searchParams)}
-                label={t("ES_COMMON_APPLY")}
-              />
+              <SubmitBar onSubmit={() => onFilterChange(_searchParams)} label={t("ES_COMMON_APPLY")} />
             </div>
           </div>
         </div>

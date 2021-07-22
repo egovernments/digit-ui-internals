@@ -45,7 +45,7 @@ export const configPTApproverApplication = ({
             },
           },
           {
-            label: `${t("ES_PT_UPLOAD_FILE")}${action.docUploadRequired ? " *" : ""}`,
+            label: `${t("ES_PT_ATTACH_FILE")}${action.docUploadRequired ? " *" : ""}`,
             populators: (
               <UploadFile
                 onUpload={selectFile}
@@ -53,7 +53,7 @@ export const configPTApproverApplication = ({
                   setUploadedFile(null);
                 }}
                 showHint={true}
-                hintText={t("PT_UPLOAD_RESTRICTIONS_SIZE")}
+                hintText={t("PT_ATTACH_RESTRICTIONS_SIZE")}
                 message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`ES_PT_ACTION_NO_FILEUPLOADED`)}
               />
             ),

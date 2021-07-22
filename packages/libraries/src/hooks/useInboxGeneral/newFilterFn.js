@@ -19,6 +19,9 @@ export const filterFunctions = {
     }
     if (applicationStatus && applicationStatus?.[0]) {
       workflowFilters.status = applicationStatus.map((status) => status.uuid);
+      if (applicationStatus?.some((e) => e.nonActionableRole)) {
+        searchFilters.fetchNonActionableRecords = true;
+      }
     }
     if (filtersArg?.locality?.length) {
       searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop());

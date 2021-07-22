@@ -150,6 +150,7 @@ const ApplicationDetails = () => {
       if (act.action === "PAY") {
         return {
           action: "PAY",
+          forcedName: "WF_EMPLOYEE_PT.MUTATION_PAY",
           redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT.MUTATION/${appDetailsToShow?.applicationData?.acknowldgementNumber}` },
           // redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT/${propertyId}` },
         };

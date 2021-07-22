@@ -10,7 +10,7 @@
       @apply bg-focus;
       padding: 12px;
       border-radius: 4px;
-      svg{
+      svg {
         @apply w-8 h-8;
       }
     }
@@ -36,13 +36,13 @@
     }
   }
 
-  .links-wrapper{
+  .links-wrapper {
     @apply pl-md py-sm text-text-btn;
-    .link{
+    .link {
       padding: 0 !important;
       padding-bottom: 4px !important;
-      svg{
-        @apply ml-sm
+      svg {
+        @apply ml-sm;
       }
     }
   }
@@ -168,22 +168,22 @@
     }
   }
 
-  .inboxLinks{
+  .inboxLinks {
     margin: 0 !important;
     padding: 0 !important;
-    .header{
+    .header {
       border: none;
       @apply justify-start;
-      .logo{
+      .logo {
         @apply bg-white;
-        svg{
-          path{
+        svg {
+          path {
             fill: #f47738;
           }
         }
       }
     }
-    .body{
+    .body {
       margin-left: 0;
     }
   }
@@ -225,20 +225,29 @@
         }
 
         .complaint-input-container {
-          display: inline-block !important;
-          width: 66% !important;
-          * {
-            @apply flex-1;
-          }
+          /* display: inline-block !important; */
+          display: grid;
+          grid-template-columns: 33.33% 33.33% 33.33%;
 
-          .input-fields{
-            width: calc( 50% - 16px );
+          /* width: 66% !important;
+          // * {
+          //   @apply flex-1;
+          // } */
+
+          .input-fields {
+            /*width: calc(50% - 16px);*/
+
             @apply inline-block mr-md !important;
-            .inbox-search-form-error{
+
+            .inbox-search-form-error {
               padding-top: 0;
-              margin-top:0;
+              margin-top: 0;
               @apply absolute;
             }
+          }
+
+          .input-fields:nth-child(3n) {
+            margin-right: 0 !important;
           }
 
           .complaint-input {
@@ -260,11 +269,11 @@
           }
         }
 
-        .search-action-wrapper{
+        .search-action-wrapper {
           width: 33%;
           margin-top: 28px;
           @apply inline-block align-middle text-center;
-          button{
+          button {
             margin: 0;
             width: 100%;
             max-width: 300px !important;
@@ -276,7 +285,7 @@
 }
 
 .cell-text {
-  color: #505A5F;
+  color: #505a5f;
 }
 
 .sla-cell-error {
@@ -298,6 +307,6 @@
   color: "#505A5F";
 }
 
-.search-error-label{
+.search-error-label {
   @apply font-bold text-legend text-error mb-sm !important;
 }
