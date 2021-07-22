@@ -69,6 +69,7 @@ const getTradeEditDetails = (data) => {
         name: ob.name,
         mobilenumber: ob.mobileNumber,
         permanentAddress: ob.permanentAddress,
+        id: ob.id,
       })
     })
     return ownerarray;

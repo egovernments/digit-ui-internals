@@ -16,8 +16,7 @@ const MCollectCard = () => {
     kpis: [
       {
         count: isLoading ? "-" : data?.ChallanCount?.totalChallan,
-        label: t("TOTAL_CHALLANS"),
-        link: `/digit-ui/employee/mcollect/inbox`
+        label: t("TOTAL_CHALLANS")
       },
       // {
       //     label: t(""),

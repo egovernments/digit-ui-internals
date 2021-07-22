@@ -70,6 +70,7 @@ const getTradeEditDetails = (data) => {
         name: ob.name,
         mobilenumber: ob.mobileNumber,
         permanentAddress: ob.permanentAddress,
+        id: ob.id,
       })
     })
     // ownerarray["permanentAddress"]=owner.permanentAddress;

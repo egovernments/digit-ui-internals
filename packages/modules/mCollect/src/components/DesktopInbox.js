@@ -136,7 +136,7 @@ const DesktopInbox = ({ tableConfig, filterComponent, columns, ...props }) => {
   }, [data, columns]);
 
   let result;
-  if (props.isLoading) {
+  if (props.isLoading || props.isLoader) {
     result = <Loader />;
   } else if (data?.length === 0) {
     result = (

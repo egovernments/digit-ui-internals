@@ -124,34 +124,53 @@ export const getownerarray = (data) => {
 export const gettradeownerarray = (data) => {
   let tradeownerarray = [];
 
-  data?.owners?.owners.map((ob, index) => {
-    if (data?.tradeLicenseDetail?.owners[index]) {
-      if (ob.name !== data?.tradeLicenseDetail?.owners[index].name) {
-        data.tradeLicenseDetail.owners[index].name = ob.name;
-        tradeownerarray.push(data?.tradeLicenseDetail?.owners[index]);
+  data.tradeLicenseDetail.owners.map((oldowner) => {
+    data?.owners?.owners.map((newowner) => {
+      if(oldowner.id === newowner.id)
+      {
+        if (oldowner.name !== newowner.name)
+        {
+          oldowner.name = newowner.name;
+          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
+          if(!found)tradeownerarray.push(oldowner);
+        }
+        else if(oldowner.gender !== newowner.gender.code)
+        {
+          oldowner.gender = newowner.gender.code;
+          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
+          if(!found)tradeownerarray.push(oldowner);
+        }
+        else if(oldowner.mobileNumber !== newowner.mobilenumber)
+        {
+          oldowner.mobileNumber = newowner.mobilenumber;
+          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
+          if(!found)tradeownerarray.push(oldowner);
+        }
+        else
+        {
+          let found = tradeownerarray.length > 0 ? tradeownerarray.some(el => el.id === oldowner.id):false;
+          if(!found)tradeownerarray.push(oldowner);
+        }
       }
-      else if (ob.gender.code !== data?.tradeLicenseDetail?.owners[index].gender) {
-        data.tradeLicenseDetail.owners[index].gender = ob.gender.code;
-        tradeownerarray.push(data?.tradeLicenseDetail?.owners[index]);
+      else
+      {
+        let found = tradeownerarray.length > 0 ? tradeownerarray.some(el => el.id === oldowner.id):false;
+        if(!found)tradeownerarray.push({...oldowner,active:false});   
       }
-      else if (ob.mobilenumber !== data?.tradeLicenseDetail?.owners[index].mobileNumber) {
-        data.tradeLicenseDetail.owners[index].mobileNumber = ob.mobilenumber;
-        tradeownerarray.push(data?.tradeLicenseDetail?.owners[index]);
-      }
-      else {
-        tradeownerarray.push(data?.tradeLicenseDetail?.owners[index]);
-      }
-    }
-    else {
+    })
+  })
+  data?.owners?.owners.map((ob) => {
+    if(!ob.id)
+    {
       tradeownerarray.push({
-        mobileNumber: ob.mobilenumber,
-        name: ob.name,
-        fatherOrHusbandName: "",
-        relationship: "",
-        dob: null,
-        gender: ob.gender.code,
-        permanentAddress: data?.owners?.permanentAddress,
-      });
+              mobileNumber: ob.mobilenumber,
+              name: ob.name,
+              fatherOrHusbandName: "",
+              relationship: "",
+              dob: null,
+              gender: ob.gender.code,
+              permanentAddress: data?.owners?.permanentAddress,
+            });
     }
   })
   return tradeownerarray;
@@ -208,7 +227,13 @@ export const getaccessories = (data) => {
 
 export const gettradeupdateaccessories = (data) => {
   let TLaccessories = [];
-
+  if(data?.TradeDetails?.isAccessories?.i18nKey.includes("NO"))
+  {
+    data?.tradeLicenseDetail?.accessories && data.tradeLicenseDetail.accessories.map((oldunit) => {
+      TLaccessories.push({...oldunit,active:false});
+    })
+  }
+  else{
   data?.tradeLicenseDetail?.accessories && data.tradeLicenseDetail.accessories.map((oldunit) => {
     data.TradeDetails.accessories.map((newunit) => {
       if(oldunit.id === newunit.id)
@@ -231,12 +256,13 @@ export const gettradeupdateaccessories = (data) => {
       }
     })
   })
-  data?.tradeLicenseDetail?.accessories && data.TradeDetails.accessories.map((ob) => {
+  data.TradeDetails.accessories.map((ob) => {
     if(!ob.id)
     {
       TLaccessories.push({ uom: ob.unit, accessoryCategory: ob.accessory.code, uomValue: ob.uom, count: ob.accessorycount });
     }
   })
+}
   return TLaccessories;
 }
 

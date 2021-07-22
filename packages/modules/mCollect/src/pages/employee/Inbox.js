@@ -32,6 +32,7 @@ const Inbox = ({
   });
 
   const [businessIdToOwnerMappings, setBusinessIdToOwnerMappings] = useState({});
+  const [isLoader, setIsLoader] = useState(true);
 
   let isMobile = window.Digit.Utils.browser.isMobile();
   let paginationParams = isMobile
@@ -56,6 +57,11 @@ const Inbox = ({
     filters: { ...searchParams, ...paginationParams },
     isMcollectAppChanged,
   });
+
+  useEffect(() => {
+    if(hookLoading && !data?.challans?.length > 0) setIsLoader(false);
+    else if(data?.challans?.length) setIsLoader(true);
+  }, [hookLoading, data]);
 
   let formedData = [];
   let res;
@@ -91,9 +97,11 @@ const Inbox = ({
             };
           });
       }
+      setIsLoader(false);
       setBusinessIdToOwnerMappings(businessIdToOwnerMapping);
     }
     if (data?.challans && data?.challans?.length > 0) {
+      setIsLoader(true);
       fetchMyAPI();
     }
   }, [data]);
@@ -109,10 +117,6 @@ const Inbox = ({
       tenantId: data?.tenantId,
     });
   });
-
-  useEffect(() => {
-    console.log("data from the hook", hookLoading, rest, data);
-  }, [hookLoading, rest]);
 
   useEffect(() => {
     setPageOffset(0);
@@ -220,6 +224,7 @@ const Inbox = ({
             sortParams={sortParams}
             totalRecords={Number(data?.[0]?.totalCount)}
             filterComponent={filterComponent}
+            isLoader={isLoader}
           />
         </div>
       );

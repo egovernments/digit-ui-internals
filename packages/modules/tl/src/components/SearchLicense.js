@@ -96,8 +96,8 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
                 <TextInput name="licenseNumbers" inputRef={register({})} />
             </SearchField>
             <SearchField>
-                <label>{t("TL_TRADE_LICENSE_LABEL")}</label>
-                <TextInput name="ownerName" inputRef={register({})}/>
+                <label>{t("TL_TRADE_OWNER_S_NUMBER_LABEL")}</label>
+                <TextInput name="mobileNumber" inputRef={register({})}/>
             </SearchField>
             <SearchField>
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_FROM")}</label>
