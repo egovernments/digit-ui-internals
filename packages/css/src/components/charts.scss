@@ -82,8 +82,9 @@
     margin-top: 10px;
 
     .chart-item {
-      margin-right: 25px;
-      margin-bottom: 25px;
+      margin-right: 25px !important;
+      margin-bottom: 25px !important;
+      margin-left: 0 !important;
       width: 31%;
     }
   }
