@@ -109,7 +109,7 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
                     }}
                     tableStyles={{
                       display: "grid",
-                      gridTemplateRows: "100px 100px",
+                      gridAutoRows : "min-content",
                       gridTemplateColumns: "repeat(5, minmax(100px, 1fr))",
                     }}
                   />

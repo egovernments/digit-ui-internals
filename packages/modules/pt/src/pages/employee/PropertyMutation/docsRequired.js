@@ -6,6 +6,7 @@ import {
   CardText,
   Loader,
   SubmitBar,
+  Header,
   CardSectionHeader,
   CardLabel,
   ActionBar,
@@ -39,8 +40,8 @@ const RequiredDoc = () => {
 
   return (
     <React.Fragment>
+      <Header>{t("PT_REQIURED_DOC_TRANSFER_OWNERSHIP")}</Header>
       <Card>
-        <CardHeader>{t("PT_REQIURED_DOC_TRANSFER_OWNERSHIP")}</CardHeader>
         {docs.map((doc, index) => {
           const splitValues = doc.code.split(".");
           const dd = doc.dropdownData;

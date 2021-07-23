@@ -56,6 +56,8 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
   };
 
   useEffect(() => {
+    if (formData?.ownershipCategory?.code == "INDIVIDUAL.MULTIPLEOWNERS" && owners.length > 1) clearErrors("mulipleOwnerError");
+    if (formData?.ownershipCategory?.code == "INDIVIDUAL.MULTIPLEOWNERS" && owners.length == 1) setError("mulipleOwnerError", { type: "owner_missing", message: `TL_ERROR_MULTIPLE_OWNER` });
     const data = owners.map((e) => {
       return e;
     });
@@ -66,9 +68,10 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
     onSelect("tradedetils1", previousLicenseDetails);
   }, [previousLicenseDetails]);
 
-  // useEffect(() => {
-  //   setOwners([createOwnerDetails()]);
-  // }, [formData?.ownershipCategory?.code]);
+  useEffect(() => {
+    setOwners([createOwnerDetails()]);
+    if (formData?.ownershipCategory?.code == "INDIVIDUAL.MULTIPLEOWNERS") setError("mulipleOwnerError", { type: "owner_missing", message: `TL_ERROR_MULTIPLE_OWNER` });
+  }, [formData?.ownershipCategory?.code]);
 
   const isRenewal = window.location.href.includes("tl/renew-application-details");
   
@@ -128,7 +131,12 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
         <OwnerForm  index={index} owner={owner} {...commonProps} />
       ))}
       {formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? (
-        <LinkButton label={t("TL_NEW_OWNER_DETAILS_ADD_OWN")} onClick={addNewOwner} style={{ color: "orange", width: "fit-content" }}/>
+        <div>
+          <LinkButton label={t("TL_NEW_OWNER_DETAILS_ADD_OWN")} onClick={addNewOwner} style={{ color: "orange", width: "fit-content" }}/>
+          <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-24px" }}>
+            {t(formState.errors?.mulipleOwnerError?.message || "")}
+        </CardLabelError>
+        </div>
       ) : null}
     </React.Fragment>
   );

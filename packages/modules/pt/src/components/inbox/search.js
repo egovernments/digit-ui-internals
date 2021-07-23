@@ -176,7 +176,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className={"complaint-input-container for-pt " + (!isInboxPage ? "for-search" : "")}>
+            <div className={"complaint-input-container for-pt " + (!isInboxPage ? "for-search" : "")} style={{ width: "100%" }}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
@@ -215,37 +215,26 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                     ) : null}
                   </div>
                 ))}
-              {type === "desktop" && !mobileView && !isInboxPage && (
-                <div className="search-submit-wrapper">
-                  <SubmitBar
-                    className="submit-bar-search"
-                    label={t("ES_COMMON_SEARCH")}
-                    disabled={!!Object.keys(formState.errors).length || formValueEmpty()}
-                    submit
-                  />
+
+              {isInboxPage && (
+                <div style={{ gridColumn: "2/3", textAlign: "right", paddingTop: "10px" }} className="input-fields">
                   <div>{clearAll()}</div>
                 </div>
               )}
-            </div>
 
-            {isInboxPage && (
-              <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
-                {type === "desktop" && !mobileView && (
-                  <span style={{ paddingTop: "9px" }} className="clear-search">
-                    {clearAll()}
-                  </span>
-                )}
-                {type === "desktop" && !mobileView && (
+              {type === "desktop" && !mobileView && (
+                <div style={{ maxWidth: "unset", marginLeft: "unset" }} className="search-submit-wrapper">
                   <SubmitBar
-                    disabled={!!Object.keys(formState.errors).length}
-                    style={{ marginTop: "unset" }}
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
+                    disabled={!!Object.keys(formState.errors).length || Object.keys(form).every((key) => !form?.[key])}
                     submit
                   />
-                )}
-              </div>
-            )}
+                  {/* style={{ paddingTop: "16px", textAlign: "center" }} className="clear-search" */}
+                  {!isInboxPage && <div>{clearAll()}</div>}
+                </div>
+              )}
+            </div>
           </div>
         </div>
         {(type === "mobile" || mobileView) && (

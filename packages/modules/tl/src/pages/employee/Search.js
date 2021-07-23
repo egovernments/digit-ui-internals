@@ -13,10 +13,14 @@ const Search = ({path}) => {
     const Search = Digit.ComponentRegistryService.getComponent( variant === "license" ? "SearchLicense" : "SearchApplication" )
 
     function onSubmit (_data) {
+        var fromDate = new Date(_data?.fromDate)
+        fromDate?.setSeconds(fromDate?.getSeconds() - 19800 )
+        var toDate = new Date(_data?.toDate)
+        toDate?.setSeconds(toDate?.getSeconds() + 86399 - 19800)
         const data = {
             ..._data,
-            ...(_data.toDate ? {toDate: new Date(_data?.toDate).getTime()} : {}),
-            ...(_data.fromDate ? {fromDate: new Date(_data?.fromDate).getTime()} : {})
+            ...(_data.toDate ? {toDate: toDate?.getTime()} : {}),
+            ...(_data.fromDate ? {fromDate: fromDate?.getTime()} : {})
         }
         console.log("find me",data);
         setPayload(Object.keys(data).filter( k => data[k] ).reduce( (acc, key) => ({...acc,  [key]: typeof data[key] === "object" ? data[key].code : data[key] }), {} ))

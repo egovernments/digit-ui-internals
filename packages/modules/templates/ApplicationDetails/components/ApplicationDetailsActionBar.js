@@ -4,14 +4,22 @@ import { SubmitBar, ActionBar, Menu } from "@egovernments/digit-ui-react-compone
 
 function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSelect, setDisplayMenu, businessService, forcedActionPrefix }) {
   const { t } = useTranslation();
+  const user = Digit.UserService.getUser();
+  const userRoles = user?.info?.roles?.map((e) => e.code);
+
+  // console.log(userRoles, "inside actionBara");
+  let actions = workflowDetails?.data?.actionState?.nextActions?.filter((e) => {
+    return userRoles.some((role) => e.roles?.includes(role));
+  });
+
   return (
     <React.Fragment>
-      {!workflowDetails?.isLoading && workflowDetails?.data?.actionState?.nextActions?.length > 0 && (
+      {!workflowDetails?.isLoading && actions?.length > 0 && (
         <ActionBar>
           {displayMenu && workflowDetails?.data?.actionState?.nextActions ? (
             <Menu
               localeKeyPrefix={forcedActionPrefix || `WF_EMPLOYEE_${businessService?.toUpperCase()}`}
-              options={workflowDetails?.data?.actionState?.nextActions}
+              options={actions}
               optionKey={"action"}
               t={t}
               onSelect={onActionSelect}

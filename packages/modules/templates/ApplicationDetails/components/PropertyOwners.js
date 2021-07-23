@@ -5,7 +5,7 @@ import { CardSubHeader, StatusTable, Row, CardSectionHeader } from "@egovernment
 function PropertyOwners({ owners }) {
   const { t } = useTranslation();
 
-  const checkLocation = window.location.href.includes("employee/tl");
+  const checkLocation = true //window.location.href.includes("employee/tl");
   const checkOwnerLength = owners?.length || 1;
   let cardStyles = { marginTop: "19px" };
   let statusTableStyles = { position: "relative", padding: "8px" };

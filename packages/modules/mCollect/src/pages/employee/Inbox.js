@@ -59,8 +59,8 @@ const Inbox = ({
   });
 
   useEffect(() => {
-    if(hookLoading && !data?.challans?.length > 0) setIsLoader(false);
-    else if(data?.challans?.length) setIsLoader(true);
+    if(!hookLoading && !data?.challans?.length > 0) setIsLoader(false);
+    else if(hookLoading || data?.challans?.length) setIsLoader(true);
   }, [hookLoading, data]);
 
   let formedData = [];

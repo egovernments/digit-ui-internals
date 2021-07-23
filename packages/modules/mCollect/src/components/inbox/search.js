@@ -43,7 +43,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   }
 
   const clearAll = (mobileView) => {
-    const mobileViewStyles = mobileView ? { margin: 0 } : { marginRight: "0px" };
+    const mobileViewStyles = mobileView ? { margin: 0 } : {};
     return (
       <LinkLabel style={{ display: "inline", ...mobileViewStyles }} onClick={clearSearch}>
         {t("UC_CLEAR_SEARCH_LABEL")}
@@ -64,12 +64,12 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container" >
+            <div className="complaint-input-container" style={{textAlign: "start"}}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
                   <div key={input.name} className="input-fields">
-                  <span key={index} className={index === 0 ? "complaint-input" : "mobile-input"}>
+                  <span key={index} className={"complaint-input"}>  {/* //{index === 0 ? "complaint-input" : "mobile-input"} */}
                     <Label>{input.label}</Label>
                     {input.type !== "date" ? (
                       <div className="field-container">
@@ -91,9 +91,8 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </span>
                   </div>
                 ))}
-            </div>
-            {type === "desktop" && !mobileView &&
-              <div className="search-action-wrapper">
+                {type === "desktop" && !mobileView &&
+              <div className="search-action-wrapper" style={{width: "100%"}}>
                 <SubmitBar
                   className="submit-bar-search"
                   label={t("UC_SEARCH_LABEL")}
@@ -105,6 +104,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </span>
                 )}
               </div>}
+            </div>
           </div>
         </div>
         {(type === "mobile" || mobileView) && (
