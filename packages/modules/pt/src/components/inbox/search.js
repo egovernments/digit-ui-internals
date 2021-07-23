@@ -176,7 +176,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className={"complaint-input-container " + (!isInboxPage ? "for-search" : "")}>
+            <div className={"complaint-input-container for-pt " + (!isInboxPage ? "for-search" : "")}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
