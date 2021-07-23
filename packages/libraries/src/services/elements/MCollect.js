@@ -73,4 +73,13 @@ export const MCollectService = {
       userService: true,
       userDownload: true,
     }),
+  count: (tenantId) =>
+    Request({
+      url: Urls.mcollect.count,
+      useCache: false,
+      method: "POST",
+      auth: true,
+      userService: true,
+      params: { tenantId },
+    }),
 };

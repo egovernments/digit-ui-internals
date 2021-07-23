@@ -115,7 +115,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, isLoading, ...prop
     );
   }
 
-  return isLoading ? <Loader /> : (
+  return (
     <div className="inbox-container">
       {!props.isSearch && (
         <div className="filters-container">
@@ -154,7 +154,7 @@ const DesktopInbox = ({ tableConfig, filterComponent,columns, isLoading, ...prop
             ]}
             headerText={t("ACTION_TEST_TRADELICENSE")} businessService={props.businessService} />
           <div>
-            {
+            {isLoading ? <Loader /> : 
               <FilterComponent
                 defaultSearchParams={props.defaultSearchParams}
                 statuses={data.statuses}

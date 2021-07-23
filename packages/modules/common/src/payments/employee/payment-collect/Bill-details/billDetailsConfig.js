@@ -34,4 +34,14 @@ export const BillDetailsKeyNoteConfig = () => ({
       },
     ],
   },
+  TL: {
+    heading: "COMMON_PAY_SCREEN_HEADER",
+    details: [
+      {
+        keyValue: "TL_TRADE_LICENSE_LABEL",
+        keyPath: ["consumerCode"],
+        fallback: "",
+      },
+    ],
+  },
 });

@@ -125,13 +125,14 @@ export const TLSearch = {
       ],
     };
 
+    const checkOwnerLength = response?.tradeLicenseDetail?.owners?.length || 1;
     const owners = {
       title: "ES_NEW_APPLICATION_OWNERSHIP_DETAILS",
       additionalDetails: {
         owners: response?.tradeLicenseDetail?.owners?.map((owner, index) => {
           let subOwnerShipCategory = response?.tradeLicenseDetail?.subOwnerShipCategory ? `COMMON_MASTERS_OWNERSHIPCATEGORY_${stringReplaceAll(response?.tradeLicenseDetail?.subOwnerShipCategory, ".", "_")}` : "NA";
           return {
-            title: "TL_PAYMENT_PAID_BY_PLACEHOLDER",
+            title: (Number(checkOwnerLength) > 1)  ? "TL_PAYMENT_PAID_BY_PLACEHOLDER" : "",
             values: [
               { title: "TL_NEW_OWNER_DETAILS_OWNERSHIP_TYPE_LABEL", value: subOwnerShipCategory },
               { title: "TL_OWNER_S_NAME_LABEL", value: owner?.name || "NA" },

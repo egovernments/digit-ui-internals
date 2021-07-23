@@ -92,12 +92,12 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container" >
+            <div className="complaint-input-container" style={{ width: "100%" }}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
                   <div key={input.name} className="input-fields">
-                    <span className={index === 0 ? "complaint-input" : "mobile-input"}>
+                    <span className={"mobile-input"}>
                       <Label>{t(input.label)}</Label>
                       {!input.type ? (
                         <Controller
@@ -152,25 +152,20 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
               )}
             </div>
             {isInboxPage && (
-              <div className="search-action-wrapper">
-                <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
-                  {type === "desktop" && !mobileView && (
-                    <span style={{ paddingTop: "9px" }} className="clear-search">
-                      {clearAll()}
-                    </span>
-                  )}
-                  {type === "desktop" && !mobileView && (
-                    <SubmitBar
-                      style={{
-                        marginTop: "unset", marginLeft: '8%',
-                        width: '50%'
-                      }}
-                      className="submit-bar-search"
-                      label={t("CR_SEARCH_BUTTON")}
-                      submit
-                    />
-                  )}
-                </div>
+              <div className="inbox-action-container">
+                {type === "desktop" && !mobileView && (
+                  <span style={{ paddingTop: "9px" }} className="clear-search">
+                    {clearAll()}
+                  </span>
+                )}
+                {type === "desktop" && !mobileView && (
+                  <SubmitBar
+                    style={{ marginTop: "unset" }}
+                    className="submit-bar-search"
+                    label={t("CR_SEARCH_BUTTON")}
+                    submit
+                  />
+                )}
               </div>
             )}
           </div>

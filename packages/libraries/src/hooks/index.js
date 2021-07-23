@@ -85,6 +85,7 @@ import useMCollectMDMS from "./mcollect/useMCollectMDMS";
 import useMCollectSearch from "./mcollect/useMCollectSearch";
 import useMcollectSearchBill from "./mcollect/useMcollectSearchBill";
 import usemcollectTenants from "./mcollect/useTenants";
+import useMCollectCount from "./mcollect/useMCollectCount";
 
 import useTenantsTL from "./tl/useTenants";
 import useTradeLicenseMDMS from "./tl/useTradeLicenseMDMS";
@@ -186,6 +187,7 @@ const mcollect = {
   useMCollectSearch,
   useMcollectSearchBill,
   usemcollectTenants,
+  useMCollectCount
 };
 
 const hrms = {

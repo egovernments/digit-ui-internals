@@ -119,7 +119,7 @@ const MobileInbox = ({
     },
   ];
 
-  const serviceRequestIdKey = (original) => original?.[t("ES_INBOX_UNIQUE_PROPERTY_ID")]?.props?.children;
+  const serviceRequestIdKey = (original) => original?.[t("UC_CHALLAN_NUMBER")]?.props?.children;
 
   const getData = () => {
     return data?.map((dataObj) => {
@@ -136,7 +136,14 @@ const MobileInbox = ({
     <div style={{ padding: 0 }}>
       <div className="inbox-container">
         <div className="filters-container">
-          {!isSearch && <ApplicationLinks linkPrefix={parentRoute} isMobile={true} />}
+          {!isSearch && <ApplicationLinks linkPrefix={parentRoute} allLinks = {[
+          {
+            text: t("UC_GENERATE_NEW_CHALLAN"),
+            link: "/digit-ui/employee/mcollect/new-application",
+            roles: [],
+          }]} 
+          headerText={t("ACTION_TEST_MCOLLECT")}
+          isMobile={true} />}
           <ApplicationCard
             t={t}
             data={getData()}

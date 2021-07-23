@@ -2,7 +2,6 @@ import { ActionBar, CloseSvg, DatePicker, Label, LinkLabel, SubmitBar, TextInput
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-// import _ from "lodash";
 
 const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams }) => {
   const { t } = useTranslation();
@@ -10,20 +9,14 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     defaultValues: searchParams,
   });
   const mobileView = innerWidth <= 640;
-
-  // console.log(_.isEqual(defaultSearchParams, searchParams), { defaultSearchParams, searchParams }, "params are defaulted");
-
   const onSubmitInput = (data) => {
     if (!data.mobileNumber) {
       delete data.mobileNumber;
     }
-
     data.delete = [];
-
     searchFields.forEach((field) => {
       if (!data[field.name]) data.delete.push(field.name);
     });
-
     onSearch(data);
     if (type === "mobile") {
       onClose();
@@ -38,7 +31,6 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     searchFields.forEach((e) => {
       _newParams.delete.push(e?.name);
     });
-
     onSearch({ ..._newParams });
   }
 
@@ -64,16 +56,12 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container" >
+            <div className="complaint-input-container" style={{ width: "100%" }}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
                   <div key={input.name} className="input-fields">
-                    <span
-                      key={index}
-                      style={index != 0 ? { marginLeft: "2rem" } : { marginLeft: "0rem" }}
-                      className={index === 0 ? "complaint-input" : "mobile-input"}
-                    >
+                    <span className={"mobile-input"}>
                       <Label>{input.label}</Label>
                       {input.type !== "date" ? (
                         <div className="field-container">
@@ -96,25 +84,20 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 ))}
             </div>
-            <div className="search-action-wrapper">
-              <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
-                {type === "desktop" && !mobileView && (
-                  <span style={{ paddingTop: "9px" }} className="clear-search">
-                    {clearAll()}
-                  </span>
-                )}
-                {type === "desktop" && !mobileView && (
-                  <SubmitBar
-                    style={{
-                      marginTop: "unset", marginLeft: '8%',
-                      width: '50%'
-                    }}
-                    className="submit-bar-search"
-                    label={t("ES_COMMON_SEARCH")}
-                    submit
-                  />
-                )}
-              </div>
+            <div className="inbox-action-container">
+              {type === "desktop" && !mobileView && (
+                <span style={{ paddingTop: "9px" }} className="clear-search">
+                  {clearAll()}
+                </span>
+              )}
+              {type === "desktop" && !mobileView && (
+                <SubmitBar
+                  style={{ marginTop: "unset" }}
+                  className="submit-bar-search"
+                  label={t("ES_COMMON_SEARCH")}
+                  submit
+                />
+              )}
             </div>
           </div>
         </div>

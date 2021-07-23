@@ -26,8 +26,8 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
   const onServiceSelect = (e, label) => {
-    if (e.target.checked) localParamChange({ services: [...(_searchParams?.services ? _searchParams.services : [] ), label] });
-    else localParamChange({ services: _searchParams?.services.filter((o) => o !== label) });
+    if (e.target.checked) localParamChange({ applicationStatus: [...(_searchParams?.applicationStatus ? _searchParams.applicationStatus : [] ), label] });
+    else localParamChange({ applicationStatus: _searchParams?.applicationStatus.filter((o) => o !== label) });
   };
 
   const selectLocality = (d) => {
@@ -104,14 +104,14 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
                 {t("CS_INBOX_STATUS_FILTER")}
               </div>
               {statuses.map((e, index) => {
-                const checked = _searchParams?.services?.includes(e.value);
+                const checked = _searchParams?.applicationStatus?.includes(e.statusid);
                 return (
                   <CheckBox
                     key={index + "service"}
                     label={t(`WF_NEWTL_${e.applicationstatus}`)}
-                    value={e.id}
+                    value={e.statusid}
                     checked={checked}
-                    onChange={(event) => onServiceSelect(event, e.value)}
+                    onChange={(event) => onServiceSelect(event, e.statusid)}
                   />
                 );
               })}

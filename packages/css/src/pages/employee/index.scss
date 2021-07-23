@@ -234,7 +234,7 @@
 @media (min-width: 640px) {
   .employee {
     .ground-container {
-      @apply block;
+      @apply block ml-md;
     }
     .breadcrumb {
       @apply mb-lg;

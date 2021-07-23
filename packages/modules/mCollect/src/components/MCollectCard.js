@@ -1,4 +1,4 @@
-import { EmployeeModuleCard, PropertyHouse } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard, ReceiptIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -6,16 +6,17 @@ const MCollectCard = () => {
   if (!Digit.Utils.mCollectAccess()) {
     return null;
   }
-
   const { t } = useTranslation();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const { isLoading, isError, error, data, ...rest } = Digit.Hooks.mcollect.useMCollectCount(tenantId);
+
   const propsForModuleCard = {
-    Icon: <PropertyHouse />,
+    Icon: <ReceiptIcon />,
     moduleName: t("UC_COMMON_HEADER_SEARCH"),
     kpis: [
       {
-        count: 0,
-        label: t("TOTAL_CHALLANS"),
-        link: `/digit-ui/employee/mcollect/inbox`
+        count: isLoading ? "-" : data?.ChallanCount?.totalChallan,
+        label: t("TOTAL_CHALLANS")
       },
       // {
       //     label: t(""),

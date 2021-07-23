@@ -103,12 +103,12 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container">
+            <div className="complaint-input-container" style={{textAlign: "start"}}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
                   <div key={input.name} className="input-fields">
-                    <span className={index === 0 ? "complaint-input" : "mobile-input"}>
+                    <span className={"complaint-input"}>
                       <Label>{t(input.label)}</Label>
                       {!input.type ? (
                         <Controller
@@ -155,24 +155,23 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 </div>
               )}
+              {isInboxPage && (
+                <div className="search-action-wrapper" style={{width: "100%"}}>
+                  {type === "desktop" && !mobileView && (
+                    <SubmitBar
+                      className="submit-bar-search"
+                      label={t("ES_COMMON_SEARCH")}
+                      submit
+                    />
+                  )}
+                  {type === "desktop" && !mobileView && (
+                    <span style={{ paddingTop: "9px" }} className="clear-search">
+                      {clearAll()}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
-
-            {isInboxPage && (
-              <div className="search-action-wrapper">
-                {type === "desktop" && !mobileView && (
-                  <SubmitBar
-                    className="submit-bar-search"
-                    label={t("ES_COMMON_SEARCH")}
-                    submit
-                  />
-                )}
-                {type === "desktop" && !mobileView && (
-                  <span style={{ paddingTop: "9px" }} className="clear-search">
-                    {clearAll()}
-                  </span>
-                )}
-              </div>
-            )}
           </div>
         </div>
         {(type === "mobile" || mobileView) && (
