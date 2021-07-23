@@ -229,6 +229,25 @@
           display: grid;
           grid-template-columns: 33.33% 33.33% 33.33%;
 
+          &.for-search {
+            grid-template-columns: 25% 25% 25% 25%;
+
+            .input-fields:nth-child(3n) {
+              @apply mr-md !important;
+            }
+
+            .input-fields:nth-child(4n) {
+              margin-right: 0 !important;
+            }
+
+            .search-submit-wrapper {
+              grid-column: 4/5;
+              margin-top: 36px;
+              max-width: unset;
+              margin-left: unset;
+            }
+          }
+
           .search-submit-wrapper {
             grid-column: 3/4;
             margin-left: 50%;
@@ -281,6 +300,9 @@
           }
         }
 
+        .complaint-input-container.for-search {
+        }
+
         .search-action-wrapper {
           width: 33%;
           margin-top: 28px;
@@ -291,6 +313,9 @@
             max-width: 300px !important;
           }
         }
+      }
+
+      .search-complaint-container-for-search {
       }
     }
   }

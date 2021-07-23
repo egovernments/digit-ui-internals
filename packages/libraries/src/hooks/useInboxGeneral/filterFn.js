@@ -23,6 +23,11 @@ export const filterFunctions = {
     if (filtersArg?.locality?.length) {
       searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop()).join(",");
     }
+
+    if (filtersArg?.locality?.code) {
+      searchFilters.locality = filtersArg?.locality?.code;
+    }
+
     if (filtersArg?.uuid && filtersArg?.uuid.code === "ASSIGNED_TO_ME") {
       workflowFilters.assignee = uuid;
     }
@@ -74,6 +79,7 @@ export const filterFunctions = {
     if (filtersArg?.locality?.length) {
       searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop()).join(",");
     }
+
     if (filtersArg?.uuid && filtersArg?.uuid.code === "ASSIGNED_TO_ME") {
       workflowFilters.assignee = uuid;
     }

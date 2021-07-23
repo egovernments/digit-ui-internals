@@ -55,6 +55,16 @@ const searchFieldsForSearch = {
         maxLength: "",
       },
     },
+    {
+      label: "PT_SELECT_CITY",
+      name: "city",
+      type: "City",
+    },
+    {
+      label: "ES_INBOX_LOCALITY",
+      name: "locality",
+      type: "Locality",
+    },
   ],
 };
 

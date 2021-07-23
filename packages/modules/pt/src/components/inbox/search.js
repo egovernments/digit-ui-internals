@@ -1,29 +1,102 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextInput, Label, SubmitBar, LinkLabel, ActionBar, CloseSvg, DatePicker, MobileNumber } from "@egovernments/digit-ui-react-components";
+import {
+  TextInput,
+  Label,
+  SubmitBar,
+  LinkLabel,
+  ActionBar,
+  CloseSvg,
+  DatePicker,
+  MobileNumber,
+  Dropdown,
+} from "@egovernments/digit-ui-react-components";
+
+// import { Cities } from "./cities";
+
 import { useTranslation } from "react-i18next";
-// import MobileNumber from "@egovernments/digit-ui-react-components/src/atoms/MobileNumber";
-// import _ from "lodash";
+
+const Cities = (props) => {
+  const { t } = useTranslation();
+  const allCities = Digit.Hooks.pt.useTenants()?.sort((a, b) => a?.i18nKey?.localeCompare?.(b?.i18nKey));
+  return (
+    <Dropdown
+      t={t}
+      selected={props.value}
+      option={[...allCities]}
+      select={(d) => {
+        if (d.code != props.value?.code) props.setValue("locality", null);
+        props.onChange(d);
+      }}
+      optionKey="i18nKey"
+    />
+  );
+};
+
+const Locality = (props) => {
+  const [tenantlocalties, setLocalities] = useState([]);
+
+  console.log(props, "inside localities");
+
+  const tenant = props.formValue?.city?.code;
+
+  useEffect(() => {
+    console.log(tenantlocalties, "localities inside loc");
+  }, [tenantlocalties]);
+
+  useEffect(() => {
+    if (tenant)
+      (async () => {
+        const boundary = (await Digit.LocationService.getRevenueLocalities(tenant)).TenantBoundary[0];
+        setLocalities(boundary);
+      })();
+  }, [tenant]);
+
+  return (
+    <Dropdown
+      option={tenantlocalties?.boundary || []}
+      keepNull={false}
+      selected={props.value}
+      select={props.onChange}
+      optionKey="name"
+      disable={!tenantlocalties?.boundary?.length}
+    />
+  );
+};
 
 const fieldComponents = {
   date: DatePicker,
   mobileNumber: MobileNumber,
+  City: Cities,
+  Locality: Locality,
 };
 
 const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams, clearSearch: _clearSearch }) => {
   const { t } = useTranslation();
-  const { register, handleSubmit, reset, watch, control, setError, clearErrors, formState } = useForm({
-    defaultValues: searchParams,
+  const { handleSubmit, reset, watch, control, setError, clearErrors, formState, setValue } = useForm({
+    defaultValues: isInboxPage ? searchParams : { locality: null, city: null, ...searchParams },
   });
 
   const form = watch();
 
+  const formValueEmpty = () => {
+    let isEmpty = true;
+    Object.keys(form).forEach((key) => {
+      if (!["locality", "city"].includes(key) && form[key]) isEmpty = false;
+    });
+    return isEmpty;
+  };
+
   const mobileView = innerWidth <= 640;
 
   useEffect(() => {
-    // setError("mobileNumber", { type: "maxLength", message: "new" });
-    console.log(formState.errors, "inside form");
+    console.log(form, "inside form");
+    console.log(formValueEmpty(), "form value empty");
   }, [formState, form]);
+
+  useEffect(() => {
+    console.log(form?.city?.code, "inside city change");
+  }, [form?.city?.code]);
 
   useEffect(() => {
     searchFields.forEach(({ pattern, name, maxLength, minLength, errorMessages, ...el }) => {
@@ -103,7 +176,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                 </span>
               </div>
             )}
-            <div className="complaint-input-container" style={{ width: "100%" }}>
+            <div className={"complaint-input-container " + (!isInboxPage ? "for-search" : "")}>
               {searchFields
                 ?.filter((e) => true)
                 ?.map((input, index) => (
@@ -124,7 +197,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                         <Controller
                           render={(props) => {
                             const Comp = fieldComponents?.[input.type];
-                            return <Comp onChange={props.onChange} value={props.value} />;
+                            return <Comp formValue={form} setValue={setValue} onChange={props.onChange} value={props.value} />;
                           }}
                           name={input.name}
                           control={control}
@@ -143,26 +216,13 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 ))}
               {type === "desktop" && !mobileView && !isInboxPage && (
-                <div
-                  // style={{
-                  //   gridColumn: "3/4",
-                  //   display: "flex",
-                  //   flexDirection: "column",
-                  //   justifyContent: "center",
-                  //   alignItems: "center",
-                  //   marginLeft: "50%",
-                  //   maxWidth: "50%",
-                  // }}
-                  className="search-submit-wrapper"
-                >
+                <div className="search-submit-wrapper">
                   <SubmitBar
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
-                    // style={{ textAlign: "center", marginLeft: "unset", maxWidth: "100%", width: "100%", marginBottom: "20px", marginTop: "unset" }}
-                    disabled={!!Object.keys(formState.errors).length || Object.keys(form).every((key) => !form?.[key])}
+                    disabled={!!Object.keys(formState.errors).length || formValueEmpty()}
                     submit
                   />
-                  {/* style={{ paddingTop: "16px", textAlign: "center" }} className="clear-search" */}
                   <div>{clearAll()}</div>
                 </div>
               )}
