@@ -22,7 +22,15 @@ const EmployeeApp = ({ path, url, userType }) => {
             <Link to="/digit-ui/employee" style={{ cursor: "pointer", color: "#666" }}>
               {t("ES_COMMON_HOME")}
             </Link>{" "}
-            / <span>{location.pathname === "/digit-ui/employee/tl/inbox" ? t("ES_COMMON_INBOX") : ""}</span>
+            / 
+            {location.pathname === "/digit-ui/employee/tl/inbox" ? 
+              <span>{location.pathname === "/digit-ui/employee/tl/inbox" ? t("ES_COMMON_INBOX") : ""}</span>
+              : 
+              <Link to="/digit-ui/employee/tl/inbox" style={{ cursor: "pointer", color: "#666" }}>
+                {location.pathname.includes("/digit-ui/employee/tl/") ? t("ES_COMMON_INBOX") : ""}
+              </Link>}
+            <span>{location.pathname.includes("/digit-ui/employee/tl/search/application") ? `/ ${t("ES_COMMON_SEARCH_APPLICATION") }`  : null}</span>
+            <span>{location.pathname.includes("/digit-ui/employee/tl/search/license") ? `/ ${t("TL_SEARCH_TRADE_HEADER") }`  : null}</span>
           </p>
           <PrivateRoute
             path={`${path}/inbox`}
