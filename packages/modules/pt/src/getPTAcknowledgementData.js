@@ -198,6 +198,17 @@ const getPTAcknowledgementData = async (application, tenantInfo, t) => {
       heading: t("PT_ACKNOWLEDGEMENT"),
       details: [
         {
+          title: t("CS_TITLE_APPLICATION_DETAILS"),
+          values: [
+            { title: t("PT_APPLICATION_NO"), value: application?.acknowldgementNumber },
+            { title: t("PT_PROPERRTYID"), value: application?.propertyId },
+            {
+              title: t("CS_APPLICATION_DETAILS_APPLICATION_DATE"),
+              value: Digit.DateUtils.ConvertTimestampToDate(application?.auditDetails?.createdTime, "dd/MM/yyyy"),
+            },
+          ],
+        },
+        {
           title: t("PT_PROPERTY_ADDRESS_SUB_HEADER"),
           values: [
             { title: t("PT_PROPERTY_ADDRESS_PINCODE"), value: application?.address?.pincode || "N/A" },
