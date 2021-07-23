@@ -10,28 +10,10 @@ import {
   DatePicker,
   MobileNumber,
   Dropdown,
+  Localities,
 } from "@egovernments/digit-ui-react-components";
 
-// import { Cities } from "./cities";
-
 import { useTranslation } from "react-i18next";
-
-const Cities = (props) => {
-  const { t } = useTranslation();
-  const allCities = Digit.Hooks.pt.useTenants()?.sort((a, b) => a?.i18nKey?.localeCompare?.(b?.i18nKey));
-  return (
-    <Dropdown
-      t={t}
-      selected={props.value}
-      option={[...allCities]}
-      select={(d) => {
-        if (d.code != props.value?.code) props.setValue("locality", null);
-        props.onChange(d);
-      }}
-      optionKey="i18nKey"
-    />
-  );
-};
 
 const Locality = (props) => {
   const [tenantlocalties, setLocalities] = useState([]);
@@ -67,8 +49,16 @@ const Locality = (props) => {
 const fieldComponents = {
   date: DatePicker,
   mobileNumber: MobileNumber,
-  City: Cities,
-  Locality: Locality,
+  Locality: (props) => (
+    <Localities
+      tenantId={Digit.ULBService.getCurrentTenantId()}
+      selectLocality={props.onChange}
+      keepNull={false}
+      boundaryType="revenue"
+      selected={props.value}
+      disableLoader={true}
+    />
+  ),
 };
 
 const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams, clearSearch: _clearSearch }) => {
@@ -227,7 +217,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   <SubmitBar
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
-                    disabled={!!Object.keys(formState.errors).length || Object.keys(form).every((key) => !form?.[key])}
+                    disabled={!!Object.keys(formState.errors).length || formValueEmpty()}
                     submit
                   />
                   {/* style={{ paddingTop: "16px", textAlign: "center" }} className="clear-search" */}
