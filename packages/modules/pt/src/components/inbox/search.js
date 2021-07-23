@@ -15,37 +15,6 @@ import {
 
 import { useTranslation } from "react-i18next";
 
-const Locality = (props) => {
-  const [tenantlocalties, setLocalities] = useState([]);
-
-  console.log(props, "inside localities");
-
-  const tenant = props.formValue?.city?.code;
-
-  useEffect(() => {
-    console.log(tenantlocalties, "localities inside loc");
-  }, [tenantlocalties]);
-
-  useEffect(() => {
-    if (tenant)
-      (async () => {
-        const boundary = (await Digit.LocationService.getRevenueLocalities(tenant)).TenantBoundary[0];
-        setLocalities(boundary);
-      })();
-  }, [tenant]);
-
-  return (
-    <Dropdown
-      option={tenantlocalties?.boundary || []}
-      keepNull={false}
-      selected={props.value}
-      select={props.onChange}
-      optionKey="name"
-      disable={!tenantlocalties?.boundary?.length}
-    />
-  );
-};
-
 const fieldComponents = {
   date: DatePicker,
   mobileNumber: MobileNumber,
@@ -79,14 +48,14 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
 
   const mobileView = innerWidth <= 640;
 
-  useEffect(() => {
-    console.log(form, "inside form");
-    console.log(formValueEmpty(), "form value empty");
-  }, [formState, form]);
+  // useEffect(() => {
+  //   console.log(form, "inside form");
+  //   console.log(formValueEmpty(), "form value empty");
+  // }, [formState, form]);
 
-  useEffect(() => {
-    console.log(form?.city?.code, "inside city change");
-  }, [form?.city?.code]);
+  // useEffect(() => {
+  //   console.log(form?.city?.code, "inside city change");
+  // }, [form?.city?.code]);
 
   useEffect(() => {
     searchFields.forEach(({ pattern, name, maxLength, minLength, errorMessages, ...el }) => {
