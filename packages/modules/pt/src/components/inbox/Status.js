@@ -6,7 +6,7 @@ import StatusCount from "./StatusCount";
 const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap, moduleCode }) => {
   const { t } = useTranslation();
 
-  const [moreStatus, showMoreStatus] = useState(false);
+  // const [moreStatus, showMoreStatus] = useState(false);
 
   const { data: statusData, isLoading } = Digit.Hooks.useApplicationStatusGeneral({ businessServices }, {});
 
@@ -40,7 +40,7 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
     return <Loader />;
   }
 
-  return (
+  return userRoleStates?.filter((e) => !e.isTerminateState).length ? (
     <div className="status-container">
       <div className="filter-label" style={{ fontWeight: "normal" }}>
         {t("ES_INBOX_STATUS")}
@@ -60,7 +60,7 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
           );
         })}
 
-      {moreStatus &&
+      {/* {moreStatus &&
         otherRoleStates
           ?.filter((e) => !e.isTerminateState)
           ?.map((option, index) => {
@@ -78,9 +78,9 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
       <div className="filter-button" onClick={() => showMoreStatus(!moreStatus)}>
         {" "}
         {moreStatus ? t("ES_COMMON_LESS") : t("ES_COMMON_MORE")}{" "}
-      </div>
+      </div> */}
     </div>
-  );
+  ) : null;
 };
 
 export default Status;
