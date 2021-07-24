@@ -94,10 +94,12 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
                 <div className="historyContent">
                   <div style={{ display: "flex" }}>
                     <div className="historyCheckpoint zIndex"></div>
-                    <div className="rowContainerStyles">
-                      <CardSubHeader className="historyTableDateLabel bottomMargin"> {t("PT_DATE_OF_TRANSFER")} </CardSubHeader>
-                      <CardSubHeader className="historyTableDate bottomMargin">{date}</CardSubHeader>
-                    </div>
+                    {index !== Object.keys(ownershipInfo).length - 1 ? (
+                      <div className="rowContainerStyles">
+                        <CardSubHeader className="historyTableDateLabel bottomMargin"> {t("PT_DATE_OF_TRANSFER")} </CardSubHeader>
+                        <CardSubHeader className="historyTableDate bottomMargin">{date}</CardSubHeader>
+                      </div>
+                    ) : null}
                   </div>
                   <TransferDetails
                     data={ownershipInfo[key]}
@@ -109,7 +111,7 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
                     }}
                     tableStyles={{
                       display: "grid",
-                      gridAutoRows : "min-content",
+                      gridAutoRows: "min-content",
                       gridTemplateColumns: "repeat(5, minmax(100px, 1fr))",
                     }}
                   />
