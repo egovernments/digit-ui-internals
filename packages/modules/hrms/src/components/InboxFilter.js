@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActionBar, CloseSvg, RadioButtons, RemoveableTag, Dropdown, SubmitBar } from "@egovernments/digit-ui-react-components";
 import { ApplyFilterBar } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
+import { getCityThatUserhasAccess } from "./Utils";
 
 const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
   const [filters, onSelectFilterRoles] = useState(searchParams?.filters?.role || { role: [] });
@@ -54,7 +55,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
 
   useEffect(() => {
     if (tenantId.code) {
-      setSearchParams({ tenantId: tenantId.code });
+      setSearchParams({ ..._searchParams,tenantId: tenantId.code });
     }
   }, [tenantId]);
 
@@ -65,26 +66,26 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
         res.push(ele.code);
       });
 
-      setSearchParams({ roles: [...res].join(",") });
+      setSearchParams({..._searchParams, roles: [...res].join(",") });
       if (filters.role && filters.role.length > 1) {
         let res = [];
         filters.role.forEach((ele) => {
           res.push(ele.code);
         });
-        setSearchParams({ roles: [...res].join(",") });
+        setSearchParams({..._searchParams, roles: [...res].join(",") });
       }
     }
   }, [filters.role]);
 
   useEffect(() => {
     if (departments) {
-      setSearchParams({ departments: departments.code });
+      setSearchParams({ ..._searchParams,departments: departments.code });
     }
   }, [departments]);
 
   useEffect(() => {
     if (roles) {
-      setSearchParams({ roles: roles.code });
+      setSearchParams({..._searchParams, roles: roles.code });
     }
   }, [roles]);
 
@@ -94,7 +95,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
 
   useEffect(() => {
     if (isActive) {
-      setSearchParams({ isActive: isActive.code });
+      setSearchParams({..._searchParams, isActive: isActive.code });
     }
   }, [isActive]);
   const clearAll = () => {
@@ -160,7 +161,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
           <div>
             <div>
               <div className="filter-label">{t("HR_ULB_LABEL")}</div>
-              <Dropdown option={tenantIds} selected={tenantId} select={settenantId} optionKey={"name"} />
+              <Dropdown option={[...getCityThatUserhasAccess(tenantIds)?.sort((x,y)=>x?.name?.localeCompare(y?.name))]} selected={tenantId} select={settenantId} optionKey={"name"} />
             </div>
             <div>
               <div className="filter-label">{t("HR_COMMON_TABLE_COL_DEPT")}</div>

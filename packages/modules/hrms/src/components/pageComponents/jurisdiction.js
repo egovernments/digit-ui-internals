@@ -161,9 +161,9 @@ function Jurisdiction({
         .map((item) => item.boundary)
     );
   }, [jurisdiction?.hierarchy, data?.MdmsRes]);
-
+  const tenant = Digit.ULBService.getCurrentTenantId();
   useEffect(() => {
-    selectboundary(data?.MdmsRes?.tenant?.tenants);
+    selectboundary(data?.MdmsRes?.tenant?.tenants.filter(city=>city.code!=tenant.split('.')[0]));
   }, [jurisdiction?.boundaryType, data?.MdmsRes]);
 
   useEffect(() => {

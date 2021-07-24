@@ -156,6 +156,15 @@ const EditForm = ({ tenantId, data }) => {
       setShowToast({ key: true, label: "ERR_BASE_TENANT_MANDATORY" });
       return;
     }
+    if (!Object.values(input.Jurisdictions.reduce((acc, sum) => {
+      if (sum && sum?.tenantId) {
+        acc[sum.tenantId] = acc[sum.tenantId] ? acc[sum.tenantId] + 1 : 1;
+      }
+      return acc;
+    }, {})).every(s => s == 1)) {
+      setShowToast({ key: true, label: "ERR_INVALID_JURISDICTION" });
+      return;
+    }
     let roles = input?.Jurisdictions?.map((ele) => {
       return ele.roles?.map((item) => {
         item["tenantId"] = ele.boundary;

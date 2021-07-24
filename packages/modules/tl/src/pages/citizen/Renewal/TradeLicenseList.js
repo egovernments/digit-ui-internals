@@ -37,7 +37,7 @@ const TradeLicenseList = ({ application }) => {
   return (
     <Card>
       <KeyNote keyValue={t("TL_LOCALIZATION_TRADE_NAME")} note={application.tradeName} />
-      <KeyNote keyValue={t("TL_LICENSE_NO_CODE")} note={application.licenseNumber} />
+      <KeyNote keyValue={t("TL_LICENSE_NUMBERL_LABEL")} note={application.licenseNumber} />
       <KeyNote keyValue={t("TL_LOCALIZATION_OWNER_NAME")} note={owners.map((owners, index) => (
         <div key="index">{index == owners.length - 1 ? owners?.name + "," : owners.name}</div>
       ))} />

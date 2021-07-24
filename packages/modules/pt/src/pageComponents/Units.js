@@ -237,7 +237,8 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
       <LinkButton label={t("PT_ADD_UNIT")} onClick={handleAddUnit} style={{ color: "orange", width: "175px" }}></LinkButton>
       {["units_missing", "landArea extended"].includes(formState.errors?.[config.key]?.type) ? (
         <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
-          {`${formState.errors?.[config.key].message.split(".")[0]} -
+          {`${t(formState.errors?.[config.key].message.split(".")[0])}` +
+            `-
            ${formState.errors?.[config.key].message.split(".")[1] || " "}`}
         </CardLabelError>
       ) : null}
