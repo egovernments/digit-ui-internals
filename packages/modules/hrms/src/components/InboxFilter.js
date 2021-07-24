@@ -160,7 +160,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
           <div>
             <div>
               <div className="filter-label">{t("HR_ULB_LABEL")}</div>
-              <Dropdown option={tenantIds} selected={tenantId} select={settenantId} optionKey={"name"} />
+              <Dropdown option={[...tenantIds?.sort((x,y)=>x?.name?.localeCompare(y?.name))]} selected={tenantId} select={settenantId} optionKey={"name"} />
             </div>
             <div>
               <div className="filter-label">{t("HR_COMMON_TABLE_COL_DEPT")}</div>
