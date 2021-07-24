@@ -54,7 +54,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
 
   useEffect(() => {
     if (tenantId.code) {
-      setSearchParams({ tenantId: tenantId.code });
+      setSearchParams({ ..._searchParams,tenantId: tenantId.code });
     }
   }, [tenantId]);
 
@@ -65,26 +65,26 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
         res.push(ele.code);
       });
 
-      setSearchParams({ roles: [...res].join(",") });
+      setSearchParams({..._searchParams, roles: [...res].join(",") });
       if (filters.role && filters.role.length > 1) {
         let res = [];
         filters.role.forEach((ele) => {
           res.push(ele.code);
         });
-        setSearchParams({ roles: [...res].join(",") });
+        setSearchParams({..._searchParams, roles: [...res].join(",") });
       }
     }
   }, [filters.role]);
 
   useEffect(() => {
     if (departments) {
-      setSearchParams({ departments: departments.code });
+      setSearchParams({ ..._searchParams,departments: departments.code });
     }
   }, [departments]);
 
   useEffect(() => {
     if (roles) {
-      setSearchParams({ roles: roles.code });
+      setSearchParams({..._searchParams, roles: roles.code });
     }
   }, [roles]);
 
@@ -94,7 +94,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
 
   useEffect(() => {
     if (isActive) {
-      setSearchParams({ isActive: isActive.code });
+      setSearchParams({..._searchParams, isActive: isActive.code });
     }
   }, [isActive]);
   const clearAll = () => {
