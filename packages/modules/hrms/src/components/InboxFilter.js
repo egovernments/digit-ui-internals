@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActionBar, CloseSvg, RadioButtons, RemoveableTag, Dropdown, SubmitBar } from "@egovernments/digit-ui-react-components";
 import { ApplyFilterBar } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
+import { getCityThatUserhasAccess } from "./Utils";
 
 const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props }) => {
   const [filters, onSelectFilterRoles] = useState(searchParams?.filters?.role || { role: [] });
@@ -160,7 +161,7 @@ const Filter = ({ searchParams, onFilterChange, onSearch, removeParam, ...props 
           <div>
             <div>
               <div className="filter-label">{t("HR_ULB_LABEL")}</div>
-              <Dropdown option={[...tenantIds?.sort((x,y)=>x?.name?.localeCompare(y?.name))]} selected={tenantId} select={settenantId} optionKey={"name"} />
+              <Dropdown option={[...getCityThatUserhasAccess(tenantIds)?.sort((x,y)=>x?.name?.localeCompare(y?.name))]} selected={tenantId} select={settenantId} optionKey={"name"} />
             </div>
             <div>
               <div className="filter-label">{t("HR_COMMON_TABLE_COL_DEPT")}</div>
