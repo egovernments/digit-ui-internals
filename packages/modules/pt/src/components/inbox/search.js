@@ -43,6 +43,8 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     Object.keys(form).forEach((key) => {
       if (!["locality", "city"].includes(key) && form[key]) isEmpty = false;
     });
+
+    if (!form?.locality?.code) isEmpty = true;
     return isEmpty;
   };
 
@@ -142,7 +144,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   <div key={input.name} className="input-fields">
                     {/* <span className={index === 0 ? "complaint-input" : "mobile-input"}> */}
                     <span className={"mobile-input"}>
-                      <Label>{t(input.label)}</Label>
+                      <Label>{t(input.label) + ` ${input.isMendatory ? "*" : ""}`}</Label>
                       {!input.type ? (
                         <Controller
                           render={(props) => {

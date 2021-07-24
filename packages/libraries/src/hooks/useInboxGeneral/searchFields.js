@@ -59,6 +59,7 @@ const searchFieldsForSearch = {
       label: "ES_INBOX_LOCALITY",
       name: "locality",
       type: "Locality",
+      isMendatory: true,
     },
   ],
 };
