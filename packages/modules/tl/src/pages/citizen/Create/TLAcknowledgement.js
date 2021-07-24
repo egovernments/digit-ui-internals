@@ -72,11 +72,12 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
           onSuccess,
         })) : console.log("skipped");
       } else {
+        debugger;
         let tenantId = data?.address?.city ? data.address?.city?.code : tenantId;
         data.tenantId = tenantId;
         let formdata = convertToResubmitTrade(data);
         formdata.Licenses[0].tenantId = formdata?.Licenses[0]?.tenantId || tenantId;
-        !mutation2.isLoading && mutation2.mutate(formdata, {
+        !mutation2.isLoading && !mutation.isSuccess && mutation2.mutate(formdata, {
           onSuccess,
         })
 

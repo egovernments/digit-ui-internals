@@ -146,6 +146,12 @@ export const gettradeownerarray = (data) => {
           let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
           if(!found)tradeownerarray.push(oldowner);
         }
+        else if(oldowner.permanentAddress !== data?.owners?.permanentAddress)
+        {
+          oldowner.permanentAddress = data?.owners?.permanentAddress;
+          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
+          if(!found)tradeownerarray.push(oldowner);
+        }
         else
         {
           let found = tradeownerarray.length > 0 ? tradeownerarray.some(el => el.id === oldowner.id):false;

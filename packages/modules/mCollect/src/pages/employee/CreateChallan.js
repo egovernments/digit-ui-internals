@@ -108,8 +108,8 @@ const CreateChallen = ({ ChallanData }) => {
 
   if (isEdit == true && fetchBillData && ChallanData[0]) {
     defaultval = {
-      name: fetchBillData.Bill[0].payerName,
-      mobileNumber: fetchBillData.Bill[0].mobileNumber,
+      name: ChallanData[0].citizen.name,
+      mobileNumber: ChallanData[0].citizen.mobileNumber,
       doorNo: ChallanData[0].address.doorNo,
       buildingName: ChallanData[0].address.buildingName,
       street: ChallanData[0].address.street,

@@ -10,27 +10,8 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
   const { t } = useTranslation();
   const client = useQueryClient();
 
-  const [_searchParams, setSearchParams] = useState(() => {
-    const { services, ...newParams } = searchParams;
-    return newParams;
-  });
+  const [_searchParams, setSearchParams] = useState(() => ({ ...searchParams, services: [] }));
 
-  const localParamChange = (filterParam) => {
-    let keys_to_delete = filterParam.delete;
-    let _new = { ..._searchParams, ...filterParam };
-    if (keys_to_delete) keys_to_delete.forEach((key) => delete _new[key]);
-    delete filterParam.delete;
-    setSearchParams({ ..._new });
-  };
-
-  useEffect(() => {
-    console.log(_searchParams, "search params inside filter");
-  }, [_searchParams]);
-
-  const clearAll = () => {
-    setSearchParams(defaultSearchParams);
-    onFilterChange(defaultSearchParams);
-  };
   const ApplicationTypeMenu = [
     {
       label: "ES_PT_NEW_PROPERTY",
@@ -45,6 +26,28 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
       value: "PT.UPDATE",
     },
   ];
+
+  const localParamChange = (filterParam) => {
+    let keys_to_delete = filterParam.delete;
+    let _new = { ..._searchParams, ...filterParam };
+    if (keys_to_delete) keys_to_delete.forEach((key) => delete _new[key]);
+    delete filterParam.delete;
+    setSearchParams({ ..._new });
+  };
+
+  const applyLocalFilters = () => {
+    if (_searchParams.services.length === 0) onFilterChange({ _searchParams, services: ApplicationTypeMenu.map((e) => e.value) });
+    else onFilterChange(_searchParams);
+  };
+
+  useEffect(() => {
+    console.log(_searchParams, "search params inside filter");
+  }, [_searchParams]);
+
+  const clearAll = () => {
+    setSearchParams({ ...defaultSearchParams, services: [] });
+    onFilterChange(defaultSearchParams);
+  };
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -160,7 +163,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
               />
             </div>
             <div>
-              <SubmitBar onSubmit={() => onFilterChange(_searchParams)} label={t("ES_COMMON_APPLY")} />
+              <SubmitBar onSubmit={() => applyLocalFilters()} label={t("ES_COMMON_APPLY")} />
             </div>
           </div>
         </div>

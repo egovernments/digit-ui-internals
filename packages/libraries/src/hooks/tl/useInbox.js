@@ -7,7 +7,8 @@ const useTLInbox = ({ tenantId, filters, config }) => {
     const _filters = {
         tenantId,
 		processSearchCriteria: {
-			businessService: ["NewTL"],
+            moduleName: "tl-services",
+			businessService: ["NewTL", "DIRECTRENEWAL","EDITRENEWAL"],
             ...(applicationStatus?.length > 0 ? {status: applicationStatus} : {})
         },
 		moduleSearchCriteria: {

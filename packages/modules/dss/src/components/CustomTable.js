@@ -18,7 +18,7 @@ const InsightView = ({ rowValue, insight }) => {
 
 const calculateFSTPCapacityUtilization = (value, totalCapacity, numberOfDays = 1) => {
   if (value === undefined) return value;
-  return Math.round((((value / (totalCapacity * numberOfDays)) * 100) + Number.EPSILON) * 100) / 100;
+  return Math.round((((value / (totalCapacity * numberOfDays)) * 100)));
 }
 
 const CustomTable = ({ data, onSearch, setChartData }) => {
