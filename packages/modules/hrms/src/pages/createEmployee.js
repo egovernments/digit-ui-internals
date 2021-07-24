@@ -1,8 +1,8 @@
+import { FormComposer, Toast } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormComposer, Toast } from "@egovernments/digit-ui-react-components";
-import { newConfig } from "../components/config/config";
 import { useHistory } from "react-router-dom";
+import { newConfig } from "../components/config/config";
 
 const CreateEmployee = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -10,7 +10,7 @@ const CreateEmployee = () => {
   const [mobileNumber, setMobileNumber] = useState(null);
   const [showToast, setShowToast] = useState(null);
   const [phonecheck, setPhonecheck] = useState(false);
-  const [checkfield, setcheck]= useState(false)
+  const [checkfield, setcheck] = useState(false)
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -24,17 +24,16 @@ const CreateEmployee = () => {
     clearError();
   }, []);
 
-  const checkMailNameNum=(formData)=>
-  {
-    
-    const email=formData?.SelectEmployeeEmailId?.emailId||'';
-    const name=formData?.SelectEmployeeName?.employeeName||'';
-    const address=formData?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress||'';
-    const validEmail=email.length==0?true:email.match(Digit.Utils.getPattern('Email'));
-   return validEmail&&name.match(Digit.Utils.getPattern('Name'))&&address.match(Digit.Utils.getPattern('Address'));
+  const checkMailNameNum = (formData) => {
+
+    const email = formData?.SelectEmployeeEmailId?.emailId || '';
+    const name = formData?.SelectEmployeeName?.employeeName || '';
+    const address = formData?.SelectEmployeeCorrespondenceAddress?.correspondenceAddress || '';
+    const validEmail = email.length == 0 ? true : email.match(Digit.Utils.getPattern('Email'));
+    return validEmail && name.match(Digit.Utils.getPattern('Name')) && address.match(Digit.Utils.getPattern('Address'));
   }
   useEffect(() => {
-    if (mobileNumber&&mobileNumber.length==10&&mobileNumber.match(Digit.Utils.getPattern('MobileNo'))) {
+    if (mobileNumber && mobileNumber.length == 10 && mobileNumber.match(Digit.Utils.getPattern('MobileNo'))) {
       setShowToast(null);
       Digit.HRMSService.search(tenantId, null, { phone: mobileNumber }).then((result, err) => {
         if (result.Employees.length > 0) {
@@ -49,20 +48,20 @@ const CreateEmployee = () => {
     }
   }, [mobileNumber]);
 
-const defaultValues = {
+  const defaultValues = {
 
-      Jurisdictions:
-        [{
-          id: undefined,
-          key: 1,
-          hierarchy: null,
-          boundaryType: null,
-           boundary: {
-            code: tenantId
-          },
-          roles: [],
-        }]
-      }
+    Jurisdictions:
+      [{
+        id: undefined,
+        key: 1,
+        hierarchy: null,
+        boundaryType: null,
+        boundary: {
+          code: tenantId
+        },
+        roles: [],
+      }]
+  }
 
 
   const onFormValueChange = (setValue = true, formData) => {
@@ -106,7 +105,7 @@ const defaultValues = {
       formData?.SelectEmployeePhoneNumber?.mobileNumber &&
       checkfield &&
       setassigncheck &&
-      phonecheck&&
+      phonecheck &&
       checkMailNameNum(formData)
     ) {
       setSubmitValve(true);
@@ -115,17 +114,25 @@ const defaultValues = {
     }
   };
 
-  const navigateToAcknowledgement=(Employees)=>{
+  const navigateToAcknowledgement = (Employees) => {
     history.replace("/digit-ui/employee/hrms/response", { Employees, key: "CREATE", action: "CREATE" });
   }
 
 
   const onSubmit = (data) => {
-      if(data.Jurisdictions.filter(juris=>juris.tenantId==tenantId).length==0){
-        setShowToast({ key: true, label: "ERR_BASE_TENANT_MANDATORY" });
-        return;
+    if (data.Jurisdictions.filter(juris => juris.tenantId == tenantId).length == 0) {
+      setShowToast({ key: true, label: "ERR_BASE_TENANT_MANDATORY" });
+      return;
+    }
+    if (!Object.values(data.Jurisdictions.reduce((acc, sum) => {
+      if (sum && sum?.tenantId) {
+        acc[sum.tenantId] = acc[sum.tenantId] ? acc[sum.tenantId] + 1 : 1;
       }
-
+      return acc;
+    }, {})).every(s => s == 1)) {
+      setShowToast({ key: true, label: "ERR_INVALID_JURISDICTION" });
+      return;
+    }
     let roles = data?.Jurisdictions?.map((ele) => {
       return ele.roles?.map((item) => {
         item["tenantId"] = ele.boundary;
@@ -158,7 +165,7 @@ const defaultValues = {
         tests: [],
       },
     ];
-    if(data?.SelectEmployeeId?.code && data?.SelectEmployeeId?.code?.trim().length>0){
+    if (data?.SelectEmployeeId?.code && data?.SelectEmployeeId?.code?.trim().length > 0) {
       Digit.HRMSService.search(tenantId, null, { codes: data?.SelectEmployeeId?.code }).then((result, err) => {
         if (result.Employees.length > 0) {
           setShowToast({ key: true, label: "ERR_HRMS_USER_EXIST_ID" });
