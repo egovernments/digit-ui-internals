@@ -99,13 +99,15 @@ const ApplicationDetails = () => {
 
   return (
     <React.Fragment>
-      <MultiLink
-        className="multilink-labelWrap overCard"
-        onHeadClick={() => setShowOptions(!showOptions)}
-        displayOptions={showOptions}
-        options={dowloadOptions}
-      />
-      <Header>{t("CS_TITLE_APPLICATION_DETAILS")}</Header>
+      <div className="cardHeaderWithOptions">
+        <Header>{t("CS_TITLE_APPLICATION_DETAILS")}</Header>
+        <MultiLink
+          className="multilinkWrapper"
+          onHeadClick={() => setShowOptions(!showOptions)}
+          displayOptions={showOptions}
+          options={dowloadOptions}
+        />
+      </div>
       <Card style={{ position: "relative" }}>
         {application?.map((application, index) => {
           return (
