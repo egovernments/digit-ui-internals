@@ -107,6 +107,7 @@ const FSMCard = () => {
     moduleName: "FSM",
     kpis:[
       {
+          count: total,
           label: t("TOTAL_FSM"),
           link: `/digit-ui/employee/fsm/inbox`
       },
