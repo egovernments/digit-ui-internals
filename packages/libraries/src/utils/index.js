@@ -142,6 +142,16 @@ const ptAccess = () => {
   return PT_ACCESS.length > 0;
 };
 
+const tlAccess = () => {
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
+  const tlRoles = ["TL_CEMP", "TL_APPROVER", "TL_FIELD_INSPECTOR", "TL_DOC_VERIFIER"];
+
+  const TL_ACCESS = userRoles.filter((role) => tlRoles.includes(role));
+
+  return TL_ACCESS.length > 0;
+};
+
 const mCollectAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo.info.roles.map((roleData) => roleData.code);
@@ -185,5 +195,6 @@ export default {
   receiptsAccess,
   hrmsAccess,
   getPattern,
-  hrmsRoles
+  hrmsRoles,
+  tlAccess
 };
