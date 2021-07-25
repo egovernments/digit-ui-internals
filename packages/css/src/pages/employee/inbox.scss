@@ -32,7 +32,8 @@
 
     .inbox-total {
       padding: 4px;
-      @apply text-center text-white w-8 h-8 bg-primary-main rounded-full ml-xs;
+      display: table;
+      @apply whitespace-normal text-center text-white w-8 h-8 bg-primary-main rounded-full ml-xs ;
     }
   }
 
