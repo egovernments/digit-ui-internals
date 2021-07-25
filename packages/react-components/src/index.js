@@ -90,6 +90,7 @@ import {
   PersonIcon,
   ReceiptIcon,
   AnnouncementIcon,
+  PTIcon,
 } from "./atoms/svgindex";
 import CustomButton from "./atoms/CustomButton";
 import CitizenInfoLabel from "./atoms/CitizenInfoLabel";
@@ -221,6 +222,7 @@ export {
   MultiLink,
   MultiSelectDropdown,
   CaseIcon,
+  PTIcon,
   // Molecule
   InputCard,
   FormStep,
