@@ -31,7 +31,7 @@ const EmployeeApp = ({ path, url, userType }) => {
               </Link>}
             <span>{location.pathname.includes("/digit-ui/employee/tl/search/application") ? `/ ${t("ES_COMMON_SEARCH_APPLICATION") }`  : null}</span>
             <span>{location.pathname.includes("/digit-ui/employee/tl/search/license") ? `/ ${t("TL_SEARCH_TRADE_HEADER") }`  : null}</span>
-            <span>{location.pathname.includes("/digit-ui/employee/tl/application-details") ? `/ ${t("TL_APPLICATION_DETAILS_LABEL") }`  : null}</span>
+            <span>{location.pathname.includes("/digit-ui/employee/tl/application-details") ? `/ ${t("TL_DETAILS_HEADER_LABEL") }`  : null}</span>
             <span>{location.pathname.includes("/digit-ui/employee/tl/new-application") ? `/ ${t("TL_HOME_SEARCH_RESULTS_NEW_APP_BUTTON") }`  : null}</span>
             <span>{location.pathname.includes("/digit-ui/employee/tl/renew-application-details") ? `/ ${t("ES_TITLE_RE_NEW_TRADE_LICESE_APPLICATION") }`  : null}</span>
             <span>{location.pathname.includes("/digit-ui/employee/tl/edit-application-details") ? `/ ${t("ES_TITLE_RE_NEW_TRADE_LICESE_APPLICATION") }`  : null}</span>
