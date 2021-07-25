@@ -108,7 +108,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
         },
         {
           Header: t("TL_COMMON_TABLE_COL_STATUS"),
-          accessor: (row) => GetCell(row.status || ""),
+          accessor: (row) => GetCell(t(row.status) || ""),
           disableSortBy: true,
         }
       ]), [] )

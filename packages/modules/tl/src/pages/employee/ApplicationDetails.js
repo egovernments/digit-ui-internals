@@ -70,7 +70,7 @@ const ApplicationDetails = () => {
     workflowDetails?.data?.actionState?.nextActions?.forEach(data => {
       if(data.action == "RESUBMIT") {
         data.redirectionUrl = {
-          pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
+          pathname: `/digit-ui/employee/tl/edit-application-details/${applicationNumber}`,
           state: applicationDetails
         },
         data.tenantId = stateId

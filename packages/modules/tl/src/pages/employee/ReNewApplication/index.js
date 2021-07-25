@@ -303,7 +303,7 @@ const ReNewApplication = (props) => {
   return (
     <div>
       <FormComposer
-        heading={t("ES_TITLE_RE_NEW_TRADE_LICESE_APPLICATION")}
+        heading={props.header || t("ES_TITLE_RE_NEW_TRADE_LICESE_APPLICATION")}
         isDisabled={!canSubmit}
         label={t("ES_COMMON_APPLICATION_SUBMIT")}
         config={configs.map((config) => {
