@@ -27,7 +27,8 @@ const TLAccessoriesEmployee = ({ config, onSelect, userType, formData, setError,
     const [isErrors, setIsErrors] = useState(false);
     const [flag, setFlag] = useState(true);
     const [uomvalues, setUomvalues] = useState("");
-    const isRenewal = window.location.href.includes("renew-application-details");
+    let isRenewal = window.location.href.includes("renew-application-details");
+    if(window.location.href.includes("edit-application-details")) isRenewal = true;
 
 
     const { data: billingSlabData } = Digit.Hooks.tl.useTradeLicenseBillingslab({ tenantId, filters: {} });

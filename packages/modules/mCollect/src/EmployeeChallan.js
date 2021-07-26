@@ -85,6 +85,13 @@ const EmployeeChallan = (props) => {
         billDetails.push(bill);
       });
       setTotalDueAmount(res?.Bill[0]?.totalAmount);
+      billDetails && billDetails.map((ob) => {
+        if(ob.taxHeadCode.includes("CGST"))
+          ob.order = 3;
+        else if(ob.taxHeadCode.includes("SGST"))
+          ob.order = 4;
+      });
+      billDetails.sort((a, b) => a.order - b.order);
       setChallanBillDetails(billDetails);
       console.log(res, "resresresres");
     }

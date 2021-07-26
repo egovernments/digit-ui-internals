@@ -33,8 +33,8 @@ const TLTradeUnitsEmployee = ({ config, onSelect, userType, formData, setError, 
     const [tradeSubTypeOptionsList, setTradeSubTypeOptionsList] = useState([]);
     const [isErrors, setIsErrors] = useState(false);
     const [previousLicenseDetails, setPreviousLicenseDetails] = useState(formData?.tradedetils1 || []);
-    const isRenewal = window.location.href.includes("tl/renew-application-details");
-
+    let isRenewal = window.location.href.includes("tl/renew-application-details");
+    if (window.location.href.includes("tl/renew-application-details")) isRenewal = true;
     const { data: tradeMdmsData,isLoading } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "TradeLicense", "TradeUnits", "[?(@.type=='TL')]");
 
     const addNewUnits = () => {
@@ -191,8 +191,8 @@ const TradeUnitForm = (_props) => {
         }
     }, [errors]);
 
-    const ckeckingLocation = window.location.href.includes("renew-application-details");
-
+    let ckeckingLocation = window.location.href.includes("renew-application-details");
+    if (window.location.href.includes("edit-application-details")) ckeckingLocation = true;
     useEffect(() => {
         if (tradeTypeMdmsData?.length > 0 && ckeckingLocation) {
             let tradeType = cloneDeep(tradeTypeMdmsData);

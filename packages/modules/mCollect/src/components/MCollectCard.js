@@ -1,4 +1,4 @@
-import { EmployeeModuleCard, ReceiptIcon } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard, PTIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -11,7 +11,7 @@ const MCollectCard = () => {
   const { isLoading, isError, error, data, ...rest } = Digit.Hooks.mcollect.useMCollectCount(tenantId);
 
   const propsForModuleCard = {
-    Icon: <ReceiptIcon />,
+    Icon: <PTIcon />,
     moduleName: t("UC_COMMON_HEADER_SEARCH"),
     kpis: [
       {

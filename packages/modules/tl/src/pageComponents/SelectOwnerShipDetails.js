@@ -102,7 +102,8 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
   // }, []);
 
   if (userType === "employee") {
-  const isRenewal = window.location.href.includes("tl/renew-application-details");
+  let isRenewal = window.location.href.includes("tl/renew-application-details");
+  if (window.location.href.includes("tl/edit-application-details")) isRenewal = true;
   
     return (
       <React.Fragment>
