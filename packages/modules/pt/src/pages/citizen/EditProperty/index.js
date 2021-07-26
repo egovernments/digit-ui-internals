@@ -7,7 +7,7 @@ import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from 
 import { newConfig } from "../../../config/Create/config";
 import CheckPage from "../Create/CheckPage";
 import PTAcknowledgement from "../Create/PTAcknowledgement";
-import { checkArrayLength, stringReplaceAll } from "../../../utils";
+import { checkArrayLength, stringReplaceAll,getSuperBuiltUpareafromob } from "../../../utils";
 
 const getPropertyEditDetails = (data = {}) => {
   // converting owners details
@@ -243,7 +243,7 @@ const getPropertyEditDetails = (data = {}) => {
             };
       data.IsAnyPartOfThisFloorUnOccupied =
         unoccupiedtf == true ? { i18nKey: "PT_COMMON_YES", code: "UNOCCUPIED" } : { i18nKey: "PT_COMMON_NO", code: "UNOCCUPIED" };
-      data.floordetails = { plotSize: 1000, builtUpArea: data?.superBuiltUpArea };
+      data.floordetails = { plotSize: data?.landArea, builtUpArea: getSuperBuiltUpareafromob(data) };
       data["extraunitFPB"] = extraunitsFPB;
     } else if (data?.propertyType === "BUILTUP.INDEPENDENTPROPERTY") {
       let nooffloor = 0,

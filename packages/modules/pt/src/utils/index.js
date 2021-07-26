@@ -254,6 +254,14 @@ export const getSuperBuiltUparea = (data) => {
   return builtUpArea;
 };
 
+export const getSuperBuiltUpareafromob = (data) => {
+  let builtuparea = 0;
+  data?.units.map((unit)=>{
+    builtuparea = builtuparea + unit?.constructionDetail?.builtUpArea;
+  })
+  return builtuparea;
+}
+
 export const getnumberoffloors = (data) => {
   let unitlenght = data?.units?.length;
   if (data?.noOofBasements?.i18nKey === "PT_ONE_BASEMENT_OPTION") {
