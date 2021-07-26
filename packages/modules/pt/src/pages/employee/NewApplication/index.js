@@ -85,7 +85,7 @@ const NewApplication = () => {
             data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF")),
           ];
         } else {
-          console.log("owner docs setted");
+          // console.log("owner docs setted");
           _owner.documents = [data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF"))];
         }
         return _owner;
