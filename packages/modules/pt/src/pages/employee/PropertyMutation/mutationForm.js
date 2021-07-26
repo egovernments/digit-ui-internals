@@ -78,9 +78,10 @@ const MutationForm = ({ applicationData, tenantId }) => {
             let gender = owner.gender.code;
             let ownerType = owner.ownerType.code;
             let relationship = owner.relationship.code;
+            obj.documents = [data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF"))];
             if (owner.documents) {
               let { documentUid, documentType } = owner.documents;
-              obj.documents = [{ documentUid, documentType: documentType.code, fileStoreId: documentUid }];
+              obj.documents = [...obj.documents, { documentUid, documentType: documentType.code, fileStoreId: documentUid }];
             }
             return {
               ...owner,

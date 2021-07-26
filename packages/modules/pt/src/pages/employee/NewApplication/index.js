@@ -80,8 +80,14 @@ const NewApplication = () => {
         };
         if (_owner.ownerType !== "NONE") {
           const { documentType, documentUid } = owner?.documents;
-          _owner.documents = [{ documentUid: documentUid, documentType: documentType.code, fileStoreId: documentUid }];
-        } else delete _owner.documents;
+          _owner.documents = [
+            { documentUid: documentUid, documentType: documentType.code, fileStoreId: documentUid },
+            data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF")),
+          ];
+        } else {
+          // console.log("owner docs setted");
+          _owner.documents = [data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF"))];
+        }
         return _owner;
       }),
 
@@ -104,10 +110,18 @@ const NewApplication = () => {
       };
     }
 
+    // console.log(
+    //   data,
+    //   data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF")),
+    //   formData,
+    //   "hot fixes"
+    // );
+
     // console.log(formData, "new application created");
     // setFormData(formData)
 
-    history.replace("/digit-ui/employee/pt/response", { Property: formData });
+    history.replace("/digit-ui/employee/pt/response", { Property: formData }); //current wala
+
     // history.push("/digit-ui/employee/pt/response", { Property: formData });
     // history.push("/digit-ui/employee/pt/response", { Property: _formData });
   };

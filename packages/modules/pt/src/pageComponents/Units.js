@@ -90,7 +90,17 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
       if (formData?.PropertyType?.code.includes("BUILTUP")) {
         let uniqueFloors = units.reduce((acc, unit) => (!unit.floorNo ? acc : acc[unit.floorNo] ? acc : { ...acc, [unit.floorNo]: 1 }), {});
         onSelect("noOfFloors", Object.keys(uniqueFloors).length);
-        let totalGroundFloorArea = units.reduce((acc, { floorNo, builtUpArea }) => acc + (floorNo?.code == 0 ? Number(builtUpArea) : 0), 0);
+
+        let floorWiseAreas = units.reduce((acc, { floorNo, builtUpArea }) => {
+          if (!floorNo) return acc;
+          let area = Number(builtUpArea) || 0;
+          if (isNaN(acc?.[floorNo?.code])) acc[floorNo?.code] = area;
+          else acc[floorNo?.code] = acc[floorNo?.code] + area;
+          return acc;
+        }, {});
+        let totalGroundFloorArea = Object.keys(floorWiseAreas).reduce((acc, key) => (floorWiseAreas[key] <= acc ? acc : floorWiseAreas[key]), 0);
+
+        // console.log(floorWiseAreas, totalGroundFloorArea, "areaas");
         if (totalGroundFloorArea > Number(formData?.landarea)) {
           setError(config.key, { type: "landArea extended", message: t("PT_BUILTUPAREA_GRATER_THAN_LANDAREA") });
         } else clearErrors(config.key);
@@ -102,8 +112,18 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
     let minFloor = units.reduce((min, unit) => Math.min(min, Number(unit.floorNo?.code) || Number(0)), Number(0));
     let maxFloor = units.reduce((max, unit) => Math.max(max, Number(unit.floorNo?.code) || Number(0)), Number(0));
 
-    let totalGroundFloorArea = units.reduce((acc, { floorNo, builtUpArea }) => acc + (floorNo?.code == 0 ? Number(builtUpArea) : 0), 0);
+    // let totalGroundFloorArea = units.reduce((acc, { floorNo, builtUpArea }) => acc + (floorNo?.code == 0 ? Number(builtUpArea) : 0), 0);
 
+    let floorWiseAreas = units.reduce((acc, { floorNo, builtUpArea }) => {
+      if (!floorNo) return acc;
+      let area = Number(builtUpArea) || 0;
+      if (isNaN(acc?.[floorNo?.code])) acc[floorNo?.code] = area;
+      else acc[floorNo?.code] = acc[floorNo?.code] + area;
+      return acc;
+    }, {});
+
+    let totalGroundFloorArea = Object.keys(floorWiseAreas).reduce((acc, key) => (floorWiseAreas[key] <= acc ? acc : floorWiseAreas[key]), 0);
+    // console.log(floorWiseAreas, totalGroundFloorArea, "areaas");
     const continuousFloorsArr = floorListData.filter((e) => {
       let num = Number(e?.code);
       return (num < maxFloor && num > minFloor) || num === maxFloor || num === minFloor;
@@ -127,7 +147,6 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
       clearErrors(config.key);
     }
 
-    console.log(totalGroundFloorArea, Number(formData?.landArea), totalGroundFloorArea > Number(formData?.landArea), "noOfFloors in form");
     onSelect("noOfFloors", maxFloor + 1);
   };
 
