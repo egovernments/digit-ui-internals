@@ -128,7 +128,7 @@ const MutationForm = ({ applicationData, tenantId }) => {
 
     console.log(submitData, "in submit later");
 
-    // history.replace("/digit-ui/employee/pt/response", { Property: submitData.Property, key: "UPDATE", action: "SUBMIT" });
+    history.replace("/digit-ui/employee/pt/response", { Property: submitData.Property, key: "UPDATE", action: "SUBMIT" });
   };
 
   const configs = newConfigMutate;
