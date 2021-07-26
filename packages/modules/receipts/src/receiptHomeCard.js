@@ -22,7 +22,7 @@ const ReceiptsCard = () => {
     kpis: [
       {
         count: isLoading ? "-" : data?.Count,
-        label: t("TOTAL_EMPLOYEES"),
+        label: t("CR_TOTAL_RECEIPTS"),
         link: `/digit-ui/employee/receipts/inbox`
       },
     ],

@@ -26,29 +26,44 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
   const { t } = useTranslation();
 
   const getTimelineCaptions = (checkpoint) => {
-    if (checkpoint.status === "CREATED") {
-      const caption = {
+    // if (checkpoint.status === "CREATED") {
+    //   const caption = {
+    //     date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails?.createdTime),
+    //     name: applicationData.citizen.name,
+    //     mobileNumber: applicationData.citizen.mobileNumber,
+    //     source: applicationData.source || "",
+    //   };
+    //   return <TLCaption data={caption} />;
+    // } else if (checkpoint.status === "PENDING_APPL_FEE_PAYMENT") {
+    //   const caption = {
+    //     date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails.createdTime),
+    //     name: checkpoint.assigner.name,
+    //   };
+    //   return <TLCaption data={caption} />;
+    // } else if (checkpoint.status === "COMPLETED") {
+    //   return (
+    //     <div>
+    //       <Rating withText={true} text={t(`ES_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
+    //       <Link to={`/digit-ui/employee/fsm/rate-view/${applicationNumber}`}>
+    //         <ActionLinks>{t("CS_FSM_RATE_VIEW")}</ActionLinks>
+    //       </Link>
+    //     </div>
+    //   );
+    // }
+    if (checkpoint.state === "OPEN" || checkpoint.status === "INITIATED") {
+    const caption = {
         date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails?.createdTime),
-        name: applicationData.citizen.name,
-        mobileNumber: applicationData.citizen.mobileNumber,
-        source: applicationData.source || "",
+        source: applicationData?.channel || "",
       };
-      return <TLCaption data={caption} />;
-    } else if (checkpoint.status === "PENDING_APPL_FEE_PAYMENT") {
-      const caption = {
-        date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails.createdTime),
-        name: checkpoint.assigner.name,
-      };
-      return <TLCaption data={caption} />;
-    } else if (checkpoint.status === "COMPLETED") {
-      return (
-        <div>
-          <Rating withText={true} text={t(`ES_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
-          <Link to={`/digit-ui/employee/fsm/rate-view/${applicationNumber}`}>
-            <ActionLinks>{t("CS_FSM_RATE_VIEW")}</ActionLinks>
-          </Link>
-        </div>
-      );
+      return <TLCaption data={caption} />
+    }
+    else{
+    const caption = {
+          date: Digit.DateUtils?.ConvertTimestampToDate(applicationData?.auditDetails?.lastModifiedTime),
+          name: checkpoint?.assigner?.name,
+          mobileNumber: checkpoint?.assigner?.mobileNumber,
+        };
+      return <TLCaption data={caption} />
     }
   };
 
@@ -121,6 +136,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                       <CheckPoint
                         keyValue={index}
                         isCompleted={index === 0}
+                        info={checkpoint.comment}
                         label={t(`${timelineStatusPrefix}${checkpoint.state}`)}
                         customChild={getTimelineCaptions(checkpoint)}
                       />

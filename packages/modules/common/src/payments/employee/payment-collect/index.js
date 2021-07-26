@@ -63,7 +63,7 @@ export const CollectPayment = (props) => {
   const [selectedPaymentMode, setPaymentMode] = useState(formState?.selectedPaymentMode || getPaymentModes()[0]);
 
   const onSubmit = async (data) => {
-    // console.log(data);
+    // console.log(data, "data");
     bill.totalAmount = Math.round(bill.totalAmount);
     data.paidBy = data.paidBy.code;
 
@@ -94,12 +94,12 @@ export const CollectPayment = (props) => {
             businessService,
             billId: bill.id,
             totalDue: bill.totalAmount,
-            totalAmountPaid: data?.amount?.value || bill.totalAmount,
+            totalAmountPaid: data?.amount?.amount || bill.totalAmount,
           },
         ],
         tenantId: bill.tenantId,
         totalDue: bill.totalAmount,
-        totalAmountPaid: data?.amount?.value || bill.totalAmount,
+        totalAmountPaid: data?.amount?.amount || bill.totalAmount,
         paymentMode: data.paymentMode.code,
         payerName: data.payerName,
         paidBy: data.paidBy,
@@ -144,12 +144,15 @@ export const CollectPayment = (props) => {
       delete recieptRequest.Payment.reTransanctionNumber;
     }
 
-    // console.log(recieptRequest);
-
     try {
+      // console.log(recieptRequest);
       const resposne = await Digit.PaymentService.createReciept(tenantId, recieptRequest);
       queryClient.invalidateQueries();
-      history.push(`${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode}`);
+      history.push(
+        `${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${
+          resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode
+        }`
+      );
     } catch (error) {
       setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => e.message) })?.join(" , ");
       setTimeout(() => setToast(null), 5000);
@@ -293,7 +296,7 @@ export const CollectPayment = (props) => {
         onSubmit={onSubmit}
         formState={formState}
         defaultValues={getDefaultValues()}
-        isDisabled={bill?.totalAmount?(!bill.totalAmount>0):true}
+        isDisabled={bill?.totalAmount ? !bill.totalAmount > 0 : true}
         // isDisabled={BillDetailsFormConfig({ consumerCode }, t)[businessService] ? !}
         onFormValueChange={(setValue, formValue) => {
           if (!isEqual(formValue.paymentMode, selectedPaymentMode)) {

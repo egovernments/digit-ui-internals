@@ -100,7 +100,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       if (uploadedFile)
         workflow["documents"] = [
           {
-            documentType: "Document - 1",
+            documentType: action?.action+" DOC",
             fileName: file?.name,
             fileStoreId: uploadedFile,
           },

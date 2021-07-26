@@ -184,8 +184,8 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
         inline
         config={config}
         label={propsConfig.texts.submitButtonLabel}
-        heading={propsConfig.texts.header}
-        text={propsConfig.texts.text}
+        heading={t(propsConfig.texts.header)}
+        text={t(propsConfig.texts.text)}
         headingStyle={{ fontSize: "32px", marginBottom: "16px", fontFamily: "Roboto Condensed,sans-serif" }}
         // headingStyle={{ fontSize: "32px", marginBottom: "16px" }}
         isDisabled={!canSubmit}

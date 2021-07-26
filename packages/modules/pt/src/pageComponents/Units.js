@@ -119,7 +119,7 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
       }
     });
 
-    if (unitsMissing.length) {
+    if (unitsMissing.length && units.some((unit) => unit?.floorNo?.code)) {
       setError(config.key, { type: "units_missing", message: `PT_FLOORS_MISSING_UNITS.${unitsMissing.map((e) => e?.code).join()}` });
     } else if (totalGroundFloorArea > Number(formData?.landarea)) {
       setError(config.key, { type: "landArea extended", message: t("PT_BUILTUPAREA_GRATER_THAN_LANDAREA") });
@@ -206,10 +206,10 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
   }, [formData?.PropertyType]);
 
   useEffect(() => {
-    console.log(units, "inside units change");
+    // console.log(units, "inside units change");
     goNext();
     calculateNumberOfFloors();
-  }, [units, formData.PropertyType]);
+  }, [units, formData.PropertyType, formData.landarea]);
 
   if (loader && presentInModifyApplication) return <Loader />;
 
@@ -237,7 +237,8 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
       <LinkButton label={t("PT_ADD_UNIT")} onClick={handleAddUnit} style={{ color: "orange", width: "175px" }}></LinkButton>
       {["units_missing", "landArea extended"].includes(formState.errors?.[config.key]?.type) ? (
         <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
-          {`${formState.errors?.[config.key].message.split(".")[0]} -
+          {`${t(formState.errors?.[config.key].message.split(".")[0])}` +
+            `-
            ${formState.errors?.[config.key].message.split(".")[1] || " "}`}
         </CardLabelError>
       ) : null}

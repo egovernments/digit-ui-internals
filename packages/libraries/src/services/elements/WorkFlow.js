@@ -76,6 +76,7 @@ export const WorkflowService = {
               assigner: instance?.assigner,
               rating: instance?.rating,
               comment: instance?.comment,
+              documents: instance?.documents,
               caption: instance.assignes ? instance.assignes.map((assignee) => ({ name: assignee.name, mobileNumber: assignee.mobileNumber })) : null,
               auditDetails: {
                 created: Digit.DateUtils.ConvertTimestampToDate(instance.auditDetails.createdTime),

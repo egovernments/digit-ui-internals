@@ -34,6 +34,7 @@ const BannerPicker = (props) => {
 
 const TLAcknowledgement = ({ data, onSuccess }) => {
   const { t } = useTranslation();
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("CITIZEN_TL_MUTATION_HAPPENED", false);
   const resubmit = window.location.href.includes("edit-application");
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const mutation = Digit.Hooks.tl.useTradeLicenseAPI(
@@ -57,6 +58,9 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
 
 
   useEffect(() => {
+    const onSuccessedit = () => {
+      setMutationHappened(true);
+    };
     try {
       if (!resubmit) {
         let tenantId = data?.address?.city ? data.address?.city?.code : tenantId;
@@ -72,13 +76,12 @@ const TLAcknowledgement = ({ data, onSuccess }) => {
           onSuccess,
         })) : console.log("skipped");
       } else {
-        debugger;
         let tenantId = data?.address?.city ? data.address?.city?.code : tenantId;
         data.tenantId = tenantId;
         let formdata = convertToResubmitTrade(data);
         formdata.Licenses[0].tenantId = formdata?.Licenses[0]?.tenantId || tenantId;
-        !mutation2.isLoading && !mutation.isSuccess && mutation2.mutate(formdata, {
-          onSuccess,
+        !mutation2.isLoading && !mutation2.isSuccess &&!mutationHappened && mutation2.mutate(formdata, {
+          onSuccessedit,
         })
 
       }

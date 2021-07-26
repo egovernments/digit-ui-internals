@@ -1,3 +1,4 @@
+
 export const pdfDownloadLink = (documents = {}, fileStoreId = "", format = "") => {
   /* Need to enhance this util to return required format*/
 
@@ -53,3 +54,17 @@ export const convertEpochFormateToDate = (dateEpoch) => {
 const objectsEqual = (o1, o2) => Object.keys(o1).length === Object.keys(o2).length && Object.keys(o1).every((p) => o1[p] === o2[p]);
 
 export const arraysEqual = (a1, a2) => a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+
+
+/* function returns only the city which user has access to  */
+/* exceptional incase of state level user , where return all cities*/
+export const getCityThatUserhasAccess = (cities = []) => {
+  const userInfo = Digit.UserService.getUser();
+  let roleObject = {};
+  userInfo?.info?.roles.map((roleData) => { roleObject[roleData?.code] = roleObject[roleData?.code] ? [...roleObject[roleData?.code], roleData?.tenantId] : [roleData?.tenantId] });
+  const tenant = Digit.ULBService.getCurrentTenantId();
+  if (roleObject[Digit.Utils?.hrmsRoles?.[0]].includes(tenant?.split('.')[0])) {
+    return cities;
+  }
+  return cities.filter(city => roleObject[Digit.Utils?.hrmsRoles?.[0]]?.includes(city?.code));
+}

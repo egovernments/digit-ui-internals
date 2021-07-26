@@ -324,11 +324,19 @@ const OwnerForm = (_props) => {
                     control={control}
                     name={"altContactNumber"}
                     defaultValue={owner?.altContactNumber}
-                    rules={isIndividualTypeOwner ? {} : { required: t("CORE_COMMON_REQUIRED_ERRMSG") }}
+                    rules={
+                      isIndividualTypeOwner
+                        ? {}
+                        : {
+                            required: t("CORE_COMMON_REQUIRED_ERRMSG"),
+                            validate: { pattern: (e) => (/^[0-9]{11}$/i.test(e) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) },
+                          }
+                    }
                     render={(props) => (
                       <MobileNumber
                         value={props.value}
                         hideSpan={true}
+                        maxLength={11}
                         autoFocus={focusIndex.index === owner?.key && focusIndex.type === "altContactNumber"}
                         onChange={(e) => {
                           props.onChange(e);

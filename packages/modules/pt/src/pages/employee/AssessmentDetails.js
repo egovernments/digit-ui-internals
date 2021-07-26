@@ -75,7 +75,7 @@ const AssessmentDetails = () => {
             setTimeout(closeToast, 5000);
           },
           onSuccess: (data, variables) => {
-            setShowToast({ key: "success", action: "ASSESSMENT" });
+            setShowToast({ key: "success", action: { action: "ASSESSMENT" } });
             setTimeout(closeToast, 5000);
             queryClient.setQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear], true);
           },

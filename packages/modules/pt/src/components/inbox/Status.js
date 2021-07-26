@@ -6,7 +6,7 @@ import StatusCount from "./StatusCount";
 const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap, moduleCode }) => {
   const { t } = useTranslation();
 
-  // const [moreStatus, showMoreStatus] = useState(false);
+  const [moreStatus, showMoreStatus] = useState(false);
 
   const { data: statusData, isLoading } = Digit.Hooks.useApplicationStatusGeneral({ businessServices }, {});
 
@@ -47,6 +47,7 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
       </div>
       {userRoleStates
         ?.filter((e) => !e.isTerminateState)
+        ?.slice(0, 4)
         ?.map((option, index) => {
           return (
             <StatusCount
@@ -59,26 +60,31 @@ const Status = ({ onAssignmentChange, searchParams, businessServices, statusMap,
             />
           );
         })}
+      {userRoleStates?.filter((e) => !e.isTerminateState)?.slice(4).length > 0 ? (
+        <React.Fragment>
+          {moreStatus &&
+            userRoleStates
+              ?.filter((e) => !e.isTerminateState)
+              ?.slice(4)
+              ?.map((option, index) => {
+                return (
+                  <StatusCount
+                    businessServices={businessServices}
+                    key={option.uuid}
+                    onAssignmentChange={onAssignmentChange}
+                    status={{ name: translateState(option, t), code: option.applicationStatus, ...option }}
+                    searchParams={searchParams}
+                    statusMap={statusMap}
+                  />
+                );
+              })}
 
-      {/* {moreStatus &&
-        otherRoleStates
-          ?.filter((e) => !e.isTerminateState)
-          ?.map((option, index) => {
-            return (
-              <StatusCount
-                businessServices={businessServices}
-                key={option.uuid}
-                onAssignmentChange={onAssignmentChange}
-                status={{ name: translateState(option, t), code: option.applicationStatus, ...option }}
-                searchParams={searchParams}
-                statusMap={statusMap}
-              />
-            );
-          })}
-      <div className="filter-button" onClick={() => showMoreStatus(!moreStatus)}>
-        {" "}
-        {moreStatus ? t("ES_COMMON_LESS") : t("ES_COMMON_MORE")}{" "}
-      </div> */}
+          <div className="filter-button" onClick={() => showMoreStatus(!moreStatus)}>
+            {" "}
+            {moreStatus ? t("ES_COMMON_LESS") : t("ES_COMMON_MORE")}{" "}
+          </div>
+        </React.Fragment>
+      ) : null}
     </div>
   ) : null;
 };

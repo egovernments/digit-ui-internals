@@ -159,6 +159,24 @@ const ApplicationDetails = () => {
     });
   }
 
+  const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { documents }) => {
+    return documents ? [...acc, ...documents] : acc;
+  }, []);
+  let appdetailsDocuments = appDetailsToShow?.applicationDetails?.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER")?.additionalDetails
+    ?.documents;
+  // console.log(wfDocs, workflowDetails, appdetailsDocuments, "wfDcs");
+  // console.log(appDetailsToShow?.applicationDetails, "wfDcs boolean");
+
+  if (appdetailsDocuments && wfDocs?.length && !appdetailsDocuments?.find((e) => e.title === "PT_WORKFLOW_DOCS")) {
+    appDetailsToShow.applicationDetails.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER").additionalDetails.documents = [
+      ...appdetailsDocuments,
+      {
+        title: "PT_WORKFLOW_DOCS",
+        values: wfDocs?.map?.((e) => ({ ...e, title: e.documentType })),
+      },
+    ];
+  }
+
   return (
     <div>
       <Header>{t("PT_APPLICATION_TITLE")}</Header>

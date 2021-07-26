@@ -111,7 +111,7 @@ const getAddressDetails = (application, t) => {
     values: [
       { title: t("CORE_COMMON_PINCODE"), value: application?.tradeLicenseDetail?.address?.pincode || "NA" },
       { title: t("MYCITY_CODE_LABEL"), value: t(application?.tradeLicenseDetail?.address?.city) || "NA" },
-      { title: t("TL_LOCALIZATION_LOCALITY"), value: t(application?.tradeLicenseDetail?.address?.locality?.code) || "NA" },
+      { title: t("TL_LOCALIZATION_LOCALITY"), value: t(`TENANTS_MOHALLA_${application?.tradeLicenseDetail?.address?.locality?.code}`) || "NA" },
       { title: t("TL_LOCALIZATION_BUILDING_NO"), value: application?.tradeLicenseDetail?.address?.doorNo || "NA" },
       { title: t("TL_LOCALIZATION_STREET_NAME"), value: application?.tradeLicenseDetail?.address?.street || "NA" }
     ],

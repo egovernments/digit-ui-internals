@@ -69,8 +69,10 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
   }, [previousLicenseDetails]);
 
   useEffect(() => {
-    setOwners([createOwnerDetails()]);
-    if (formData?.ownershipCategory?.code == "INDIVIDUAL.MULTIPLEOWNERS") setError("mulipleOwnerError", { type: "owner_missing", message: `TL_ERROR_MULTIPLE_OWNER` });
+    if (!window.location.href.includes("renew-application-details")) {
+      setOwners([createOwnerDetails()]);
+      if (formData?.ownershipCategory?.code == "INDIVIDUAL.MULTIPLEOWNERS") setError("mulipleOwnerError", { type: "owner_missing", message: `TL_ERROR_MULTIPLE_OWNER` });
+    }
   }, [formData?.ownershipCategory?.code]);
 
   const isRenewal = window.location.href.includes("tl/renew-application-details");

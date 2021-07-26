@@ -99,7 +99,7 @@ const MyChallanResult = ({ template, header, actionButtonLabel }) => {
         </div>
       </div>
 
-      <div style={{ marginLeft: "16px", marginTop: "16px" }}>
+      <div style={{ marginLeft: "16px", marginTop: "16px", marginBottom: "46px" }}>
         <p>{t("UC_NOT_ABLE_TO_FIND_BILL_MSG")} </p>
         <p className="link">
           <Link to="/digit-ui/citizen/mcollect/search">{t("UC_CLICK_HERE_TO_SEARCH_LINK")}</Link>

@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import { checkForEmployee } from "../utils";
 
 const TLCard = () => {
+    if (!Digit.Utils.tlAccess()) {
+        return null;
+    }
     const { t } = useTranslation();
     const tenantId = Digit.ULBService.getCurrentTenantId();
     const inboxSearchParams = { limit: 10, offset: 0 }

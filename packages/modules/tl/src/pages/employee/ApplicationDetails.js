@@ -70,7 +70,7 @@ const ApplicationDetails = () => {
     workflowDetails?.data?.actionState?.nextActions?.forEach(data => {
       if(data.action == "RESUBMIT") {
         data.redirectionUrl = {
-          pathname: `/digit-ui/employee/tl/renew-application-details/${applicationNumber}`,
+          pathname: `/digit-ui/employee/tl/edit-application-details/${applicationNumber}`,
           state: applicationDetails
         },
         data.tenantId = stateId
@@ -152,6 +152,19 @@ const ApplicationDetails = () => {
         }
       })
   };
+
+  const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { documents }) => {
+    return documents ? [...acc, ...documents] : acc;
+  }, []);
+  const ownerdetails = applicationDetails?.applicationDetails.find(e => e.title === "ES_NEW_APPLICATION_OWNERSHIP_DETAILS");
+  let appdetailsDocuments = ownerdetails?.additionalDetails?.documents;
+  console.log(wfDocs, workflowDetails, appdetailsDocuments, "wfDcs"); 
+  if(appdetailsDocuments && wfDocs?.length && !(appdetailsDocuments.find(e => e.title === "TL_WORKFLOW_DOCS"))){
+    ownerdetails.additionalDetails.documents = [...ownerdetails.additionalDetails.documents,{
+      title: "TL_WORKFLOW_DOCS",
+      values: wfDocs?.map?.((e) => ({ ...e, title: e.documentType})),
+    }];
+  }
 
 
 

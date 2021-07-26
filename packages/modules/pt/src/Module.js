@@ -1,4 +1,4 @@
-import { Header, CitizenHomeCard, RupeeIcon } from "@egovernments/digit-ui-react-components";
+import { Header, CitizenHomeCard, PTIcon } from "@egovernments/digit-ui-react-components";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouteMatch } from "react-router-dom";
@@ -166,7 +166,7 @@ export const PTLinks = ({ matchPath, userType }) => {
     },
   ];
 
-  return <CitizenHomeCard header={t("ACTION_TEST_PROPERTY_TAX")} links={links} Icon={RupeeIcon} />;
+  return <CitizenHomeCard header={t("ACTION_TEST_PROPERTY_TAX")} links={links} Icon={PTIcon} />;
 };
 
 export const PTComponents = {

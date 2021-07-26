@@ -102,7 +102,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
             assignee: !selectedApprover?.uuid ? null : [selectedApprover?.uuid],
             // assignee: action?.isTerminateState ? [] : [selectedApprover?.uuid],
             wfDocuments: uploadedFile ? [{
-                documentType: "Document - 1",
+                documentType:action?.action+" DOC",
                 fileName: file?.name,
                 fileStoreId: uploadedFile,
             }] : null

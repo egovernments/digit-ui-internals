@@ -10,27 +10,37 @@ const PDFSvg = ({ width = 34, height = 34, style }) => (
 
 function PropertyDocuments({ documents }) {
   const { t } = useTranslation();
-  const filesArray = documents[0]?.values?.map((value) => value?.fileStoreId);
+  const [filesArray, setFilesArray] = useState(() => {
+    [];
+  });
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [pdfFiles, setPdfFiles] = useState({});
+
+  useEffect(() => {
+    let acc = [];
+    documents?.forEach((element, index, array) => {
+      // console.log(element, array, "inside property documents");
+      acc = [...acc, ...element.values];
+    });
+    setFilesArray(acc?.map((value) => value?.fileStoreId));
+  }, [documents]);
 
   useEffect(() => {
     Digit.UploadServices.Filefetch(filesArray, tenantId.split(".")[0]).then((res) => {
       setPdfFiles(res?.data);
     });
-    return () => setPdfFiles({});
-  }, []);
+  }, [filesArray]);
 
   return (
     <div style={{ marginTop: "19px" }}>
       {documents?.map((document, index) => (
         <React.Fragment key={index}>
-          <CardSubHeader style={{ marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>{t(document?.title)}</CardSubHeader>
+          <CardSubHeader style={{ marginTop: "32px", marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>{t(document?.title)}</CardSubHeader>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {document?.values?.map((value, index) => (
               <a target="_" href={pdfFiles[value.fileStoreId]?.split(",")[0]} style={{ minWidth: "160px", marginRight: "20px" }} key={index}>
                 <PDFSvg width={140} height={140} style={{ background: "#f6f6f6", padding: "8px" }} />
-                <p style={{ marginTop: "8px",  fontWeight: "bold", textAlign: "center" }}>{t(value?.title)}</p>
+                <p style={{ marginTop: "8px", fontWeight: "bold", textAlign: "center" }}>{t(value?.title)}</p>
               </a>
             ))}
           </div>
