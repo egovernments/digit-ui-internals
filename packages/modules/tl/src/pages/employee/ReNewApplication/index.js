@@ -24,10 +24,10 @@ const ReNewApplication = (props) => {
   const [showToast, setShowToast] = useState(null);
   const [error, setError] = useState(null);
 
-  let financialYear = applicationData?.financialYear;
+  let financialYear = cloneDeep(applicationData?.financialYear);
   let financialYearDate = applicationData?.financialYear?.split('-')[1];
   let finalFinancialYear = `20${Number(financialYearDate)}-${Number(financialYearDate)+1}`
-
+  if (window.location.href.includes("edit-application-details")) finalFinancialYear = financialYear;
 
   const tradeDetails = [
     {
