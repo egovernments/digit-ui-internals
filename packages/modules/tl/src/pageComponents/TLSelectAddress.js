@@ -152,9 +152,8 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
     }
   }, [errors]);
 
-  const checkingLocationForRenew = window.location.href.includes("renew-application-details");
-  const checkingLocationFornew = window.location.href.includes("new-application-details");
-
+  let checkingLocationForRenew = window.location.href.includes("renew-application-details");
+  if (window.location.href.includes("edit-application-details")) checkingLocationForRenew = true;
   if (userType === "employee") {
     return (
       <div>

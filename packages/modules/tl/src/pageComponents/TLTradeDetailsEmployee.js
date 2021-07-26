@@ -213,7 +213,8 @@ const OwnerForm1 = (_props) => {
     }
   }
 
-  const isRenewal = window.location.href.includes("renew-application-details");
+  let isRenewal = window.location.href.includes("renew-application-details");
+  if (window.location.href.includes("edit-application-details")) isRenewal = true;
 
 
   useEffect(() => {
