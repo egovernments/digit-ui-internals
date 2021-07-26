@@ -100,7 +100,7 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
         }, {});
         let totalGroundFloorArea = Object.keys(floorWiseAreas).reduce((acc, key) => (floorWiseAreas[key] <= acc ? acc : floorWiseAreas[key]), 0);
 
-        console.log(floorWiseAreas, totalGroundFloorArea, "areaas");
+        // console.log(floorWiseAreas, totalGroundFloorArea, "areaas");
         if (totalGroundFloorArea > Number(formData?.landarea)) {
           setError(config.key, { type: "landArea extended", message: t("PT_BUILTUPAREA_GRATER_THAN_LANDAREA") });
         } else clearErrors(config.key);
@@ -123,7 +123,7 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
     }, {});
 
     let totalGroundFloorArea = Object.keys(floorWiseAreas).reduce((acc, key) => (floorWiseAreas[key] <= acc ? acc : floorWiseAreas[key]), 0);
-    console.log(floorWiseAreas, totalGroundFloorArea, "areaas");
+    // console.log(floorWiseAreas, totalGroundFloorArea, "areaas");
     const continuousFloorsArr = floorListData.filter((e) => {
       let num = Number(e?.code);
       return (num < maxFloor && num > minFloor) || num === maxFloor || num === minFloor;
