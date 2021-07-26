@@ -128,42 +128,38 @@ export const gettradeownerarray = (data) => {
     data?.owners?.owners.map((newowner) => {
       if(oldowner.id === newowner.id)
       {
+        if((oldowner.name !== newowner.name) || (oldowner.gender !== newowner.gender.code) || (oldowner.mobileNumber !== newowner.mobilenumber) || (oldowner.permanentAddress !== data?.owners?.permanentAddress))
+        {
         if (oldowner.name !== newowner.name)
         {
           oldowner.name = newowner.name;
-          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
-          if(!found)tradeownerarray.push(oldowner);
         }
-        else if(oldowner.gender !== newowner.gender.code)
+        if(oldowner.gender !== newowner.gender.code)
         {
           oldowner.gender = newowner.gender.code;
-          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
-          if(!found)tradeownerarray.push(oldowner);
         }
-        else if(oldowner.mobileNumber !== newowner.mobilenumber)
+        if(oldowner.mobileNumber !== newowner.mobilenumber)
         {
           oldowner.mobileNumber = newowner.mobilenumber;
-          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
-          if(!found)tradeownerarray.push(oldowner);
         }
-        else if(oldowner.permanentAddress !== data?.owners?.permanentAddress)
+        if(oldowner.permanentAddress !== data?.owners?.permanentAddress)
         {
           oldowner.permanentAddress = data?.owners?.permanentAddress;
-          let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
-          if(!found)tradeownerarray.push(oldowner);
         }
+        let found = tradeownerarray.length > 0 ?tradeownerarray.some(el => el.id === oldowner.id):false;
+          if(!found)tradeownerarray.push(oldowner);
+      }
         else
         {
           let found = tradeownerarray.length > 0 ? tradeownerarray.some(el => el.id === oldowner.id):false;
           if(!found)tradeownerarray.push(oldowner);
         }
       }
-      else
-      {
-        let found = tradeownerarray.length > 0 ? tradeownerarray.some(el => el.id === oldowner.id):false;
-        if(!found)tradeownerarray.push({...oldowner,active:false});   
-      }
     })
+  })
+  data.tradeLicenseDetail.owners.map((oldowner) => {
+    let found = tradeownerarray.length > 0 ? tradeownerarray.some(el => el.id === oldowner.id):false;
+    if(!found)tradeownerarray.push({...oldowner,active:false});   
   })
   data?.owners?.owners.map((ob) => {
     if(!ob.id)
