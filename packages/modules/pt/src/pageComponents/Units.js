@@ -206,10 +206,10 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
   }, [formData?.PropertyType]);
 
   useEffect(() => {
-    console.log(units, "inside units change");
+    // console.log(units, "inside units change");
     goNext();
     calculateNumberOfFloors();
-  }, [units, formData.PropertyType]);
+  }, [units, formData.PropertyType, formData.landarea]);
 
   if (loader && presentInModifyApplication) return <Loader />;
 

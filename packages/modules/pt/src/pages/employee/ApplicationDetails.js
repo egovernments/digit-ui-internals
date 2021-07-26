@@ -162,10 +162,13 @@ const ApplicationDetails = () => {
   const wfDocs = workflowDetails.data?.timeline?.reduce((acc, { documents }) => {
     return documents ? [...acc, ...documents] : acc;
   }, []);
-  let appdetailsDocuments = appDetailsToShow?.applicationDetails?.[3].additionalDetails?.documents;
-  console.log(wfDocs, workflowDetails, appdetailsDocuments, "wfDcs");
+  let appdetailsDocuments = appDetailsToShow?.applicationDetails?.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER")?.additionalDetails
+    ?.documents;
+  // console.log(wfDocs, workflowDetails, appdetailsDocuments, "wfDcs");
+  // console.log(appDetailsToShow?.applicationDetails, "wfDcs boolean");
+
   if (appdetailsDocuments && wfDocs?.length && !appdetailsDocuments?.find((e) => e.title === "PT_WORKFLOW_DOCS")) {
-    appDetailsToShow.applicationDetails[3].additionalDetails.documents = [
+    appDetailsToShow.applicationDetails.find((e) => e.title === "PT_OWNERSHIP_INFO_SUB_HEADER").additionalDetails.documents = [
       ...appdetailsDocuments,
       {
         title: "PT_WORKFLOW_DOCS",
