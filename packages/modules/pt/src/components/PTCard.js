@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PropertyHouse, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard, PTIcon } from "@egovernments/digit-ui-react-components";
 
 const PTCard = () => {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ const PTCard = () => {
   }
 
   const propsForModuleCard = {
-    Icon: <PropertyHouse />,
+    Icon: <PTIcon />,
     moduleName: t("ES_TITLE_PROPERTY_TAX"),
     kpis: [
       {

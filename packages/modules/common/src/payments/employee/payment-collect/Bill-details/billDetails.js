@@ -106,6 +106,15 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
   };
 
   useEffect(() => {
+    ModuleWorkflow === "mcollect" && billDetails?.billAccountDetails && billDetails?.billAccountDetails.map((ob) => {
+      if(ob.taxHeadCode.includes("CGST"))
+        ob.order = 3;
+      else if(ob.taxHeadCode.includes("SGST"))
+        ob.order = 4;
+    })
+  },[billDetails?.billAccountDetails])
+
+  useEffect(() => {
     const allowPayment = minAmountPayable && amount >= minAmountPayable && !isAdvanceAllowed && amount <= getTotal() && !formError;
     if (paymentType != t("CS_PAYMENT_FULL_AMOUNT")) setPaymentAllowed(allowPayment);
     else setPaymentAllowed(true);

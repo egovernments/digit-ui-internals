@@ -41,7 +41,7 @@ export const MCollectLinks = ({ matchPath, userType }) => {
     },
   ];
 
-  return <CitizenHomeCard header={t("ACTION_TEST_MCOLLECT")} links={links} Icon={PTIcon} />;
+  return <CitizenHomeCard header={t("ACTION_TEST_MCOLLECT")} links={links} Icon={() => <PTIcon className="fill-path-primary-main" />} />;
 };
 
 const componentsToRegister = {
