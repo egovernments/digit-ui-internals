@@ -76,8 +76,8 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
 
   const yearWiseBills = bill?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod);
   const billDetails = yearWiseBills?.[0] || [];
-
-  const getTotal = () => bill?.totalAmount ? bill?.totalAmount : 0;
+  const currentYear = new Date().getFullYear();
+  const getTotal = () => (bill?.totalAmount ? bill?.totalAmount : 0);
 
   const { isLoading: mdmsLoading, data: mdmsBillingData } = Digit.Hooks.useGetPaymentRulesForBusinessServices(tenantId);
   const [paymentRules, setPaymentRules] = useState();
@@ -187,7 +187,7 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
           ))}
 
         <hr style={{ width: "40%" }} className="underline" />
-        <Row label={t("CS_PAYMENT_TOTAL_AMOUNT")} textStyle={{ fontWeight: "bold" }} text={"₹ " +getTotal()} />
+        <Row label={t("CS_PAYMENT_TOTAL_AMOUNT")} textStyle={{ fontWeight: "bold" }} text={"₹ " + getTotal()} />
       </StatusTable>
       {showDetails && !ModuleWorkflow && businessService !== "TL" ? (
         <React.Fragment>
@@ -201,11 +201,13 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {yearWiseBills?.map((year_bill, index) => (
-                      <tr key={index}>
-                        <td style={tdStyle}>{getFinancialYear(year_bill)}</td>
-                      </tr>
-                    ))}
+                    {yearWiseBills
+                      ?.filter((e, ind) => new Date(e.fromPeriod).getFullYear() != currentYear)
+                      ?.map((year_bill, index) => (
+                        <tr key={index}>
+                          <td style={tdStyle}>{getFinancialYear(year_bill)}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -213,8 +215,9 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
                 <table>
                   <thead>
                     <tr>
-                      {yearWiseBills?.[0]?.billAccountDetails
-                        ?.sort((a, b) => a.order - b.order)
+                      {yearWiseBills
+                        ?.filter((e, ind) => new Date(e.fromPeriod).getFullYear() != currentYear)?.[0]
+                        ?.billAccountDetails?.sort((a, b) => a.order - b.order)
                         ?.map((head, index) => (
                           <th style={{ ...thStyle }} key={index}>
                             {t(head.taxHeadCode)}
@@ -223,18 +226,20 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {yearWiseBills?.map((year_bill, index) => {
-                      const sorted_tax_heads = year_bill?.billAccountDetails?.sort((a, b) => a.order - b.order);
-                      return (
-                        <tr key={index}>
-                          {sorted_tax_heads.map((e, i) => (
-                            <td style={tdStyle} key={i}>
-                              {e.amount}
-                            </td>
-                          ))}
-                        </tr>
-                      );
-                    })}
+                    {yearWiseBills
+                      ?.filter((e, ind) => new Date(e.fromPeriod).getFullYear() != currentYear)
+                      ?.map((year_bill, index) => {
+                        const sorted_tax_heads = year_bill?.billAccountDetails?.sort((a, b) => a.order - b.order);
+                        return (
+                          <tr key={index}>
+                            {sorted_tax_heads.map((e, i) => (
+                              <td style={tdStyle} key={i}>
+                                {e.amount}
+                              </td>
+                            ))}
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -246,13 +251,15 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {yearWiseBills?.map((year_bill, index) => {
-                      return (
-                        <tr key={index}>
-                          <td style={tdStyle}>{year_bill.amount}</td>
-                        </tr>
-                      );
-                    })}
+                    {yearWiseBills
+                      ?.filter((e, ind) => new Date(e.fromPeriod).getFullYear() != currentYear)
+                      ?.map((year_bill, index) => {
+                        return (
+                          <tr key={index}>
+                            <td style={tdStyle}>{year_bill.amount}</td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -263,13 +270,14 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
           </div>{" "}
         </React.Fragment>
       ) : (
-        !ModuleWorkflow && businessService !== "TL" && (
+        !ModuleWorkflow &&
+        businessService !== "TL" && (
           <div style={{}} onClick={() => setShowDetails(true)} className="filter-button">
             {t("ES_COMMON_VIEW_DETAILS")}
           </div>
         )
       )}
-      {paymentRules?.partPaymentAllowed  && (
+      {paymentRules?.partPaymentAllowed && (
         <div className="bill-payment-amount">
           <CardSectionHeader>{t("CS_COMMON_PAYMENT_AMOUNT")}</CardSectionHeader>
           <RadioButtons
