@@ -1,6 +1,6 @@
 {
   "name": "egovernments",
-  "version": "1.0.17",
+  "version": "1.3.0",
   "main": "index.js",
   "workspaces": [
     "example",
