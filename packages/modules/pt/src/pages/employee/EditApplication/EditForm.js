@@ -37,7 +37,7 @@ const EditForm = ({ applicationData }) => {
         city: data?.address?.city?.name,
       },
       propertyType: data?.PropertyType?.code,
-      creationReason: state.workflow?.businessService === "PT.UPDATE" ? "UPDATE" : applicationData?.creationReason,
+      creationReason: state.workflow?.businessService === "PT.CREATE" ? "CREATE" : "UPDATE",
       usageCategory: data?.usageCategoryMinor?.subuagecode ? data?.usageCategoryMinor?.subuagecode : data?.usageCategoryMajor?.code,
       usageCategoryMajor: data?.usageCategoryMajor?.code.split(".")[0],
       usageCategoryMinor: data?.usageCategoryMajor?.code.split(".")[1] || null,
@@ -47,21 +47,17 @@ const EditForm = ({ applicationData }) => {
       propertyType: data?.PropertyType?.code,
       source: "MUNICIPAL_RECORDS", // required
       channel: "CFC_COUNTER", // required
-      documents: data?.documents?.documents,
+      documents: applicationData?.documents.map((old) => {
+        let dt = old.documentType.split(".");
+        let newDoc = data?.documents?.documents?.find((e) => e.documentType.includes(dt[0] + "." + dt[1]));
+        return { ...old, ...newDoc };
+      }),
       units: data?.units,
       workflow: state.workflow,
       applicationStatus: "UPDATE",
     };
 
-    let keys = Object.keys(formData);
-    let unequalKeys = [];
-    keys.forEach((key) => {
-      if (!_.isEqual(formData[key], applicationData[key]) && applicationData[key])
-        unequalKeys.push({ key, app: applicationData[key], form: formData[key] });
-    });
-
-    console.log(unequalKeys, "inside submit edit");
-
+    // console.log(formData, "in submit");
     history.push("/digit-ui/employee/pt/response", { Property: formData, key: "UPDATE", action: "SUBMIT" });
   };
 
