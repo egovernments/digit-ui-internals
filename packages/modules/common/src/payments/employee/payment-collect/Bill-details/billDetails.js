@@ -76,6 +76,10 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
 
   const yearWiseBills = bill?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod);
   const billDetails = yearWiseBills?.[0] || [];
+  const arrears =
+    bill?.billDetails
+      ?.sort((a, b) => b.fromPeriod - a.fromPeriod)
+      ?.reduce((total, current, index) => (index === 0 ? total : total + current.amount), 0) || 0;
   // const currentYear = new Date().getFullYear();
   const getTotal = () => (bill?.totalAmount ? bill?.totalAmount : 0);
 
@@ -194,6 +198,10 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
               text={"₹ " + amountDetails.amount?.toFixed(2)}
             />
           ))}
+
+        {arrears?.toFixed?.(2) ? (
+          <Row labelStyle={{ fontWeight: "normal" }} label={t("COMMON_ARREARS")} text={"₹ " + arrears?.toFixed?.(2) || Number(0).toFixed(2)} />
+        ) : null}
 
         <hr style={{ width: "40%" }} className="underline" />
         <Row label={t("CS_PAYMENT_TOTAL_AMOUNT")} textStyle={{ fontWeight: "bold" }} text={"₹ " + getTotal()} />
