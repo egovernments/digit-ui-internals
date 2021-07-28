@@ -2,7 +2,7 @@ export const filterFunctions = {
   PT: (filtersArg) => {
     let { uuid } = Digit.UserService.getUser()?.info || {};
 
-    console.log(filtersArg, "in filter fn");
+    // console.log(filtersArg.uuid, "in filter fn");
     const searchFilters = {};
     const workflowFilters = {};
 
@@ -26,7 +26,7 @@ export const filterFunctions = {
     if (filtersArg?.locality?.length) {
       searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop());
     }
-    if (filtersArg?._searchParams?.uuid && filtersArg?._searchParams?.uuid.code === "ASSIGNED_TO_ME") {
+    if (filtersArg?.uuid && filtersArg?.uuid.code === "ASSIGNED_TO_ME") {
       workflowFilters.assignee = uuid;
     }
     if (mobileNumber) {
