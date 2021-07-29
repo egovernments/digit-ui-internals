@@ -33,6 +33,7 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
   const stateId = tenantId.split(".")[0];
   const [isErrors, setIsErrors] = useState(false);
   const [licenseTypeList, setLicenseTypeList] = useState([]);
+  const [licenseTypeValue, setLicenseTypeValue] = useState([]);
 
   const { isLoading, data: Menu = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", "StructureType");
 
@@ -88,7 +89,9 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
     licenseTypeList, 
     setLicenseTypeList,
     previousLicenseDetails, 
-    setPreviousLicenseDetails
+    setPreviousLicenseDetails,
+    licenseTypeValue,
+    setLicenseTypeValue
   };
 
   if (isEditScreen) {
@@ -133,7 +136,9 @@ const OwnerForm1 = (_props) => {
     licenseTypeList, 
     setLicenseTypeList,
     previousLicenseDetails, 
-    setPreviousLicenseDetails
+    setPreviousLicenseDetails,
+    licenseTypeValue,
+    setLicenseTypeValue
   } = _props;
 
   const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger, getValues } = useForm();
@@ -179,6 +184,14 @@ const OwnerForm1 = (_props) => {
             data.i18nKey = `TRADELICENSE_LICENSETYPE_${data.code}`
           })
         };
+        
+        let licenseTypeValue = [];
+        if (licenseTypes && licenseTypes.length > 0) {
+          licenseTypes.map(data =>{
+            if(data.code == "PERMANENT") licenseTypeValue.push(data);
+          });
+        }
+        setLicenseTypeValue(licenseTypeValue[0]);
         setLicenseTypeList(licenseTypes);
     }
 }, [billingSlabData]);
@@ -309,7 +322,7 @@ const OwnerForm1 = (_props) => {
               render={(props) => (
                 <Dropdown
                   className="form-field"
-                  selected={licenseTypeList[1]}
+                  selected={licenseTypeValue} //{licenseTypeList[1]}
                   disable={true}
                   option={licenseTypeList}
                   select={props.onChange}
