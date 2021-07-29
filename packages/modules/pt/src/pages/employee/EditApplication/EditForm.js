@@ -54,7 +54,6 @@ const EditForm = ({ applicationData }) => {
         return { ...old, ...newDoc };
       }),
       units: [...applicationData?.units?.map((old) => ({ ...old, active: false })), ...data.units],
-      // units: [...data.units],
       workflow: state.workflow,
       applicationStatus: "UPDATE",
     };
