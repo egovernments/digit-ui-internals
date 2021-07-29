@@ -42,7 +42,6 @@ const DsoDashboard = () => {
   const { data: inbox, isFetching: inboxFetching } = Digit.Hooks.fsm.useInbox(tenantId, { ...filters }, {
     enabled: isDsoLoaded,
   }, true );
-  debugger
   const info = useMemo( () => ({
     [t("ES_COMPLETION_PENDING")]: inbox?.statuses.filter(e => e.applicationstatus === "DSO_INPROGRESS")[0]?.count || 0,
     [t("ES_VEHICLE_ASSIGNMENT_PENDING")]: inbox?.statuses.filter(e => e.applicationstatus === "PENDING_DSO_APPROVAL")[0]?.count || 0,
