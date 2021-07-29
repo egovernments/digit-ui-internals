@@ -33,7 +33,6 @@ const NewApplication = () => {
   }, []);
 
   const onFormValueChange = (setValue, formData, formState) => {
-    console.log(formData, formState.errors, "in new application");
     setSubmitValve(!Object.keys(formState.errors).length);
   };
 
@@ -112,6 +111,7 @@ const NewApplication = () => {
       tradeName,
       wfDocuments: [],
       tradeLicenseDetail: {
+        channel:"COUNTER",
         additionalDetail: {}
       }
     };
