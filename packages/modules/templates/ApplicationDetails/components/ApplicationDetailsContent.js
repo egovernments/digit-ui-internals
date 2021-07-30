@@ -59,6 +59,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                 </CardSectionHeader>
               </React.Fragment>
             )}
+            {/* TODO, Later will move to classes */}
             <StatusTable style={checkLocation ? { position: "relative", marginTop: "19px" } : {}}>
               {detail?.values?.map((value, index) => {
                 if (value.map === true && value.value !== "N/A") {
@@ -72,6 +73,7 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                     last={index === detail?.values?.length - 1}
                     caption={value.caption}
                     className="border-none"
+                    // TODO, Later will move to classes
                     rowContainerStyle={checkLocation ? { justifyContent: "space-between", fontSize: "16px", lineHeight: "19px", color: "#0B0C0C" } : {}}
                   />
                 );
