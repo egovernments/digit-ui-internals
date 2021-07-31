@@ -13,6 +13,7 @@ const PTSelectAddress = ({ t, config, onSelect, userType, formData, setError, cl
   const presentInModifyApplication = pathname.includes("modify");
 
   let isEditProperty = formData?.isEditProperty || false;
+  if(presentInModifyApplication) isEditProperty = true;
   if (formData?.isUpdateProperty) isEditProperty = true;
   const { pincode, city } = formData?.address || "";
   const cities =
