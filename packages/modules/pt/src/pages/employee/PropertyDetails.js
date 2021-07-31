@@ -84,7 +84,6 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     if (workflowDetails?.data?.applicationBusinessService) {
-      console.log(workflowDetails?.data, "workflowDetaisl");
       setBusinessService(workflowDetails?.data?.applicationBusinessService);
     }
   }, [workflowDetails.data]);

@@ -1,10 +1,9 @@
-import { FormStep, TextInput, CardLabel, LabelFieldPair, CardLabelError } from "@egovernments/digit-ui-react-components";
-import React, { useState, useEffect } from "react";
+import { CardLabel, CardLabelError, FormStep, LabelFieldPair, TextInput } from "@egovernments/digit-ui-react-components";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const PTSelectPincode = ({ t, config, onSelect, formData = {}, userType, register, errors, setError, formState, clearErrors }) => {
   const tenants = Digit.Hooks.pt.useTenants();
-
   const { pathname } = useLocation();
   const presentInModifyApplication = pathname.includes("modify");
 
