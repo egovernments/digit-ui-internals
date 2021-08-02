@@ -84,6 +84,10 @@ export const propertyCardBodyStyle = {
   overflowY: "auto",
 };
 
+export const getTransaltedLocality = (data) => {
+  return (data?.tenantId?.replaceAll(".","_").toUpperCase()+"_REVENUE_"+data?.locality?.code);
+}
+
 export const setAddressDetails = (data) => {
   let { address } = data;
 
