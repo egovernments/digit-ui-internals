@@ -5,8 +5,7 @@ import { useParams } from "react-router-dom";
 import getPTAcknowledgementData from "../../getPTAcknowledgementData";
 import PropertyDocument from "../../pageComponents/PropertyDocument";
 import PTWFApplicationTimeline from "../../pageComponents/PTWFApplicationTimeline";
-import { getCityLocale, getMohallaLocale, getPropertyTypeLocale } from "../../utils";
-
+import { getCityLocale, getPropertyTypeLocale, propertyCardBodyStyle,getMohallaLocale } from "../../utils";
 
 const PTApplicationDetails = () => {
   const { t } = useTranslation();
@@ -87,7 +86,6 @@ const PTApplicationDetails = () => {
                   (application.usageCategory !== "RESIDENTIAL" ? "COMMON_PROPUSGTYPE_NONRESIDENTIAL_" : "COMMON_PROPSUBUSGTYPE_") +
                   (application?.usageCategory?.split(".")[1] ? application?.usageCategory?.split(".")[1] : application.usageCategory)
                 )}` || t("CS_NA")
-
               }
             />
             <Row label={t("PT_COMMON_PROPERTY_TYPE")} text={`${t(getPropertyTypeLocale(application?.propertyType))}` || t("CS_NA")} />
