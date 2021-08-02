@@ -106,13 +106,12 @@ const getTradeUnitsDetails = (application, t) => {
 };
 
 const getAddressDetails = (application, t) => {
-  console.log(application,"application");
   return {
     title: "",
     values: [
       { title: t("CORE_COMMON_PINCODE"), value: application?.tradeLicenseDetail?.address?.pincode || "NA" },
       { title: t("MYCITY_CODE_LABEL"), value: t(application?.tradeLicenseDetail?.address?.city) || "NA" },
-      { title: t("TL_LOCALIZATION_LOCALITY"), value: /* t(`${application?.tradeLicenseDetail?.address?.locality?.code}`) */t(getTransaltedLocality(application?.tradeLicenseDetail?.address)) || "NA" },
+      { title: t("TL_LOCALIZATION_LOCALITY"), value: t(getTransaltedLocality(application?.tradeLicenseDetail?.address)) || "NA" },
       { title: t("TL_LOCALIZATION_BUILDING_NO"), value: application?.tradeLicenseDetail?.address?.doorNo || "NA" },
       { title: t("TL_LOCALIZATION_STREET_NAME"), value: application?.tradeLicenseDetail?.address?.street || "NA" }
     ],
