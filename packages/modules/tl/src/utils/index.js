@@ -85,7 +85,8 @@ export const propertyCardBodyStyle = {
 };
 
 export const getTransaltedLocality = (data) => {
-  return (data?.tenantId?.replaceAll(".","_").toUpperCase()+"_REVENUE_"+data?.locality?.code);
+  let localityVariable = data?.tenantId?.replaceAll(".","_") || stringReplaceAll(data?.tenantId,".","_");
+  return (localityVariable.toUpperCase()+"_REVENUE_"+data?.locality?.code);
 }
 
 export const setAddressDetails = (data) => {
