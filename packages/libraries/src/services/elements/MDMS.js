@@ -705,6 +705,23 @@ const getCancelReceiptReasonAndStatus = (tenantId, moduleCode, type) => ({
   },
 });
 
+const getDocumentTypesCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "DocTypeMapping"
+          }
+        ]
+      }
+    ]
+  }
+})
+
 const GetEgovLocations = (MdmsRes) => {
   return MdmsRes["egov-location"].TenantBoundary[0].boundary.children.map((obj) => ({
     name: obj.localname,
@@ -968,6 +985,8 @@ const GetPostFields = (MdmsRes) => MdmsRes["FSM"].PostFieldsConfig;
 
 const GetFSTPPlantInfo = (MdmsRes) => MdmsRes["FSM"].FSTPPlantInfo;
 
+const GetDocumentsTypes = (MdmsRes) => MdmsRes["BPA"].DocTypeMapping;
+
 const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
   console.log(type, "type");
   switch (type) {
@@ -1045,6 +1064,8 @@ const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
       return PTGenderType(MdmsRes);
     case "HRGenderType":
       return HRGenderType(MdmsRes);
+    case "DocumentTypes":
+      return GetDocumentsTypes(MdmsRes);
     default:
       return MdmsRes;
   }
@@ -1314,5 +1335,9 @@ export const MdmsService = {
   HRGenderType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getGenderTypeList(tenantId, moduleCode, type), moduleCode);
   },
+
+  getDocumentTypes: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getDocumentTypesCriteria(tenantId, moduleCode, type), moduleCode);
+  }
   
 };
