@@ -188,7 +188,7 @@ const CreateChallen = ({ ChallanData }) => {
   }, [selectedCategory]);
 
   useEffect(() => {
-    let selectedCatBusinesService = selectedCategoryType?selectedCategoryType?.businessService.split(".")[1].replaceAll(" ","_"):"";
+    let selectedCatBusinesService = selectedCategoryType?stringReplaceAll(selectedCategoryType?.businessService.split(".")[1]," ","_"):"";
     setTaxHeadMasterFields(
       TaxHeadMaster.filter((ele) => {
         let temp = selectedCategory.code.replace("BILLINGSERVICE_BUSINESSSERVICE_", "");
