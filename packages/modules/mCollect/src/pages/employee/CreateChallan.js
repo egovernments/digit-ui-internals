@@ -245,7 +245,7 @@ const CreateChallen = ({ ChallanData }) => {
 
   const onSubmit = (data) => {
     TaxHeadMasterFields.map((ele) => {
-      return { taxHeadCode: ele.code, amount: data[ele] };
+      return { taxHeadCode: ele.code, amount: data[ele.name.split(".").join("_")] };
     });
     let Challan = {};
     if (!isEdit) {
