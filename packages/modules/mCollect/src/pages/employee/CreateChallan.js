@@ -120,7 +120,7 @@ const CreateChallen = ({ ChallanData }) => {
     };
     if (fetchBillData.Bill[0].billDetails[0].billAccountDetails.length > 0) {
       fetchBillData.Bill[0].billDetails[0].billAccountDetails.map(
-        (ele) => (defaultval[`${ele.taxHeadCode.replaceAll(".", "_").toUpperCase()}`] = `${ele.amount}`)
+        (ele) => (defaultval[`${ele.taxHeadCode.replaceAll(".", "_")}`] = `${ele.amount}`)
       );
     }
   }
