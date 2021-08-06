@@ -271,7 +271,7 @@ const CreateChallen = ({ ChallanData }) => {
         amount: TaxHeadMasterFields.map((ele) => {
           return {
             taxHeadCode: ele.code,
-            amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : 0,
+            amount: data[ele.name.split(".").join("_")] ? data[ele.name.split(".").join("_")] : 0,
           };
         }),
       };
@@ -293,7 +293,7 @@ const CreateChallen = ({ ChallanData }) => {
         amount: TaxHeadMasterFields.map((ele) => {
           return {
             taxHeadCode: ele.code,
-            amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : 0,
+            amount: data[ele.name.split(".").join("_")] ? data[ele.name.split(".").join("_")] : 0,
           };
         }),
       };
