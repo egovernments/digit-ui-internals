@@ -19,8 +19,8 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
   };
 
   const clearAll = () => {
-    setSearchParams(defaultSearchParams);
-    onFilterChange(defaultSearchParams);
+    setSearchParams({applicationStatus:[]});
+    onFilterChange({applicationStatus:[]});
   };
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -72,7 +72,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
           <div>
             <RadioButtons
               onSelect={(d) => localParamChange({ uuid: d })}
-              selectedOption={_searchParams?.uuid}
+              selectedOption={_searchParams?.uuid || { code: "ASSIGNED_TO_ALL", name: "ES_INBOX_ASSIGNED_TO_ALL" }}
               t={t}
               optionsKey="name"
               options={[
@@ -90,7 +90,8 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
                   return (
                     <RemoveableTag
                       key={index}
-                      text={locality.name}
+                      // text={locality.name}
+                      text={t(`${locality.i18nkey}`)}
                       onClick={() => {
                         localParamChange({ locality: _searchParams?.locality.filter((loc) => loc.code !== locality.code) });
                       }}
@@ -108,7 +109,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statuses, .
                 return (
                   <CheckBox
                     key={index + "service"}
-                    label={t(`CS_COMMON_INBOX_${e.businessservice.toUpperCase()}`)+"-"+t(`WF_NEWTL_${e.applicationstatus}`)+" "+`(${e.count})`}
+                    label={t(`CS_COMMON_INBOX_${e.businessservice.toUpperCase()}`)+" - "+t(`WF_NEWTL_${e.applicationstatus}`)+" "+`(${e.count})`}
                     value={e.statusid}
                     checked={checked}
                     onChange={(event) => onServiceSelect(event, e.statusid)}

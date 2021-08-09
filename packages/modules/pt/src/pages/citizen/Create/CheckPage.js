@@ -318,7 +318,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
           )}
         </StatusTable>
         {!isPropertyVacant(PropertyType?.i18nKey) && isPropertyFlatorPartofBuilding(PropertyType?.i18nKey) && (
-          <CardSubHeader>{`${t(Floorno?.i18nKey)} Details`}</CardSubHeader>
+          <CardSubHeader>{`${t(Floorno?.i18nKey)} ${t("PT_DETAILS_HEADER")}`}</CardSubHeader>
         )}
         {!isPropertyVacant(PropertyType?.i18nKey) && isPropertyFlatorPartofBuilding(PropertyType?.i18nKey) && (
           <StatusTable>
@@ -535,7 +535,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
           //disabled={!agree}
         />
       </div>
-      <SubmitBar label="Submit" onSubmit={onSubmit} disabled={!agree} />
+      <SubmitBar label={t("PT_COMMON_BUTTON_SUBMIT")} onSubmit={onSubmit} disabled={!agree} />
     </Card>
   );
 };

@@ -46,7 +46,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
     if (formData?.address) {
       let flag = true;;
         Object.keys(formData?.address).map(dta => {
-          if (dta != "key" && formData?.address[dta] != undefined && formData?.address[dta] != "" && formData?.address[dta] != null) {
+          if (dta != "key" || formData?.address[dta] != undefined || formData?.address[dta] != "" || formData?.address[dta] != null) {
 
           } else {
             if (flag) setSelectedCity(cities[0]);
@@ -158,12 +158,12 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
     return (
       <div>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{`${t("MYCITY_CODE_LABEL")}:`}</CardLabel>
+          <CardLabel className="card-label-smaller">{`${t("MYCITY_CODE_LABEL")} * :`}</CardLabel>
           <Controller
             name={"city"}
             defaultValue={cities?.length === 1 ? cities[0] : selectedCity}
             control={control}
-            rules={{required: "Required"}}
+            rules={{required: t("REQUIRED_FIELD")}}
             render={(props) => (
               <Dropdown
                 className="form-field"
@@ -180,12 +180,12 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
         </LabelFieldPair>
         <CardLabelError style={errorStyle}>{localFormState.touched.city ? errors?.city?.message : ""}</CardLabelError>
         <LabelFieldPair>
-          <CardLabel className="card-label-smaller">{`${t("TL_LOCALIZATION_LOCALITY")}:`}</CardLabel>
+          <CardLabel className="card-label-smaller">{`${t("TL_LOCALIZATION_LOCALITY")} * :`}</CardLabel>
           <Controller
             name="locality"
             defaultValue={checkingLocationForRenew ? formData.address.locality : null}
             control={control}
-            rules={{required: "Required"}}
+            rules={{required: t("REQUIRED_FIELD")}}
             render={(props) => (
               <Dropdown
                 className="form-field"

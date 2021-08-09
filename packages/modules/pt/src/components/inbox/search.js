@@ -26,6 +26,7 @@ const fieldComponents = {
       boundaryType="revenue"
       selected={props.value}
       disableLoader={true}
+      sortFn={(a, b) => (a.i18nkey < b.i18nkey ? -1 : 1)}
     />
   ),
 };
@@ -49,15 +50,6 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   };
 
   const mobileView = innerWidth <= 640;
-
-  // useEffect(() => {
-  //   console.log(form, "inside form");
-  //   console.log(formValueEmpty(), "form value empty");
-  // }, [formState, form]);
-
-  // useEffect(() => {
-  //   console.log(form?.city?.code, "inside city change");
-  // }, [form?.city?.code]);
 
   useEffect(() => {
     searchFields.forEach(({ pattern, name, maxLength, minLength, errorMessages, ...el }) => {

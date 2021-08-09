@@ -127,7 +127,6 @@ export const StoreService = {
       tenants: initData.tenants.map((tenant) => ({ code: tenant.code })),
     });
 
-    console.log(stateCode);
 
     await LocalizationService.getLocale({
       modules: [

@@ -17,12 +17,12 @@ const Inbox = ({
   const [enableSarch, setEnableSearch] = useState(() => (isInbox ? {} : { enabled: false }));
 
   const { t } = useTranslation();
-  const [pageOffset, setPageOffset] = useState(initialStates.pageOffset || 0);
-  const [pageSize, setPageSize] = useState(initialStates.pageSize || 10);
-  const [sortParams, setSortParams] = useState(initialStates.sortParams || [{ id: "applicationDate", desc: false }]);
+  const [pageOffset, setPageOffset] = useState(initialStates?.pageOffset || 0);
+  const [pageSize, setPageSize] = useState(initialStates?.pageSize || 10);
+  const [sortParams, setSortParams] = useState(initialStates?.sortParams || [{ id: "applicationDate", desc: false }]);
 
   const [searchParams, setSearchParams] = useState(() => {
-    return initialStates.searchParams || {};
+    return initialStates?.searchParams || {};
   });
 
 
@@ -51,7 +51,6 @@ const Inbox = ({
 
   const handleFilterChange = (filterParam) => {
     let keys_to_delete = filterParam?.delete;
-    console.log(keys_to_delete);
     let _new = {};
     if (isMobile) {
       _new = { ...filterParam };
@@ -62,8 +61,8 @@ const Inbox = ({
     // if (keys_to_delete) keys_to_delete.forEach((key) => delete _new[key]);
     // delete filterParam.delete;
     if (keys_to_delete) keys_to_delete.forEach((key) => delete _new[key]);
-    delete _new.delete;
-    delete filterParam.delete;
+    delete _new?.delete;
+    delete filterParam?.delete;
     setSearchParams({ ..._new });
     setEnableSearch({ enabled: true });
   };
@@ -157,7 +156,7 @@ const Inbox = ({
         parentRoute={parentRoute}
         searchParams={searchParams}
         sortParams={sortParams}
-        totalRecords={Number(data?.[0]?.totalCount)}
+        totalRecords={Number(data?.totalCount)}
         filterComponent={filterComponent}
       />
     </div>

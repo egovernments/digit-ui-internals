@@ -16,6 +16,7 @@ const ApplicationDetails = () => {
   const [businessService, setBusinessService] = useState("NewTL"); //DIRECTRENEWAL
   const [numberOfApplications, setNumberOfApplications] = useState([]);
   const [allowedToNextYear, setAllowedToNextYear] = useState(false);
+  sessionStorage.setItem("applicationNumber", applicationNumber)
 
   const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.tl.useApplicationDetail(t, tenantId, applicationNumber);
   
@@ -158,7 +159,6 @@ const ApplicationDetails = () => {
   }, []);
   const ownerdetails = applicationDetails?.applicationDetails.find(e => e.title === "ES_NEW_APPLICATION_OWNERSHIP_DETAILS");
   let appdetailsDocuments = ownerdetails?.additionalDetails?.documents;
-  console.log(wfDocs, workflowDetails, appdetailsDocuments, "wfDcs"); 
   if(appdetailsDocuments && wfDocs?.length && !(appdetailsDocuments.find(e => e.title === "TL_WORKFLOW_DOCS"))){
     ownerdetails.additionalDetails.documents = [...ownerdetails.additionalDetails.documents,{
       title: "TL_WORKFLOW_DOCS",
@@ -169,8 +169,10 @@ const ApplicationDetails = () => {
 
 
   return (
-    <div style={{marginLeft: "30px"}}>
-      <Header>{(applicationDetails?.applicationData?.workflowCode == "NewTL" && applicationDetails?.applicationData?.status !== "APPROVED") ? t("TL_APPLICATION_DETAILS_LABEL") : t("TL_COMMON_TR_DETAILS")}</Header>
+    <div >
+      <div style={{marginLeft: "15px"}}>
+        <Header>{(applicationDetails?.applicationData?.workflowCode == "NewTL" && applicationDetails?.applicationData?.status !== "APPROVED") ? t("TL_TRADE_APPLICATION_DETAILS_LABEL") : t("TL_TRADE_LICENSE_DETAILS_LABEL")}</Header>
+      </div>
       <ApplicationDetailsTemplate
         applicationDetails={applicationDetails}
         isLoading={isLoading}

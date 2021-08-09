@@ -87,14 +87,19 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
             accessor: (row) => GetCell(row.auditDetails.createdTime ? convertEpochToDateDMY(row.auditDetails.createdTime) : ""),
         },
         {
+            Header: t("TL_APPLICATION_TYPE_LABEL"),
+            disableSortBy: true,
+            accessor: (row) => GetCell(t(`TL_LOCALIZATION_APPLICATIONTYPE_${row.applicationType}`)),
+        },
+        {
             Header: t("TL_LICENSE_NUMBERL_LABEL"),
             disableSortBy: true,
             accessor: (row) => GetCell(row.licenseNumber || "-"),
         },
         {
-          Header: t("TL_NEW_TRADE_DETAILS_LIC_TYPE_LABEL"),
+          Header: t("TL_LICENSE_YEAR_LABEL"),
           disableSortBy: true,
-          accessor: (row) => GetCell(row.licenseType ? t(`TRADELICENSE_LICENSETYPE_${row.licenseType}`) : ""),
+          accessor: (row) => GetCell(row.financialYear),
         },
         {
           Header: t("TL_COMMON_TABLE_COL_TRD_NAME"),
@@ -108,7 +113,7 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
         },
         {
           Header: t("TL_COMMON_TABLE_COL_STATUS"),
-          accessor: (row) => GetCell(t(row.status) || ""),
+          accessor: (row) =>GetCell(t( row?.workflowCode&&row?.status&&`WF_${row?.workflowCode?.toUpperCase()}_${row.status}`|| "NA") ),
           disableSortBy: true,
         }
       ]), [] )
@@ -199,7 +204,21 @@ const SearchApplication = ({tenantId, t, onSubmit, data }) => {
                 </SearchField>
                 <SearchField className="submit">
                     <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
-                    <p onClick={() => reset()}>{t(`ES_COMMON_CLEAR_ALL`)}</p>
+                    <p onClick={() => {
+                        reset({ 
+                            applicationType: "", 
+                            fromDate: "", 
+                            toDate: "",
+                            licenseNumbers: "",
+                            status: "",
+                            tradeName: "",
+                            offset: 0,
+                            limit: 10,
+                            sortBy: "commencementDate",
+                            sortOrder: "DESC"
+                        });
+                        previousPage();
+                    }}>{t(`ES_COMMON_CLEAR_ALL`)}</p>
                 </SearchField>
             </SearchForm>
             {data?.display ? <Card style={{ marginTop: 20 }}>

@@ -60,25 +60,27 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
   useEffect(() => {
     if (!isLoading && presentInModifyApplication && Menu) {
       // usage subUsage unit Occupancy
-      let defaultUnits = formData?.originalData?.units?.map((unit, index) => {
-        let { occupancyType, usageCategory: uc, constructionDetail, floorNo, arv } = unit;
-        occupancyType = occupencyOptions.filter((e) => e?.code === occupancyType)[0];
-        let usageCategory = usageCategoryMajorMenu(usagecat).filter((e) => e?.code === uc)[0];
-        floorNo = getfloorlistdata(floorlist).filter((e) => e?.code == floorNo)[0];
-        let key = Date.now() + index;
-        let order = index + 1;
-        let builtUpArea = constructionDetail.builtUpArea;
-        return {
-          floorNo,
-          occupancyType,
-          usageCategory,
-          key,
-          order,
-          builtUpArea,
-          existingUsageCategory: uc,
-          arv,
-        };
-      });
+      let defaultUnits = formData?.originalData?.units
+        ?.filter((e) => e.active)
+        ?.map((unit, index) => {
+          let { occupancyType, usageCategory: uc, constructionDetail, floorNo, arv } = unit;
+          occupancyType = occupencyOptions.filter((e) => e?.code === occupancyType)[0];
+          let usageCategory = usageCategoryMajorMenu(usagecat).filter((e) => e?.code === uc)[0];
+          floorNo = getfloorlistdata(floorlist).filter((e) => e?.code == floorNo)[0];
+          let key = Date.now() + index;
+          let order = index + 1;
+          let builtUpArea = constructionDetail.builtUpArea;
+          return {
+            floorNo,
+            occupancyType,
+            usageCategory,
+            key,
+            order,
+            builtUpArea,
+            existingUsageCategory: uc,
+            arv,
+          };
+        });
       setUnits(defaultUnits || []);
       setLoader(false);
     }
@@ -180,7 +182,7 @@ const Units = ({ t, config, onSelect, userType, formData, setError, formState, c
       constructionDetail: {
         builtUpArea: unit?.builtUpArea,
       },
-      tenantId: unit?.tenantId,
+      tenantId: Digit.ULBService.getCurrentTenantId(),
       usageCategory: unit?.usageCategory?.code,
     }));
     unitsData = unitsData?.map((unit, index) => {
@@ -308,7 +310,6 @@ function Unit({
     } else if (existingUsageCategory) {
       const codeArr = existingUsageCategory?.split(".");
       const val = usageCategoryMajorMenu(usagecat).filter((e) => e?.code === codeArr[0] + "." + codeArr[1])[0];
-      console.log(subUsageCategoryMenu(val), "inside usestate");
       return val;
     }
   });
@@ -326,10 +327,8 @@ function Unit({
 
   useEffect(() => {
     if (usageType?.code === "RESIDENTIAL") {
-      console.log("set value for usageCategory called");
       setValue("usageCategory", usageType);
     } else {
-      console.log(formValue.usageCategory, index, usageType?.code, "set value for usageCategory revoked");
       if (formValue.usageCategory?.code === "RESIDENTIAL") setValue("usageCategory", null);
     }
   }, [usageType]);

@@ -54,19 +54,18 @@ const PoweredBy = () => (
   </div>
 );
 
-export const CitizenSideBar = ({ isOpen, isMobile, toggleSidebar, onLogout }) => {
+export const CitizenSideBar = ({ isOpen, isMobile, toggleSidebar, onLogout ,isEmployee=false}) => {
   const { data: storeData, isFetched } = Digit.Hooks.useStore.getInitData();
   const { stateInfo } = storeData || {};
   const user = Digit.UserService.getUser();
   const { t } = useTranslation();
 
   const closeSidebar = () => {
-    console.log();
     Digit.clikOusideFired = true;
     toggleSidebar(false);
   };
 
-  let menuItems = [...SideBarMenu(t, closeSidebar)];
+  let menuItems = [...SideBarMenu(t, closeSidebar,isEmployee)];
   let profileItem;
   if (isFetched && user && user.access_token) {
     profileItem = <Profile info={user.info} stateName={stateInfo.name} />;

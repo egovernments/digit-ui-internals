@@ -43,6 +43,7 @@ const SelectOwnershipProof = ({ t, config, onSelect, userType, formData }) => {
   const onSkip = () => onSelect();
 
   function selectfile(e) {
+    setUploadedFile(null);
     setFile(e.target.files[0]);
   }
 
@@ -54,7 +55,7 @@ const SelectOwnershipProof = ({ t, config, onSelect, userType, formData }) => {
           setError(t("PT_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
         } else {
           try {
-            const response = await Digit.UploadServices.Filestorage("property-upload", file, "pb");
+            const response = await Digit.UploadServices.Filestorage("property-upload", file, Digit.ULBService.getStateId());
             if (response?.data?.files?.length > 0) {
               setUploadedFile(response?.data?.files[0]?.fileStoreId);
             } else {
@@ -71,8 +72,8 @@ const SelectOwnershipProof = ({ t, config, onSelect, userType, formData }) => {
 
   return (
     <FormStep config={config} onSelect={handleSubmit} onSkip={onSkip} t={t} isDisabled={!uploadedFile || error}>
-      <CardLabelDesc>{t(`TL_UPLOAD_RESTRICTIONS_TYPES`)}</CardLabelDesc>
-      <CardLabelDesc>{t(`TL_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
+      <CardLabelDesc style={{fontWeight:"unset"}}>{t(`TL_UPLOAD_OWNERSHIP_RESTRICTIONS_TYPES`)}</CardLabelDesc>
+      <CardLabelDesc style={{fontWeight:"unset"}}>{t(`TL_UPLOAD_RESTRICTIONS_SIZE`)}</CardLabelDesc>
       <CardLabel>{`${t("TL_CATEGORY_DOCUMENT_TYPE")}`}</CardLabel>
       {/* <Dropdown
         t={t}

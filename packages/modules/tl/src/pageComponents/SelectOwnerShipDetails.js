@@ -87,7 +87,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
 
   useEffect(() => {
     if (userType === "employee") {
-      if (!ownershipCategory) setError(config.key, { type: "required", message: `${config.key.toUpperCase()}_REQUIRED` });
+      if (!ownershipCategory) setError(config.key, { type: "required", message: t(`REQUIRED_FIELD`) }); //message: `${config.key.toUpperCase()}_REQUIRED` }
       else clearErrors(config.key);
       goNext();
     }
@@ -109,7 +109,7 @@ const SelectOwnerShipDetails = ({ t, config, onSelect, userType, formData, onBlu
       <React.Fragment>
         <LabelFieldPair>
           <CardLabel className="card-label-smaller" style={editScreen ? { color: "#B1B4B6" } : {}}>
-            {`${t("TL_NEW_OWNER_DETAILS_OWNERSHIP_TYPE_LABEL")}:`}
+            {`${t("TL_NEW_OWNER_DETAILS_OWNERSHIP_TYPE_LABEL")} * :`}
           </CardLabel>
           <Dropdown
             className="form-field"

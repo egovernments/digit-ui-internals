@@ -45,7 +45,7 @@ const AssessmentDetails = () => {
 
   appDetailsToShow?.applicationDetails?.shift();
   appDetailsToShow?.applicationDetails?.unshift({
-    title: "PT_APPLICATION_SUMMARY",
+    title: "PT_ESTIMATE_DETAILS_HEADER",
     values: [
       {
         title: "PT_PROPERTY_PTUID",
@@ -75,6 +75,7 @@ const AssessmentDetails = () => {
             setTimeout(closeToast, 5000);
           },
           onSuccess: (data, variables) => {
+            sessionStorage.setItem("IsPTAccessDone",data?.Assessments?.[0]?.auditDetails?.lastModifiedTime);
             setShowToast({ key: "success", action: { action: "ASSESSMENT" } });
             setTimeout(closeToast, 5000);
             queryClient.setQueryData(["PT_ASSESSMENT", propertyId, location?.state?.Assessment?.financialYear], true);

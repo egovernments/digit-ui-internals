@@ -79,6 +79,11 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
   // const currentYear = new Date().getFullYear();
   const getTotal = () => (bill?.totalAmount ? bill?.totalAmount : 0);
 
+  const arrears =
+    bill?.billDetails
+      ?.sort((a, b) => b.fromPeriod - a.fromPeriod)
+      ?.reduce((total, current, index) => (index === 0 ? total : total + current.amount), 0) || 0;
+
   const { isLoading: mdmsLoading, data: mdmsBillingData } = Digit.Hooks.useGetPaymentRulesForBusinessServices(tenantId);
   const [paymentRules, setPaymentRules] = useState();
 
@@ -190,15 +195,41 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
             <Row
               key={index + "taxheads"}
               labelStyle={{ fontWeight: "normal" }}
+              textStyle={{ textAlign: "right", maxWidth: "100px" }}
               label={t(amountDetails.taxHeadCode)}
               text={"₹ " + amountDetails.amount?.toFixed(2)}
             />
           ))}
 
+        {arrears?.toFixed?.(2) ? (
+          <Row
+            labelStyle={{ fontWeight: "normal" }}
+            textStyle={{ textAlign: "right", maxWidth: "100px" }}
+            label={t("COMMON_ARREARS")}
+            text={"₹ " + arrears?.toFixed?.(2) || Number(0).toFixed(2)}
+          />
+        ) : null}
+
         <hr style={{ width: "40%" }} className="underline" />
-        <Row label={t("CS_PAYMENT_TOTAL_AMOUNT")} textStyle={{ fontWeight: "bold" }} text={"₹ " + getTotal()} />
+        <Row
+          label={t("CS_PAYMENT_TOTAL_AMOUNT")}
+          textStyle={{ fontWeight: "bold", textAlign: "right", maxWidth: "100px" }}
+          text={"₹ " + getTotal()}
+        />
+        {!showDetails &&
+        !ModuleWorkflow &&
+        businessService !== "TL" &&
+        yearWiseBills?.length > 1 && (
+          <div className="row last">
+            <h2></h2>
+            <div style={{textAlign: "right", maxWidth: "100px" }} onClick={() => setShowDetails(true)} className="filter-button value">
+              {t("ES_COMMON_VIEW_DETAILS")}
+            </div>
+          </div>
+        )
+        }
       </StatusTable>
-      {showDetails && yearWiseBills?.length > 1 && !ModuleWorkflow && businessService !== "TL" ? (
+      {showDetails && yearWiseBills?.length > 1 && !ModuleWorkflow && businessService !== "TL" && (
         <React.Fragment>
           <div style={{ maxWidth: "95%", display: "inline-block", textAlign: "right" }}>
             <div style={{ display: "flex", padding: "10px", paddingLeft: "unset", maxWidth: "95%" }}>
@@ -278,17 +309,16 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
             </div>
           </div>{" "}
         </React.Fragment>
-      ) : (
-        !ModuleWorkflow &&
-        businessService !== "TL" &&
-        yearWiseBills?.length > 1 && (
-          <div style={{}} onClick={() => setShowDetails(true)} className="filter-button">
-            {t("ES_COMMON_VIEW_DETAILS")}
-          </div>
-        )
+      //   !ModuleWorkflow &&
+      //   businessService !== "TL" &&
+      //   yearWiseBills?.length > 1 && (
+      //     <div style={{}} onClick={() => setShowDetails(true)} className="filter-button">
+      //       {t("ES_COMMON_VIEW_DETAILS")}
+      //     </div>
+      //   )
       )}
       {paymentRules?.partPaymentAllowed && (
-        <div className="bill-payment-amount">
+        <div style={{ marginTop: "50px" }} className="bill-payment-amount">
           <CardSectionHeader>{t("CS_COMMON_PAYMENT_AMOUNT")}</CardSectionHeader>
           <RadioButtons
             style={{ display: "flex" }}

@@ -50,12 +50,11 @@ export const TLSearch = {
       const filters = { licenseNumbers, offset: 0 };
       numOfApplications = await TLSearch.numberOfApplications(tenantId, filters);
     }
-    console.log(response, "from hookfrom hookfrom hookfrom hookfrom hookfrom hook");
 
     let employeeResponse = [];
     const tradedetails = {
       title: "TL_COMMON_TR_DETAILS",
-      // asSectionHeader: true,
+      asSectionHeader: true,
       values: [
         { title: "TL_FINANCIAL_YEAR_LABEL", value: response?.financialYear ? `FY${response?.financialYear}` : "NA" },
         { title: "TL_NEW_TRADE_DETAILS_LIC_TYPE_LABEL", value: response?.licenseType ? `TRADELICENSE_LICENSETYPE_${response?.licenseType}` : "NA" },
@@ -137,8 +136,8 @@ export const TLSearch = {
               { title: "TL_NEW_OWNER_DETAILS_OWNERSHIP_TYPE_LABEL", value: subOwnerShipCategory },
               { title: "TL_OWNER_S_NAME_LABEL", value: owner?.name || "NA" },
               { title: "TL_OWNER_S_MOBILE_NUM_LABEL", value: owner?.mobileNumber || "NA" },
-              { title: "TL_GUARDIAN_S_NAME_LABEL", value: owner?.fatherOrHusbandName || "NA" },
-              { title: "TL_RELATIONSHIP_WITH_GUARDIAN_LABEL", value: owner?.relationship || "NA" },
+              // { title: "TL_GUARDIAN_S_NAME_LABEL", value: owner?.fatherOrHusbandName || "NA" },
+              // { title: "TL_RELATIONSHIP_WITH_GUARDIAN_LABEL", value: owner?.relationship || "NA" },
               { title: "TL_NEW_OWNER_DETAILS_GENDER_LABEL", value: owner?.gender || "NA" },
               { title: "TL_NEW_OWNER_DETAILS_EMAIL_LABEL", value: owner?.emailId || "NA" },
               { title: "TL_OWNER_SPECIAL_CATEGORY", value: owner?.ownerType ? `COMMON_MASTERS_OWNERTYPE_${owner?.ownerType}` : "NA" },
@@ -167,7 +166,7 @@ export const TLSearch = {
         title: "",
         values: [
           { title: "TL_COMMON_TABLE_COL_APP_NO", value: response?.applicationNumber || "NA" },
-          { title: "TL_APPLICATION_CHALLAN_LABEL", value: response?.tradeLicenseDetail?.channel || "NA" }
+          { title: "TL_APPLICATION_CHALLAN_LABEL", value: response?.tradeLicenseDetail?.channel&&`TL_CHANNEL_${response?.tradeLicenseDetail?.channel}` || "NA" }
         ],
       };
       response && employeeResponse.push(details);

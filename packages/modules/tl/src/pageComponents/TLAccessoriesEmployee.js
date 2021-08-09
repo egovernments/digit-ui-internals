@@ -98,16 +98,14 @@ const TLAccessoriesEmployee = ({ config, onSelect, userType, formData, setError,
         isRenewal
     };
 
-    if (isEditScreen) {
-        return <React.Fragment />;
-    }
+
 
     return (
         <React.Fragment>
             {accessoriesList.map((accessor, index) => (
                 <AccessoriersForm key={accessor.key} index={index} accessor={accessor} {...commonProps} />
             ))}
-            <LinkButton label={`${t("TL_NEW_TRADE_DETAILS_NEW_ACCESSORIES")}`} onClick={addAccessories} style={{ color: "orange", width: "fit-content" }} />
+            <LinkButton label={`${t("TL_NEW_TRADE_DETAILS_NEW_ACCESSORIES")}`} onClick={addAccessories} style={{ color: "#F47738", width: "fit-content" }} />
 
         </React.Fragment>
     );
@@ -219,7 +217,6 @@ const AccessoriersForm = (_props) => {
 
 
     useEffect(() => {
-        console.log(formValue, "in formvalue chnage");
         const keys = Object.keys(formValue);
         if (!formValue?.accessoryCategory?.uom) {
             formValue.uomValue = "";
@@ -256,14 +253,20 @@ const AccessoriersForm = (_props) => {
     return (
         <React.Fragment>
             <div style={{ marginBottom: "16px" }}>
-                <div style={{ border: "1px solid #E3E3E3", padding: "16px", marginTop: "8px" }}>
+                <div style={{ border: "1px solid #D6D5D4", padding: "16px", marginTop: "8px", background: "#FAFAFA" }}>
                     {allAccessoriesList?.length > 1 ? (
-                        <div onClick={() => removeAccessor(accessor)} style={{ marginBottom: "16px", padding: "5px", cursor: "pointer", textAlign: "right" }}>
-                            X
+                        <div style={{display: "flex", justifyContent: "flex-end"}}>
+                            <div onClick={() => removeAccessor(accessor)} style={{ padding: "5px", cursor: "pointer", textAlign: "right" }}>
+                                <span>
+                                    <svg style={{ float: "right", position: "relative", bottom: "5px" }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 16C1 17.1 1.9 18 3 18H11C12.1 18 13 17.1 13 16V4H1V16ZM14 1H10.5L9.5 0H4.5L3.5 1H0V3H14V1Z" fill="#494848" />
+                                    </svg>
+                                </span>
+                            </div>
                         </div>
                     ) : null}
                     <LabelFieldPair>
-                        <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_ACC_LABEL")}:`}</CardLabel>
+                        <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_ACC_LABEL")} :`}</CardLabel>
                         <Controller
                             control={control}
                             name={"accessoryCategory"}
@@ -283,14 +286,14 @@ const AccessoriersForm = (_props) => {
                                     option={sortDropdownNames(accessories,"i18nKey",t) || []}
                                     optionKey="i18nKey"
                                     t={t}
-                                    disable={isRenewal}
+                                  
                                 />
                             )}
                         />
                     </LabelFieldPair>
                     {/* <CardLabelError style={errorStyle}>{localFormState.touched.accessoryCategory ? errors?.name?.message : ""}</CardLabelError> */}
                     <LabelFieldPair>
-                        <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_UOM_UOM_PLACEHOLDER")}:`}</CardLabel>
+                        <CardLabel className="card-label-smaller">{getValues("uom") ? `${t("TL_NEW_TRADE_DETAILS_UOM_UOM_PLACEHOLDER")} * :` : `${t("TL_NEW_TRADE_DETAILS_UOM_UOM_PLACEHOLDER")} :`}</CardLabel>
                         <div className="field">
                             <Controller
                                 control={control}
@@ -309,6 +312,7 @@ const AccessoriersForm = (_props) => {
                                         }}
                                         disable={true}
                                         onBlur={props.onBlur}
+                                        style={{ background: "#FAFAFA" }}
                                     />
                                 )}
                             />
@@ -316,13 +320,13 @@ const AccessoriersForm = (_props) => {
                     </LabelFieldPair>
                     {/* <CardLabelError style={errorStyle}>{localFormState.touched.uom ? errors?.uom?.message : ""}</CardLabelError> */}
                     <LabelFieldPair>
-                        <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")}:`}</CardLabel>
+                        <CardLabel className="card-label-smaller">{accessor?.accessoryCategory?.uom ? `${t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")} * : ` : `${t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")} : `}</CardLabel>
                         <div className="field">
                             <Controller
                                 control={control}
                                 name={"uomValue"}
                                 defaultValue={accessor?.uomValue}
-                                rules={accessor?.accessoryCategory?.uom && { required: "Required", validate: (e) => ((e && getPattern("UOMValue").test(e)) || !e ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") }}
+                                rules={accessor?.accessoryCategory?.uom && { required: t("REQUIRED_FIELD"), validate: (e) => ((e && getPattern("UOMValue").test(e)) || !e ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) }}
                                 render={(props) => (
                                     <TextInput
                                         value={getValues("uomValue")}
@@ -333,8 +337,9 @@ const AccessoriersForm = (_props) => {
                                             props.onChange(e.target.value);
                                             setFocusIndex({ index: accessor.key, type: "uomValue" });
                                         }}
-                                        disable={!(accessor?.accessoryCategory?.uom) || isRenewal}
+                                        disable={getValues("uomValue")?!(accessor?.accessoryCategory?.uom) || accessor?.id:!(accessor?.accessoryCategory?.uom) }
                                         onBlur={props.onBlur}
+                                        style={{ background: "#FAFAFA" }}
                                     />
                                 )}
                             />
@@ -342,13 +347,13 @@ const AccessoriersForm = (_props) => {
                     </LabelFieldPair>
                     <CardLabelError style={errorStyle}>{localFormState.touched.uomValue ? errors?.uomValue?.message : ""}</CardLabelError>
                     <LabelFieldPair>
-                        <CardLabel className="card-label-smaller">{`${t("TL_ACCESSORY_COUNT_LABEL")}:`}</CardLabel>
+                        <CardLabel className="card-label-smaller">{accessor?.accessoryCategory?.code ? `${t("TL_ACCESSORY_COUNT_LABEL")} * :` : `${t("TL_ACCESSORY_COUNT_LABEL")} : `}</CardLabel>
                         <div className="field">
                             <Controller
                                 control={control}
                                 name={"count"}
                                 defaultValue={accessor?.count}
-                                rules={accessor?.accessoryCategory?.code && { required: "Required", validate: (e) => ((e && getPattern("NoOfEmp").test(e)) || !e ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") }}
+                                rules={accessor?.accessoryCategory?.code && { required: t("REQUIRED_FIELD"), validate: (e) => ((e && getPattern("NoOfEmp").test(e)) || !e ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) }}
                                 // rules={accessor?.accessoryCategory?.code ? { required: "ERR_DEFAULT_INPUT_FIELD_MSG" } : {}}
                                 render={(props) => (
                                     <TextInput
@@ -360,7 +365,8 @@ const AccessoriersForm = (_props) => {
                                             setFocusIndex({ index: accessor.key, type: "count" });
                                         }}
                                         onBlur={props.onBlur}
-                                        disable={isRenewal}
+                                        disable={accessor?.id}
+                                        style={{ background: "#FAFAFA" }}
                                     />
                                 )}
                             />

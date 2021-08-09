@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 
 const NewApplication = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  const tenants = Digit.Hooks.pt.useTenants();
   const { t } = useTranslation();
   const [canSubmit, setSubmitValve] = useState(false);
   const defaultValues = {};
@@ -21,13 +22,20 @@ const NewApplication = () => {
   }, []);
 
   const onFormValueChange = (setValue, formData, formState) => {
-    console.log(formData, formState.errors, "in new application");
     setSubmitValve(!Object.keys(formState.errors).length);
     if (Object.keys(formState.errors).length === 1 && formState.errors?.units?.message === "arv") {
       setSubmitValve(!formData?.units.some((unit) => unit.occupancyType === "RENTED" && !unit.arv));
     }
     if (formData?.ownershipCategory?.code?.includes("MULTIPLEOWNERS") && formData?.owners?.length < 2) {
       setSubmitValve(false);
+    }
+    let pincode = formData?.address?.pincode;
+    if (pincode) {
+      if (!Digit.Utils.getPattern("Pincode").test(pincode)) setSubmitValve(false);
+      const foundValue = tenants?.find((obj) => obj.pincode?.find((item) => item.toString() === pincode));
+      if (!foundValue) {
+        setSubmitValve(false);
+      }
     }
   };
 
@@ -43,6 +51,7 @@ const NewApplication = () => {
       usageCategoryMajor: data?.usageCategoryMajor?.code.split(".")[0],
       usageCategoryMinor: data?.usageCategoryMajor?.code.split(".")[1] || null,
       landArea: Number(data?.landarea),
+      superBuiltUpArea: Number(data?.landarea),
       propertyType: data?.PropertyType?.code,
       noOfFloors: Number(data?.noOfFloors),
       ownershipCategory: data?.ownershipCategory?.code,
@@ -74,6 +83,9 @@ const NewApplication = () => {
             emailId,
           };
         }
+
+        if (!__owner.correspondenceAddress) __owner.correspondenceAddress = "";
+
         const _owner = {
           ...__owner,
           ownerType: owner?.ownerType?.code,
@@ -85,7 +97,6 @@ const NewApplication = () => {
             data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF")),
           ];
         } else {
-          // console.log("owner docs setted");
           _owner.documents = [data?.documents?.documents?.find((e) => e.documentType?.includes("OWNER.IDENTITYPROOF"))];
         }
         return _owner;
@@ -94,7 +105,6 @@ const NewApplication = () => {
       channel: "CFC_COUNTER", // required
       creationReason: "CREATE", // required
       source: "MUNICIPAL_RECORDS", // required
-      superBuiltUpArea: null,
       units: data?.PropertyType?.code !== "VACANT" ? data?.units : [],
       documents: data?.documents?.documents,
       applicationStatus: "CREATE",

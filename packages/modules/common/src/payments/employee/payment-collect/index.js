@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RadioButtons, FormComposer, Dropdown, CardSectionHeader, Loader, Toast, Card } from "@egovernments/digit-ui-react-components";
+import { RadioButtons, FormComposer, Dropdown, CardSectionHeader, Loader, Toast, Card, Header } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { useQueryClient } from "react-query";
@@ -52,7 +52,7 @@ export const CollectPayment = (props) => {
   };
 
   useEffect(() => {
-    props.setLink("Collect Payment");
+    props.setLink(t("PAYMENT_COLLECT_LABEL"));
   }, []);
 
   const getPaymentModes = () => defaultPaymentModes;
@@ -63,7 +63,6 @@ export const CollectPayment = (props) => {
   const [selectedPaymentMode, setPaymentMode] = useState(formState?.selectedPaymentMode || getPaymentModes()[0]);
 
   const onSubmit = async (data) => {
-    // console.log(data, "data");
     bill.totalAmount = Math.round(bill.totalAmount);
     data.paidBy = data.paidBy.code;
 
@@ -123,7 +122,7 @@ export const CollectPayment = (props) => {
           .map((e) => t(errors[e]))
           .join();
         if (messages) {
-          setToast({ key: "error", action: `${messages} ES_ERROR_REQUIRED` });
+          setToast({ key: "error", action: `${messages} ${t("ES_ERROR_REQUIRED")}` });
           setTimeout(() => setToast(null), 5000);
           return;
         }
@@ -144,6 +143,16 @@ export const CollectPayment = (props) => {
       delete recieptRequest.Payment.reTransanctionNumber;
     }
 
+    if (
+      recieptRequest.Payment?.instrumentNumber?.length &&
+      recieptRequest.Payment?.instrumentNumber?.length < 6 &&
+      recieptRequest?.Payment?.paymentMode === "CHEQUE"
+    ) {
+      setToast({ key: "error", action: t("ERR_CHEQUE_NUMBER_LESS_THAN_6") });
+      setTimeout(() => setToast(null), 5000);
+      return;
+    }
+
     try {
       // console.log(recieptRequest);
       const resposne = await Digit.PaymentService.createReciept(tenantId, recieptRequest);
@@ -154,7 +163,7 @@ export const CollectPayment = (props) => {
         }`
       );
     } catch (error) {
-      setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => e.message) })?.join(" , ");
+      setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
       setTimeout(() => setToast(null), 5000);
       return;
     }
@@ -272,7 +281,11 @@ export const CollectPayment = (props) => {
   });
 
   const getFormConfig = () => {
-    if (ModuleWorkflow || businessService === "TL") {
+    if (
+      BillDetailsFormConfig({ consumerCode, businessService }, t)[ModuleWorkflow ? ModuleWorkflow : businessService] ||
+      ModuleWorkflow ||
+      businessService === "TL"
+    ) {
       config.splice(0, 1);
     }
     let conf = config.concat(formConfigMap[formState?.paymentMode?.code] || []);
@@ -288,9 +301,10 @@ export const CollectPayment = (props) => {
 
   return (
     <React.Fragment>
+      <Header>{t("PAYMENT_COLLECT")}</Header>
       <FormComposer
         cardStyle={{ paddingBottom: "100px" }}
-        heading={t("PAYMENT_COLLECT")}
+        //heading={t("PAYMENT_COLLECT")}
         label={t("PAYMENT_COLLECT_LABEL")}
         config={getFormConfig()}
         onSubmit={onSubmit}
@@ -311,6 +325,7 @@ export const CollectPayment = (props) => {
           error={toast.key === "error"}
           label={t(toast.key === "success" ? `ES_${businessService.split(".")[0].toLowerCase()}_${toast.action}_UPDATE_SUCCESS` : toast.action)}
           onClose={() => setToast(null)}
+          style={{ maxWidth: "670px" }}
         />
       )}
     </React.Fragment>

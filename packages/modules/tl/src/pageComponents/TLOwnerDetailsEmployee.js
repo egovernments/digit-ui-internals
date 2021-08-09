@@ -9,10 +9,10 @@ import { getPattern } from "../utils";
 const createOwnerDetails = () => ({
   name: "",
   mobileNumber: "",
-  fatherOrHusbandName: "",
+  // fatherOrHusbandName: "",
   emailId: "",
   permanentAddress: "",
-  relationship: "",
+  // relationship: "",
   ownerType: "",
   gender: "",
   // correspondenceAddress: "",
@@ -131,11 +131,11 @@ const TLOwnerDetailsEmployee = ({ config, onSelect, userType, formData, setError
   return (
     <React.Fragment>
       {owners.map((owner, index) => (
-        <OwnerForm  index={index} owner={owner} {...commonProps} />
+        <OwnerForm key={owner.key} index={index} owner={owner} {...commonProps} />
       ))}
       {formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? (
         <div>
-          <LinkButton label={t("TL_NEW_OWNER_DETAILS_ADD_OWN")} onClick={addNewOwner} style={{ color: "orange", width: "fit-content" }}/>
+          <LinkButton label={t("TL_NEW_OWNER_DETAILS_ADD_OWN")} onClick={addNewOwner} style={{ color: "#F47738", width: "fit-content" }}/>
           <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-24px" }}>
             {t(formState.errors?.mulipleOwnerError?.message || "")}
         </CardLabelError>
@@ -200,7 +200,6 @@ const OwnerForm = (_props) => {
   }, []);
 
   useEffect(() => {
-    console.log(formValue, "in formvalue chnage");
     const keys = Object.keys(formValue);
     const part = {};
     keys.forEach((key) => (part[key] = owner[key]));
@@ -230,23 +229,31 @@ const OwnerForm = (_props) => {
   }, [errors]);
 
   const errorStyle = { width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" };
+  let isMulitpleOwners = false;
+  if (formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS") isMulitpleOwners = true;
   return (
     <React.Fragment>
-      <div style={{ marginBottom: "16px" }}>
-        <div style={formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? { border: "1px solid #E3E3E3", padding: "16px", marginTop: "8px", borderRadius: "4px" } : {}}>
+      <div style={{ marginBottom: "16px" }} >
+        <div style={formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? { border: "1px solid #D6D5D4", padding: "16px", marginTop: "8px", borderRadius: "4px", background: "#FAFAFA" } : {}}>
           {allOwners?.length > 1 ? (
-            <div onClick={() => removeOwner(owner)} style={{ marginBottom: "16px", padding: "5px", cursor: "pointer", textAlign: "right" }}>
-              X
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <div onClick={() => removeOwner(owner)} style={{ padding: "5px", cursor: "pointer", textAlign: "right" }}>
+                <span>
+                  <svg style={{ float: "right", position: "relative", bottom: "5px" }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 16C1 17.1 1.9 18 3 18H11C12.1 18 13 17.1 13 16V4H1V16ZM14 1H10.5L9.5 0H4.5L3.5 1H0V3H14V1Z" fill="#494848" />
+                  </svg>
+                </span>
+              </div>
             </div>
           ) : null}
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_OWNER_S_NAME_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_OWNER_S_NAME_LABEL")} * :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name={"name"}
                 defaultValue={owner?.name}
-                rules={{ required: "NAME_REQUIRED", validate: { pattern: (val) => (/^\w+( +\w+)*$/.test(val) ? true : t("INVALID_NAME")) } }}
+                rules={{ required: t("REQUIRED_FIELD"), validate: { pattern: (val) => (/^\w+( +\w+)*$/.test(val) ? true : t("INVALID_NAME")) } }}
                 render={(props) => (
                   <TextInput
                     value={props.value}
@@ -262,6 +269,7 @@ const OwnerForm = (_props) => {
                       setFocusIndex({ index: -1 });
                       props.onBlur(e);
                     }}
+                    style={ isMulitpleOwners ? { background: "#FAFAFA" }: ""}
                   />
                 )}
               />
@@ -269,13 +277,13 @@ const OwnerForm = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.name ? errors?.name?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_OWNER_S_MOBILE_NUM_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_OWNER_S_MOBILE_NUM_LABEL")} * :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name={"mobileNumber"}
                 defaultValue={owner?.mobileNumber}
-                rules={{ required: "Required", validate: (v) => (/^[6789]\d{9}$/.test(v) ? true : "invalid Phone") }}
+                rules={{ required: t("REQUIRED_FIELD"), validate: (v) => (/^[6789]\d{9}$/.test(v) ? true : t("INVALID_NUMBER")) }}
                 render={(props) => (
                   <MobileNumber
                     value={props.value}
@@ -288,14 +296,15 @@ const OwnerForm = (_props) => {
                     labelStyle={{ marginTop: "unset", border: "1px solid #464646", borderRight: "none" }}
                     onBlur={props.onBlur}
                     errorStyle={(localFormState.touched.mobileNumber && errors?.mobileNumber?.message) ? true : false}
+                    style={ isMulitpleOwners ? { background: "#FAFAFA" }: ""}
                   />
                 )}
               />
             </div>
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.mobileNumber ? errors?.mobileNumber?.message : ""}</CardLabelError>
-          <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_GUARDIAN_S_NAME_LABEL")}:`}</CardLabel>
+          {/* <LabelFieldPair>
+            <CardLabel className="card-label-smaller">{`${t("TL_GUARDIAN_S_NAME_LABEL")} * :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
@@ -319,9 +328,9 @@ const OwnerForm = (_props) => {
               />
             </div>
           </LabelFieldPair>
-          <CardLabelError style={errorStyle}> {localFormState.touched.fatherOrHusbandName ? errors?.fatherOrHusbandName?.message : ""} </CardLabelError>
-          <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_RELATIONSHIP_WITH_GUARDIAN_LABEL")}:`}</CardLabel>
+          <CardLabelError style={errorStyle}> {localFormState.touched.fatherOrHusbandName ? errors?.fatherOrHusbandName?.message : ""} </CardLabelError> */}
+          {/* <LabelFieldPair>
+            <CardLabel className="card-label-smaller">{`${t("TL_RELATIONSHIP_WITH_GUARDIAN_LABEL")} * :`}</CardLabel>
             <Controller
               control={control}
               name={"relationship"}
@@ -348,14 +357,14 @@ const OwnerForm = (_props) => {
               )}
             />
           </LabelFieldPair>
-          <CardLabelError style={errorStyle}>{localFormState.touched.relationship ? errors?.relationship?.message : ""}</CardLabelError>
+          <CardLabelError style={errorStyle}>{localFormState.touched.relationship ? errors?.relationship?.message : ""}</CardLabelError> */}
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OWNER_DETAILS_GENDER_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OWNER_DETAILS_GENDER_LABEL")} * :`}</CardLabel>
             <Controller
               control={control}
               name={"gender"}
               defaultValue={owner?.gender}
-              rules={{ required: "REQUIRED" }}
+              rules={{ required: t("REQUIRED_FIELD") }}
               render={(props) => (
                 <Dropdown
                   className="form-field"
@@ -375,13 +384,13 @@ const OwnerForm = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.gender ? errors?.gender?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OWNER_DETAILS_EMAIL_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OWNER_DETAILS_EMAIL_LABEL")} :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name={"emailId"}
                 defaultValue={owner?.emailId}
-                rules={{ validate: (e) => ((e && getPattern("Email").test(e)) || !e ? true : "INVALID_EMAIL") }}
+                rules={{ validate: (e) => ((e && getPattern("Email").test(e)) || !e ? true : t("INVALID_EMAIL")) }}
                 render={(props) => (
                   <TextInput
                     value={props.value}
@@ -394,6 +403,7 @@ const OwnerForm = (_props) => {
                     }}
                     labelStyle={{ marginTop: "unset" }}
                     onBlur={props.onBlur}
+                    style={ isMulitpleOwners ? { background: "#FAFAFA" }: ""}
                   />
                 )}
               />
@@ -401,12 +411,12 @@ const OwnerForm = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.emailId ? errors?.emailId?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_OWNER_SPECIAL_CATEGORY")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_OWNER_SPECIAL_CATEGORY")} :`}</CardLabel>
             <Controller
               control={control}
               name={"ownerType"}
               defaultValue={owner?.ownerType}
-              rules={{ required: "required" }}
+              // rules={}
               render={(props) => (
                 <Dropdown
                   className="form-field"
@@ -426,13 +436,12 @@ const OwnerForm = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.ownerType ? errors?.ownerType?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OWNER_DETAILS_ADDR_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OWNER_DETAILS_ADDR_LABEL")} :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name={"permanentAddress"}
                 defaultValue={owner?.permanentAddress}
-                rules={isIndividualTypeOwner ? {} : { required: "REQUIRED" }}
                 render={(props) => (
                   <TextInput
                     value={props.value}
@@ -444,12 +453,13 @@ const OwnerForm = (_props) => {
                       setFocusIndex({ index: owner.key, type: "permanentAddress" });
                     }}
                     onBlur={props.onBlur}
+                    style={ isMulitpleOwners ? { background: "#FAFAFA" }: ""}
                   />
                 )}
               />
             </div>
           </LabelFieldPair>
-          <CardLabelError style={errorStyle}>{localFormState.touched.correspondenceAddress ? errors?.correspondenceAddress?.message : ""}</CardLabelError>
+          <CardLabelError style={errorStyle}>{localFormState.touched.permanentAddress ? errors?.permanentAddress?.message : ""}</CardLabelError>
         </div>
       </div>
     </React.Fragment>

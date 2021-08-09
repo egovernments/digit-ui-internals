@@ -24,7 +24,6 @@ const EditForm = ({ applicationData }) => {
   };
 
   const onFormValueChange = (setValue, formData, formState) => {
-    console.log(formData, formState.errors, "inside the edit value");
     setSubmitValve(!Object.keys(formState.errors).length);
   };
 
@@ -44,24 +43,23 @@ const EditForm = ({ applicationData }) => {
       propertyType: data?.PropertyType?.code,
       noOfFloors: Number(data?.noOfFloors),
       landArea: Number(data?.landarea),
+      superBuiltUpArea: Number(data?.landarea),
       propertyType: data?.PropertyType?.code,
       source: "MUNICIPAL_RECORDS", // required
       channel: "CFC_COUNTER", // required
-      documents: data?.documents?.documents,
-      units: data?.units,
+      documents: applicationData?.documents.map((old) => {
+        let dt = old.documentType.split(".");
+        let newDoc = data?.documents?.documents?.find((e) => e.documentType.includes(dt[0] + "." + dt[1]));
+        return { ...old, ...newDoc };
+      }),
+      units: [...(applicationData?.units?.map((old) => ({ ...old, active: false })) || []), ...(data?.units?.map(unit=>{return {...unit,active:true}}) || [])],
       workflow: state.workflow,
       applicationStatus: "UPDATE",
     };
-
-    let keys = Object.keys(formData);
-    let unequalKeys = [];
-    keys.forEach((key) => {
-      if (!_.isEqual(formData[key], applicationData[key]) && applicationData[key])
-        unequalKeys.push({ key, app: applicationData[key], form: formData[key] });
-    });
-
-    console.log(unequalKeys, "inside submit edit");
-
+    if(state?.workflow?.action==="OPEN"){
+      formData.units=formData.units.filter(unit=>unit.active);
+    }
+    // console.log(formData, "in submit");
     history.push("/digit-ui/employee/pt/response", { Property: formData, key: "UPDATE", action: "SUBMIT" });
   };
 

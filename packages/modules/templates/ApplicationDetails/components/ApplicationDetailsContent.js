@@ -26,44 +26,19 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
   const { t } = useTranslation();
 
   const getTimelineCaptions = (checkpoint) => {
-    // if (checkpoint.status === "CREATED") {
-    //   const caption = {
-    //     date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails?.createdTime),
-    //     name: applicationData.citizen.name,
-    //     mobileNumber: applicationData.citizen.mobileNumber,
-    //     source: applicationData.source || "",
-    //   };
-    //   return <TLCaption data={caption} />;
-    // } else if (checkpoint.status === "PENDING_APPL_FEE_PAYMENT") {
-    //   const caption = {
-    //     date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails.createdTime),
-    //     name: checkpoint.assigner.name,
-    //   };
-    //   return <TLCaption data={caption} />;
-    // } else if (checkpoint.status === "COMPLETED") {
-    //   return (
-    //     <div>
-    //       <Rating withText={true} text={t(`ES_FSM_YOU_RATED`)} currentRating={checkpoint.rating} />
-    //       <Link to={`/digit-ui/employee/fsm/rate-view/${applicationNumber}`}>
-    //         <ActionLinks>{t("CS_FSM_RATE_VIEW")}</ActionLinks>
-    //       </Link>
-    //     </div>
-    //   );
-    // }
     if (checkpoint.state === "OPEN" || checkpoint.status === "INITIATED") {
-    const caption = {
+      const caption = {
         date: Digit.DateUtils.ConvertTimestampToDate(applicationData?.auditDetails?.createdTime),
         source: applicationData?.channel || "",
       };
-      return <TLCaption data={caption} />
-    }
-    else{
-    const caption = {
-          date: Digit.DateUtils?.ConvertTimestampToDate(applicationData?.auditDetails?.lastModifiedTime),
-          name: checkpoint?.assigner?.name,
-          mobileNumber: checkpoint?.assigner?.mobileNumber,
-        };
-      return <TLCaption data={caption} />
+      return <TLCaption data={caption} />;
+    } else {
+      const caption = {
+        date: Digit.DateUtils?.ConvertTimestampToDate(applicationData?.auditDetails?.lastModifiedTime),
+        name: checkpoint?.assigner?.name,
+        mobileNumber: checkpoint?.assigner?.mobileNumber,
+      };
+      return <TLCaption data={caption} />;
     }
   };
 
@@ -73,18 +48,19 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
     <Card style={{ position: "relative" }}>
       {applicationDetails?.applicationDetails?.map((detail, index) => (
         <React.Fragment key={index}>
-          <div style={checkLocation ? { lineHeight: "19px", width: "40%" } : {}}>
+          <div style={checkLocation ? { lineHeight: "19px", maxWidth: "600px", minWidth: "280px" } : {}}>
             {index === 0 && !detail.asSectionHeader ? (
               <CardSubHeader style={{ marginBottom: "16px" }}>{t(detail.title)}</CardSubHeader>
             ) : (
               <React.Fragment>
-                <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>
+                <CardSectionHeader style={(index == 0 && checkLocation) ? { marginBottom: "16px" } : { marginBottom: "16px", marginTop: "32px" }}>
                   {t(detail.title)}
                   {detail?.Component ? <detail.Component /> : null}
                 </CardSectionHeader>
               </React.Fragment>
             )}
-            <StatusTable>
+            {/* TODO, Later will move to classes */}
+            <StatusTable style={checkLocation ? { position: "relative", marginTop: "19px" } : {}}>
               {detail?.values?.map((value, index) => {
                 if (value.map === true && value.value !== "N/A") {
                   return <Row key={t(value.title)} label={t(value.title)} text={<img src={t(value.value)} alt="" />} />;
@@ -97,7 +73,10 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
                     last={index === detail?.values?.length - 1}
                     caption={value.caption}
                     className="border-none"
-                    rowContainerStyle={checkLocation ? {justifyContent: "space-between"}: {}}
+                    // TODO, Later will move to classes
+                    rowContainerStyle={
+                      checkLocation ? { justifyContent: "space-between", fontSize: "16px", lineHeight: "19px", color: "#0B0C0C" } : {}
+                    }
                   />
                 );
               })}
@@ -114,38 +93,44 @@ function ApplicationDetailsContent({ applicationDetails, workflowDetails, isData
           )}
         </React.Fragment>
       ))}
-      <BreakLine />
-      {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
-      {!workflowDetails?.isLoading && !isDataLoading && (
-        <Fragment>
-          <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>
-            {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
-          </CardSectionHeader>
-          {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
-            <CheckPoint
-              isCompleted={true}
-              label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
-              customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
-            />
-          ) : (
-            <ConnectingCheckPoints>
-              {workflowDetails?.data?.timeline &&
-                workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <CheckPoint
-                        keyValue={index}
-                        isCompleted={index === 0}
-                        info={checkpoint.comment}
-                        label={t(`${timelineStatusPrefix}${checkpoint.state}`)}
-                        customChild={getTimelineCaptions(checkpoint)}
-                      />
-                    </React.Fragment>
-                  );
-                })}
-            </ConnectingCheckPoints>
+      {workflowDetails?.data?.timeline?.length > 0 && (
+        <React.Fragment>
+          <BreakLine />
+          {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
+          {!workflowDetails?.isLoading && !isDataLoading && (
+            <Fragment>
+              <CardSectionHeader style={{ marginBottom: "16px", marginTop: "32px" }}>
+                {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
+              </CardSectionHeader>
+              {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
+                <CheckPoint
+                  isCompleted={true}
+                  label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
+                  customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
+                />
+              ) : (
+                <ConnectingCheckPoints>
+                  {workflowDetails?.data?.timeline &&
+                    workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <CheckPoint
+                            keyValue={index}
+                            isCompleted={index === 0}
+                            info={checkpoint.comment}
+                            label={t(
+                              `${timelineStatusPrefix}${checkpoint?.performedAction === "REOPEN" ? checkpoint?.performedAction : checkpoint.state}`
+                            )}
+                            customChild={getTimelineCaptions(checkpoint)}
+                          />
+                        </React.Fragment>
+                      );
+                    })}
+                </ConnectingCheckPoints>
+              )}
+            </Fragment>
           )}
-        </Fragment>
+        </React.Fragment>
       )}
     </Card>
   );

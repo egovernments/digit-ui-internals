@@ -36,17 +36,13 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
   };
 
   const applyLocalFilters = () => {
-    if (_searchParams.services.length === 0) onFilterChange({ _searchParams, services: ApplicationTypeMenu.map((e) => e.value) });
+    if (_searchParams.services.length === 0) onFilterChange({ ..._searchParams, services: ApplicationTypeMenu.map((e) => e.value) });
     else onFilterChange(_searchParams);
   };
 
-  useEffect(() => {
-    console.log(_searchParams, "search params inside filter");
-  }, [_searchParams]);
-
   const clearAll = () => {
     setSearchParams({ ...defaultSearchParams, services: [] });
-    onFilterChange(defaultSearchParams);
+    onFilterChange({ ...defaultSearchParams });
   };
 
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -121,7 +117,7 @@ const Filter = ({ searchParams, onFilterChange, defaultSearchParams, statusMap, 
                   return (
                     <RemoveableTag
                       key={index}
-                      text={locality.name}
+                      text={t(locality.i18nkey)}
                       onClick={() => {
                         localParamChange({ locality: _searchParams?.locality.filter((loc) => loc.code !== locality.code) });
                       }}

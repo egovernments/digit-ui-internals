@@ -1,15 +1,25 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { CardLabel, LabelFieldPair, Dropdown, TextInput, LinkButton, CardLabelError, MobileNumber, DatePicker } from "@egovernments/digit-ui-react-components";
+import { CardLabel, LabelFieldPair, Dropdown, TextInput, LinkButton, CardLabelError, MobileNumber, DatePicker, Loader } from "@egovernments/digit-ui-react-components";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
 import { useLocation } from "react-router-dom";
 import isUndefined from "lodash/isUndefined";
-import { getUniqueItemsFromArray, commonTransform, stringReplaceAll,getPattern } from "../utils";
+import { getUniqueItemsFromArray, commonTransform, stringReplaceAll,getPattern, convertEpochToDate } from "../utils";
 
-
+const defaultFinancialYear = () => {
+  const data = convertEpochToDate(Date.now());
+  const splitData = data.split("-")[0];
+  const year = splitData.slice(2, 4);
+  const currentFinancialYear = `${Number(splitData)}-${Number(year) + 1}`;
+  return { 
+    code: currentFinancialYear, 
+    i18nKey: `FY${currentFinancialYear}`, 
+    id: currentFinancialYear?.split('-')[0] 
+  }
+}
 const createTradeDetailsDetails = () => ({
-  financialYear: "",
+  financialYear: defaultFinancialYear(),
   licenseType: "",
   structureType: "",
   structureSubType: "",
@@ -33,8 +43,9 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
   const stateId = tenantId.split(".")[0];
   const [isErrors, setIsErrors] = useState(false);
   const [licenseTypeList, setLicenseTypeList] = useState([]);
+  const [licenseTypeValue, setLicenseTypeValue] = useState([]);
 
-  const { isLoading, data: Menu = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", "StructureType");
+  const { isLoading : menuLoading, data: Menu = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "common-masters", "StructureType");
 
   const { data: FinaceMenu = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "egf-master", ["FinancialYear"]);
 
@@ -88,7 +99,10 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
     licenseTypeList, 
     setLicenseTypeList,
     previousLicenseDetails, 
-    setPreviousLicenseDetails
+    setPreviousLicenseDetails,
+    licenseTypeValue,
+    setLicenseTypeValue,
+    menuLoading
   };
 
   if (isEditScreen) {
@@ -100,9 +114,6 @@ const TLTradeDetailsEmployee = ({ config, onSelect, userType, formData, setError
       {tradedetils.map((tradedetail, index) => (
         <OwnerForm1 key={tradedetail.key} index={index} tradedetail={tradedetail} {...commonProps} />
       ))}
-      {formData?.ownershipCategory?.code === "INDIVIDUAL.MULTIPLEOWNERS" ? (
-        <LinkButton label="Add Owner" onClick={addNewOwner} style={{ color: "orange" }} />
-      ) : null}
     </React.Fragment>
   );
 };
@@ -133,7 +144,10 @@ const OwnerForm1 = (_props) => {
     licenseTypeList, 
     setLicenseTypeList,
     previousLicenseDetails, 
-    setPreviousLicenseDetails
+    setPreviousLicenseDetails,
+    licenseTypeValue,
+    setLicenseTypeValue,
+    menuLoading
   } = _props;
 
   const { control, formState: localFormState, watch, setError: setLocalError, clearErrors: clearLocalErrors, setValue, trigger, getValues } = useForm();
@@ -179,6 +193,14 @@ const OwnerForm1 = (_props) => {
             data.i18nKey = `TRADELICENSE_LICENSETYPE_${data.code}`
           })
         };
+        
+        let licenseTypeValue = [];
+        if (licenseTypes && licenseTypes.length > 0) {
+          licenseTypes.map(data =>{
+            if(data.code == "PERMANENT") licenseTypeValue.push(data);
+          });
+        }
+        setLicenseTypeValue(licenseTypeValue[0]);
         setLicenseTypeList(licenseTypes);
     }
 }, [billingSlabData]);
@@ -218,7 +240,7 @@ const OwnerForm1 = (_props) => {
 
 
   useEffect(() => {
-    if (isRenewal && structureTypeOptions?.length > 0) {
+    if (isRenewal && structureTypeOptions?.length > 0 && !menuLoading) {
       let selectedOption = tradedetail?.structureType?.code?.split('.')[0];
       let structureSubTypeOption = [];
       structureTypeOptions.map(data => {
@@ -232,7 +254,7 @@ const OwnerForm1 = (_props) => {
       // setValue("structureSubType", "");
       setStructureSubTypeOptions(structureSubTypeOption);
     }
-}, [tradedetail?.structureType]);
+}, [tradedetail?.structureType, !menuLoading]);
 
 
   const isIndividualTypeOwner = useMemo(() => formData?.ownershipCategory?.code.includes("INDIVIDUAL"), [formData?.ownershipCategory?.code]);
@@ -242,7 +264,6 @@ const OwnerForm1 = (_props) => {
   }, []);
 
   useEffect(() => {
-    console.log(formValue, "in formvalue chnage");
     const keys = Object.keys(formValue);
     const part = {};
     keys.forEach((key) => (part[key] = tradedetail[key]));
@@ -277,7 +298,7 @@ const OwnerForm1 = (_props) => {
       <div style={{ marginBottom: "16px" }}>
         <div>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_FINANCIAL_YEAR_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_FINANCIAL_YEAR_LABEL")} * :`}</CardLabel>
             <Controller
               name="financialYear"
               rules={{ required: t("REQUIRED_FIELD") }}
@@ -301,7 +322,7 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.financialYear ? errors?.financialYear?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_LIC_TYPE_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_LIC_TYPE_LABEL")} * :`}</CardLabel>
             <Controller
               name="licenseType"
               defaultValue={tradedetail?.licenseType}
@@ -309,7 +330,7 @@ const OwnerForm1 = (_props) => {
               render={(props) => (
                 <Dropdown
                   className="form-field"
-                  selected={licenseTypeList[1]}
+                  selected={licenseTypeValue} //{licenseTypeList[1]}
                   disable={true}
                   option={licenseTypeList}
                   select={props.onChange}
@@ -323,13 +344,13 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
 
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_COMMON_TABLE_COL_TRD_NAME")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_COMMON_TABLE_COL_TRD_NAME")} * :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name={"tradeName"}
                 defaultValue={tradedetail?.tradeName}
-                rules={{ required: "NAME_REQUIRED", validate: { pattern: (val) => (/^[-@.\/#&+\w\s]*$/.test(val) ? true : t("INVALID_NAME")) } }}
+                rules={{ required: t("REQUIRED_FIELD"), validate: { pattern: (val) => (/^[-@.\/#&+\w\s]*$/.test(val) ? true : t("INVALID_NAME")) } }}
                 render={(props) => (
                   <TextInput
                     value={props.value}
@@ -351,7 +372,7 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.tradeName ? errors?.tradeName?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_STRUCT_TYPE_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_STRUCT_TYPE_LABEL")} * :`}</CardLabel>
             <Controller
               name="structureType"
               rules={{ required: t("REQUIRED_FIELD") }}
@@ -388,7 +409,7 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.structureType ? errors?.structureType?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_STRUCT_SUB_TYPE_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_STRUCT_SUB_TYPE_LABEL")} * :`}</CardLabel>
             <Controller
               name="structureSubType"
               rules={{ required: t("REQUIRED_FIELD") }}
@@ -414,11 +435,11 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.structureSubType ? errors?.structureSubType?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_TRADE_COMM_DATE_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_TRADE_DETAILS_TRADE_COMM_DATE_LABEL")} * :`}</CardLabel>
             <div className="field">
               <Controller
                 name="commencementDate"
-                rules={{ required: t("ERR_DEFAULT_INPUT_FIELD_MSG") }}
+                rules={{ required: t("REQUIRED_FIELD") }}
                 defaultValue={tradedetail?.commencementDate}
                 control={control}
                 render={(props) => (
@@ -435,13 +456,13 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.commencementDate ? errors?.commencementDate?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_GST_NUMBER_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_GST_NUMBER_LABEL")} :`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name="gstNo"
                 defaultValue={tradedetail?.gstNo}
-                rules={{ validate: (e) => ((e && getPattern("GSTNo").test(e)) || !e ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") }}
+                rules={{ validate: (e) => ((e && getPattern("GSTNo").test(e)) || !e ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) }}
                 render={(props) => (
                   <TextInput
                     value={props.value}
@@ -461,11 +482,11 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.gstNo ? errors?.gstNo?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OPERATIONAL_SQ_FT_AREA_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_OPERATIONAL_SQ_FT_AREA_LABEL")} :`}</CardLabel>
             <div className="field">
               <Controller
                 name="operationalArea"
-                rules={{ validate: (e) => ((e && getPattern("OperationalArea").test(e)) || !e ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") }}
+                rules={{ validate: (e) => ((e && getPattern("OperationalArea").test(e)) || !e ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) }}
                 defaultValue={tradedetail?.operationalArea}
                 control={control}
                 render={(props) => (
@@ -486,11 +507,11 @@ const OwnerForm1 = (_props) => {
           </LabelFieldPair>
           <CardLabelError style={errorStyle}>{localFormState.touched.operationalArea ? errors?.operationalArea?.message : ""}</CardLabelError>
           <LabelFieldPair>
-            <CardLabel className="card-label-smaller">{`${t("TL_NEW_NUMBER_OF_EMPLOYEES_LABEL")}:`}</CardLabel>
+            <CardLabel className="card-label-smaller">{`${t("TL_NEW_NUMBER_OF_EMPLOYEES_LABEL")} :`}</CardLabel>
             <div className="field">
               <Controller
                 name="noOfEmployees"
-                rules={{ validate: (e) => ((e && getPattern("NoOfEmp").test(e)) || !e ? true : "ERR_DEFAULT_INPUT_FIELD_MSG") }}
+                rules={{ validate: (e) => ((e && getPattern("NoOfEmp").test(e)) || !e ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")) }}
                 defaultValue={tradedetail?.noOfEmployees}
                 control={control}
                 render={(props) => (

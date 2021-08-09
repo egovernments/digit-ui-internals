@@ -1,4 +1,4 @@
-import { Card, CardHeader, Loader, MultiLink, Row, SubmitBar, Header, CardSubHeader } from "@egovernments/digit-ui-react-components";
+import { Card, CardHeader, Loader, MultiLink, Row, SubmitBar, Header, CardSubHeader, CardSectionHeader } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory, useParams } from "react-router-dom";
@@ -14,6 +14,8 @@ const ApplicationDetails = () => {
   const { data: storeData } = Digit.Hooks.useStore.getInitData();
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("CITIZEN_TL_MUTATION_HAPPENED", false);
   const { tenants } = storeData || {};
+  let multiBoxStyle = {border:"groove", background: "#FAFAFA", borderRadius:"4px",paddingInline:"10px",marginTop:"10px",marginBottom:"10px"};
+  let multiHeaderStyle = {marginBottom:"10px",marginTop:"10px",color:"#505A5F"};
   //todo: hook should return object to render the data
   const { isLoading, isError, error, data: application, error: errorApplication } = Digit.Hooks.tl.useTLApplicationDetails({
     tenantId: tenantId,
@@ -27,7 +29,6 @@ const ApplicationDetails = () => {
 
   const { data: paymentsHistory } = Digit.Hooks.tl.useTLPaymentHistory(tenantId, id);
   useEffect(() => {
-    console.log(application);
     if (application) {
       Digit.PaymentService.fetchBill(tenantId, {
         consumerCode: application[0]?.applicationNumber,
@@ -51,7 +52,6 @@ const ApplicationDetails = () => {
   const handleDownloadPdf = async () => {
     const tenantInfo = tenants.find((tenant) => tenant.code === application[0]?.tenantId);
     let res = application[0];
-    console.log(tenantInfo);
     const data = getPDFData({ ...res }, tenantInfo, t);
     data.then((ress) => Digit.Utils.pdf.generate(ress));
     setShowOptions(false);
@@ -119,10 +119,11 @@ const ApplicationDetails = () => {
                 textStyle={{ whiteSpace: "pre", border: "none" }}
               />
               <Row label={t("TL_APPLICATION_CATEGORY")} text={t("ACTION_TEST_TRADE_LICENSE")} textStyle={{ whiteSpace: "pre" }} />
+              <CardSectionHeader>{t("TL_OWNERSHIP_DETAILS_HEADER")}</CardSectionHeader>
               {application?.tradeLicenseDetail.owners.map((ele, index) => {
                 return (
-                  <div key = {index}>
-                  <CardSubHeader>{`${t("TL_PAYMENT_PAID_BY_PLACEHOLDER")} - `+ (index+1)}</CardSubHeader>
+                  <div key = {index} style={multiBoxStyle}>
+                  <CardSectionHeader style={multiHeaderStyle}>{`${t("TL_PAYMENT_PAID_BY_PLACEHOLDER")} - `+ (index+1)}</CardSectionHeader>
                   <Row
                     label={`${t("TL_COMMON_TABLE_COL_OWN_NAME")}`}
                     text={t(ele.name)}
@@ -150,7 +151,7 @@ const ApplicationDetails = () => {
               <Row
                 style={{ border: "none" }}
                 label={t("TL_COMMON_TABLE_COL_SLA_NAME")}
-                text={`${application?.SLA / (1000 * 60 * 60 * 24)} Days`}
+                text={`${Math.round(application?.SLA / (1000 * 60 * 60 * 24))} ${t("TL_SLA_DAYS")}`}
                 textStyle={{ whiteSpace: "pre" }}
               />
               <Row
@@ -162,7 +163,8 @@ const ApplicationDetails = () => {
               <CardSubHeader>{t("TL_TRADE_UNITS_HEADER")}</CardSubHeader>
               {application?.tradeLicenseDetail?.tradeUnits?.map((ele, index) => {
                 return (
-                  <div key={index} style={{border:"groove"}}>
+                  <div key={index} style={multiBoxStyle}>
+                    <CardSectionHeader style={multiHeaderStyle}>{t("TL_UNIT_HEADER")} {index+1}</CardSectionHeader>
                     <Row
                       label={t("TL_NEW_TRADE_DETAILS_TRADE_CAT_LABEL")}
                       text={t(`TRADELICENSE_TRADETYPE_${ele?.tradeType.split(".")[0]}`)}
@@ -191,7 +193,8 @@ const ApplicationDetails = () => {
               {Array.isArray(application?.tradeLicenseDetail?.accessories) && application?.tradeLicenseDetail?.accessories.length > 0 && <CardSubHeader style={{paddingTop:"7px"}}>{t("TL_NEW_TRADE_DETAILS_HEADER_ACC")}</CardSubHeader>}
               {Array.isArray(application?.tradeLicenseDetail?.accessories) && application?.tradeLicenseDetail?.accessories.length > 0 && application?.tradeLicenseDetail?.accessories?.map((ele, index) => {
                 return (
-                  <div key={index} style={{border:"groove"}}>
+                  <div key={index} style={multiBoxStyle}>
+                    <CardSectionHeader style={multiHeaderStyle}>{t("TL_ACCESSORY_LABEL")} {index+1}</CardSectionHeader>
                     <Row
                       style={{ border: "none" }}
                       label={t("TL_REVIEWACCESSORY_TYPE_LABEL")}

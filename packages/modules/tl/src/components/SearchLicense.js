@@ -5,6 +5,23 @@ import { Link } from "react-router-dom";
 import { convertEpochToDateDMY, stringReplaceAll } from "../utils";
 
 const SearchLicense = ({tenantId, t, onSubmit, data }) => {
+  let applications = {};
+  let validation = {};
+    const applicationsList = data;
+    let newapplicationlist = [];
+    if (applicationsList && applicationsList.length > 0) {
+        applicationsList.filter((response) => response.licenseNumber).map((ob) => {
+            if (applications[ob.licenseNumber]) {
+                if (applications[ob.licenseNumber].applicationDate < ob.applicationDate)
+                    applications[ob.licenseNumber] = ob
+            }
+            else
+                applications[ob.licenseNumber] = ob;
+        })
+        newapplicationlist = Object.values(applications);
+        newapplicationlist = newapplicationlist ? newapplicationlist.filter(ele => ele.financialYear != "2021-22" && (ele.status == "EXPIRED" || ele.status == "APPROVED")) : [];
+    }
+
     const { register, control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: {
             offset: 0,
@@ -63,7 +80,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
         },
         {
           Header: t("TL_COMMON_TABLE_COL_STATUS"),
-          accessor: (row) => GetCell(t(row.status) || ""),
+          accessor: (row) =>GetCell(t( row?.workflowCode&&row?.status&&`WF_${row?.workflowCode?.toUpperCase()}_${row.status}`|| "NA") ),
           disableSortBy: true,
         }
       ]), [] )
@@ -97,7 +114,15 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
             </SearchField>
             <SearchField>
                 <label>{t("TL_TRADE_OWNER_S_NUMBER_LABEL")}</label>
-                <TextInput name="mobileNumber" inputRef={register({})}/>
+                <TextInput name="mobileNumber" inputRef={register({})} 
+                type="mobileNumber"
+                componentInFront={<div className="employee-card-input employee-card-input--front">+91</div>} 
+                maxlength={10}
+            {...(validation = {
+                  pattern: "[6-9]{1}[0-9]{9}",
+                  type: "tel",
+                  title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
+                })}/>
             </SearchField>
             <SearchField>
                 <label>{t("TL_SEARCH_TRADE_LICENSE_ISSUED_FROM")}</label>
@@ -121,7 +146,22 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
             </SearchField>
             <SearchField className="submit">
                 <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
-                <p onClick={() => reset()}>{t(`ES_COMMON_CLEAR_ALL`)}</p>
+                <p onClick={() => 
+                  {
+                    reset({ 
+                      licenseNumbers: "", 
+                      mobileNumber: "", 
+                      fromDate: "",
+                      toDate: "",
+                      offset: 0,
+                      limit: 10,
+                      sortBy: "commencementDate",
+                      sortOrder: "DESC",
+                      status: "APPROVED"
+                  });
+                  previousPage ();
+                  }
+                }>{t(`ES_COMMON_CLEAR_ALL`)}</p>
             </SearchField>
         </SearchForm>
         {data?.display ?<Card style={{ marginTop: 20 }}>
@@ -137,7 +177,7 @@ const SearchLicense = ({tenantId, t, onSubmit, data }) => {
         </Card>
         : <Table
             t={t}
-            data={data}
+            data={newapplicationlist}
             columns={columns}
             getCellProps={(cellInfo) => {
             return {

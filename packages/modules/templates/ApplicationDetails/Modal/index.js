@@ -4,12 +4,11 @@ import PTActionModal from "./PTActionModal";
 import TLActionModal from "./TLActionModal";
 
 const ActionModal = (props) => {
-  console.log(props.action, "inside action modal index");
   if (props?.businessService.includes("PT")) {
     return <PTActionModal {...props} />;
   }
 
-  if (props?.businessService.includes("NewTL") || props?.businessService.includes("TL") || props?.businessService.includes("EDITRENEWAL") ) {
+  if (props?.businessService.includes("NewTL") || props?.businessService.includes("TL") || props?.businessService.includes("EDITRENEWAL") || props?.businessService.includes("DIRECTRENEWAL")) {
     return <TLActionModal {...props} />;
   }
   // return <FSMActionModal {...props} />;

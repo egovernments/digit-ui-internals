@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
-import TransfererDetails from "../../pageComponents/Mutate/TransfererDetails";
-import { newConfigMutate } from "../../config/Mutate/config";
-
-import { useParams } from "react-router-dom";
 import { Header } from "@egovernments/digit-ui-react-components";
 import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
+import { newConfigMutate } from "../../config/Mutate/config";
+import TransfererDetails from "../../pageComponents/Mutate/TransfererDetails";
+
 
 const ApplicationDetails = () => {
   const { t } = useTranslation();
@@ -67,7 +67,6 @@ const ApplicationDetails = () => {
   useEffect(() => {
     if (applicationDetails) {
       setAppDetailsToShow(_.cloneDeep(applicationDetails));
-      console.log(applicationDetails, "applicaion details");
       if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
         setEnableAudit(true);
       }
@@ -80,7 +79,6 @@ const ApplicationDetails = () => {
 
   useEffect(() => {
     if (workflowDetails?.data?.applicationBusinessService) {
-      console.log(workflowDetails?.data, "workflowDetaisl");
       setBusinessService(workflowDetails?.data?.applicationBusinessService);
     }
   }, [workflowDetails.data]);
@@ -100,15 +98,7 @@ const ApplicationDetails = () => {
               redirectionUrl: {
                 pathname: `/digit-ui/employee/pt/property-details/${propertyId}`,
               },
-              tenantId: "pb",
-            },
-            {
-              action: "UPDATE",
-              redirectionUrl: {
-                pathname: `/digit-ui/employee/pt/modify-application/${propertyId}`,
-                state: { workflow: { action: "OPEN", moduleName: "PT", businessService } },
-              },
-              tenantId: "pb",
+              tenantId: Digit.ULBService.getStateId(),
             },
           ],
         },
@@ -128,7 +118,7 @@ const ApplicationDetails = () => {
         pathname: `/digit-ui/employee/pt/modify-application/${propertyId}`,
         state: { workflow: { action: "REOPEN", moduleName: "PT", businessService } },
       },
-      tenantId: "pb",
+      tenantId: Digit.ULBService.getStateId(),
     });
   }
 
@@ -136,6 +126,7 @@ const ApplicationDetails = () => {
     appDetailsToShow?.applicationDetails?.unshift({
       values: [
         { title: "PT_PROPERTY_APPLICATION_NO", value: appDetailsToShow?.applicationData?.acknowldgementNumber },
+        { title: "PT_SEARCHPROPERTY_TABEL_PTUID", value: appDetailsToShow?.applicationData?.propertyId },
         { title: "ES_APPLICATION_CHANNEL", value: `ES_APPLICATION_DETAILS_APPLICATION_CHANNEL_${appDetailsToShow?.applicationData?.channel}` },
       ],
     });
@@ -152,7 +143,6 @@ const ApplicationDetails = () => {
           action: "PAY",
           forcedName: "WF_EMPLOYEE_PT.MUTATION_PAY",
           redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT.MUTATION/${appDetailsToShow?.applicationData?.acknowldgementNumber}` },
-          // redirectionUrl: { pathname: `/digit-ui/employee/payment/collect/PT/${propertyId}` },
         };
       }
       return act;

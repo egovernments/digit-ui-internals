@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { Header, LinkLabel, Loader, Modal } from "@egovernments/digit-ui-react-components";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { useHistory, useParams } from "react-router-dom";
 import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
 import OwnerHistory from "./PropertyMutation/ownerHistory";
-
-import { useParams, useHistory, Link } from "react-router-dom";
-import { Header, Loader, LinkLabel, Modal } from "@egovernments/digit-ui-react-components";
-import _ from "lodash";
 
 const Close = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF">
@@ -46,13 +44,16 @@ const PropertyDetails = () => {
       tenantId,
       filters: { propertyIds: applicationNumber, audit: true },
     },
-    { enabled: enableAudit, select: (data) => data.Properties.filter((e) => e.status === "ACTIVE") }
+    {
+      enabled: enableAudit,
+      select: (data) => data.Properties.filter((e) => e.status === "ACTIVE")?.sort((a, b) => b.auditDetails.lastModifiedTime - a.auditDetails.lastModifiedTime),
+    }
   );
 
   useEffect(() => {
     if (applicationDetails && !enableAudit) {
       setAppDetailsToShow(_.cloneDeep(applicationDetails));
-      if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
+      if (applicationDetails?.applicationData?.status !== "ACTIVE") {
         setEnableAudit(true);
       }
     }
@@ -60,52 +61,14 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     if (enableAudit && auditData?.length && Object.keys(appDetailsToShow).length) {
-      let owners = auditData[0].owners.filter((e) => e.status === "ACTIVE");
-      let applicationDetails = appDetailsToShow.applicationDetails.map((obj) => {
-        const { additionalDetails, title } = obj;
-        if (title === "PT_OWNERSHIP_INFO_SUB_HEADER") {
-          additionalDetails.owners = owners?.map((owner, index) => {
-            return {
-              status: owner.status,
-              title: "ES_OWNER",
-              values: [
-                { title: "PT_OWNERSHIP_INFO_NAME", value: owner?.name },
-                { title: "PT_OWNERSHIP_INFO_GENDER", value: owner?.gender },
-                { title: "PT_OWNERSHIP_INFO_MOBILE_NO", value: owner?.mobileNumber },
-                { title: "PT_OWNERSHIP_INFO_USER_CATEGORY", value: `COMMON_MASTERS_OWNERTYPE_${owner?.ownerType}` || "NA" },
-                { title: "PT_SEARCHPROPERTY_TABEL_GUARDIANNAME", value: owner?.fatherOrHusbandName },
-                { title: "PT_FORM3_OWNERSHIP_TYPE", value: auditData[0]?.ownershipCategory },
-                { title: "PT_OWNERSHIP_INFO_EMAIL_ID", value: owner?.emailId },
-                { title: "PT_OWNERSHIP_INFO_CORR_ADDR", value: owner?.permanentAddress },
-              ],
-            };
-          });
-
-          additionalDetails.documents = [
-            {
-              title: "PT_COMMON_DOCS",
-              values: auditData[0].documents
-                .filter((e) => e.status === "ACTIVE")
-                .map((document) => {
-                  return {
-                    title: `PT_${document?.documentType.replace(".", "_")}`,
-                    documentType: document?.documentType,
-                    documentUid: document?.documentUid,
-                    fileStoreId: document?.fileStoreId,
-                    status: document.status,
-                  };
-                }),
-            },
-          ];
-
-          return { ...obj, additionalDetails };
-        }
-        return obj;
-      });
-
-      setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
+      const lastActiveProperty = auditData?.[0];
+      lastActiveProperty.owners = lastActiveProperty?.owners?.filter(owner => owner.status == "ACTIVE");
+      if (lastActiveProperty) {
+        let applicationDetails = appDetailsToShow?.transformToAppDetailsForEmployee({ property: lastActiveProperty, t });
+        setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
+      }
     }
-  }, [auditData, enableAudit]);
+  }, [auditData, enableAudit, applicationDetails]);
 
   let workflowDetails = Digit.Hooks.useWorkflowDetails({
     tenantId: applicationDetails?.tenantId || tenantId,
@@ -120,7 +83,6 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     if (workflowDetails?.data?.applicationBusinessService) {
-      console.log(workflowDetails?.data, "workflowDetaisl");
       setBusinessService(workflowDetails?.data?.applicationBusinessService);
     }
   }, [workflowDetails.data]);
@@ -170,7 +132,7 @@ const PropertyDetails = () => {
                 delete data.customFunctionToExecute;
                 history.push({ pathname: `/digit-ui/employee/pt/assessment-details/${applicationNumber}`, state: { ...data } });
               },
-              tenantId: "pb",
+              tenantId: Digit.ULBService.getStateId(),
             },
             {
               action: !fetchBillData?.Bill[0]?.totalAmount ? "MUTATE_PROPERTY" : "PT_TOTALDUES_PAY",
@@ -182,7 +144,7 @@ const PropertyDetails = () => {
                 // state: { workflow: { action: "OPEN", moduleName: "PT", businessService } },
                 state: null,
               },
-              tenantId: "pb",
+              tenantId: Digit.ULBService.getStateId(),
             },
           ],
         },
@@ -197,9 +159,9 @@ const PropertyDetails = () => {
         action: "UPDATE",
         redirectionUrl: {
           pathname: `/digit-ui/employee/pt/modify-application/${applicationNumber}`,
-          state: { workflow: { action: "OPEN", moduleName: "PT", businessService } },
+          state: { workflow: { action: "OPEN", moduleName: "PT", businessService: "PT.UPDATE" } },
         },
-        tenantId: "pb",
+        tenantId: Digit.ULBService.getStateId(),
       });
     }
   }
@@ -217,7 +179,7 @@ const PropertyDetails = () => {
         isDataLoading={isLoading}
         applicationData={appDetailsToShow?.applicationData}
         mutate={null}
-        workflowDetails={workflowDetails}
+        workflowDetails={appDetailsToShow?.applicationData?.status === "ACTIVE" ? workflowDetails : {}}
         businessService="PT"
         showToast={showToast}
         setShowToast={setShowToast}

@@ -4,14 +4,13 @@ import { Dropdown, FormStep, LabelFieldPair, CardLabel, RadioOrSelect } from "@e
 const ReasonForTransfer = (props) => {
   const { t, config, onSelect, userType, formData, setError, clearErrors, errors } = props;
 
-  const { data, isLoading } = Digit.Hooks.pt.useMDMS("pb", "PropertyTax", "ReasonForTransfer", {});
+  const { data, isLoading } = Digit.Hooks.pt.useMDMS(Digit.ULBService.getStateId(), "PropertyTax", "ReasonForTransfer", {});
 
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
     if (data) {
       let opt = data.PropertyTax.ReasonForTransfer.map((e) => ({ ...e, i18nKey: "PROPERTYTAX_REASONFORTRANSFER_" + e.code }));
-      console.log(opt, "inside reason");
       setMenu(opt);
     }
   }, [data]);

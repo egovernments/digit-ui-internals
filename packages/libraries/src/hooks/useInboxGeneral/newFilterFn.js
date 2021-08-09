@@ -2,7 +2,7 @@ export const filterFunctions = {
   PT: (filtersArg) => {
     let { uuid } = Digit.UserService.getUser()?.info || {};
 
-    console.log(filtersArg.services, "in filter fn");
+    // console.log(filtersArg.uuid, "in filter fn");
     const searchFilters = {};
     const workflowFilters = {};
 
@@ -12,7 +12,7 @@ export const filterFunctions = {
       searchFilters.applicationNumber = filtersArg?.acknowledgementIds;
     }
     if (filtersArg?.propertyIds) {
-      searchFilters.propertyIds = propertyIds;
+      searchFilters.propertyId = propertyIds;
     }
     if (filtersArg?.oldpropertyids) {
       searchFilters.oldpropertyids = filtersArg?.oldpropertyids;
@@ -27,21 +27,14 @@ export const filterFunctions = {
       searchFilters.locality = filtersArg?.locality.map((item) => item.code.split("_").pop());
     }
     if (filtersArg?.uuid && filtersArg?.uuid.code === "ASSIGNED_TO_ME") {
-      workflowFilters.assignes = uuid;
+      workflowFilters.assignee = uuid;
     }
-
     if (mobileNumber) {
       searchFilters.mobileNumber = mobileNumber;
     }
-
-    if (propertyIds) {
-      searchFilters.propertyIds = propertyIds;
-    }
-
     if (services) {
       workflowFilters.businessService = services;
     }
-
     searchFilters["isInboxSearch"] = true;
     searchFilters["creationReason"] = ["CREATE", "MUTATION", "UPDATE"];
     workflowFilters["moduleName"] = "PT";

@@ -41,18 +41,15 @@ export const TableConfig = (t) => ({
           const _owner = status === "INWORKFLOW" && creationReason === "MUTATION" ? sortedOwners.reverse() : sortedOwners;
 
           return GetCell(`${_owner?.[0].name}`);
-          return (
-            <Link to={`${props.parentRoute}/property-mutate-docs-required/` + row.original?.searchData?.["propertyId"]}>
-              {row.original?.searchData?.["propertyId"]}
-            </Link>
-          );
         },
         mobileCell: (original) => GetMobCell(original?.searchData?.["owners"]?.[0].name),
       },
       {
         Header: t("ES_INBOX_LOCALITY"),
-
-        Cell: ({ row }) => GetCell(`${row.original?.searchData?.address?.locality?.name}`),
+        Cell: ({ row }) => {
+          const tenantId = row.original?.searchData?.tenantId;
+          return GetCell(t(`${tenantId.replace(".", "_").toUpperCase()}_REVENUE_${row.original?.searchData?.address?.locality?.code}`));
+        },
         disableSortBy: true,
         mobileCell: (original) => GetMobCell(original?.searchData?.address?.locality?.name),
       },
@@ -60,7 +57,7 @@ export const TableConfig = (t) => ({
         Header: t("ES_SEARCH_PROPERTY_STATUS"),
         Cell: ({ row }) => {
           // console.log(row.original?.searchData?.status,">>>>>>>>>")
-          return GetCell(row.original?.searchData?.status);
+          return GetCell(t(row.original?.searchData?.status));
         },
         disableSortBy: true,
         mobileCell: (original) => GetMobCell(original?.searchData?.status),
@@ -144,6 +141,7 @@ export const TableConfig = (t) => ({
       },
       {
         Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
+        accessor: "createdTime",
         Cell: ({ row }) => {
           const wf = row.original.workflowData;
           const math = Math.round((wf?.businesssServiceSla || 0) / (24 * 60 * 60 * 1000)) || "-";

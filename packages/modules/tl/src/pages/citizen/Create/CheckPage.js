@@ -14,7 +14,7 @@ const ActionButton = ({ jumpTo }) => {
     sessionStorage.setItem("isDirectRenewal", false);
     history.push(jumpTo);
   }
-  return <LinkButton label={t("CS_COMMON_CHANGE")} className="check-page-link-button" onClick={routeTo} />;
+  return <LinkButton label={t("CS_COMMON_CHANGE")} className="check-page-link-button" style={jumpTo.includes("proof-of-identity")?{textAlign:"right",marginTop:"-32px"}:{}} onClick={routeTo} />;
 };
 
 const getPath = (path, params) => {
@@ -60,7 +60,7 @@ const CheckPage = ({ onSubmit, value }) => {
         />
         <Row
           label={t("TL_STRUCTURE_SUB_TYPE")}
-          text={t(TradeDetails?.VehicleType ? TradeDetails?.VehicleType.i18nKey : TradeDetails?.BuildingType.i18nKey)}
+          text={t( TradeDetails?.StructureType.code !=="IMMOVABLE" ? TradeDetails?.VehicleType.i18nKey : TradeDetails?.BuildingType.i18nKey)}
           actionButton={
             <ActionButton
               jumpTo={
@@ -98,12 +98,12 @@ const CheckPage = ({ onSubmit, value }) => {
             />
             <Row
               label={t("TL_UNIT_OF_MEASURE_LABEL")}
-              text={ `${unit?.unit ? t(unit?.unit):"NA"}`}
+              text={ `${unit?.unit ? t(unit?.unit):t("CS_NA")}`}
               actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
             <Row
               label={t("TL_NEW_TRADE_DETAILS_UOM_VALUE_LABEL")}
-              text={`${unit?.uom ? t(unit?.uom):"NA"}`}
+              text={`${unit?.uom ? t(unit?.uom):t("CS_NA")}`}
               actionButton={<ActionButton jumpTo={`${routeLink}/units-details`} />}
             />
           </div>
@@ -126,12 +126,12 @@ const CheckPage = ({ onSubmit, value }) => {
               />
               <Row
                 label={t("TL_ACC_UOM_LABEL")}
-                text={`${acc?.unit ? t(acc?.unit):"NA"}`}
+                text={`${acc?.unit ? t(acc?.unit):t("CS_NA")}`}
                 actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
               <Row
                 label={t("TL_ACC_UOM_VALUE_LABEL")}
-                text={`${acc?.unit ?t(acc?.uom):"NA"}`}
+                text={`${acc?.unit ?t(acc?.uom):t("CS_NA")}`}
                 actionButton={<ActionButton jumpTo={`${routeLink}/accessories-details`} />}
               />
             </div>
@@ -169,6 +169,7 @@ const CheckPage = ({ onSubmit, value }) => {
             </div>
           ))}
         <CardSubHeader>{t("TL_COMMON_DOCS")}</CardSubHeader>
+        <ActionButton jumpTo={`${routeLink}/proof-of-identity`} />
         <div>
           {owners?.documents["OwnerPhotoProof"] ? (
             <TLDocument value={value}></TLDocument>

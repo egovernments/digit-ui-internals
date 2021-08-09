@@ -988,7 +988,6 @@ const GetFSTPPlantInfo = (MdmsRes) => MdmsRes["FSM"].FSTPPlantInfo;
 const GetDocumentsTypes = (MdmsRes) => MdmsRes["BPA"].DocTypeMapping;
 
 const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
-  console.log(type, "type");
   switch (type) {
     case "citymodule":
       return GetCitiesWithi18nKeys(MdmsRes, moduleCode);
@@ -1163,14 +1162,11 @@ export const MdmsService = {
     );
   },
   getDataByCriteria: async (tenantId, mdmsDetails, moduleCode) => {
-    console.log("function");
     const key = `MDMS.${tenantId}.${moduleCode}.${mdmsDetails.type}.${JSON.stringify(mdmsDetails.details)}`;
     const inStoreValue = PersistantStorage.get(key);
-    console.log(inStoreValue);
     if (inStoreValue) {
       return inStoreValue;
     }
-    console.log("mdms request details ---->", mdmsDetails, moduleCode);
     const { MdmsRes } = await MdmsService.call(tenantId, mdmsDetails.details);
     const responseValue = transformResponse(mdmsDetails.type, MdmsRes, moduleCode.toUpperCase(), tenantId);
     const cacheSetting = getCacheSetting(mdmsDetails.details.moduleDetails[0].moduleName);

@@ -4,6 +4,7 @@ import { Dropdown, DatePicker, Toast } from "@egovernments/digit-ui-react-compon
 import * as func from "./Utils/Category";
 import { FormComposer } from "../../components/FormComposer";
 import { sortDropdownNames } from "./Utils/Sortbyname";
+import { stringReplaceAll } from "../../utils/index";
 import { useParams, useHistory, useRouteMatch } from "react-router-dom";
 const CreateChallen = ({ ChallanData }) => {
   const childRef = useRef();
@@ -119,7 +120,7 @@ const CreateChallen = ({ ChallanData }) => {
     };
     if (fetchBillData.Bill[0].billDetails[0].billAccountDetails.length > 0) {
       fetchBillData.Bill[0].billDetails[0].billAccountDetails.map(
-        (ele) => (defaultval[`${ele.taxHeadCode.replaceAll(".", "_").toUpperCase()}`] = `${ele.amount}`)
+        (ele) => (defaultval[`${ele.taxHeadCode.replaceAll(".", "_")}`] = `${ele.amount}`)
       );
     }
   }
@@ -187,13 +188,15 @@ const CreateChallen = ({ ChallanData }) => {
   }, [selectedCategory]);
 
   useEffect(() => {
+    let selectedCatBusinesService = selectedCategoryType?stringReplaceAll(selectedCategoryType?.businessService.split(".")[1]," ","_"):"";
     setTaxHeadMasterFields(
       TaxHeadMaster.filter((ele) => {
         let temp = selectedCategory.code.replace("BILLINGSERVICE_BUSINESSSERVICE_", "");
         return (
           selectedCategoryType &&
           selectedCategoryType.code.split(temp + "_")[1] &&
-          ele.service == temp + "." + humanize(selectedCategoryType.code.split(temp + "_")[1].toLowerCase())
+          (ele.service == temp + "." + humanize(selectedCategoryType.code.split(temp + "_")[1].toLowerCase()) ||
+          ele.service == temp + "." + selectedCatBusinesService)
         );
       })
     );
@@ -207,7 +210,7 @@ const CreateChallen = ({ ChallanData }) => {
     Digit.MDMSService.getPaymentRules(tenantId, "[?(@.type=='Adhoc')]").then((value) => {
       setAPIcategories(
         func.setServiceCategory(value.MdmsRes.BillingService.BusinessService).map((ele) => {
-          ele.code = "BILLINGSERVICE_BUSINESSSERVICE_" + ele.code.toUpperCase();
+          ele.code = "BILLINGSERVICE_BUSINESSSERVICE_" +stringReplaceAll(ele.code.toUpperCase()," ","_");
           return ele;
         })
       );
@@ -242,7 +245,7 @@ const CreateChallen = ({ ChallanData }) => {
 
   const onSubmit = (data) => {
     TaxHeadMasterFields.map((ele) => {
-      return { taxHeadCode: ele.code, amount: data[ele] };
+      return { taxHeadCode: ele.code, amount: data[ele.code.split(".").join("_")] };
     });
     let Challan = {};
     if (!isEdit) {
@@ -252,7 +255,8 @@ const CreateChallen = ({ ChallanData }) => {
           name: data.name,
           mobileNumber: data.mobileNumber,
         },
-        businessService: selectedCategoryType ? temp + "." + humanized(selectedCategoryType.code, temp) : "",
+        //businessService: selectedCategoryType ? temp + "." + humanized(selectedCategoryType.code, temp) : "",
+        businessService:selectedCategoryType?(temp + "." + stringReplaceAll(selectedCategoryType?.businessService.split(".")[1]," ","_")) : "",
         consumerType: temp,
         description: data.comments,
         taxPeriodFrom: Date.parse(fromDate),
@@ -267,7 +271,7 @@ const CreateChallen = ({ ChallanData }) => {
         amount: TaxHeadMasterFields.map((ele) => {
           return {
             taxHeadCode: ele.code,
-            amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : 0,
+            amount: data[ele.code.split(".").join("_")] ? data[ele.code.split(".").join("_")] : 0,
           };
         }),
       };
@@ -289,7 +293,7 @@ const CreateChallen = ({ ChallanData }) => {
         amount: TaxHeadMasterFields.map((ele) => {
           return {
             taxHeadCode: ele.code,
-            amount: data[ele.code.split(".").join("_").toUpperCase()] ? data[ele.code.split(".").join("_").toUpperCase()] : 0,
+            amount: data[ele.code.split(".").join("_")] ? data[ele.code.split(".").join("_")] : 0,
           };
         }),
       };
@@ -412,7 +416,7 @@ const CreateChallen = ({ ChallanData }) => {
                 isMandatory
                 selected={selectedLocality}
                 disable={isEdit}
-                optionKey="name"
+                optionKey="i18nkey"
                 id="locality"
                 option={localities}
                 select={selectLocality}
@@ -513,13 +517,13 @@ const CreateChallen = ({ ChallanData }) => {
     ];
     if (TaxHeadMasterFields.length > 0 && config.length > 0) {
       const tempConfig = config;
-      if ((config[1].head == "Service Details") | (config[1].head == "SERVICEDETAILS")) {
+      if ((config[1].head == "Service Details") | (config[1].head == t("SERVICEDETAILS"))) {
         const temp = TaxHeadMasterFields.map((ele) => ({
           label: t(ele.name.split(".").join("_")),
           isMandatory: ele.isRequired,
           type: "text",
           populators: {
-            name: ele.name.split(".").join("_"),
+            name: ele.code.split(".").join("_"),
             validation: { required: ele.isRequired, pattern: /^(0|[1-9][0-9]*)$/ },
             error: t("UC_COMMON_FIELD_ERROR"),
             componentInFront: <div className="employee-card-input employee-card-input--front">₹</div>,
