@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useRouteMatch, Switch, Route, Redirect } from "react-router-dom";
 import DocsRequired from "../../../components/DocsRequired";
 import BasicDetails from "../../../components/BasicDetails";
+import PlotDetails from "../../../components/PlotDetails";
 
 const NewBuildingPermit = () => {
   const { t } = useTranslation();
@@ -17,6 +18,9 @@ const NewBuildingPermit = () => {
       </Route>
       <Route path={`${path}/basic-details`}>
         <BasicDetails />
+      </Route>
+      <Route path={`${path}/plot-details`}>
+        <PlotDetails />
       </Route>
       <Route>
         <Redirect to={`${path}/docs-required`} />
