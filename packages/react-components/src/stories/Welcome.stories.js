@@ -84,6 +84,6 @@ export const Welcome = () => {
   )
 }
 
-export default {
-  title: "INTRODUCTIONS"
-};
+// export default {
+//   title: "INTRODUCTIONS"
+// };

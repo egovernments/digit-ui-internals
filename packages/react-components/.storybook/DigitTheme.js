@@ -9,11 +9,10 @@ export default create({
   colorPrimary: 'white',
   colorSecondary: '#0B4B66',
 
-  appBg: '#0B4B66',
+  // appBg: '#0B4B66',
   appContentBg: '#F6FBFF',
   appBorderColor: 'grey',
   appBorderRadius: 4,
 
   textColor: 'black',
-
 });

@@ -17,6 +17,7 @@
     "deploy": "gh-pages -d example/build",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public -o dist-storybook",
+    "storybook-deploy": "storybook-to-ghpages --remote=own --source-branch=storybook/theme",
     "deploy-storybook": "npm run build-storybook && surge --project dist-storybook --domain react-components-$npm_package_version.surge.sh"
   },
   "peerDependencies": {
@@ -31,6 +32,7 @@
     "@storybook/node-logger": "^6.1.10",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.10",
+    "@storybook/storybook-deployer": "^2.8.10",
     "@storybook/theming": "^6.3.4",
     "babel-eslint": "^10.0.3",
     "cross-env": "^7.0.3",
