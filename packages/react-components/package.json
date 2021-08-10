@@ -17,7 +17,7 @@
     "deploy": "gh-pages -d example/build",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public -o dist-storybook",
-    "storybook-deploy": "storybook-to-ghpages --remote=own --source-branch=storybook/theme",
+    "storybook-deploy": "storybook-to-ghpages --source-branch=develop",
     "deploy-storybook": "npm run build-storybook && surge --project dist-storybook --domain react-components-$npm_package_version.surge.sh"
   },
   "peerDependencies": {
