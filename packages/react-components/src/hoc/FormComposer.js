@@ -113,6 +113,27 @@ export const FormComposer = (props) => {
             control={control}
           />
         );
+      case "form":
+        const Component = typeof component === "string" ? Digit.ComponentRegistryService.getComponent(component) : component;
+        return (
+          <form>
+              <Component
+                userType={"employee"}
+                t={t}
+                setValue={setValue}
+                onSelect={setValue}
+                config={config}
+                data={formData}
+                formData={formData}
+                register={register}
+                errors={errors}
+                setError={setError}
+                clearErrors={clearErrors}
+                formState={formState}
+                control={control}
+              />
+          </form>
+        );
       default:
         return populators?.dependency !== false ? populators : null;
     }
