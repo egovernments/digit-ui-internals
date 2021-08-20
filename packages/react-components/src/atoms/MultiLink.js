@@ -9,7 +9,7 @@ const MultiLink = ({ className, onHeadClick, displayOptions = false, options, la
   const handleOnClick = useCallback(() => {
     showOptions?.(false)
   }, [])
-  Digit.Hooks.useClickOutside(menuRef, handleOnClick, displayOptions);
+  Digit?.Hooks?.useClickOutside?.(menuRef, handleOnClick, displayOptions);
   return (
     <div className={className} ref={menuRef}>
       <div className="multilink-labelWrap" onClick={onHeadClick}>

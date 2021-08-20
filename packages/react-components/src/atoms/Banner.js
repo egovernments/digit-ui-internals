@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 const Successful = (props) => {
   const { t } = useTranslation();
-  const user_type = Digit.SessionStorage.get("userType");
+  const user_type = Digit?.SessionStorage?.get?.("userType");
 
   return (
     <div className={user_type === "citizen" ? "success-wrap" : "emp-success-wrap"}>

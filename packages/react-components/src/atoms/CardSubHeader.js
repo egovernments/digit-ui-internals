@@ -1,7 +1,7 @@
 import React from "react";
 
 const CardSubHeader = (props) => {
-  const user_type = Digit.SessionStorage.get("user_type") === "employee" ? true : false;
+  const user_type = Digit?.SessionStorage?.get?.("user_type") === "employee" ? true : false;
 
   return (
     <header

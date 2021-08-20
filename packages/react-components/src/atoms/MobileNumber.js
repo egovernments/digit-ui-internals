@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const MobileNumber = (props) => {
-  const user_type = Digit.SessionStorage.get("userType");
+  const user_type = Digit?.SessionStorage?.get?.("userType");
 
   const onChange = (e) => {
     let val = e.target.value;
