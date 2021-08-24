@@ -11,7 +11,7 @@ const PDFSvg = ({ width = 34, height = 34, style }) => (
 function PropertyDocuments({ documents }) {
   const { t } = useTranslation();
   const [filesArray, setFilesArray] = useState(() => {
-    [];
+   return [];
   });
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [pdfFiles, setPdfFiles] = useState({});
@@ -26,9 +26,12 @@ function PropertyDocuments({ documents }) {
   }, [documents]);
 
   useEffect(() => {
-    Digit.UploadServices.Filefetch(filesArray, tenantId.split(".")[0]).then((res) => {
+    if(filesArray?.length)
+    { 
+     Digit.UploadServices.Filefetch(filesArray, tenantId.split(".")[0]).then((res) => {
       setPdfFiles(res?.data);
-    });
+      });
+    }
   }, [filesArray]);
 
   const checkLocation = window.location.href.includes("employee/tl");
