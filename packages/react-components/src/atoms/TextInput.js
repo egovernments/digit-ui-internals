@@ -80,7 +80,6 @@ const TextInput = (props) => {
             step={props.step}
             autoFocus={props.autoFocus}
             onBlur={props.onBlur}
-            onKeyPress={props.onKeyPress}
             autoComplete="off"
           />
         )}

@@ -15,7 +15,6 @@ import { initMCollectComponents } from "@egovernments/digit-ui-module-mcollect";
 import { initTLComponents } from "@egovernments/digit-ui-module-tl";
 import { PaymentModule, PaymentLinks, paymentConfigs } from "@egovernments/digit-ui-module-common";
 import { HRMSModule } from "@egovernments/digit-ui-module-hrms";
-import { initOBPSComponents } from "@egovernments/digit-ui-module-obps";
 import { DigitUI } from "@egovernments/digit-ui-module-core";
 // import { PGRModule, PGRLinks } from "@egovernments/digit-ui-module-pgr";
 // import { Body, TopBar } from "@egovernments/digit-ui-react-components";
@@ -101,7 +100,7 @@ const userInfo = {
   QAPGRCSR,
 };
 
-const enabledModules = ["FSM", "OBPS", "PT"];
+const enabledModules = ["FSM", "PT"];
 
 const initTokens = (stateCode) => {
   const userType = window.sessionStorage.getItem("userType") || process.env.REACT_APP_USER_TYPE || "CITIZEN";
@@ -155,7 +154,6 @@ const initDigitUI = () => {
   initHRMSComponents();
   initTLComponents();
   initReceiptsComponents();
-  initOBPSComponents();
 
   const moduleReducers = (initData) => ({
     pgr: PGRReducers(initData),
