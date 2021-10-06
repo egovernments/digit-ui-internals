@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { newConfig } from "../../../config/config";
-import CheckPage from "./CheckPage";
-import TLAcknowledgement from "./TLAcknowledgement";
+
+
 
 const CreateTradeLicence = ({ parentRoute }) => {
   const queryClient = useQueryClient();
@@ -61,6 +61,8 @@ const CreateTradeLicence = ({ parentRoute }) => {
   });
   config.indexRoute = "info";
 
+  const CheckPage = Digit?.ComponentRegistryService?.getComponent('TLCheckPage') ;
+  const TLAcknowledgement = Digit?.ComponentRegistryService?.getComponent('TLAcknowledgement');
   return (
     <Switch>
       {config.map((routeObj, index) => {
