@@ -10,6 +10,7 @@ const UrlShortener = (fileStoreId) =>
     auth: false,
     userService: false,
     noRequestInfo: true,
+    locale: false
   });
 
 export default UrlShortener;
