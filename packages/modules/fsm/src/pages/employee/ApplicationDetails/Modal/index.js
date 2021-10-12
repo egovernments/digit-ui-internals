@@ -160,6 +160,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
     if (vehicleNo && action === "ACCEPT") applicationData.vehicleId = vehicleNo.id;
     if (vehicleNo && action === "DSO_ACCEPT") applicationData.vehicleId = vehicleNo.id;
     if (vehicle && action === "ASSIGN") applicationData.vehicleType = vehicle.code;
+    if (action === "REASSING") applicationData.vehicleId = null;
     if (data.date) applicationData.possibleServiceDate = new Date(`${data.date}`).getTime();
     if (data.desluged) applicationData.completedOn = new Date(data.desluged).getTime();
     if (data.wasteCollected) applicationData.wasteCollected = data.wasteCollected;
