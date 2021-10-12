@@ -174,7 +174,7 @@ const Dropdown = (props) => {
         props.optionKey ? (
           <div
             className={`${hasCustomSelector ? "margin-top-10 display: table" : ""} options-card`}
-            style={{ ...props.optionCardStyles }}
+            style={{ ...props.optionCardStyles, zIndex: 60, overflow:"auto",maxHeight:'350px' }}
             ref={optionRef}
           >
             {props.option &&
@@ -193,7 +193,7 @@ const Dropdown = (props) => {
                 })}
           </div>
         ) : (
-          <div className="options-card" style={props.optionCardStyles} ref={optionRef}>
+          <div className="options-card" style={{...props.optionCardStyles, zIndex: 60, overflow:"auto",maxHeight:'350px'}} ref={optionRef}>
             {props.option
               .filter((option) => option.toUpperCase().indexOf(filterVal.toUpperCase()) > -1)
               .map((option, index) => {
