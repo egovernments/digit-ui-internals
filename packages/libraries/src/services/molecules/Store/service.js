@@ -90,30 +90,6 @@ export const StoreService = {
       tenants: initData.tenants.map((tenant) => ({ code: tenant.code })),
     });
 
-    initData.modules.push({
-      module: "MCollect",
-      code: "MCollect",
-      tenants: initData.tenants.map((tenant) => ({ code: tenant.code })),
-    });
-
-    initData.modules.push({
-      module: "HRMS",
-      code: "HRMS",
-      tenants: initData.tenants.map((tenant) => ({ code: tenant.code })),
-    });
-
-    initData.modules.push({
-      module: "TL",
-      code: "TL",
-      tenants: initData.tenants.map((tenant) => ({ code: tenant.code })),
-    });
-
-    initData.modules.push({
-      module: "Receipts",
-      code: "Receipts",
-      tenants: initData.tenants.map((tenant) => ({ code: tenant.code })),
-    });
-
 
     initData.modules.push({
       module: "DSS",
