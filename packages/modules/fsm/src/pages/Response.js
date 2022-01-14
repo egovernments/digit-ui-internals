@@ -99,6 +99,7 @@ const Response = (props) => {
 
   useEffect(() => {
     const onSuccess = () => {
+      window.history.replaceState({}, "FSM_CREATE_RESPONSE")
       queryClient.clear();
     };
     if (state.key === "update") {
