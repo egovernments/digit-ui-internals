@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormComposer, Loader } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
@@ -15,8 +15,16 @@ export const NewApplication = ({ parentUrl, heading }) => {
   const { data: commonFields, isLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "CommonFieldsConfig");
   const { data: preFields, isLoading: isApplicantConfigLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PreFieldsConfig");
   const { data: postFields, isLoading: isTripConfigLoading } = Digit.Hooks.fsm.useMDMS(stateId, "FSM", "PostFieldsConfig");
-  // const state = tenantId?.split(".")[0] || "pb";
 
+  const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("FSM_MUTATION_HAPPENED", false);
+  const [errorInfo, setErrorInfo, clearError] = Digit.Hooks.useSessionStorage("FSM_ERROR_DATA", false);
+  const [successData, setsuccessData, clearSuccessData] = Digit.Hooks.useSessionStorage("FSM_MUTATION_SUCCESS_DATA", false);
+
+  useEffect(() => {
+    setMutationHappened(false);
+    clearSuccessData();
+    clearError();
+  }, []);
   // const { data: vehicleMenu } = Digit.Hooks.fsm.useMDMS(state, "Vehicle", "VehicleType", { staleTime: Infinity });
   // const { data: channelMenu } = Digit.Hooks.fsm.useMDMS(tenantId, "FSM", "EmployeeApplicationChannel");
 
@@ -35,9 +43,7 @@ export const NewApplication = ({ parentUrl, heading }) => {
   };
 
   const onFormValueChange = (setValue, formData) => {
-    // setNoOfTrips(formData?.noOfTrips || 1);
-    // console.log("abcd2",vehicle, formData?.propertyType , formData?.subtype)
-    // console.log("find form data here helllo", formData);
+    
     if (
       formData?.propertyType &&
       formData?.subtype &&
@@ -69,7 +75,6 @@ export const NewApplication = ({ parentUrl, heading }) => {
   // }, [propertyType, subType, vehicle]);
 
   const onSubmit = (data) => {
-    console.log("find submit data", data);
     const applicationChannel = data.channel;
     const sanitationtype = data?.pitType?.code;
     const pitDimension = data?.pitDetail;
