@@ -290,7 +290,7 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
         console.log("default case");
         break;
     }
-  }, [action, isDsoLoading, dso, vehicleMenu, rejectionReason, vehicleNo, vehicleNoList, Reason]);
+  }, [action,reassignReason, isDsoLoading, dso, vehicleMenu, rejectionReason, vehicleNo, vehicleNoList, Reason]);
 
   return action && config.form && !isDsoLoading && !isReasonLoading && isVehicleDataLoaded ? (
     <Modal
