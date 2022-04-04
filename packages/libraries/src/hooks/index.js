@@ -3,6 +3,7 @@ import useWorkflowDetails from "./workflow";
 import useSessionStorage from "./useSessionStorage";
 import useQueryParams from "./useQueryParams";
 import useClickOutside from "./useClickOutside";
+import useClickOutsideNew from "./useClickOutsideNew";
 import {
   useFetchPayment,
   usePaymentUpdate,
@@ -183,6 +184,7 @@ const dss = {
 };
 
 const mcollect = {
+  useCommonMDMS,
   useMCollectMDMS,
   useMCollectSearch,
   useMcollectSearchBill,
@@ -244,6 +246,7 @@ const Hooks = {
   useApplicationStatusGeneral,
   useModuleTenants,
   useRecieptSearch,
+  useClickOutsideNew,
   useNewInboxGeneral,
   useStore,
   useTenants,
