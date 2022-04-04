@@ -20,4 +20,4 @@ const useOnClickOutside = (ref, handler, isActive, eventParam = false) => {
   }
 };
 
-export default useOnClickOutside;ss
+export default useOnClickOutside;
